@@ -1,6 +1,9 @@
+[![Build Status](https://travis-ci.org/sjsrey/mapclassify.svg?branch=master)](https://travis-ci.org/sjsrey/mapclassify)
+
 # Mapclassify
 
 Classification schemes for choropleth mapping.
+
 
 ## Map Classifiers Supported
 
