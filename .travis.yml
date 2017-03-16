@@ -41,6 +41,7 @@ script:
 notifications:
     email:
         recipients:
+            - sjsrey@gmail.com
             - levi.john.wolf@gmail.com
         on_change: always
         on_failure: always
