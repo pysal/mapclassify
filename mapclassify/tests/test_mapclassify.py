@@ -91,7 +91,7 @@ class TestMake(unittest.TestCase):
 
         q5r_classes = [self.q5r(d) for d in self.data]
         known = [[0,1,2,3,4], [0,1,2,4,4], [0,0,2,4,4]]
-        accreted_data = set(self.q5r.func_defaults[0].y)
+        accreted_data = set(self.q5r.__defaults__[0].y)
         all_data = set(np.asarray(self.data).flatten())
         self.assertEqual(accreted_data, all_data)
         np.testing.assert_allclose(known, q5r_classes)
