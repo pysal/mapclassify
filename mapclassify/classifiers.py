@@ -2,6 +2,11 @@
 A module of classification schemes for choropleth mapping.
 """
 
+try:
+    xrange
+except:
+    xrange = range
+
 
 __author__ = "Sergio J. Rey"
 
@@ -1428,7 +1433,7 @@ class Natural_Breaks(Map_Classifier):
             # find an initial solution and then try to find an improvement
             res0 = natural_breaks(x, k)
             fit = res0[2]
-            for i in xrange(self.initial):
+            for i in list(xrange(self.initial)):
                 res = natural_breaks(x, k)
                 fit_i = res[2]
                 if fit_i < fit:
@@ -2078,7 +2083,7 @@ class Max_P_Classifier(Map_Classifier):
         best_tss = x.var() * x.shape[0]
         tss_all = np.zeros((self.initial, 1))
         while solution < self.initial:
-            remaining = range(n)
+            remaining = list(range(n))
             seeds = [np.nonzero(di == min(
                 di))[0][0] for di in [np.abs(x - qi) for qi in q]]
             rseeds = np.random.permutation(range(k)).tolist()
@@ -2356,7 +2361,7 @@ class K_classifiers(object):
         best = gadf(y, "Fisher_Jenks", maxk=len(y) - 1, pct=pct)
         pct0 = best[0]
         k0 = best[-1]
-        keys = kmethods.keys()
+        keys = list(kmethods.keys())
         keys.remove("Fisher_Jenks")
         results["Fisher_Jenks"] = best
         for method in keys:
@@ -2412,7 +2417,7 @@ def opt_part(x):
     n = len(x)
     tss = np.inf
     opt_i = -999
-    for i in xrange(1, n):
+    for i in list(xrange(1, n)):
         left = x[:i].var() * i
         right = x[i:].var() * (n - i)
         tss_i = left + right
