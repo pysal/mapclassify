@@ -26,7 +26,6 @@ import numpy as np
 import scipy.stats as stats
 import scipy as sp
 import copy
-import sys
 from scipy.cluster.vq import kmeans as KMEANS
 from warnings import warn as Warn
 try:
@@ -255,10 +254,10 @@ def bin1d(x, bins):
     >>> counts
     array([26, 49, 25])
     """
-    left = [-sys.maxint]
+    left = [-float("inf")]
     left.extend(bins[0:-1])
     right = bins
-    cuts = zip(left, right)
+    cuts = list(zip(left, right))
     k = len(bins)
     binIds = np.zeros(x.shape, dtype='int')
     while cuts:
@@ -273,11 +272,12 @@ def load_example():
     """
     Helper function for doc tests
     """
-    import pysal
-    np.random.seed(10)
-    dat = pysal.open(pysal.examples.get_path('calempdensity.csv'))
-    cal = np.array([record[-1] for record in dat])
-    return cal
+    from mapclassify.datasets import calemp
+    return calemp.load()
+    #np.random.seed(10)
+    #dat = pysal.open(pysal.examples.get_path('calempdensity.csv'))
+    #cal = np.array([record[-1] for record in dat])
+    #return cal
 
 
 def _kmeans(y, k=5):
