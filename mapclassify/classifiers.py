@@ -277,12 +277,8 @@ def load_example():
     """
     Helper function for doc tests
     """
-    from mapclassify.datasets import calemp
+    from .datasets import calemp
     return calemp.load()
-    #np.random.seed(10)
-    #dat = pysal.open(pysal.examples.get_path('calempdensity.csv'))
-    #cal = np.array([record[-1] for record in dat])
-    #return cal
 
 
 def _kmeans(y, k=5):
