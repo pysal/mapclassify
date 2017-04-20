@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/sjsrey/mapclassify.svg?branch=master)](https://travis-ci.org/sjsrey/mapclassify)
+[![Build Status](https://travis-ci.org/pysal/mapclassify.svg?branch=master)](https://travis-ci.org/pysal/mapclassify)
 
 # Mapclassify
 
