@@ -38,7 +38,7 @@ def get_data_files():
 package_data = get_data_files()
 
 setup(name='mapclassify',
-      version='1.0.0',
+      version='1.0.0dev0',
       description="""Classification schemes for choropleth maps.""",
       url= 'https://github.com/pysal/mapclassify',
       maintainer="Serge Rey",
