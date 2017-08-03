@@ -766,10 +766,19 @@ class Map_Classifier(object):
         Returns
         -------
         a bin index or array of bin indices that classify the input into one of
-        the classifiers' bins
+        the classifiers' bins.
+
+        Note that this differs from similar functionality in 
+        numpy.digitize(x, classi.bins, right=True).
+
+        This will always provide the closest bin, so data "outside" the classifier,
+        above and below the max/min breaks, will be classified into the nearest bin.
+
+        numpy.digitize returns k+1 for data greater than the greatest bin, but retains 0
+        for data below the lowest bin. 
         """
         x = np.asarray(x).flatten()
-        uptos = [np.where(value < self.bins)[0] for value in x]
+        uptos = [np.where(value <= self.bins)[0] for value in x]
         #  bail upwards
         bins = [j.min() if j.size > 0 else len(self.bins)-1 for j in uptos]
         bins = np.asarray(bins)
