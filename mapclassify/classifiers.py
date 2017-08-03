@@ -2,6 +2,7 @@
 A module of classification schemes for choropleth mapping.
 """
 
+
 try:
     xrange
 except:
@@ -92,7 +93,13 @@ def quantile(y, k=4):
     if p[-1] > 100.0:
         p[-1] = 100.0
     q = np.array([stats.scoreatpercentile(y, pct) for pct in p])
-    return np.unique(q)
+    q = np.unique(q)
+    k_q = len(q)
+    if k_q < k:
+        Warn('Warning: Not enough unique values in array to form k classes',
+             UserWarning)
+        Warn('Warning: setting k to %d' % k_q, UserWarning)
+    return q
 
 
 def binC(y, bins):
