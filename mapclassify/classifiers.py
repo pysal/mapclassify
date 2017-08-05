@@ -778,14 +778,10 @@ class Map_Classifier(object):
         for data below the lowest bin. 
         """
         x = np.asarray(x).flatten()
-        uptos = [np.where(value <= self.bins)[0] for value in x]
-        #  bail upwards
-        bins = [j.min() if j.size > 0 else len(self.bins)-1 for j in uptos]
-        bins = np.asarray(bins)
-        if len(bins) == 1:
-            return bins[0]
-        else:
-            return bins
+        right = np.digitize(x, self.bins, right=True)
+        if right.max() == len(self.bins):
+            right[right == len(self.bins)] = len(self.bins)-1
+        return right
 
 
 class HeadTail_Breaks(Map_Classifier):
