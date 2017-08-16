@@ -24,13 +24,6 @@ def get_data_files():
         if os.path.isdir(path):
             data_files.update({relpath(path, start=curdir).replace(sep, ".") : ["*.csv",
                                                                   "*.dta"]})
-    # add all the tests and results files
-    for r, ds, fs in os.walk(pjoin(curdir, "statsmodels")):
-        r_ = relpath(r, start=curdir)
-        if r_.endswith('results'):
-            data_files.update({r_.replace(sep, ".") : ["*.csv",
-                                                       "*.txt",
-                                                       "*.dta"]})
 
     return data_files
 
@@ -38,7 +31,7 @@ def get_data_files():
 package_data = get_data_files()
 
 setup(name='mapclassify',
-      version='1.0.0dev0',
+      version='1.0.1',
       description="""Classification schemes for choropleth maps.""",
       url= 'https://github.com/pysal/mapclassify',
       maintainer="Serge Rey",

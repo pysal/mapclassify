@@ -768,14 +768,14 @@ class Map_Classifier(object):
         a bin index or array of bin indices that classify the input into one of
         the classifiers' bins.
 
-        Note that this differs from similar functionality in 
+        Note that this differs from similar functionality in
         numpy.digitize(x, classi.bins, right=True).
 
         This will always provide the closest bin, so data "outside" the classifier,
         above and below the max/min breaks, will be classified into the nearest bin.
 
         numpy.digitize returns k+1 for data greater than the greatest bin, but retains 0
-        for data below the lowest bin. 
+        for data below the lowest bin.
         """
         x = np.asarray(x).flatten()
         right = np.digitize(x, self.bins, right=True)
