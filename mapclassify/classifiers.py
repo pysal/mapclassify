@@ -587,7 +587,7 @@ class Map_Classifier(object):
         rolling = kwargs.pop('rolling', False)
         if rolling:
             #  just initialize a fake classifier
-            data = range(10)
+            data = list(range(10))
             cls_instance = cls(data, *args, **kwargs)
             #  and empty it, since we'll be using the update
             cls_instance.y = np.array([])
@@ -1447,7 +1447,7 @@ class Natural_Breaks(Map_Classifier):
             # find an initial solution and then try to find an improvement
             res0 = natural_breaks(x, k)
             fit = res0[2]
-            for i in list(xrange(self.initial)):
+            for i in list(range(self.initial)):
                 res = natural_breaks(x, k)
                 fit_i = res[2]
                 if fit_i < fit:
@@ -1675,7 +1675,7 @@ class Jenks_Caspall(Map_Classifier):
         xb0 = xb.copy()
         q = xm
         it = 0
-        rk = range(self.k)
+        rk = list(range(self.k))
         while solving:
             xb = np.zeros(xb0.shape, int)
             d = abs(x - q)
@@ -2109,7 +2109,7 @@ class Max_P_Classifier(Map_Classifier):
                 np.nonzero(di == min(di))[0][0]
                 for di in [np.abs(x - qi) for qi in q]
             ]
-            rseeds = np.random.permutation(range(k)).tolist()
+            rseeds = np.random.permutation(list(range(k))).tolist()
             [remaining.remove(seed) for seed in seeds]
             self.classes = classes = []
             [classes.append([seed]) for seed in seeds]
@@ -2153,7 +2153,7 @@ class Max_P_Classifier(Map_Classifier):
                 a2c[a] = r
         swapping = True
         while swapping:
-            rseeds = np.random.permutation(range(k)).tolist()
+            rseeds = np.random.permutation(list(range(k))).tolist()
             total_moves = 0
             while rseeds:
                 id = rseeds.pop()

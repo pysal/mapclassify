@@ -4,8 +4,8 @@ branches:
 only:
   - master
 python:
-  - "2.7"
   - "3.5"
+  - "3.6"
 
 allow_failures:
     python:
@@ -24,14 +24,10 @@ before_install:
   - conda config --add channels conda-forge
   - conda create -y -q -n test-env python=$TRAVIS_PYTHON_VERSION numpy scipy pandas nose
   - source activate test-env
-  - if [[ $TRAVIS_PYTHON_VERSION == 3* ]]; 
-        then 2to3 -nw mapclassify/ > /dev/null; 
-    fi
 
 install:
   - conda install --yes pip
   - cd ../ && git clone https://github.com/pysal/libpysal.git
-  - if [[ $TRAVIS_PYTHON_VERSION == 3* ]]; then 2to3 -nw libpysal/ > /dev/null; fi
   - pip install -e ./libpysal
   - cd mapclassify
 
