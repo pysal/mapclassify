@@ -295,10 +295,10 @@ array([5, 1, 2, 3, 2, 1, 5, 1, 3, 3, 1, 2, 2, 1, 2, 2, 2, 1, 5, 2, 4, 1, 2,
 ### Apply
 ```
 >>> import mapclassify 
->>> import pandas as pd
+>>> import pandas
 >>> from numpy import linspace as lsp
 >>> data = [lsp(3,8,num=10), lsp(10, 0, num=10), lsp(-5, 15, num=10)]
->>> data = pd.DataFrame(data).T
+>>> data = pandas.DataFrame(data).T
 >>> data
 
           0          1          2
