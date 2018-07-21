@@ -5,8 +5,8 @@
 Classification schemes for choropleth mapping.
 
 ```
->>> import mapclassify.api as mc
->>> y = mc.load_example()
+>>> import mapclassify
+>>> y = mapclassify.load_example()
 >>> y.mean()
 125.92810344827588
 >>> y.min(), y.max()
@@ -19,7 +19,7 @@ Classification schemes for choropleth mapping.
 ### Box_Plot
 
 ```
->>> mc.Box_Plot(y)
+>>> mapclassify.Box_Plot(y)
 
                   Box Plot
 
@@ -37,7 +37,7 @@ Classification schemes for choropleth mapping.
 
 ### Equal_Interval
 ```
->>> mc.Equal_Interval(y)
+>>> mapclassify.Equal_Interval(y)
 
                Equal Interval
 
@@ -54,7 +54,7 @@ Classification schemes for choropleth mapping.
 ```
 >>> import numpy as np
 >>> np.random.seed(123456)
->>> mc.Fisher_Jenks(y, k=5)
+>>> mapclassify.Fisher_Jenks(y, k=5)
 
                 Fisher_Jenks
 
@@ -72,7 +72,7 @@ Classification schemes for choropleth mapping.
 ```
 >>> np.random.seed(123456)
 >>> x = np.random.exponential(size=(10000,))
->>> mc.Fisher_Jenks(x, k=5)
+>>> mapclassify.Fisher_Jenks(x, k=5)
 
                Fisher_Jenks
 
@@ -83,7 +83,7 @@ Lower            Upper               Count
  1.447 < x[i] <=  2.528               1584
  2.528 < x[i] <=  4.141                636
  4.141 < x[i] <= 10.608                164
->>> mc.Fisher_Jenks_Sampled(x, k=5)
+>>> mapclassify.Fisher_Jenks_Sampled(x, k=5)
 
            Fisher_Jenks_Sampled
 
@@ -98,7 +98,7 @@ Lower            Upper               Count
 ```
 ### HeadTail_Breaks
 ```
->>> mc.HeadTail_Breaks(y)
+>>> mapclassify.HeadTail_Breaks(y)
 
               HeadTail_Breaks
 
@@ -111,7 +111,7 @@ Lower            Upper               Count
 ```
 ### Jenks_Caspall
 ```
->>> mc.Jenks_Caspall(y, k=5)
+>>> mapclassify.Jenks_Caspall(y, k=5)
 
                Jenks_Caspall
 
@@ -126,7 +126,7 @@ Lower            Upper               Count
 ### Jenks_Caspall_Forced
 
 ```
->>> mc.Jenks_Caspall_Forced(y, k=5)
+>>> mapclassify.Jenks_Caspall_Forced(y, k=5)
 
             Jenks_Caspall_Forced
 
@@ -142,7 +142,7 @@ Lower            Upper               Count
 
 ### Jenks_Caspall_Sampled
 ```
->>> mc.Jenks_Caspall_Sampled(y, k=5)
+>>> mapclassify.Jenks_Caspall_Sampled(y, k=5)
 
            Jenks_Caspall_Sampled
 
@@ -158,7 +158,7 @@ Lower            Upper               Count
 
 ### Max_P_Classifier
 ```
->>> mc.Max_P_Classifier(y)
+>>> mapclassify.Max_P_Classifier(y)
 
                    Max_P
 
@@ -174,7 +174,7 @@ Lower            Upper               Count
 ```
 ### [Maximum_Breaks](examples/notebooks/maximum_breaks.ipynb)
 ```
->>> mc.Maximum_Breaks(y, k=5)
+>>> mapclassify.Maximum_Breaks(y, k=5)
 
                Maximum_Breaks
 
@@ -190,7 +190,7 @@ Lower            Upper               Count
 ```
 ### Natural_Breaks
 ```
->>> mc.Natural_Breaks(y, k=5)
+>>> mapclassify.Natural_Breaks(y, k=5)
 
                Natural_Breaks
 
@@ -205,7 +205,7 @@ Lower            Upper               Count
 ```
 ### Quantiles
 ```
->>> mc.Quantiles(y, k=5)
+>>> mapclassify.Quantiles(y, k=5)
 
                  Quantiles
 
@@ -220,7 +220,7 @@ Lower            Upper               Count
 ```
 ### Percentiles
 ```
->>> mc.Percentiles(y, pct=[33, 66, 100])
+>>> mapclassify.Percentiles(y, pct=[33, 66, 100])
 
                 Percentiles
 
@@ -233,7 +233,7 @@ Lower            Upper               Count
 ```
 ### Std_Mean
 ```
->>> mc.Std_Mean(y)
+>>> mapclassify.Std_Mean(y)
 
                   Std_Mean
 
@@ -248,7 +248,7 @@ Lower            Upper               Count
 ```
 ### User_Defined
 ```
->>> mc.User_Defined(y, bins=[22, 674, 4112])
+>>> mapclassify.User_Defined(y, bins=[22, 674, 4112])
 
                 User Defined
 
@@ -265,7 +265,7 @@ Lower            Upper               Count
 ### Creating and using a classification instance
 
 ```
->>> bp = mc.Box_Plot(y)
+>>> bp = mapclassify.Box_Plot(y)
 >>> bp
 
                   Box Plot
@@ -312,7 +312,7 @@ array([5, 1, 2, 3, 2, 1, 5, 1, 3, 3, 1, 2, 2, 1, 2, 2, 2, 1, 5, 2, 4, 1, 2,
 7  6.888889   2.222222  10.555556
 8  7.444444   1.111111  12.777778
 9  8.000000   0.000000  15.000000
->>> data.apply(mc.Quantiles.make(rolling=True))
+>>> data.apply(mapclassify.Quantiles.make(rolling=True))
 
    0  1  2
 0  0  4  0
