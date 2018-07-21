@@ -5,7 +5,7 @@
 Classification schemes for choropleth mapping.
 
 ```
->>> import mapclassify
+>>> import mapclassify 
 >>> y = mapclassify.load_example()
 >>> y.mean()
 125.92810344827588
@@ -294,7 +294,7 @@ array([5, 1, 2, 3, 2, 1, 5, 1, 3, 3, 1, 2, 2, 1, 2, 2, 2, 1, 5, 2, 4, 1, 2,
 
 ### Apply
 ```
->>> import mapclassify.api as mc
+>>> import mapclassify 
 >>> import pandas as pd
 >>> from numpy import linspace as lsp
 >>> data = [lsp(3,8,num=10), lsp(10, 0, num=10), lsp(-5, 15, num=10)]
