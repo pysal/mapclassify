@@ -1,11 +1,7 @@
 from setuptools import setup, find_packages
 import os
 from os.path import relpath, join as pjoin
-
-try:
-    from distutils.command.build_py import build_py_2to3 as build_py
-except ImportError:
-    from distutils.command.build_py import build_py
+from distutils.command.build_py import build_py
 
 
 curdir = os.path.abspath(os.path.dirname(__file__))
@@ -31,7 +27,7 @@ def get_data_files():
 package_data = get_data_files()
 
 setup(name='mapclassify',
-      version='1.0.1',
+      version='2.0.0',
       description="""Classification schemes for choropleth maps.""",
       url= 'https://github.com/pysal/mapclassify',
       maintainer="Serge Rey",
