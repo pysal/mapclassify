@@ -4,7 +4,7 @@ mapclassify: Classification Schemes for Choropleth Maps
 [![Build Status](https://travis-ci.org/pysal/mapclassify.svg?branch=master)](https://travis-ci.org/pysal/mapclassify)
 
 ```python
->>> import mapclassify 
+>>> import mapclassify
 >>> y = mapclassify.load_example()
 >>> y.mean()
 125.92810344827588
@@ -17,7 +17,7 @@ mapclassify: Classification Schemes for Choropleth Maps
 
 ### Box_Plot
 
-```
+```python
 >>> mapclassify.Box_Plot(y)
 
                   Box Plot
@@ -36,7 +36,7 @@ mapclassify: Classification Schemes for Choropleth Maps
 
 ### Equal_Interval
 
-```
+```python
 >>> mapclassify.Equal_Interval(y)
 
                Equal Interval
@@ -52,7 +52,7 @@ mapclassify: Classification Schemes for Choropleth Maps
 
 ### Fisher_Jenks
 
-```
+```python
 >>> import numpy as np
 >>> np.random.seed(123456)
 >>> mapclassify.Fisher_Jenks(y, k=5)
@@ -71,7 +71,7 @@ mapclassify: Classification Schemes for Choropleth Maps
 
 ### Fisher_Jenks_Sampled
 
-```
+```python
 >>> np.random.seed(123456)
 >>> x = np.random.exponential(size=(10000,))
 >>> mapclassify.Fisher_Jenks(x, k=5)
@@ -85,6 +85,7 @@ Lower            Upper               Count
  1.447 < x[i] <=  2.528               1584
  2.528 < x[i] <=  4.141                636
  4.141 < x[i] <= 10.608                164
+
 >>> mapclassify.Fisher_Jenks_Sampled(x, k=5)
 
            Fisher_Jenks_Sampled
@@ -101,7 +102,7 @@ Lower            Upper               Count
 
 ### HeadTail_Breaks
 
-```
+```python
 >>> mapclassify.HeadTail_Breaks(y)
 
               HeadTail_Breaks
@@ -116,7 +117,7 @@ Lower            Upper               Count
 
 ### Jenks_Caspall
 
-```
+```python
 >>> mapclassify.Jenks_Caspall(y, k=5)
 
                Jenks_Caspall
@@ -132,7 +133,7 @@ Lower            Upper               Count
 
 ### Jenks_Caspall_Forced
 
-```
+```python
 >>> mapclassify.Jenks_Caspall_Forced(y, k=5)
 
             Jenks_Caspall_Forced
@@ -148,7 +149,7 @@ Lower            Upper               Count
 
 ### Jenks_Caspall_Sampled
 
-```
+```python
 >>> mapclassify.Jenks_Caspall_Sampled(y, k=5)
 
            Jenks_Caspall_Sampled
@@ -164,7 +165,7 @@ Lower            Upper               Count
 
 ### Max_P_Classifier
 
-```
+```python
 >>> mapclassify.Max_P_Classifier(y)
 
                    Max_P
@@ -180,7 +181,7 @@ Lower            Upper               Count
 
 ### [Maximum_Breaks](notebooks/maximum_breaks.ipynb)
 
-```
+```python
 >>> mapclassify.Maximum_Breaks(y, k=5)
 
                Maximum_Breaks
@@ -197,7 +198,7 @@ Lower            Upper               Count
 
 ### Natural_Breaks
 
-```
+```python
 >>> mapclassify.Natural_Breaks(y, k=5)
 
                Natural_Breaks
@@ -214,7 +215,7 @@ Lower            Upper               Count
 
 ### Quantiles
 
-```
+```python
 >>> mapclassify.Quantiles(y, k=5)
 
                  Quantiles
@@ -231,7 +232,7 @@ Lower            Upper               Count
 
 ### Percentiles
 
-```
+```python
 >>> mapclassify.Percentiles(y, pct=[33, 66, 100])
 
                 Percentiles
@@ -246,7 +247,7 @@ Lower            Upper               Count
 
 ### Std_Mean
 
-```
+```python
 >>> mapclassify.Std_Mean(y)
 
                   Std_Mean
@@ -262,7 +263,7 @@ Lower            Upper               Count
 ```
 ### User_Defined
 
-```
+```python
 >>> mapclassify.User_Defined(y, bins=[22, 674, 4112])
 
                 User Defined
@@ -279,7 +280,7 @@ Lower            Upper               Count
 
 ### Creating and using a classification instance
 
-```
+```python
 >>> bp = mapclassify.Box_Plot(y)
 >>> bp
 
@@ -294,13 +295,11 @@ Lower            Upper               Count
   39.530 < x[i] <=   94.974                6
   94.974 < x[i] <= 4111.450                9
 >>> bp.bins
-
 array([ -5.28762500e+01,   2.56750000e+00,   9.36500000e+00,
          3.95300000e+01,   9.49737500e+01,   4.11145000e+03])
 >>> bp.counts
 array([ 0, 15, 14, 14,  6,  9])
 >>> bp.yb
-
 array([5, 1, 2, 3, 2, 1, 5, 1, 3, 3, 1, 2, 2, 1, 2, 2, 2, 1, 5, 2, 4, 1, 2,
        2, 1, 1, 3, 3, 3, 5, 3, 1, 3, 5, 2, 3, 5, 5, 4, 3, 5, 3, 5, 4, 2, 1,
        1, 4, 4, 3, 3, 1, 1, 2, 1, 4, 3, 2])
@@ -309,14 +308,13 @@ array([5, 1, 2, 3, 2, 1, 5, 1, 3, 3, 1, 2, 2, 1, 2, 2, 2, 1, 5, 2, 4, 1, 2,
 
 ### Apply
 
-```
+```python
 >>> import mapclassify 
 >>> import pandas
 >>> from numpy import linspace as lsp
 >>> data = [lsp(3,8,num=10), lsp(10, 0, num=10), lsp(-5, 15, num=10)]
 >>> data = pandas.DataFrame(data).T
 >>> data
-
           0          1          2
 0  3.000000  10.000000  -5.000000
 1  3.555556   8.888889  -2.777778
@@ -329,7 +327,6 @@ array([5, 1, 2, 3, 2, 1, 5, 1, 3, 3, 1, 2, 2, 1, 2, 2, 2, 1, 5, 2, 4, 1, 2,
 8  7.444444   1.111111  12.777778
 9  8.000000   0.000000  15.000000
 >>> data.apply(mapclassify.Quantiles.make(rolling=True))
-
    0  1  2
 0  0  4  0
 1  0  4  0
