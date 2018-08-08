@@ -33,7 +33,9 @@ install:
   - conda install --yes pip
   - conda install --yes --file requirements.txt
   - pip install -r requirements_tests.txt
-  - if "$NUMBA_TEST"; then conda install --yes numba; fi
+  - if "$NUMBA_TEST"; then
+      conda install --yes numba;
+    fi
 
 script:
   - python setup.py sdist >/dev/null
