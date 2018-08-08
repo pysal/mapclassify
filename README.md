@@ -1,17 +1,16 @@
+mapclassify: Classification Schemes for Choropleth Maps
+=======================================================
+
 [![Build Status](https://travis-ci.org/pysal/mapclassify.svg?branch=master)](https://travis-ci.org/pysal/mapclassify)
 
-# Mapclassify
-
-Classification schemes for choropleth mapping.
-
-```
+```python
 >>> import mapclassify 
 >>> y = mapclassify.load_example()
 >>> y.mean()
 125.92810344827588
 >>> y.min(), y.max()
 (0.13, 4111.4499999999998)
->>>
+
 ```
 
 ## Map Classifiers Supported
@@ -31,11 +30,12 @@ Classification schemes for choropleth mapping.
    9.365 < x[i] <=   39.530               14
   39.530 < x[i] <=   94.974                6
   94.974 < x[i] <= 4111.450                9
->>>
+
 ```
 
 
 ### Equal_Interval
+
 ```
 >>> mapclassify.Equal_Interval(y)
 
@@ -49,6 +49,7 @@ Classification schemes for choropleth mapping.
 2466.922 < x[i] <= 3289.186                0
 3289.186 < x[i] <= 4111.450                1
 ```
+
 ### Fisher_Jenks
 
 ```
@@ -65,10 +66,11 @@ Classification schemes for choropleth mapping.
  192.050 < x[i] <=  370.500                4
  370.500 < x[i] <=  722.850                1
  722.850 < x[i] <= 4111.450                1
->>>
+
 ```
 
 ### Fisher_Jenks_Sampled
+
 ```
 >>> np.random.seed(123456)
 >>> x = np.random.exponential(size=(10000,))
@@ -94,9 +96,11 @@ Lower            Upper               Count
  1.626 < x[i] <=  2.884               1454
  2.884 < x[i] <=  5.319                522
  5.319 < x[i] <= 10.608                 52
->>>
+
 ```
+
 ### HeadTail_Breaks
+
 ```
 >>> mapclassify.HeadTail_Breaks(y)
 
@@ -107,9 +111,11 @@ Lower            Upper               Count
            x[i] <=  125.928               50
  125.928 < x[i] <=  811.260                7
  811.260 < x[i] <= 4111.450                1
->>>
+
 ```
+
 ### Jenks_Caspall
+
 ```
 >>> mapclassify.Jenks_Caspall(y, k=5)
 
@@ -123,6 +129,7 @@ Lower            Upper               Count
   29.820 < x[i] <=  181.270               10
  181.270 < x[i] <= 4111.450                7
 ```
+
 ### Jenks_Caspall_Forced
 
 ```
@@ -137,10 +144,10 @@ Lower            Upper               Count
    5.900 < x[i] <=   16.700               13
   16.700 < x[i] <=   50.650                9
   50.650 < x[i] <= 4111.450               12
-
 ```
 
 ### Jenks_Caspall_Sampled
+
 ```
 >>> mapclassify.Jenks_Caspall_Sampled(y, k=5)
 
@@ -153,10 +160,10 @@ Lower            Upper               Count
    4.510 < x[i] <=   66.260               26
   66.260 < x[i] <=  181.270                3
  181.270 < x[i] <= 4111.450                7
-
 ```
 
 ### Max_P_Classifier
+
 ```
 >>> mapclassify.Max_P_Classifier(y)
 
@@ -169,10 +176,10 @@ Lower            Upper               Count
   16.700 < x[i] <=   20.470                1
   20.470 < x[i] <=  110.740               12
  110.740 < x[i] <= 4111.450                8
->>>
-
 ```
-### [Maximum_Breaks](examples/notebooks/maximum_breaks.ipynb)
+
+### [Maximum_Breaks](notebooks/maximum_breaks.ipynb)
+
 ```
 >>> mapclassify.Maximum_Breaks(y, k=5)
 
@@ -185,10 +192,11 @@ Lower            Upper               Count
  228.490 < x[i] <=  546.675                4
  546.675 < x[i] <= 2417.150                1
 2417.150 < x[i] <= 4111.450                1
->>>
 
 ```
+
 ### Natural_Breaks
+
 ```
 >>> mapclassify.Natural_Breaks(y, k=5)
 
@@ -201,9 +209,11 @@ Lower            Upper               Count
   75.290 < x[i] <=  192.050                3
  192.050 < x[i] <=  722.850                5
  722.850 < x[i] <= 4111.450                1
->>>
+
 ```
+
 ### Quantiles
+
 ```
 >>> mapclassify.Quantiles(y, k=5)
 
@@ -216,9 +226,11 @@ Lower            Upper               Count
    5.798 < x[i] <=   13.278               12
   13.278 < x[i] <=   54.616               11
   54.616 < x[i] <= 4111.450               12
->>>
+
 ```
+
 ### Percentiles
+
 ```
 >>> mapclassify.Percentiles(y, pct=[33, 66, 100])
 
@@ -229,9 +241,11 @@ Lower            Upper               Count
            x[i] <=    3.359               19
    3.359 < x[i] <=   22.857               19
   22.857 < x[i] <= 4111.450               20
->>>
+
 ```
+
 ### Std_Mean
+
 ```
 >>> mapclassify.Std_Mean(y)
 
@@ -244,9 +258,10 @@ Lower            Upper               Count
 -420.717 < x[i] <=  672.573               56
  672.573 < x[i] <= 1219.219                1
 1219.219 < x[i] <= 4111.450                1
->>>
+
 ```
 ### User_Defined
+
 ```
 >>> mapclassify.User_Defined(y, bins=[22, 674, 4112])
 
@@ -257,7 +272,7 @@ Lower            Upper               Count
            x[i] <=   22.000               38
   22.000 < x[i] <=  674.000               18
  674.000 < x[i] <= 4112.000                2
->>>
+
 ```
 
 ## Use Cases
@@ -293,6 +308,7 @@ array([5, 1, 2, 3, 2, 1, 5, 1, 3, 3, 1, 2, 2, 1, 2, 2, 2, 1, 5, 2, 4, 1, 2,
 ```
 
 ### Apply
+
 ```
 >>> import mapclassify 
 >>> import pandas
@@ -325,5 +341,5 @@ array([5, 1, 2, 3, 2, 1, 5, 1, 3, 3, 1, 2, 2, 1, 2, 2, 2, 1, 5, 2, 4, 1, 2,
 7  3  0  4
 8  4  0  4
 9  4  0  4
->>>
+
 ```

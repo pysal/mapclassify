@@ -418,8 +418,8 @@ class Map_Classifier(object):
     Utilities:
 
     In addition to the classifiers, there are several utility functions that
-    can be usee the properties of a specific classifier for
-    different lues, or for automatic selection of a classifier and
+    can be used to evaluate the properties of a specific classifier,
+    or for automatic selection of a classifier and
     number of classes.
 
     * :func:`mapclassify.classifiers.gadf`
