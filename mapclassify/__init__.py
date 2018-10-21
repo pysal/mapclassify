@@ -1,4 +1,4 @@
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 # __version__ has to be defined in the first line
 
 from .classifiers import (Box_Plot, Equal_Interval, Fisher_Jenks,

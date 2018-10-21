@@ -1,0 +1,56 @@
+.. documentation master file
+
+mapclassify
+===========
+
+A collection of classification schemes for choropleth mapping.
+
+.. raw:: html
+
+    <div class="container-fluid">
+      <div class="row equal-height">
+        <div class="col-sm-1 col-xs-hidden">
+        </div>
+        <div class="col-md-3 col-xs-12">
+            <a href="http://nbviewer.jupyter.org/github/pysal/giddy/blob/master/notebooks/directional.ipynb" class="thumbnail">
+                <img src="_static/images/hr60q10.png" class="img-responsive center-block">
+                <div class="caption text-center">
+                <h6>Homicide Rates - Deciles</h6>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-3 col-xs-12">
+            <a href="http://nbviewer.jupyter.org/github/pysal/giddy/blob/master/notebooks/Markov%20Based%20Methods.ipynb" class="thumbnail">
+                <img src="_static/images/hr60fj10.png" class="img-responsive center-block">
+                <div class="caption text-center">
+                <h6>Homicide Rates - Fisher Jenks</h6>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-3 col-xs-12">
+            <a href="http://nbviewer.jupyter.org/github/pysal/giddy/blob/master/notebooks/Rank%20based%20Methods.ipynb" class="thumbnail">
+                <img src="_static/images/hr60mb10.png"
+                class="img-responsive center-block">
+                <div class="caption text-center">
+                <h6>Homicide Rates - Maximum Breaks
+                </h6>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-2 col-xs-hidden">
+        </div>
+      </div>
+    </div>
+
+
+.. toctree::
+   :hidden:
+   :maxdepth: 3
+   :caption: Contents:
+
+   Installation <installation>
+   API <api>
+   References <references>
+
+
+.. _PySAL: https://github.com/pysal/pysal

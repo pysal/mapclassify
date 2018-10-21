@@ -818,10 +818,12 @@ class HeadTail_Breaks(Map_Classifier):
     -----
 
     Head/tail Breaks is a relatively new classification method developed
-    and introduced by [Jiang2013]_ for data with a heavy-tailed distribution.
+    for data with a heavy-tailed distribution.
 
 
-    Based on contributions by Alessandra Sozzi <alessandra.sozzi@gmail.com>.
+    Implementation based on contributions by Alessandra Sozzi <alessandra.sozzi@gmail.com>.
+
+    For theoretical details see :cite:`Jiang_2013`.
 
     """
 
@@ -1557,6 +1559,9 @@ class Fisher_Jenks_Sampled(Map_Classifier):
     --------
 
     (Turned off due to timing being different across hardware)
+
+
+    For theoretical details see :cite:`Rey_2016`.
 
     """
 
