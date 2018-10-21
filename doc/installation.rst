@@ -3,11 +3,6 @@
 Installation
 ============
 
-
-
-Installation
-============
-
 mapclassify supports python `3.5`_ and `3.6`_ only. Please make sure that you are
 operating in a python 3 environment.
 
@@ -39,7 +34,7 @@ by running the following from a command shell::
 You can  also `fork`_ the `pysal/mapclassify`_ repo and create a local clone of
 your fork. By making changes
 to your local clone and submitting a pull request to `pysal/mapclassify`_, you can
-contribute to the mapclassify development.
+contribute to mapclassify development.
 
 .. _3.5: https://docs.python.org/3.5/
 .. _3.6: https://docs.python.org/3.6/
