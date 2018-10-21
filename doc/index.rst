@@ -12,7 +12,7 @@ mapclassify is an open-source python library for Choropleth map classification. 
         <div class="col-sm-1 col-xs-hidden">
         </div>
         <div class="col-md-3 col-xs-12">
-            <a href="http://nbviewer.jupyter.org/github/pysal/giddy/blob/master/notebooks/directional.ipynb" class="thumbnail">
+            <a href="http://nbviewer.jupyter.org/github/pysal/mapclassify/blob/master/notebooks/south.ipynb" class="thumbnail">
                 <img src="_static/images/hr60q10.png" class="img-responsive center-block">
                 <div class="caption text-center">
                 <h6>Homicide Rates - Deciles</h6>
@@ -20,7 +20,7 @@ mapclassify is an open-source python library for Choropleth map classification. 
             </a>
         </div>
         <div class="col-sm-3 col-xs-12">
-            <a href="http://nbviewer.jupyter.org/github/pysal/giddy/blob/master/notebooks/Markov%20Based%20Methods.ipynb" class="thumbnail">
+            <a href="http://nbviewer.jupyter.org/github/pysal/mapclassify/blob/master/notebooks/south.ipynb" class="thumbnail">
                 <img src="_static/images/hr60fj10.png" class="img-responsive center-block">
                 <div class="caption text-center">
                 <h6>Homicide Rates - Fisher Jenks</h6>
@@ -28,7 +28,7 @@ mapclassify is an open-source python library for Choropleth map classification. 
             </a>
         </div>
         <div class="col-sm-3 col-xs-12">
-            <a href="http://nbviewer.jupyter.org/github/pysal/giddy/blob/master/notebooks/Rank%20based%20Methods.ipynb" class="thumbnail">
+            <a href="http://nbviewer.jupyter.org/github/pysal/mapclassify/blob/master/notebooks/south.ipynb" class="thumbnail">
                 <img src="_static/images/hr60mb10.png"
                 class="img-responsive center-block">
                 <div class="caption text-center">
