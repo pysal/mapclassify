@@ -49,8 +49,8 @@ package_data = get_data_files()
 def setup_package():
     _groups_files = {
         'base': 'requirements.txt',
-        'tests': 'requirements_tests.txt'
-        # 'docs': 'requirements_docs.txt'
+        'tests': 'requirements_tests.txt',
+        'docs': 'requirements_docs.txt'
     }
 
     reqs = _get_requirements_from_files(_groups_files)
