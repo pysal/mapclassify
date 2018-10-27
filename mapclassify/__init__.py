@@ -6,5 +6,5 @@ from .classifiers import (Box_Plot, Equal_Interval, Fisher_Jenks,
                           Jenks_Caspall_Forced, Jenks_Caspall_Sampled,
                           Max_P_Classifier, Maximum_Breaks, Natural_Breaks,
                           Quantiles, Percentiles, Std_Mean, User_Defined,
-                          load_example, CLASSIFIERS)
+                          load_example, gadf, K_classifiers, CLASSIFIERS)
 
