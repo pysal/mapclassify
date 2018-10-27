@@ -1,3 +1,22 @@
+v<2.0.1> (2018-10-27)
+
+We closed a total of 6 issues (enhancements and bug fixes) through 3 pull requests, since our last release on 2018-08-10.
+
+## Issues Closed
+  - fix doctests (interactive examples in inline docstrings) (#19)
+  - complete readthedocs configuration & add Slocum 2009 reference (#17)
+  - prepping for a doc based release (#15)
+
+## Pull Requests
+  - fix doctests (interactive examples in inline docstrings) (#19)
+  - complete readthedocs configuration & add Slocum 2009 reference (#17)
+  - prepping for a doc based release (#15)
+
+The following individuals contributed to this release:
+
+  - Serge Rey
+  - Wei Kang
+
 v<2.0.0> 2018-08-10
 
 Starting from this release, mapclassify supports python 3+ only (currently 3.5
