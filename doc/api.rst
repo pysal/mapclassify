@@ -28,4 +28,13 @@ Classifiers
     mapclassify.Percentiles
     mapclassify.Std_Mean
     mapclassify.User_Defined
+
+Utilities
+---------
+
+.. autosummary::
+   :toctree: generated/
+
+    mapclassify.K_classifiers
+    mapclassify.gadf
 	
