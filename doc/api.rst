@@ -35,6 +35,6 @@ Utilities
 .. autosummary::
    :toctree: generated/
 
-    mapclassify.classifiers.K_classifiers
-    mapclassify.classifiers.gadf
+    mapclassify.K_classifiers
+    mapclassify.gadf
 	
