@@ -1,16 +1,22 @@
-v<2.0.1> (2018-10-27)
+v<2.0.1> (2018-10-28)
 
-We closed a total of 6 issues (enhancements and bug fixes) through 3 pull requests, since our last release on 2018-08-10.
+We closed a total of 12 issues (enhancements and bug fixes) through 5 pull requests, since our last release on 2018-08-10.
 
 ## Issues Closed
+  - gadf and K_classifiers not in __ini__.py (#18)
+  - rel: 2.0.1 (#20)
   - fix doctests (interactive examples in inline docstrings) (#19)
   - complete readthedocs configuration & add Slocum 2009 reference (#17)
   - prepping for a doc based release (#15)
+  - new release on pypi (#10)
+  - prepare for release 2.0.0 (#13)
 
 ## Pull Requests
+  - rel: 2.0.1 (#20)
   - fix doctests (interactive examples in inline docstrings) (#19)
   - complete readthedocs configuration & add Slocum 2009 reference (#17)
   - prepping for a doc based release (#15)
+  - prepare for release 2.0.0 (#13)
 
 The following individuals contributed to this release:
 
