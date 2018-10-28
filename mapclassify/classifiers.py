@@ -19,11 +19,13 @@ CLASSIFIERS = ('Box_Plot', 'Equal_Interval', 'Fisher_Jenks',
                'Quantiles', 'Percentiles', 'Std_Mean', 'User_Defined')
 
 K = 5  # default number of classes in any map scheme with this as an argument
+SEEDRANGE = 1000000 # range for drawing random integers from for Natural Breaks
+
 import numpy as np
 import scipy.stats as stats
 import scipy as sp
 import copy
-from scipy.cluster.vq import kmeans as KMEANS
+from sklearn.cluster import KMeans as KMEANS
 from warnings import warn as Warn
 try:
     from numba import jit
@@ -286,7 +288,7 @@ def load_example():
     return calemp.load()
 
 
-def _kmeans(y, k=5):
+def _kmeans_old(y, k=5):
     """
     Helper function to do kmeans in one dimension
     """
@@ -309,8 +311,45 @@ def _kmeans(y, k=5):
 
     return class_ids, cuts, diffs.sum(), centroids
 
+def _kmeans(y, k=5, random_state=None):
+    """
+    Helper function to do k-means in one dimension
 
-def natural_breaks(values, k=5):
+    Parameters
+    ----------
+
+    y       : array
+              (n,1), values to classify
+    k       : int
+              number of classes to form
+    random_state : int
+                   seed to set the random number generator. If None, use the
+                   global random state from numpy.random
+
+    """
+
+    y = y.reshape(-1,1)
+    y = y * 1.  # KMEANS needs float or double dtype
+    y_pred = KMEANS(n_clusters=k, random_state=random_state).fit_predict(y)
+    ulabels = np.unique(y_pred)
+    upper_bounds = np.array([y[y_pred==c].max() for c in ulabels])
+    arg_sort = np.argsort(upper_bounds)
+    class_ids = arg_sort[y_pred]
+    cuts = upper_bounds[arg_sort]
+    ucid = np.unique(class_ids)
+    diffs = np.zeros_like(y)
+    centroids = np.zeros((k,1))
+    for idx, cid in enumerate(ucid):
+        idxs = class_ids==cid
+        centroids[idx] = np.median(y[idxs])
+        diffs[idxs] = y[idxs] - centroids[idx]
+    diffs *= diffs
+
+    return class_ids, cuts, diffs.sum(), centroids
+
+
+
+def natural_breaks(values, k=5, random_state=None):
     """
     natural breaks helper function
 
@@ -324,7 +363,7 @@ def natural_breaks(values, k=5):
              UserWarning)
         Warn('Warning: setting k to %d' % uvk, UserWarning)
         k = uvk
-    kres = _kmeans(values, k)
+    kres = _kmeans(values, k, random_state)
     sids = kres[-1]  # centroids
     fit = kres[-2]
     class_ids = kres[0]
@@ -1360,7 +1399,7 @@ class Natural_Breaks(Map_Classifier):
     k       : int
               number of classes required
     initial : int
-              number of initial solutions to generate, (default=100)
+              number of initial solutions to generate, (default=1)
 
     Attributes
     ----------
@@ -1402,15 +1441,15 @@ class Natural_Breaks(Map_Classifier):
     Notes
     -----
     There is a tradeoff here between speed and consistency of the
-    classification If you want more speed, set initial to a smaller value (0
-    would result in the best speed, if you want more consistent classes in
+    classification. If you want more speed, set initial to a smaller value (1
+    would result in the best speed), if you want more consistent classes in
     multiple runs of Natural_Breaks on the same data, set initial to a higher
     value.
 
 
     """
 
-    def __init__(self, y, k=K, initial=100):
+    def __init__(self, y, k=K, initial=0):
         self.k = k
         self.initial = initial
         Map_Classifier.__init__(self, y)
@@ -1437,11 +1476,13 @@ class Natural_Breaks(Map_Classifier):
             # find an initial solution and then try to find an improvement
             res0 = natural_breaks(x, k)
             fit = res0[2]
-            for i in list(range(self.initial)):
-                res = natural_breaks(x, k)
-                fit_i = res[2]
-                if fit_i < fit:
-                    res0 = res
+            if self.initial > 1:
+                for i in list(range(self.initial-1)):
+                    seed = np.random.random_integers(SEEDRANGE)
+                    res = natural_breaks(x, k, random_state=seed)
+                    fit_i = res[2]
+                    if fit_i < fit:
+                        res0 = res
             self.bins = np.array(res0[-1])
             self.k = len(self.bins)
 
