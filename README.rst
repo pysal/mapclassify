@@ -3,6 +3,10 @@ mapclassify: Classification Schemes for Choropleth Maps
 
 .. image:: https://api.travis-ci.org/pysal/mapclassify.svg
    :target: https://travis-ci.org/pysal/mapclassify
+.. image:: https://badge.fury.io/py/mapclassify.svg
+    :target: https://badge.fury.io/py/mapclassify
+.. image:: https://zenodo.org/badge/88918063.svg
+   :target: https://zenodo.org/badge/latestdoi/88918063
 
 mapclassify is an open-source python library for Choropleth map
 classification. It is part of a `refactoring of PySAL

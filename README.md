@@ -2,6 +2,9 @@ mapclassify: Classification Schemes for Choropleth Maps
 =======================================================
 
 [![Build Status](https://travis-ci.org/pysal/mapclassify.svg?branch=master)](https://travis-ci.org/pysal/mapclassify)
+[![PyPI version](https://badge.fury.io/py/mapclassify.svg)](https://badge.fury.io/py/mapclassify)
+[![DOI](https://zenodo.org/badge/88918063.svg)](https://zenodo.org/badge/latestdoi/88918063)
+
 
 ```python
 >>> import mapclassify
