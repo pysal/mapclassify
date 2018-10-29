@@ -305,19 +305,19 @@ def _kmeans(y, k=5, random_state=None):
 
     """
 
-    y = y.reshape(-1,1)
+    y = y.reshape(-1, 1)
     y = y * 1.  # KMEANS needs float or double dtype
     y_pred = KMEANS(n_clusters=k, random_state=random_state).fit_predict(y)
     ulabels = np.unique(y_pred)
-    upper_bounds = np.array([y[y_pred==c].max() for c in ulabels])
+    upper_bounds = np.array([y[y_pred == c].max() for c in ulabels])
     arg_sort = np.argsort(upper_bounds)
     class_ids = arg_sort[y_pred]
     cuts = upper_bounds[arg_sort]
     ucid = np.unique(class_ids)
     diffs = np.zeros_like(y)
-    centroids = np.zeros((k,1))
+    centroids = np.zeros((k, 1))
     for idx, cid in enumerate(ucid):
-        idxs = class_ids==cid
+        idxs = class_ids == cid
         centroids[idx] = np.median(y[idxs])
         diffs[idxs] = y[idxs] - centroids[idx]
     diffs *= diffs
