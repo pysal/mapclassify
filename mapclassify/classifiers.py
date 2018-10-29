@@ -1449,7 +1449,7 @@ class Natural_Breaks(Map_Classifier):
 
     """
 
-    def __init__(self, y, k=K, initial=0):
+    def __init__(self, y, k=K, initial=1):
         self.k = k
         self.initial = initial
         Map_Classifier.__init__(self, y)
@@ -1477,7 +1477,7 @@ class Natural_Breaks(Map_Classifier):
             res0 = natural_breaks(x, k)
             fit = res0[2]
             if self.initial > 1:
-                for i in list(range(self.initial-1)):
+                for i in range(self.initial-1):
                     seed = np.random.random_integers(SEEDRANGE)
                     res = natural_breaks(x, k, random_state=seed)
                     fit_i = res[2]
