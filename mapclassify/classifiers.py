@@ -288,29 +288,6 @@ def load_example():
     return calemp.load()
 
 
-def _kmeans_old(y, k=5):
-    """
-    Helper function to do kmeans in one dimension
-    """
-
-    y = y * 1.  # KMEANS needs float or double dtype
-    centroids = KMEANS(y, k)[0]
-    centroids.sort()
-    try:
-        class_ids = np.abs(y - centroids).argmin(axis=1)
-    except:
-        class_ids = np.abs(y[:, np.newaxis] - centroids).argmin(axis=1)
-
-    uc = np.unique(class_ids)
-    cuts = np.array([y[class_ids == c].max() for c in uc])
-    y_cent = np.zeros_like(y)
-    for c in uc:
-        y_cent[class_ids == c] = centroids[c]
-    diffs = y - y_cent
-    diffs *= diffs
-
-    return class_ids, cuts, diffs.sum(), centroids
-
 def _kmeans(y, k=5, random_state=None):
     """
     Helper function to do k-means in one dimension
