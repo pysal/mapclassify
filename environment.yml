@@ -10,6 +10,5 @@ dependencies:
   - ipywidgets
   - jupyter
   - jupyterlab
-  - pysal
   - nbconvert
   - brewer2mpl
