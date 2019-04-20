@@ -1,6 +1,8 @@
 mapclassify: Classification Schemes for Choropleth Maps
 =======================================================
 
+
+
 [![Build Status](https://travis-ci.org/pysal/mapclassify.svg?branch=master)](https://travis-ci.org/pysal/mapclassify)
 [![PyPI version](https://badge.fury.io/py/mapclassify.svg)](https://badge.fury.io/py/mapclassify)
 [![DOI](https://zenodo.org/badge/88918063.svg)](https://zenodo.org/badge/latestdoi/88918063)
@@ -345,3 +347,19 @@ array([5, 1, 2, 3, 2, 1, 5, 1, 3, 3, 1, 2, 2, 1, 2, 2, 2, 1, 5, 2, 4, 1, 2,
 9  4  0  4
 
 ```
+
+
+Development Notes
+-----------------
+
+Because we use `geopandas` in development, and geopandas has stable `mapclassify` as a dependency, setting up a local development installation involves creating a conda environment, then replacing the stable `mapclassify` with the development version of `mapclassify` in the development environment. This can be accomplished with the following steps:
+
+
+```
+conda-env create -f environment.yml
+conda activate mapclassify
+conda remove -n mapclassify mapclassify
+python setup.py develop
+```
+
+
