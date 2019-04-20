@@ -7,4 +7,4 @@ from .classifiers import (Box_Plot, Equal_Interval, Fisher_Jenks,
                           Max_P_Classifier, Maximum_Breaks, Natural_Breaks,
                           Quantiles, Percentiles, Std_Mean, User_Defined,
                           load_example, gadf, K_classifiers, CLASSIFIERS)
-
+from . import color
