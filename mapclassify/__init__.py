@@ -24,3 +24,4 @@ from .classifiers import (
 )
 
 from .pooling import Pooled
+from . import color
