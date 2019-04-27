@@ -5,7 +5,59 @@ color handling for mapping and geovisualization
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import matplotlib.colors as mpc
+from palettable import colorbrewer
 
+IMG_DIR = "img"
+def make_color_bar_images(directory=IMG_DIR, width=1.0, height=0.2):
+    """
+    Create color bar images for use in selection drop-downs
+
+    Arguments
+    ---------
+
+    directory: string
+              directory to store images
+
+    width: float
+           inches for the width of the color ramp image
+
+    height: float
+           inches for the height of the color ramp image
+
+
+    Notes
+    -----
+    Creates one image for each color map in the colorbrewer schemes from palettable.
+    Each image will be named `cmap_k.png` where cmap is the name of cmap from palettable, and k is the number of classes
+    """
+    for ctype_key in ['Diverging', 'Sequential', 'Qualitative']:
+        ctype = colorbrewer.COLOR_MAPS[ctype_key]
+        for cmap_key, cmap in ctype.items():
+            for k, cmap_k in cmap.items():
+                cmap = colorbrewer.get_map(cmap_key, ctype_key, int(k))
+                fname = "{dir}/{cmap_key}_{k}.png".format(dir=directory, cmap_key=cmap_key, k=k)
+                cmap.save_discrete_image(filename=fname,size=(width, height))
+
+                def load_color_bar_image(cmap, k, directory=IMG_DIR):
+    """
+    Load image for a color bar
+
+    Arguments
+    ---------
+    cmap: string
+          palettable cmap string
+
+    k: int
+       number of classes
+
+
+    directory: string
+              directory to store images
+
+    """
+
+    fname = "{dir}/{cmap}_{k}.png".format(dir=directory, cmap=cmap, k=k)
+    return fname
 
 try:
     import brewer2mpl
