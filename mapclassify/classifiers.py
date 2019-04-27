@@ -23,7 +23,7 @@ import numpy as np
 import scipy.stats as stats
 import scipy as sp
 import copy
-from scipy.cluster.vq import kmeans as KMEANS
+from sklearn.cluster import KMeans as KMEANS
 from warnings import warn as Warn
 try:
     from numba import jit
@@ -292,17 +292,20 @@ def _kmeans(y, k=5):
     """
 
     y = y * 1.  # KMEANS needs float or double dtype
-    centroids = KMEANS(y, k)[0]
-    centroids.sort()
-    try:
-        class_ids = np.abs(y - centroids).argmin(axis=1)
-    except:
-        class_ids = np.abs(y[:, np.newaxis] - centroids).argmin(axis=1)
+    y.shape = (-1,1)
+    result = KMEANS(n_clusters=k, init="k-means++").fit(y)
+    class_ids = result.labels_
+    centroids = result.cluster_centers_
+    binning = []
+    for c in range(k):
+        values = y[class_ids==c]
+        binning.append([values.max(), len(values)])
+    binning = np.array(binning)
+    binning = binning[binning[:,0].argsort()]
+    cuts = binning[:,0]
 
-    uc = np.unique(class_ids)
-    cuts = np.array([y[class_ids == c].max() for c in uc])
     y_cent = np.zeros_like(y)
-    for c in uc:
+    for c in range(k):
         y_cent[class_ids == c] = centroids[c]
     diffs = y - y_cent
     diffs *= diffs
