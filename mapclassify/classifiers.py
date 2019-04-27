@@ -288,7 +288,7 @@ def load_example():
     return calemp.load()
 
 
-def _kmeans(y, k=5, random_state=None):
+def _kmeans(y, k=5):
     """
     Helper function to do k-means in one dimension
 
@@ -299,9 +299,6 @@ def _kmeans(y, k=5, random_state=None):
               (n,1), values to classify
     k       : int
               number of classes to form
-    random_state : int
-                   seed to set the random number generator. If None, use the
-                   global random state from numpy.random
 
     """
 
@@ -328,7 +325,7 @@ def _kmeans(y, k=5, random_state=None):
 
 
 
-def natural_breaks(values, k=5, random_state=None):
+def natural_breaks(values, k=5):
     """
     natural breaks helper function
 
@@ -342,7 +339,7 @@ def natural_breaks(values, k=5, random_state=None):
              UserWarning)
         Warn('Warning: setting k to %d' % uvk, UserWarning)
         k = uvk
-    kres = _kmeans(values, k, random_state)
+    kres = _kmeans(values, k)
     sids = kres[-1]  # centroids
     fit = kres[-2]
     class_ids = kres[0]
