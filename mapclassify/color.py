@@ -38,7 +38,7 @@ def make_color_bar_images(directory=IMG_DIR, width=1.0, height=0.2):
                 fname = "{dir}/{cmap_key}_{k}.png".format(dir=directory, cmap_key=cmap_key, k=k)
                 cmap.save_discrete_image(filename=fname,size=(width, height))
 
-                def load_color_bar_image(cmap, k, directory=IMG_DIR):
+def load_color_bar_image(cmap, k, directory=IMG_DIR):
     """
     Load image for a color bar
 
