@@ -1399,9 +1399,9 @@ class Natural_Breaks(Map_Classifier):
     >>> nb.k
     5
     >>> nb.counts
-    array([41,  9,  6,  1,  1])
+    array([49,  3,  4,  1,  1])
     >>> nb.bins
-    array([  29.82,  110.74,  370.5 ,  722.85, 4111.45])
+    array([  75.29,  192.05,  370.5 ,  722.85, 4111.45])
     >>> x = np.array([1] * 50)
     >>> x[-1] = 20
     >>> nb = mc.Natural_Breaks(x, k = 5, initial = 0)
@@ -2080,10 +2080,10 @@ class Max_P_Classifier(Map_Classifier):
     >>> cal = mc.load_example()
     >>> mp = mc.Max_P_Classifier(cal)
     >>> mp.bins
-    array([   8.7 ,   20.47,   36.68,  110.74, 4111.45])
-    >>> mp.counts
-    array([29,  9,  5,  7,  8])
+    array([   8.7 ,   16.7 ,   20.47,  110.74, 4111.45])
 
+    >>> mp.counts
+    array([29,  8,  1, 12,  8])
     """
 
     def __init__(self, y, k=K, initial=1000):
