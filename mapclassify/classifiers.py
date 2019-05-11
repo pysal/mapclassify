@@ -1374,8 +1374,6 @@ class Natural_Breaks(Map_Classifier):
               (n,1), values to classify
     k       : int
               number of classes required
-    initial : int
-              number of initial solutions to generate, (default=1)
 
     Attributes
     ----------
@@ -1404,7 +1402,7 @@ class Natural_Breaks(Map_Classifier):
     array([  75.29,  192.05,  370.5 ,  722.85, 4111.45])
     >>> x = np.array([1] * 50)
     >>> x[-1] = 20
-    >>> nb = mc.Natural_Breaks(x, k = 5, initial = 0)
+    >>> nb = mc.Natural_Breaks(x, k = 5)
 
     Warning: Not enough unique values in array to form k classes
     Warning: setting k to 2
@@ -1414,20 +1412,10 @@ class Natural_Breaks(Map_Classifier):
     >>> nb.counts
     array([49,  1])
 
-    Notes
-    -----
-    There is a tradeoff here between speed and consistency of the
-    classification. If you want more speed, set initial to a smaller value (1
-    would result in the best speed), if you want more consistent classes in
-    multiple runs of Natural_Breaks on the same data, set initial to a higher
-    value.
-
-
     """
 
-    def __init__(self, y, k=K, initial=1):
+    def __init__(self, y, k=K):
         self.k = k
-        self.initial = initial
         Map_Classifier.__init__(self, y)
         self.name = 'Natural_Breaks'
 
@@ -1452,13 +1440,6 @@ class Natural_Breaks(Map_Classifier):
             # find an initial solution and then try to find an improvement
             res0 = natural_breaks(x, k)
             fit = res0[2]
-            if self.initial > 1:
-                for i in range(self.initial-1):
-                    seed = np.random.random_integers(SEEDRANGE)
-                    res = natural_breaks(x, k, random_state=seed)
-                    fit_i = res[2]
-                    if fit_i < fit:
-                        res0 = res
             self.bins = np.array(res0[-1])
             self.k = len(self.bins)
 
@@ -1478,7 +1459,6 @@ class Natural_Breaks(Map_Classifier):
         function of the class. For documentation, check the class constructor.
         """
         kwargs.update({'k': kwargs.pop('k', self.k)})
-        kwargs.update({'initial': kwargs.pop('initial', self.initial)})
         if inplace:
             self._update(y, **kwargs)
         else:
