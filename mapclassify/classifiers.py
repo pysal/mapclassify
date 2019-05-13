@@ -19,11 +19,13 @@ CLASSIFIERS = ('Box_Plot', 'Equal_Interval', 'Fisher_Jenks',
                'Quantiles', 'Percentiles', 'Std_Mean', 'User_Defined')
 
 K = 5  # default number of classes in any map scheme with this as an argument
+SEEDRANGE = 1000000 # range for drawing random integers from for Natural Breaks
+
 import numpy as np
 import scipy.stats as stats
 import scipy as sp
 import copy
-from scipy.cluster.vq import kmeans as KMEANS
+from sklearn.cluster import KMeans as KMEANS
 from warnings import warn as Warn
 try:
     from numba import jit
@@ -288,26 +290,39 @@ def load_example():
 
 def _kmeans(y, k=5):
     """
-    Helper function to do kmeans in one dimension
+    Helper function to do k-means in one dimension
+
+    Parameters
+    ----------
+
+    y       : array
+              (n,1), values to classify
+    k       : int
+              number of classes to form
+
     """
 
     y = y * 1.  # KMEANS needs float or double dtype
-    centroids = KMEANS(y, k)[0]
-    centroids.sort()
-    try:
-        class_ids = np.abs(y - centroids).argmin(axis=1)
-    except:
-        class_ids = np.abs(y[:, np.newaxis] - centroids).argmin(axis=1)
+    y.shape = (-1,1)
+    result = KMEANS(n_clusters=k, init="k-means++").fit(y)
+    class_ids = result.labels_
+    centroids = result.cluster_centers_
+    binning = []
+    for c in range(k):
+        values = y[class_ids==c]
+        binning.append([values.max(), len(values)])
+    binning = np.array(binning)
+    binning = binning[binning[:,0].argsort()]
+    cuts = binning[:,0]
 
-    uc = np.unique(class_ids)
-    cuts = np.array([y[class_ids == c].max() for c in uc])
     y_cent = np.zeros_like(y)
-    for c in uc:
+    for c in range(k):
         y_cent[class_ids == c] = centroids[c]
     diffs = y - y_cent
     diffs *= diffs
 
     return class_ids, cuts, diffs.sum(), centroids
+
 
 
 def natural_breaks(values, k=5):
@@ -1359,8 +1374,6 @@ class Natural_Breaks(Map_Classifier):
               (n,1), values to classify
     k       : int
               number of classes required
-    initial : int
-              number of initial solutions to generate, (default=100)
 
     Attributes
     ----------
@@ -1384,12 +1397,12 @@ class Natural_Breaks(Map_Classifier):
     >>> nb.k
     5
     >>> nb.counts
-    array([41,  9,  6,  1,  1])
+    array([49,  3,  4,  1,  1])
     >>> nb.bins
-    array([  29.82,  110.74,  370.5 ,  722.85, 4111.45])
+    array([  75.29,  192.05,  370.5 ,  722.85, 4111.45])
     >>> x = np.array([1] * 50)
     >>> x[-1] = 20
-    >>> nb = mc.Natural_Breaks(x, k = 5, initial = 0)
+    >>> nb = mc.Natural_Breaks(x, k = 5)
 
     Warning: Not enough unique values in array to form k classes
     Warning: setting k to 2
@@ -1399,20 +1412,10 @@ class Natural_Breaks(Map_Classifier):
     >>> nb.counts
     array([49,  1])
 
-    Notes
-    -----
-    There is a tradeoff here between speed and consistency of the
-    classification If you want more speed, set initial to a smaller value (0
-    would result in the best speed, if you want more consistent classes in
-    multiple runs of Natural_Breaks on the same data, set initial to a higher
-    value.
-
-
     """
 
-    def __init__(self, y, k=K, initial=100):
+    def __init__(self, y, k=K):
         self.k = k
-        self.initial = initial
         Map_Classifier.__init__(self, y)
         self.name = 'Natural_Breaks'
 
@@ -1437,11 +1440,6 @@ class Natural_Breaks(Map_Classifier):
             # find an initial solution and then try to find an improvement
             res0 = natural_breaks(x, k)
             fit = res0[2]
-            for i in list(range(self.initial)):
-                res = natural_breaks(x, k)
-                fit_i = res[2]
-                if fit_i < fit:
-                    res0 = res
             self.bins = np.array(res0[-1])
             self.k = len(self.bins)
 
@@ -1461,7 +1459,6 @@ class Natural_Breaks(Map_Classifier):
         function of the class. For documentation, check the class constructor.
         """
         kwargs.update({'k': kwargs.pop('k', self.k)})
-        kwargs.update({'initial': kwargs.pop('initial', self.initial)})
         if inplace:
             self._update(y, **kwargs)
         else:
@@ -2063,10 +2060,10 @@ class Max_P_Classifier(Map_Classifier):
     >>> cal = mc.load_example()
     >>> mp = mc.Max_P_Classifier(cal)
     >>> mp.bins
-    array([   8.7 ,   20.47,   36.68,  110.74, 4111.45])
-    >>> mp.counts
-    array([29,  9,  5,  7,  8])
+    array([   8.7 ,   16.7 ,   20.47,  110.74, 4111.45])
 
+    >>> mp.counts
+    array([29,  8,  1, 12,  8])
     """
 
     def __init__(self, y, k=K, initial=1000):
