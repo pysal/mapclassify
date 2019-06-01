@@ -288,7 +288,7 @@ def load_example():
     return calemp.load()
 
 
-def _kmeans(y, k=5):
+def _kmeans(y, k=5, n_init=10):
     """
     Helper function to do k-means in one dimension
 
@@ -300,11 +300,13 @@ def _kmeans(y, k=5):
     k       : int
               number of classes to form
 
+    n_init : int, default: 10
+              number of initial  solutions. Best of initial results is returned.
     """
 
     y = y * 1.  # KMEANS needs float or double dtype
     y.shape = (-1,1)
-    result = KMEANS(n_clusters=k, init="k-means++").fit(y)
+    result = KMEANS(n_clusters=k, init="k-means++", n_init=n_init).fit(y)
     class_ids = result.labels_
     centroids = result.cluster_centers_
     binning = []
@@ -325,11 +327,25 @@ def _kmeans(y, k=5):
 
 
 
-def natural_breaks(values, k=5):
+def natural_breaks(values, k=5, init=10):
     """
     natural breaks helper function
 
     Jenks natural breaks is kmeans in one dimension
+
+    Parameters
+    ----------
+
+    values : array
+             (n, 1) values to bin
+
+    k : int
+        Number of classes
+
+    init: int, default:10
+        Number of different solutions to obtain using different centroids. Best solution is returned.
+
+
     """
     values = np.array(values)
     uv = np.unique(values)
@@ -339,7 +355,7 @@ def natural_breaks(values, k=5):
              UserWarning)
         Warn('Warning: setting k to %d' % uvk, UserWarning)
         k = uvk
-    kres = _kmeans(values, k)
+    kres = _kmeans(values, k, n_init=init)
     sids = kres[-1]  # centroids
     fit = kres[-2]
     class_ids = kres[0]
@@ -1375,6 +1391,9 @@ class Natural_Breaks(Map_Classifier):
     k       : int
               number of classes required
 
+    init : int, default: 10
+              Number of initial solutions generated with different centroids. Best of initial results is returned.
+
     Attributes
     ----------
 
@@ -1414,8 +1433,9 @@ class Natural_Breaks(Map_Classifier):
 
     """
 
-    def __init__(self, y, k=K):
+    def __init__(self, y, k=K, init=10):
         self.k = k
+        self.init = init
         Map_Classifier.__init__(self, y)
         self.name = 'Natural_Breaks'
 
@@ -1437,8 +1457,7 @@ class Natural_Breaks(Map_Classifier):
             self.bins = uv
             self.k = k
         else:
-            # find an initial solution and then try to find an improvement
-            res0 = natural_breaks(x, k)
+            res0 = natural_breaks(x, k, init=self.init)
             fit = res0[2]
             self.bins = np.array(res0[-1])
             self.k = len(self.bins)
