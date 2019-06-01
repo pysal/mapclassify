@@ -1391,7 +1391,7 @@ class Natural_Breaks(Map_Classifier):
     k       : int
               number of classes required
 
-    init : int, default: 10
+    initial : int, default: 10
               Number of initial solutions generated with different centroids. Best of initial results is returned.
 
     Attributes
@@ -1433,9 +1433,9 @@ class Natural_Breaks(Map_Classifier):
 
     """
 
-    def __init__(self, y, k=K, init=10):
+    def __init__(self, y, k=K, initial=10):
         self.k = k
-        self.init = init
+        self.init = initial
         Map_Classifier.__init__(self, y)
         self.name = 'Natural_Breaks'
 
