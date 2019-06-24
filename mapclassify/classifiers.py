@@ -1545,8 +1545,13 @@ class Quantiles(MapClassifier):
         k = self.k
         self.bins = quantile(y, k=k)
 
+msg = "Deprecated: Std_Mean will be renamed to StdMean. Std_Mean will"
+msg += " be removed on 2020-01-31."
+@deprecated(version='2.1.0', reason=msg)
+def Std_Mean(y, multiples=[-2, -1, 1, 2]):
+    return StdMean(y, multiples)
 
-class Std_Mean(MapClassifier):
+class StdMean(MapClassifier):
     """
     Standard Deviation and Mean Map Classification
 
@@ -1574,7 +1579,7 @@ class Std_Mean(MapClassifier):
     --------
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
-    >>> st = mc.Std_Mean(cal)
+    >>> st = mc.StdMean(cal)
     >>> st.k
     5
     >>> st.bins
@@ -1583,7 +1588,7 @@ class Std_Mean(MapClassifier):
     >>> st.counts
     array([ 0,  0, 56,  1,  1])
     >>>
-    >>> st3 = mc.Std_Mean(cal, multiples = [-3, -1.5, 1.5, 3])
+    >>> st3 = mc.StdMean(cal, multiples = [-3, -1.5, 1.5, 3])
     >>> st3.bins
     array([-1514.00758246,  -694.03973951,   945.8959464 ,  1765.86378936,
             4111.45      ])
@@ -1595,7 +1600,7 @@ class Std_Mean(MapClassifier):
     def __init__(self, y, multiples=[-2, -1, 1, 2]):
         self.multiples = multiples
         MapClassifier.__init__(self, y)
-        self.name = "Std_Mean"
+        self.name = "StdMean"
 
     def _set_bins(self):
         y = self.y
@@ -1630,9 +1635,13 @@ class Std_Mean(MapClassifier):
             new = copy.deepcopy(self)
             new._update(y, **kwargs)
             return new
+msg = "Deprecated: Maximum_Breaks will be renamed to MaximumBreaks."
+msg += ' Maximum_Breaks will be removed on 2020-01-31.'
+@deprecated(version="2.1.0", reason=msg)
+def Maximum_Breaks(y, k=5):
+    return MaximumBreaks(y, k)
 
-
-class Maximum_Breaks(MapClassifier):
+class MaximumBreaks(MapClassifier):
     """
     Maximum Breaks Map Classification
 
@@ -1663,7 +1672,7 @@ class Maximum_Breaks(MapClassifier):
     --------
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
-    >>> mb = mc.Maximum_Breaks(cal, k = 5)
+    >>> mb = mc.MaximumBreaks(cal, k = 5)
     >>> mb.k
     5
     >>> mb.bins
@@ -1677,7 +1686,7 @@ class Maximum_Breaks(MapClassifier):
         self.k = k
         self.mindiff = mindiff
         MapClassifier.__init__(self, y)
-        self.name = "Maximum_Breaks"
+        self.name = "MaximumBreaks"
 
     def _set_bins(self):
         xs = self.y.copy()
@@ -1726,8 +1735,13 @@ class Maximum_Breaks(MapClassifier):
             new._update(y, **kwargs)
             return new
 
+msg = "Natural_Breaks is being renamed to NaturalBreaks. Natural_Breaks will be"
+msg += " removed on 2020-01-31."
+@deprecated(version='2.1.0', reason=msg)
+def Natural_Breaks(y, k=5):
+    return NaturalBreaks(y, k=5)
 
-class Natural_Breaks(MapClassifier):
+class NaturalBreaks(MapClassifier):
     """
     Natural Breaks Map Classification
 
@@ -1759,7 +1773,7 @@ class Natural_Breaks(MapClassifier):
     >>> import mapclassify as mc
     >>> np.random.seed(123456)
     >>> cal = mc.load_example()
-    >>> nb = mc.Natural_Breaks(cal, k=5)
+    >>> nb = mc.NaturalBreaks(cal, k=5)
     >>> nb.k
     5
     >>> nb.counts
@@ -1768,7 +1782,7 @@ class Natural_Breaks(MapClassifier):
     array([  75.29,  192.05,  370.5 ,  722.85, 4111.45])
     >>> x = np.array([1] * 50)
     >>> x[-1] = 20
-    >>> nb = mc.Natural_Breaks(x, k = 5)
+    >>> nb = mc.NaturalBreaks(x, k = 5)
 
     Warning: Not enough unique values in array to form k classes
     Warning: setting k to 2
@@ -1784,7 +1798,7 @@ class Natural_Breaks(MapClassifier):
         self.k = k
         self.init = initial
         MapClassifier.__init__(self, y)
-        self.name = "Natural_Breaks"
+        self.name = "NaturalBreaks"
 
     def _set_bins(self):
 
@@ -1833,7 +1847,13 @@ class Natural_Breaks(MapClassifier):
             return new
 
 
-class Fisher_Jenks(MapClassifier):
+msg = "Fisher_Jenks is being renamed to FisherJenks. Fisher_Jenks will be"
+msg += " removed on 2020-01-31."
+@deprecated(version='2.1.0', reason=msg)
+def Fisher_Jenks(y, k=5):
+    return FisherJenks(y, k)
+
+class FisherJenks(MapClassifier):
     """
     Fisher Jenks optimal classifier - mean based
 
@@ -1859,7 +1879,7 @@ class Fisher_Jenks(MapClassifier):
     --------
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
-    >>> fj = mc.Fisher_Jenks(cal)
+    >>> fj = mc.FisherJenks(cal)
     >>> fj.adcm
     799.24
     >>> fj.bins
@@ -1876,7 +1896,7 @@ class Fisher_Jenks(MapClassifier):
             raise ValueError("Fewer unique values than specified classes.")
         self.k = k
         MapClassifier.__init__(self, y)
-        self.name = "Fisher_Jenks"
+        self.name = "FisherJenks"
 
     def _set_bins(self):
         x = self.y.copy()
@@ -1971,8 +1991,13 @@ class Fisher_Jenks_Sampled(MapClassifier):
             new._update(y, **kwargs)
             return new
 
+msg = "Deprecated: Jenks_Capsall will be renamed to JenksCaspall."
+msg += "Jenks_Caspall will be removed on 2020-01-31."
+@deprecated(version="2.1.0", reason=msg)
+def Jenks_Caspall(y, k=5):
+    return JenksCaspall(y, k)
 
-class Jenks_Caspall(MapClassifier):
+class JenksCaspall(MapClassifier):
     """
     Jenks Caspall  Map Classification
 
@@ -2000,7 +2025,7 @@ class Jenks_Caspall(MapClassifier):
     --------
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
-    >>> jc = mc.Jenks_Caspall(cal, k = 5)
+    >>> jc = mc.JenksCaspall(cal, k = 5)
     >>> jc.bins
     array([1.81000e+00, 7.60000e+00, 2.98200e+01, 1.81270e+02, 4.11145e+03])
     >>> jc.counts
@@ -2011,7 +2036,7 @@ class Jenks_Caspall(MapClassifier):
     def __init__(self, y, k=K):
         self.k = k
         MapClassifier.__init__(self, y)
-        self.name = "Jenks_Caspall"
+        self.name = "JenksCaspall"
 
     def _set_bins(self):
         x = self.y.copy()
@@ -2044,8 +2069,13 @@ class Jenks_Caspall(MapClassifier):
         self.bins = cuts
         self.iterations = it
 
+msg = "Deprecated: Jenks_Caspall_Sampled will be renamed to JenksCaspallSampled."
+msg += ' Jenks_Caspall_Sampled will be removed on 2020-01-31.'
+@deprecated(version="2.1.0", reason=msg)
+def Jenks_Caspall_Sampled(y, k=5, pct=0.01):
+    return JenksCaspallSampled(y, k, pct)
 
-class Jenks_Caspall_Sampled(MapClassifier):
+class JenksCaspallSampled(MapClassifier):
     """
     Jenks Caspall Map Classification using a random sample
 
@@ -2078,8 +2108,8 @@ class Jenks_Caspall_Sampled(MapClassifier):
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
     >>> x = np.random.random(100000)
-    >>> jc = mc.Jenks_Caspall(x)
-    >>> jcs = mc.Jenks_Caspall_Sampled(x)
+    >>> jc = mc.JenksCaspall(x)
+    >>> jcs = mc.JenksCaspallSampled(x)
     >>> jc.bins
     array([0.1988721 , 0.39624334, 0.59441487, 0.79624357, 0.99999251])
     >>> jcs.bins
@@ -2120,12 +2150,12 @@ class Jenks_Caspall_Sampled(MapClassifier):
         self.yr_n = yr.size
         MapClassifier.__init__(self, yr)
         self.yb, self.counts = bin1d(y, self.bins)
-        self.name = "Jenks_Caspall_Sampled"
+        self.name = "JenksCaspallSampled"
         self.y = y
         self._summary()  # have to recalculate summary stats
 
     def _set_bins(self):
-        jc = Jenks_Caspall(self.y, self.k)
+        jc = JenksCaspall(self.y, self.k)
         self.bins = jc.bins
         self.iterations = jc.iterations
 
@@ -2154,7 +2184,13 @@ class Jenks_Caspall_Sampled(MapClassifier):
             return new
 
 
-class Jenks_Caspall_Forced(MapClassifier):
+msg = "Deprecated: Jenks_Caspall_Forced will be renamed to JenksCaspallForced."
+msg += ' Jenks_Caspall_Forced will be removed on 2020-01-31.'
+@deprecated(version="2.1.0", reason=msg)
+def Jenks_Caspall_Forced(y, k=5):
+    return JenksCaspallForced(y, k)
+
+class JenksCaspallForced(MapClassifier):
     """
     Jenks Caspall  Map Classification with forced movements
 
@@ -2181,7 +2217,7 @@ class Jenks_Caspall_Forced(MapClassifier):
     --------
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
-    >>> jcf = mc.Jenks_Caspall_Forced(cal, k = 5)
+    >>> jcf = mc.JenksCaspallForced(cal, k = 5)
     >>> jcf.k
     5
     >>> jcf.bins
@@ -2192,7 +2228,7 @@ class Jenks_Caspall_Forced(MapClassifier):
            [4.11145e+03]])
     >>> jcf.counts
     array([12, 12, 13,  9, 12])
-    >>> jcf4 = mc.Jenks_Caspall_Forced(cal, k = 4)
+    >>> jcf4 = mc.JenksCaspallForced(cal, k = 4)
     >>> jcf4.k
     4
     >>> jcf4.bins
@@ -2207,7 +2243,7 @@ class Jenks_Caspall_Forced(MapClassifier):
     def __init__(self, y, k=K):
         self.k = k
         MapClassifier.__init__(self, y)
-        self.name = "Jenks_Caspall_Forced"
+        self.name = "JenksCaspallForced"
 
     def _set_bins(self):
         x = self.y.copy()
@@ -2297,7 +2333,13 @@ class Jenks_Caspall_Forced(MapClassifier):
         self.iterations = it
 
 
-class User_Defined(MapClassifier):
+msg = "Deprecated: User_Defined will be renamed to UserDefined."
+msg += ' User_Defined will be removed on 2020-01-31.'
+@deprecated(version="2.1.0", reason=msg)
+def User_Defined(y, bins):
+    return UserDefined(y, bins)
+
+class UserDefined(MapClassifier):
     """
     User Specified Binning
 
@@ -2327,13 +2369,13 @@ class User_Defined(MapClassifier):
     >>> bins = [20, max(cal)]
     >>> bins
     [20, 4111.45]
-    >>> ud = mc.User_Defined(cal, bins)
+    >>> ud = mc.UserDefined(cal, bins)
     >>> ud.bins
     array([  20.  , 4111.45])
     >>> ud.counts
     array([37, 21])
     >>> bins = [20, 30]
-    >>> ud = mc.User_Defined(cal, bins)
+    >>> ud = mc.UserDefined(cal, bins)
     >>> ud.bins
     array([  20.  ,   30.  , 4111.45])
     >>> ud.counts
@@ -2353,7 +2395,7 @@ class User_Defined(MapClassifier):
         self.bins = np.array(bins)
         self.y = y
         MapClassifier.__init__(self, y)
-        self.name = "User Defined"
+        self.name = "UserDefined"
 
     def _set_bins(self):
         pass
@@ -2393,11 +2435,17 @@ class User_Defined(MapClassifier):
             return new
 
 
-class Max_P_Classifier(MapClassifier):
-    """
-    Max_P Map Classification
+msg = "Deprecated: Max_P_Classifier will be renamed to Max_P."
+msg += "Max_P_Classifier will be removed on 2020-01-31."
+@deprecated(version="2.1.0", reason=msg)
+def Max_P_Classifier(y, k, initial=10):
+    return MaxP(y, k, initial)
 
-    Based on Max_p regionalization algorithm
+class MaxP(MapClassifier):
+    """
+    MaxP Map Classification
+
+    Based on Max-p regionalization algorithm
 
     Parameters
     ----------
@@ -2436,7 +2484,7 @@ class Max_P_Classifier(MapClassifier):
         self.k = k
         self.initial = initial
         MapClassifier.__init__(self, y)
-        self.name = "Max_P"
+        self.name = "MaxP"
 
     def _set_bins(self):
         x = self.y.copy()
