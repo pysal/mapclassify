@@ -2435,7 +2435,7 @@ class UserDefined(MapClassifier):
             return new
 
 
-msg = "Deprecated: Max_P_Classifier will be renamed to Max_P."
+msg = "Deprecated: Max_P_Classifier will be renamed to MaxP. "
 msg += "Max_P_Classifier will be removed on 2020-01-31."
 @deprecated(version="2.1.0", reason=msg)
 def Max_P_Classifier(y, k, initial=10):
