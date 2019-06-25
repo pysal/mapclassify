@@ -843,7 +843,8 @@ class Map_Classifier(object):
     def plot(
         self,
         gdf,
-        edge_color="lightgrey",
+        border_color="lightgrey",
+        border_width=0.10,
         title=None,
         legend=False,
         cmap="YlGnBu",
@@ -860,25 +861,35 @@ class Map_Classifier(object):
 
         Parameters
         ---------
-        gdf         : geopandas geodataframe
-                      Contains the geometry column for the choropleth map
-        edge_color  : string
-                      matplotlib color string to use for polygon edges
-        title       : string
-                      Title of map
-        cmap        : string
-                      matplotlib color string for color map to fill polygons
-        axis_on     : boolean
-                      Show coordinate axes (default True)
-        legend_kwds : dict
-                      options for ax.legend()
-        file_name   : string
-                      Name of file to save figure to.
-        dpi         : int
-                      Dots per inch for saved figure
-        ax          : matplotlib axis
-                      axis on which to plot the choropleth.
-                      (Default: None, so plots on the current figure)
+        gdf           : geopandas geodataframe
+                        Contains the geometry column for the choropleth map
+        border_color  : string, optional
+                        matplotlib color string to use for polygon border
+                        (Default: lightgrey)
+        border_width  : float, optional
+                        width of polygon boarder
+                        (Default: 0.10)
+        title         : string, optional
+                        Title of map
+                        (Default: None)
+        cmap          : string, optional
+                        matplotlib color string for color map to fill polygons
+                        (Default: YlGn)
+        axis_on       : boolean, optional
+                        Show coordinate axes (default True)
+                        (Default: True)
+        legend_kwds   : dict, optional
+                        options for ax.legend()
+                        (Default: {"loc": "lower right"})
+        file_name     : string, optional
+                        Name of file to save figure to.
+                        (Default: None)
+        dpi           : int, optional
+                        Dots per inch for saved figure
+                        (Default: 600)
+        ax            : matplotlib axis, optional
+                        axis on which to plot the choropleth.
+                        (Default: None, so plots on the current figure)
         Returns
         -------
         f,ax        : tuple
@@ -914,7 +925,8 @@ class Map_Classifier(object):
             column="_cl",
             ax=ax,
             cmap=cmap,
-            edgecolor=edge_color,
+            edgecolor=border_color,
+            linewidth=border_width,
             legend=legend,
             legend_kwds=legend_kwds,
         )
@@ -922,7 +934,6 @@ class Map_Classifier(object):
             ax.axis("off")
         if title:
             f.suptitle(title)
-        plt.axis("equal")
         if file_name:
             plt.savefig(file_name, dpi=dpi)
         return f, ax
