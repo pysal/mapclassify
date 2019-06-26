@@ -2590,7 +2590,7 @@ class KClassifiers(object):
     >>> cal = mc.load_example()
     >>> ks = mc.classifiers.KClassifiers(cal)
     >>> ks.best.name
-    'Fisher_Jenks'
+    'FisherJenks'
     >>> ks.best.k
     4
     >>> ks.best.gadf
@@ -2608,12 +2608,12 @@ class KClassifiers(object):
 
     def __init__(self, y, pct=0.8):
         results = {}
-        best = gadf(y, "Fisher_Jenks", maxk=len(y) - 1, pct=pct)
+        best = gadf(y, "FisherJenks", maxk=len(y) - 1, pct=pct)
         pct0 = best[0]
         k0 = best[-1]
         keys = list(kmethods.keys())
-        keys.remove("Fisher_Jenks")
-        results["Fisher_Jenks"] = best
+        keys.remove("FisherJenks")
+        results["FisherJenks"] = best
         for method in keys:
             results[method] = gadf(y, method, maxk=len(y) - 1, pct=pct)
             k1 = results[method][0]
