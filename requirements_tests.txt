@@ -1,3 +1,4 @@
+deprecated
 nose
 nose-progressive
 nose-exclude
