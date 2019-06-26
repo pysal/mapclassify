@@ -3,7 +3,7 @@
 mapclassify
 ===========
 
-mapclassify is an open-source python library for Choropleth map classification. It is part of a refactoring of `PySAL`_ (Python Spatial Analysis Library).
+mapclassify is an open-source python library for Choropleth map classification. It is part of `PySAL`_ the Python Spatial Analysis Library.
 
 .. raw:: html
 
