@@ -8,7 +8,7 @@ __all__ = [
     "Map_Classifier",
     "quantile",
     "Box_Plot",
-    "Equal_Interval",
+    "BoxPlot" "Equal_Interval",
     "EqualInterval",
     "Fisher_Jenks",
     "Fisher_Jenks_Sampled",
@@ -67,6 +67,7 @@ except ImportError:
     def jit(func):
         return func
 
+
 @deprecated(reason="use head_tail_breaks")
 def headTail_breaks(values, cuts):
     """
@@ -85,6 +86,7 @@ def head_tail_breaks(values, cuts):
     if len(values) > 1:
         return headTail_breaks(values[values >= mean], cuts)
     return cuts
+
 
 def quantile(y, k=4):
     """
@@ -462,51 +464,31 @@ def _fisher_jenks_means(values, classes=5, sort=True):
         k = int(pivot - 1)
     return kclass
 
-@deprecated(reason="Use MapClassifier")
-def Map_Classifier(*args, **kwargs):
-    """
-    Abstract class for all map classifications :cite:`Slocum_2009`
 
-    For an array :math:`y` of :math:`n` values, a map classifier places each
-    value :math:`y_i` into one of :math:`k` mutually exclusive and exhaustive
-    classes.  Each classifer defines the classes based on different criteria,
-    but in all cases the following hold for the classifiers in PySAL:
+def _dep_message(original, replacement, when="2020-01-31", version="2.1.0"):
+    msg = "Deprecated (%s): %s" % (version, original)
+    msg += " is being renamed to %s." % replacement
+    msg += " %s will be removed on %s." % (original, when)
+    return msg
 
-    .. math:: C_j^l < y_i \le C_j^u \  \forall  i \in C_j
 
-    where :math:`C_j` denotes class :math:`j` which has lower bound
-          :math:`C_j^l` and upper bound :math:`C_j^u`.
+class DeprecationHelper(object):
+    def __init__(self, new_target, message="Deprecated"):
+        self.new_target = new_target
+        self.message = message
 
-    Map Classifiers Supported
+    def _warn(self):
+        from warnings import warn
 
-    * :class:`mapclassify.classifiers.Box_Plot`
-    * :class:`mapclassify.classifiers.Equal_Interval`
-    * :class:`mapclassify.classifiers.Fisher_Jenks`
-    * :class:`mapclassify.classifiers.Fisher_Jenks_Sampled`
-    * :class:`mapclassify.classifiers.HeadTail_Breaks`
-    * :class:`mapclassify.classifiers.Jenks_Caspall`
-    * :class:`mapclassify.classifiers.Jenks_Caspall_Forced`
-    * :class:`mapclassify.classifiers.Jenks_Caspall_Sampled`
-    * :class:`mapclassify.classifiers.Max_P_Classifier`
-    * :class:`mapclassify.classifiers.Maximum_Breaks`
-    * :class:`mapclassify.classifiers.Natural_Breaks`
-    * :class:`mapclassify.classifiers.Quantiles`
-    * :class:`mapclassify.classifiers.Percentiles`
-    * :class:`mapclassify.classifiers.Std_Mean`
-    * :class:`mapclassify.classifiers.User_Defined`
+        warn(self.message)
 
-    Utilities:
+    def __call__(self, *args, **kwargs):
+        self._warn()
+        return self.new_target(*args, **kwargs)
 
-    In addition to the classifiers, there are several utility functions that
-    can be used to evaluate the properties of a specific classifier,
-    or for automatic selection of a classifier and
-    number of classes.
-
-    * :func:`mapclassify.classifiers.gadf`
-    * :class:`mapclassify.classifiers.K_classifiers`
-
-    """
-    return MapClassifier(*args, **kwargs)
+    def __getattr__(self, attr):
+        self._warn()
+        return getattr(self.new_target, attr)
 
 
 class MapClassifier(object):
@@ -525,21 +507,21 @@ class MapClassifier(object):
 
     Map Classifiers Supported
 
-    * :class:`mapclassify.classifiers.Box_Plot`
-    * :class:`mapclassify.classifiers.Equal_Interval`
-    * :class:`mapclassify.classifiers.Fisher_Jenks`
-    * :class:`mapclassify.classifiers.Fisher_Jenks_Sampled`
-    * :class:`mapclassify.classifiers.HeadTail_Breaks`
-    * :class:`mapclassify.classifiers.Jenks_Caspall`
-    * :class:`mapclassify.classifiers.Jenks_Caspall_Forced`
-    * :class:`mapclassify.classifiers.Jenks_Caspall_Sampled`
-    * :class:`mapclassify.classifiers.Max_P_Classifier`
-    * :class:`mapclassify.classifiers.Maximum_Breaks`
-    * :class:`mapclassify.classifiers.Natural_Breaks`
+    * :class:`mapclassify.classifiers.BoxPlot`
+    * :class:`mapclassify.classifiers.EqualInterval`
+    * :class:`mapclassify.classifiers.FisherJenks`
+    * :class:`mapclassify.classifiers.FisherJenksSampled`
+    * :class:`mapclassify.classifiers.HeadTailBreaks`
+    * :class:`mapclassify.classifiers.JenksCaspall`
+    * :class:`mapclassify.classifiers.JenksCaspallForced`
+    * :class:`mapclassify.classifiers.JenksCaspallSampled`
+    * :class:`mapclassify.classifiers.MaxP`
+    * :class:`mapclassify.classifiers.MaximumBreaks`
+    * :class:`mapclassify.classifiers.NaturalBreaks`
     * :class:`mapclassify.classifiers.Quantiles`
     * :class:`mapclassify.classifiers.Percentiles`
-    * :class:`mapclassify.classifiers.Std_Mean`
-    * :class:`mapclassify.classifiers.User_Defined`
+    * :class:`mapclassify.classifiers.StdMean`
+    * :class:`mapclassify.classifiers.UserDefined`
 
     Utilities:
 
@@ -912,7 +894,7 @@ class MapClassifier(object):
         ax=None,
     ):
         """
-        Plot mapclassiifer
+        Plot Mapclassiifer
         NOTE: Requires matplotlib, and implicitly requires geopandas
         dataframe as input.
 
@@ -995,61 +977,9 @@ class MapClassifier(object):
             plt.savefig(file_name, dpi=dpi)
         return f, ax
 
-@deprecated(reason="Use HeadTailBreaks")
-def HeadTail_Breaks(y):
-    """
-    Head/tail Breaks Map Classification for Heavy-tailed Distributions
 
-    Parameters
-    ----------
-    y       : array
-              (n,1), values to classify
-
-    Attributes
-    ----------
-    yb      : array
-              (n,1), bin ids for observations,
-    bins    : array
-              (k,1), the upper bounds of each class
-    k       : int
-              the number of classes
-    counts  : array
-              (k,1), the number of observations falling in each class
-
-    Examples
-    --------
-    >>> import numpy as np
-    >>> import mapclassify as mc
-    >>> np.random.seed(10)
-    >>> cal = mc.load_example()
-    >>> htb = mc.HeadTail_Breaks(cal)
-    >>> htb.k
-    3
-    >>> htb.counts
-    array([50,  7,  1])
-    >>> htb.bins
-    array([ 125.92810345,  811.26      , 4111.45      ])
-    >>> np.random.seed(123456)
-    >>> x = np.random.lognormal(3, 1, 1000)
-    >>> htb = mc.HeadTail_Breaks(x)
-    >>> htb.bins
-    array([ 32.26204423,  72.50205622, 128.07150107, 190.2899093 ,
-           264.82847377, 457.88157946, 576.76046949])
-    >>> htb.counts
-    array([695, 209,  62,  22,  10,   1,   1])
-
-    Notes
-    -----
-    Head/tail Breaks is a relatively new classification method developed
-    for data with a heavy-tailed distribution.
-
-    Implementation based on contributions by Alessandra Sozzi <alessandra.sozzi@gmail.com>.
-
-    For theoretical details see :cite:`Jiang_2013`.
-
-    """
-
-    return HeadTailBreaks(y)
+msg = _dep_message("Map_Classifer", "MapClassifier")
+Map_Classifier = DeprecationHelper(MapClassifier, message=msg)
 
 
 class HeadTailBreaks(MapClassifier):
@@ -1107,66 +1037,19 @@ class HeadTailBreaks(MapClassifier):
 
     def __init__(self, y):
         MapClassifier.__init__(self, y)
-        self.name = "HeadTail_Breaks"
+        self.name = "HeadTailBreaks"
 
     def _set_bins(self):
 
         x = self.y.copy()
         bins = []
-        bins = headTail_breaks(x, bins)
+        bins = head_tail_breaks(x, bins)
         self.bins = np.array(bins)
         self.k = len(self.bins)
 
 
-@deprecated(reason="Use EqualInterval")
-def Equal_Interval(*args, **kwargs):
-    """
-    Equal Interval Classification
-
-    Parameters
-    ----------
-    y : array
-        (n,1), values to classify
-    k : int
-        number of classes required
-
-    Attributes
-    ----------
-    yb      : array
-              (n,1), bin ids for observations,
-              each value is the id of the class the observation belongs to
-              yb[i] = j  for j>=1  if bins[j-1] < y[i] <= bins[j], yb[i] = 0
-              otherwise
-    bins    : array
-              (k,1), the upper bounds of each class
-    k       : int
-              the number of classes
-    counts  : array
-              (k,1), the number of observations falling in each class
-
-    Examples
-    --------
-    >>> import mapclassify as mc
-    >>> cal = mc.load_example()
-    >>> ei = mc.Equal_Interval(cal, k = 5)
-    >>> ei.k
-    5
-    >>> ei.counts
-    array([57,  0,  0,  0,  1])
-    >>> ei.bins
-    array([ 822.394, 1644.658, 2466.922, 3289.186, 4111.45 ])
-
-    Notes
-    -----
-    Intervals defined to have equal width:
-
-    .. math::
-
-        bins_j = min(y)+w*(j+1)
-
-    with :math:`w=\\frac{max(y)-min(j)}{k}`
-    """
-    return EqualInterval(*args, **kwargs)
+msg = _dep_message("HeadTail_Breaks", "HeadTailBreaks")
+HeadTail_Breaks = DeprecationHelper(HeadTailBreaks, message=msg)
 
 
 class EqualInterval(MapClassifier):
@@ -1240,6 +1123,11 @@ class EqualInterval(MapClassifier):
         cuts[-1] = max_y
         bins = cuts.copy()
         self.bins = bins
+
+
+msg = _dep_message("Equal_Interval", "EqualInterval")
+Equal_Interval = DeprecationHelper(EqualInterval, message=msg)
+
 
 class Percentiles(MapClassifier):
     """
@@ -1317,73 +1205,6 @@ class Percentiles(MapClassifier):
             new._update(y, **kwargs)
             return new
 
-@deprecated(reason="Use BoxPlot")
-def Box_Plot(y, hinge=1.5):
-    """
-    Box_Plot Map Classification
-
-    Parameters
-    ----------
-    y     : array
-            attribute to classify
-    hinge : float
-            multiplier for IQR
-
-    Attributes
-    ----------
-    yb : array
-        (n,1), bin ids for observations
-    bins : array
-          (n,1), the upper bounds of each class  (monotonic)
-    k : int
-        the number of classes
-    counts : array
-             (k,1), the number of observations falling in each class
-    low_outlier_ids : array
-        indices of observations that are low outliers
-    high_outlier_ids : array
-        indices of observations that are high outliers
-
-    Notes
-    -----
-
-    The bins are set as follows::
-
-        bins[0] = q[0]-hinge*IQR
-        bins[1] = q[0]
-        bins[2] = q[1]
-        bins[3] = q[2]
-        bins[4] = q[2]+hinge*IQR
-        bins[5] = inf  (see Notes)
-
-    where q is an array of the first three quartiles of y and
-    IQR=q[2]-q[0]
-
-    If q[2]+hinge*IQR > max(y) there will only be 5 classes and no high
-    outliers, otherwise, there will be 6 classes and at least one high
-    outlier.
-
-    Examples
-    --------
-    >>> import mapclassify as mc
-    >>> cal = mc.load_example()
-    >>> bp = mc.Box_Plot(cal)
-    >>> bp.bins
-    array([-5.287625e+01,  2.567500e+00,  9.365000e+00,  3.953000e+01,
-            9.497375e+01,  4.111450e+03])
-    >>> bp.counts
-    array([ 0, 15, 14, 14,  6,  9])
-    >>> bp.high_outlier_ids
-    array([ 0,  6, 18, 29, 33, 36, 37, 40, 42])
-    >>> cal[bp.high_outlier_ids].values
-    array([ 329.92,  181.27,  370.5 ,  722.85,  192.05,  110.74, 4111.45,
-            317.11,  264.93])
-    >>> bx = mc.Box_Plot(np.arange(100))
-    >>> bx.bins
-    array([-49.5 ,  24.75,  49.5 ,  74.25, 148.5 ])
-
-    """
-    return BoxPlot(y, hinge=hinge)
 
 class BoxPlot(MapClassifier):
     """
@@ -1509,6 +1330,11 @@ class BoxPlot(MapClassifier):
             new._update(y, **kwargs)
             return new
 
+
+msg = _dep_message("Box_Plot", "BoxPlot")
+Box_Plot = DeprecationHelper(BoxPlot, message=msg)
+
+
 class Quantiles(MapClassifier):
     """
     Quantile Map Classification
@@ -1556,11 +1382,6 @@ class Quantiles(MapClassifier):
         k = self.k
         self.bins = quantile(y, k=k)
 
-msg = "Deprecated: Std_Mean will be renamed to StdMean. Std_Mean will"
-msg += " be removed on 2020-01-31."
-@deprecated(version='2.1.0', reason=msg)
-def Std_Mean(y, multiples=[-2, -1, 1, 2]):
-    return StdMean(y, multiples)
 
 class StdMean(MapClassifier):
     """
@@ -1646,11 +1467,11 @@ class StdMean(MapClassifier):
             new = copy.deepcopy(self)
             new._update(y, **kwargs)
             return new
-msg = "Deprecated: Maximum_Breaks will be renamed to MaximumBreaks."
-msg += ' Maximum_Breaks will be removed on 2020-01-31.'
-@deprecated(version="2.1.0", reason=msg)
-def Maximum_Breaks(y, k=5):
-    return MaximumBreaks(y, k)
+
+
+msg = _dep_message("Std_Mean", "StdMean")
+Std_Mean = DeprecationHelper(StdMean, message=msg)
+
 
 class MaximumBreaks(MapClassifier):
     """
@@ -1746,11 +1567,10 @@ class MaximumBreaks(MapClassifier):
             new._update(y, **kwargs)
             return new
 
-msg = "Natural_Breaks is being renamed to NaturalBreaks. Natural_Breaks will be"
-msg += " removed on 2020-01-31."
-@deprecated(version='2.1.0', reason=msg)
-def Natural_Breaks(y, k=5):
-    return NaturalBreaks(y, k=5)
+
+msg = _dep_message("Maximum_Breaks", "MaximumBreaks")
+Maximum_Breaks = DeprecationHelper(MaximumBreaks, message=msg)
+
 
 class NaturalBreaks(MapClassifier):
     """
@@ -1858,11 +1678,9 @@ class NaturalBreaks(MapClassifier):
             return new
 
 
-msg = "Fisher_Jenks is being renamed to FisherJenks. Fisher_Jenks will be"
-msg += " removed on 2020-01-31."
-@deprecated(version='2.1.0', reason=msg)
-def Fisher_Jenks(y, k=5):
-    return FisherJenks(y, k)
+msg = _dep_message("Natural_Breaks", "NaturalBreaks")
+Natural_Breaks = DeprecationHelper(NaturalBreaks, message=msg)
+
 
 class FisherJenks(MapClassifier):
     """
@@ -1914,7 +1732,11 @@ class FisherJenks(MapClassifier):
         self.bins = np.array(_fisher_jenks_means(x, classes=self.k)[1:])
 
 
-class Fisher_Jenks_Sampled(MapClassifier):
+msg = _dep_message("Fisher_Jenks", "FisherJenks")
+Fisher_Jenks = DeprecationHelper(FisherJenks, message=msg)
+
+
+class FisherJenksSampled(MapClassifier):
     """
     Fisher Jenks optimal classifier - mean based using random sample
 
@@ -2002,11 +1824,10 @@ class Fisher_Jenks_Sampled(MapClassifier):
             new._update(y, **kwargs)
             return new
 
-msg = "Deprecated: Jenks_Capsall will be renamed to JenksCaspall."
-msg += "Jenks_Caspall will be removed on 2020-01-31."
-@deprecated(version="2.1.0", reason=msg)
-def Jenks_Caspall(y, k=5):
-    return JenksCaspall(y, k)
+
+msg = _dep_message("Fisher_Jenks_Sampled", "FisherJenksSampled")
+Fisher_Jenks_Sampled = DeprecationHelper(FisherJenksSampled, message=msg)
+
 
 class JenksCaspall(MapClassifier):
     """
@@ -2080,11 +1901,10 @@ class JenksCaspall(MapClassifier):
         self.bins = cuts
         self.iterations = it
 
-msg = "Deprecated: Jenks_Caspall_Sampled will be renamed to JenksCaspallSampled."
-msg += ' Jenks_Caspall_Sampled will be removed on 2020-01-31.'
-@deprecated(version="2.1.0", reason=msg)
-def Jenks_Caspall_Sampled(y, k=5, pct=0.01):
-    return JenksCaspallSampled(y, k, pct)
+
+msg = _dep_message("Jenks_Caspall", "JenksCaspall")
+Jenks_Caspall = DeprecationHelper(JenksCaspall, message=msg)
+
 
 class JenksCaspallSampled(MapClassifier):
     """
@@ -2195,11 +2015,9 @@ class JenksCaspallSampled(MapClassifier):
             return new
 
 
-msg = "Deprecated: Jenks_Caspall_Forced will be renamed to JenksCaspallForced."
-msg += ' Jenks_Caspall_Forced will be removed on 2020-01-31.'
-@deprecated(version="2.1.0", reason=msg)
-def Jenks_Caspall_Forced(y, k=5):
-    return JenksCaspallForced(y, k)
+msg = _dep_message("Jenks_Caspall_Sampled", "JenksCaspallSampled")
+Jenks_Caspall_Sampled = DeprecationHelper(JenksCaspallSampled, message=msg)
+
 
 class JenksCaspallForced(MapClassifier):
     """
@@ -2344,11 +2162,9 @@ class JenksCaspallForced(MapClassifier):
         self.iterations = it
 
 
-msg = "Deprecated: User_Defined will be renamed to UserDefined."
-msg += ' User_Defined will be removed on 2020-01-31.'
-@deprecated(version="2.1.0", reason=msg)
-def User_Defined(y, bins):
-    return UserDefined(y, bins)
+msg = _dep_message("Jenks_Caspall_Forced", "JenksCaspallForced")
+Jenks_Caspall_Forced = DeprecationHelper(JenksCaspallForced, message=msg)
+
 
 class UserDefined(MapClassifier):
     """
@@ -2446,11 +2262,9 @@ class UserDefined(MapClassifier):
             return new
 
 
-msg = "Deprecated: Max_P_Classifier will be renamed to MaxP. "
-msg += "Max_P_Classifier will be removed on 2020-01-31."
-@deprecated(version="2.1.0", reason=msg)
-def Max_P_Classifier(y, k, initial=10):
-    return MaxP(y, k, initial)
+msg = _dep_message("User_Defined", "UserDefined")
+User_Defined = DeprecationHelper(UserDefined, message=msg)
+
 
 class MaxP(MapClassifier):
     """
@@ -2644,6 +2458,10 @@ class MaxP(MapClassifier):
             return new
 
 
+msg = _dep_message("Max_P_Classifier", "MaxP")
+Max_P_Classifier = DeprecationHelper(MaxP, message=msg)
+
+
 def _fit(y, classes):
     """Calculate the total sum of squares for a vector y classified into
     classes
@@ -2668,9 +2486,9 @@ def _fit(y, classes):
 
 kmethods = {}
 kmethods["Quantiles"] = Quantiles
-kmethods["Fisher_Jenks"] = Fisher_Jenks
-kmethods["Natural_Breaks"] = Natural_Breaks
-kmethods["Maximum_Breaks"] = Maximum_Breaks
+kmethods["FisherJenks"] = FisherJenks
+kmethods["NaturalBreaks"] = NaturalBreaks
+kmethods["MaximumBreaks"] = MaximumBreaks
 
 
 def gadf(y, method="Quantiles", maxk=15, pct=0.8):
@@ -2733,7 +2551,7 @@ def gadf(y, method="Quantiles", maxk=15, pct=0.8):
 
     See Also
     --------
-    K_classifiers
+    KClassifiers
     """
 
     y = np.array(y)
@@ -2746,7 +2564,7 @@ def gadf(y, method="Quantiles", maxk=15, pct=0.8):
     return (k, cl, gadf)
 
 
-class K_classifiers(object):
+class KClassifiers(object):
     """
     Evaluate all k-classifers and pick optimal based on k and GADF
 
@@ -2769,7 +2587,7 @@ class K_classifiers(object):
     --------
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
-    >>> ks = mc.classifiers.K_classifiers(cal)
+    >>> ks = mc.classifiers.KClassifiers(cal)
     >>> ks.best.name
     'Fisher_Jenks'
     >>> ks.best.k
@@ -2805,3 +2623,7 @@ class K_classifiers(object):
                 pct0 = pct1
         self.results = results
         self.best = best[1]
+
+
+msg = _dep_message("K_classifiers", "KClassifiers")
+K_classifiers = DeprecationHelper(KClassifiers, message=msg)

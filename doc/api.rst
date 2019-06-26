@@ -13,21 +13,21 @@ Classifiers
 .. autosummary::
    :toctree: generated/
 
-    mapclassify.Box_Plot
-    mapclassify.Equal_Interval
-    mapclassify.Fisher_Jenks
-    mapclassify.Fisher_Jenks_Sampled
-    mapclassify.HeadTail_Breaks
-    mapclassify.Jenks_Caspall
-    mapclassify.Jenks_Caspall_Forced
-    mapclassify.Jenks_Caspall_Sampled
-    mapclassify.Max_P_Classifier
-    mapclassify.Maximum_Breaks
-    mapclassify.Natural_Breaks
+    mapclassify.BoxPlot
+    mapclassify.EqualInterval
+    mapclassify.FisherJenks
+    mapclassify.FisherJenksSampled
+    mapclassify.HeadTailBreaks
+    mapclassify.JenksCaspall
+    mapclassify.JenksCaspallForced
+    mapclassify.JenksCaspallSampled
+    mapclassify.MaxP
+    mapclassify.MaximumBreaks
+    mapclassify.NaturalBreaks
     mapclassify.Quantiles
     mapclassify.Percentiles
-    mapclassify.Std_Mean
-    mapclassify.User_Defined
+    mapclassify.StdMean
+    mapclassify.UserDefined
 
 Utilities
 ---------
@@ -35,6 +35,6 @@ Utilities
 .. autosummary::
    :toctree: generated/
 
-    mapclassify.K_classifiers
+    mapclassify.KClassifiers
     mapclassify.gadf
 	
