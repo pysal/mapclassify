@@ -20,10 +20,10 @@ mapclassify: Classification Schemes for Choropleth Maps
 
 ## Map Classifiers Supported
 
-### Box_Plot
+### BoxPlot
 
 ```python
->>> mapclassify.Box_Plot(y)
+>>> mapclassify.BoxPlot(y)
 
                   Box Plot
 
@@ -39,10 +39,10 @@ mapclassify: Classification Schemes for Choropleth Maps
 ```
 
 
-### Equal_Interval
+### EqualInterval
 
 ```python
->>> mapclassify.Equal_Interval(y)
+>>> mapclassify.EqualInterval(y)
 
                Equal Interval
 
@@ -55,12 +55,12 @@ mapclassify: Classification Schemes for Choropleth Maps
 3289.186 < x[i] <= 4111.450                1
 ```
 
-### Fisher_Jenks
+### FisherJenks
 
 ```python
 >>> import numpy as np
 >>> np.random.seed(123456)
->>> mapclassify.Fisher_Jenks(y, k=5)
+>>> mapclassify.FisherJenks(y, k=5)
 
                 Fisher_Jenks
 
@@ -74,12 +74,12 @@ mapclassify: Classification Schemes for Choropleth Maps
 
 ```
 
-### Fisher_Jenks_Sampled
+### FisherJenksSampled
 
 ```python
 >>> np.random.seed(123456)
 >>> x = np.random.exponential(size=(10000,))
->>> mapclassify.Fisher_Jenks(x, k=5)
+>>> mapclassify.FisherJenks(x, k=5)
 
                Fisher_Jenks
 
@@ -91,7 +91,7 @@ Lower            Upper               Count
  2.528 < x[i] <=  4.141                636
  4.141 < x[i] <= 10.608                164
 
->>> mapclassify.Fisher_Jenks_Sampled(x, k=5)
+>>> mapclassify.FisherJenksSampled(x, k=5)
 
            Fisher_Jenks_Sampled
 
@@ -105,12 +105,12 @@ Lower            Upper               Count
 
 ```
 
-### HeadTail_Breaks
+### HeadTailBreaks
 
 ```python
->>> mapclassify.HeadTail_Breaks(y)
+>>> mapclassify.HeadTailBreaks(y)
 
-              HeadTail_Breaks
+              HeadTailBreaks
 
  Lower              Upper              Count
 ============================================
@@ -120,12 +120,12 @@ Lower            Upper               Count
 
 ```
 
-### Jenks_Caspall
+### JenksCaspall
 
 ```python
->>> mapclassify.Jenks_Caspall(y, k=5)
+>>> mapclassify.JenksCaspall(y, k=5)
 
-               Jenks_Caspall
+               JenksCaspall
 
  Lower              Upper              Count
 ============================================
@@ -136,12 +136,12 @@ Lower            Upper               Count
  181.270 < x[i] <= 4111.450                7
 ```
 
-### Jenks_Caspall_Forced
+### JenksCaspallForced
 
 ```python
->>> mapclassify.Jenks_Caspall_Forced(y, k=5)
+>>> mapclassify.JenksCaspallForced(y, k=5)
 
-            Jenks_Caspall_Forced
+            JenksCaspallForced
 
  Lower              Upper              Count
 ============================================
@@ -152,12 +152,12 @@ Lower            Upper               Count
   50.650 < x[i] <= 4111.450               12
 ```
 
-### Jenks_Caspall_Sampled
+### JenksCaspallSampled
 
 ```python
->>> mapclassify.Jenks_Caspall_Sampled(y, k=5)
+>>> mapclassify.JenksCaspallSampled(y, k=5)
 
-           Jenks_Caspall_Sampled
+           JenksCaspallSampled
 
  Lower              Upper              Count
 ============================================
@@ -168,12 +168,12 @@ Lower            Upper               Count
  181.270 < x[i] <= 4111.450                7
 ```
 
-### Max_P_Classifier
+### MaxP
 
 ```python
->>> mapclassify.Max_P_Classifier(y)
+>>> mapclassify.MaxP(y)
 
-                   Max_P
+                   MaxP
 
  Lower              Upper              Count
 ============================================
@@ -184,12 +184,12 @@ Lower            Upper               Count
  110.740 < x[i] <= 4111.450                8
 ```
 
-### [Maximum_Breaks](notebooks/maximum_breaks.ipynb)
+### [MaximumBreaks](notebooks/maximum_breaks.ipynb)
 
 ```python
->>> mapclassify.Maximum_Breaks(y, k=5)
+>>> mapclassify.MaximumBreaks(y, k=5)
 
-               Maximum_Breaks
+               MaximumBreaks
 
  Lower              Upper              Count
 ============================================
@@ -201,12 +201,12 @@ Lower            Upper               Count
 
 ```
 
-### Natural_Breaks
+### NaturalBreaks
 
 ```python
->>> mapclassify.Natural_Breaks(y, k=5)
+>>> mapclassify.NaturalBreaks(y, k=5)
 
-               Natural_Breaks
+               NaturalBreaks
 
  Lower              Upper              Count
 ============================================
@@ -250,12 +250,12 @@ Lower            Upper               Count
 
 ```
 
-### Std_Mean
+### StdMean
 
 ```python
->>> mapclassify.Std_Mean(y)
+>>> mapclassify.StdMean(y)
 
-                  Std_Mean
+                  StdMean
 
  Lower              Upper              Count
 ============================================
@@ -266,12 +266,12 @@ Lower            Upper               Count
 1219.219 < x[i] <= 4111.450                1
 
 ```
-### User_Defined
+### UserDefined
 
 ```python
->>> mapclassify.User_Defined(y, bins=[22, 674, 4112])
+>>> mapclassify.UserDefined(y, bins=[22, 674, 4112])
 
-                User Defined
+                UserDefined
 
  Lower              Upper              Count
 ============================================
@@ -286,10 +286,10 @@ Lower            Upper               Count
 ### Creating and using a classification instance
 
 ```python
->>> bp = mapclassify.Box_Plot(y)
+>>> bp = mapclassify.BoxPlot(y)
 >>> bp
 
-                  Box Plot
+                  BoxPlot
 
  Lower              Upper              Count
 ============================================
