@@ -3,29 +3,30 @@ sudo: false
 branches:
   only:
     - master
-python:
-  - 3.5
-  - 3.6
 
-env:
-  - NUMBA_TEST=true
-  - NUMBA_TEST=false
-
-
-#matrix:
-#  allow_failures:
-#      - python: 3.5
-#        env: NUMBA_TEST=true
-#      - python: 3.6
-#        env: NUMBA_TEST=true
+matrix:
+  include:
+    - python: 3.6
+      env: NUMBA_TEST=false
+    - python: 3.6
+      env: NUMBA_TEST=true
+    - python: 3.7
+      dist: xenial
+      sudo: true
+      env: NUMBA_TEST=false
+    - python: 3.7
+      dist: xenial
+      sudo: true
+      env: NUMBA_TEST=true
 
 before_install:
-  - wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
   - chmod +x miniconda.sh
   - ./miniconda.sh -b -p ./miniconda
   - export PATH=`pwd`/miniconda/bin:$PATH
   - conda update --yes conda
-  - conda config --append channels conda-forge
+  - conda config --add channels conda-forge
+  - conda config --set channel_priority strict
   - conda create -y -q -n test-env python=$TRAVIS_PYTHON_VERSION
   - source activate test-env
 
