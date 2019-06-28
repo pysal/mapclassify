@@ -31,23 +31,21 @@ __all__ = [
 ]
 
 CLASSIFIERS = (
-    "Box_Plot",
-    "Equal_Interval",
+    "BoxPlot",
     "EqualInterval",
-    "Fisher_Jenks",
-    "Fisher_Jenks_Sampled",
-    "HeadTail_Breaks",
+    "FisherJenks",
+    "FisherJenksSampled",
     "HeadTailBreaks",
-    "Jenks_Caspall",
-    "Jenks_Caspall_Forced",
-    "Jenks_Caspall_Sampled",
-    "Max_P_Classifier",
-    "Maximum_Breaks",
-    "Natural_Breaks",
+    "JenksCaspall",
+    "JenksCaspallForced",
+    "JenksCaspallSampled",
+    "MaxP",
+    "MaximumBreaks",
+    "NaturalBreaks",
     "Quantiles",
     "Percentiles",
-    "Std_Mean",
-    "User_Defined",
+    "StdMean",
+    "UserDefined",
 )
 
 K = 5  # default number of classes in any map scheme with this as an argument
@@ -893,6 +891,8 @@ class MapClassifier(object):
         file_name=None,
         dpi=600,
         ax=None,
+        legend_width=12,
+        legend_decimal=3,
     ):
         """
         Plot Mapclassiifer
@@ -959,17 +959,39 @@ class MapClassifier(object):
         else:
             f = plt.gcf()
 
-        legend_txt = ["%.3f" % cut for cut in self.bins]
-        labels = [legend_txt[ybi] for ybi in self.yb]
+        labels = [self.bins[ybi] for ybi in self.yb]
         ax = gdf.assign(_cl=labels).plot(
             column="_cl",
             ax=ax,
             cmap=cmap,
             edgecolor=border_color,
             linewidth=border_width,
+            categorical=True,
             legend=legend,
             legend_kwds=legend_kwds,
         )
+        ax_legend = ax.get_legend()
+        if ax_legend:
+            fmt = ".%df" % legend_decimal
+            fmt = "%" + fmt
+            largest = max([len(fmt % i) for i in self.bins])
+            width = largest
+            fmt = "%d.%df" % (width, legend_decimal)
+            fmt = "%" + fmt
+            print(fmt)
+
+            def replace_legend_items(legend, mapping):
+                for txt in legend.texts:
+                    for k, v in mapping.items():
+                        if txt.get_text() == str(k):
+                            txt.set_text(v)
+
+            label_map = dict(
+                [(i, (fmt % value).rjust(largest)) for i, value in enumerate(labels)]
+            )
+            print(label_map)
+            replace_legend_items(ax_legend, label_map)
+
         if not axis_on:
             ax.axis("off")
         if title:
