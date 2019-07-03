@@ -893,6 +893,7 @@ class MapClassifier(object):
         ax=None,
         legend_width=12,
         legend_decimal=3,
+        legend_labels=None,
     ):
         """
         Plot Mapclassiifer
@@ -970,27 +971,35 @@ class MapClassifier(object):
             legend=legend,
             legend_kwds=legend_kwds,
         )
-        ax_legend = ax.get_legend()
-        if ax_legend:
-            fmt = ".%df" % legend_decimal
-            fmt = "%" + fmt
-            largest = max([len(fmt % i) for i in self.bins])
-            width = largest
-            fmt = "%d.%df" % (width, legend_decimal)
-            fmt = "%" + fmt
-            print(fmt)
+        if legend:
+            ax_legend = ax.get_legend()
+            if legend_labels:
+                if len(legend_labels) != len(ax_legend.texts):
+                    print('legend_labels incorrect length, using default values.')
+                else:
+                    for k, txt in enumerate(ax_legend.texts):
+                        txt.set_text(legend_labels[k])
+            else:
+                fmt = ".%df" % legend_decimal
+                fmt = "%" + fmt
+                largest = max([len(fmt % i) for i in self.bins])
+                width = largest
+                fmt = "%d.%df" % (width, legend_decimal)
+                fmt = "%" + fmt
+                label_map = dict(
+                    [(i, (fmt % value)) for i, value in enumerate(self.bins)]
+                   )
 
-            def replace_legend_items(legend, mapping):
-                for txt in legend.texts:
-                    for k, v in mapping.items():
-                        if txt.get_text() == str(k):
-                            txt.set_text(v)
+                # replace labels
+                for k, txt in enumerate(ax_legend.texts):
+                    txt.set_text(label_map[k])
 
-            label_map = dict(
-                [(i, (fmt % value).rjust(largest)) for i, value in enumerate(labels)]
-            )
-            print(label_map)
-            replace_legend_items(ax_legend, label_map)
+                # reposition for alignment
+                shift = max([t.get_window_extent().width for t in ax_legend.get_texts()])
+                for k, txt in enumerate(ax_legend.texts):
+                    txt.set_ha('right')
+                    txt.set_position((shift, 0))
+
 
         if not axis_on:
             ax.axis("off")
