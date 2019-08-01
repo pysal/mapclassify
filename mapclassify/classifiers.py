@@ -59,12 +59,122 @@ from sklearn.cluster import KMeans as KMEANS
 from warnings import warn as Warn
 from deprecated import deprecated
 
+FMT = "{:.2f}"
+
 try:
     from numba import jit
 except ImportError:
 
     def jit(func):
         return func
+
+
+def _format_intervals(mc, fmt="{:.0f}"):
+    """
+    Helper methods to format legend intervals
+
+
+    Parameters
+    ----------
+
+    mc: MapClassifier
+
+    fmt: str
+         specification of formatting for legend
+
+    Returns
+    -------
+    tuple:
+         edges: list
+                k strings for class intervals
+         max_width: int
+                length of largest interval string
+         lower_open: boolean
+                True: lower bound of first interval is open
+                False: lower bound of first interval is closed
+
+    Notes
+    -----
+    For some classifiers, it is possible that the upper bound of the first interval is less than the minimum value of the attribute that is being classified. In these cases `lower_open=True` and the lower bound of the interval is set to `np.NINF`.
+    """
+
+    lowest = mc.y.min()
+    lower_open = False
+    if lowest > mc.bins[0]:
+        lowest = np.NINF
+        lower_open = True
+    edges = [lowest]
+    edges.extend(mc.bins)
+    edges = [fmt.format(edge) for edge in edges]
+    max_width = max([len(edge) for edge in edges])
+    return edges, max_width, lower_open
+
+
+def _get_mpl_labels(mc, fmt="{:.1f}"):
+    """
+    Helper method to format legend intervals for matplotlib (and geopandas)
+
+    Parameters
+    ----------
+
+    mc: MapClassifier
+
+    fmt: str
+         specification of formatting for legend
+
+    Returns
+    -------
+    intervals: list
+             k strings for class intervals 
+    """
+    edges, max_width, lower_open = _format_intervals(mc, fmt)
+    k = len(edges) - 1
+    left = ["["]
+    if lower_open:
+        left = ["("]
+    left.extend("(" * k)
+    right = "]" * (k + 1)
+    lower = ["{:>{width}}".format(edges[i], width=max_width) for i in range(k)]
+    upper = ["{:>{width}}".format(edges[i], width=max_width) for i in range(1, k + 1)]
+    lower = [l + r for l, r in zip(left, lower)]
+    upper = [l + r for l, r in zip(upper, right)]
+    intervals = [l + ", " + r for l, r in zip(lower, upper)]
+    return intervals
+
+
+def _get_table(mc, fmt="{:.2f}"):
+    """
+    Helper function to generate tabular classification report
+
+    Parameters
+    ----------
+
+    mc: MapClassifier
+
+    fmt: str
+         specification of formatting for legend
+
+    Returns
+    -------
+    table: string
+           formatted table of classification results
+
+    """
+    intervals = _get_mpl_labels(mc, fmt)
+    interval_width = len(intervals[0])
+    counts = list(map(str, mc.counts))
+    count_width = max([len(count) for count in counts])
+    count_width = max(count_width, len("count"))
+    interval_width = max(interval_width, len("interval"))
+    header = "{:^{width}}".format("Interval", width=interval_width)
+    header += "   " + "{:>{width}}".format("Count", width=count_width)
+    title = "{:<{width}}".format(mc.name, width=len(header))
+    header += "\n" + "-" * len(header)
+    table = [title, "", header]
+    for i, interval in enumerate(intervals):
+        row = interval + " | " + "{:>{width}}".format(counts[i], width=count_width)
+        table.append(row)
+    return "\n".join(table)
 
 
 @deprecated(reason="use head_tail_breaks")
@@ -537,9 +647,18 @@ class MapClassifier(object):
     def __init__(self, y):
         y = np.asarray(y).flatten()
         self.name = "Map Classifier"
+        self.fmt = FMT
         self.y = y
         self._classify()
         self._summary()
+
+    def get_fmt(self):
+        return self._fmt
+
+    def set_fmt(self, fmt):
+        self._fmt = fmt
+
+    fmt = property(get_fmt, set_fmt)
 
     def _summary(self):
         yb = self.yb
@@ -741,11 +860,14 @@ class MapClassifier(object):
             return new
 
     def __str__(self):
-        st = self._table_string()
-        return st
+        return self.table()
 
     def __repr__(self):
-        return self._table_string()
+        return self.table()
+
+    def table(self):
+        fmt = self.fmt
+        return _get_table(self, fmt=fmt)
 
     def __call__(self, *args, **kwargs):
         """
@@ -805,12 +927,14 @@ class MapClassifier(object):
         return gadf
 
     def _table_string(self, width=12, decimal=3):
-        fmt = ".%df" % decimal
-        fmt = "%" + fmt
-        largest = max([len(fmt % i) for i in self.bins])
-        width = largest
-        fmt = "%d.%df" % (width, decimal)
-        fmt = "%" + fmt
+        labels, largest = self.get_legend_classes(table=True)
+
+        # fmt = ".%df" % decimal
+        # fmt = "%" + fmt
+        # largest = max([len(fmt % i) for i in self.bins])
+        # width = largest
+        # fmt = "%d.%df" % (width, decimal)
+        # fmt = "%" + fmt
         h1 = "Lower"
         h1 = h1.center(largest)
         h2 = " "
@@ -828,14 +952,13 @@ class MapClassifier(object):
         table.append(header)
         table.append("=" * len(header))
 
-        for i, up in enumerate(self.bins):
+        for i, label in enumerate(labels):
+            left, right = label.split()
             if i == 0:
-                left = " " * width
+                left = " " * largest
                 left += "   x[i] <= "
             else:
-                left = fmt % self.bins[i - 1]
                 left += " < x[i] <= "
-            right = fmt % self.bins[i]
             row = left + right
             cnt = "%d" % self.counts[i]
             cnt = cnt.rjust(largest)
@@ -878,6 +1001,24 @@ class MapClassifier(object):
             right[right == len(self.bins)] = len(self.bins) - 1
         return right
 
+    def get_legend_classes(self, fmt=FMT):
+        """
+        Format the strings for the classes on the legend
+
+
+        Parameters
+        ==========
+
+        fmt : string
+              formatting specification
+
+        Returns
+        =======
+        classes: list
+               k strings with class interval definitions
+        """
+        return _get_mpl_labels(self, fmt)
+
     def plot(
         self,
         gdf,
@@ -891,8 +1032,7 @@ class MapClassifier(object):
         file_name=None,
         dpi=600,
         ax=None,
-        legend_width=12,
-        legend_decimal=3,
+        fmt=FMT,
     ):
         """
         Plot Mapclassiifer
@@ -959,39 +1099,17 @@ class MapClassifier(object):
         else:
             f = plt.gcf()
 
-        labels = [self.bins[ybi] for ybi in self.yb]
-        ax = gdf.assign(_cl=labels).plot(
+        ax = gdf.assign(_cl=self.y).plot(
             column="_cl",
             ax=ax,
             cmap=cmap,
             edgecolor=border_color,
             linewidth=border_width,
-            categorical=True,
+            scheme=self.name,
             legend=legend,
             legend_kwds=legend_kwds,
+            fmt=fmt,
         )
-        ax_legend = ax.get_legend()
-        if ax_legend:
-            fmt = ".%df" % legend_decimal
-            fmt = "%" + fmt
-            largest = max([len(fmt % i) for i in self.bins])
-            width = largest
-            fmt = "%d.%df" % (width, legend_decimal)
-            fmt = "%" + fmt
-            print(fmt)
-
-            def replace_legend_items(legend, mapping):
-                for txt in legend.texts:
-                    for k, v in mapping.items():
-                        if txt.get_text() == str(k):
-                            txt.set_text(v)
-
-            label_map = dict(
-                [(i, (fmt % value).rjust(largest)) for i, value in enumerate(labels)]
-            )
-            print(label_map)
-            replace_legend_items(ax_legend, label_map)
-
         if not axis_on:
             ax.axis("off")
         if title:
@@ -1131,7 +1249,7 @@ class EqualInterval(MapClassifier):
 
         self.k = k
         MapClassifier.__init__(self, y)
-        self.name = "Equal Interval"
+        self.name = "EqualInterval"
 
     def _set_bins(self):
         y = self.y
@@ -1306,7 +1424,7 @@ class BoxPlot(MapClassifier):
         """
         self.hinge = hinge
         MapClassifier.__init__(self, y)
-        self.name = "Box Plot"
+        self.name = "BoxPlot"
 
     def _set_bins(self):
         y = self.y
@@ -2283,6 +2401,56 @@ class UserDefined(MapClassifier):
             new = copy.deepcopy(self)
             new._update(y, bins, **kwargs)
             return new
+
+    # We have to override the plot method for additional kwargs for UserDefined
+    def plot(
+        self,
+        gdf,
+        border_color="lightgrey",
+        border_width=0.10,
+        title=None,
+        legend=False,
+        cmap="YlGnBu",
+        axis_on=True,
+        legend_kwds={"loc": "lower right"},
+        file_name=None,
+        dpi=600,
+        ax=None,
+        fmt=FMT,
+    ):
+        try:
+            import matplotlib.pyplot as plt
+        except ImportError:
+            raise ImportError(
+                "Mapclassify.plot depends on matplotlib.pyplot, and this was"
+                "not able to be imported. \nInstall matplotlib to"
+                "plot spatial classifier."
+            )
+        if ax is None:
+            f = plt.figure()
+            ax = plt.gca()
+        else:
+            f = plt.gcf()
+
+        ax = gdf.assign(_cl=self.y).plot(
+            column="_cl",
+            ax=ax,
+            cmap=cmap,
+            edgecolor=border_color,
+            linewidth=border_width,
+            scheme=self.name,
+            legend=legend,
+            legend_kwds=legend_kwds,
+            classification_kwds={"bins": self.bins},  # for UserDefined
+            fmt=fmt,
+        )
+        if not axis_on:
+            ax.axis("off")
+        if title:
+            f.suptitle(title)
+        if file_name:
+            plt.savefig(file_name, dpi=dpi)
+        return f, ax
 
 
 msg = _dep_message("User_Defined", "UserDefined")
