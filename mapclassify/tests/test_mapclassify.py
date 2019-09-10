@@ -550,6 +550,12 @@ class TestUserDefined(unittest.TestCase):
         np.testing.assert_array_almost_equal(ud.bins, np.array([20.0, 4111.45]))
         np.testing.assert_array_almost_equal(ud.counts, np.array([37, 21]))
 
+    def test_User_Defined_max(self):
+        bins = np.array([20, 30])
+        ud = User_Defined(self.V, bins)
+        np.testing.assert_array_almost_equal(ud.bins, np.array([20.0, 30., 4111.45]))
+        np.testing.assert_array_almost_equal(ud.counts, np.array([37, 4, 17]))
+
 
 class TestMaxPClassifier(unittest.TestCase):
     def setUp(self):

@@ -2358,7 +2358,7 @@ class UserDefined(MapClassifier):
 
     def __init__(self, y, bins):
         if bins[-1] < max(y):
-            bins.append(max(y))
+            bins = np.append(bins, max(y))
         self.k = len(bins)
         self.bins = np.array(bins)
         self.y = y
