@@ -193,7 +193,7 @@ def head_tail_breaks(values, cuts):
     mean = np.mean(values)
     cuts.append(mean)
     if len(values) > 1:
-        return headTail_breaks(values[values >= mean], cuts)
+        return head_tail_breaks(values[values >= mean], cuts)
     return cuts
 
 
