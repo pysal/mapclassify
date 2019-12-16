@@ -192,7 +192,7 @@ def head_tail_breaks(values, cuts):
     values = np.array(values)
     mean = np.mean(values)
     cuts.append(mean)
-    if len(values) > 1:
+    if len(set(values)) > 1:
         return head_tail_breaks(values[values >= mean], cuts)
     return cuts
 
@@ -2351,7 +2351,7 @@ class UserDefined(MapClassifier):
 
     def __init__(self, y, bins):
         if bins[-1] < max(y):
-            bins.append(max(y))
+            bins = np.append(bins, max(y))
         self.k = len(bins)
         self.bins = np.array(bins)
         self.y = y

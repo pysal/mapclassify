@@ -1,0 +1,29 @@
+mapclassify.JenksCaspallSampled
+===============================
+
+.. currentmodule:: mapclassify
+
+.. autoclass:: JenksCaspallSampled
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~JenksCaspallSampled.__init__
+      ~JenksCaspallSampled.find_bin
+      ~JenksCaspallSampled.get_adcm
+      ~JenksCaspallSampled.get_gadf
+      ~JenksCaspallSampled.get_tss
+      ~JenksCaspallSampled.make
+      ~JenksCaspallSampled.plot
+      ~JenksCaspallSampled.update
+   
+   
+
+   
+   
+   
