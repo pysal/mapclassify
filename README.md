@@ -83,7 +83,6 @@ FisherJenks
 ( 1.45,  2.53] |  1584
 ( 2.53,  4.14] |   636
 ( 4.14, 10.61] |   164
-```
 
 >>> mapclassify.FisherJenksSampled(x, k=5)
 FisherJenksSampled
