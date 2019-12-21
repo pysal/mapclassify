@@ -7,33 +7,29 @@ import scipy as sp
 import copy
 from sklearn.cluster import KMeans as KMEANS
 from warnings import warn as Warn
-from deprecated import deprecated
 
 __author__ = "Sergio J. Rey"
 
 __all__ = [
-    "Map_Classifier",
+    "MapClassifier",
     "quantile",
-    "Box_Plot",
     "BoxPlot",
-    "Equal_Interval",
     "EqualInterval",
-    "Fisher_Jenks",
-    "Fisher_Jenks_Sampled",
-    "Jenks_Caspall",
-    "Jenks_Caspall_Forced",
-    "Jenks_Caspall_Sampled",
-    "Max_P_Classifier",
-    "Maximum_Breaks",
-    "Natural_Breaks",
+    "FisherJenks",
+    "FisherJenksSampled",
+    "JenksCaspall",
+    "JenksCaspallForced",
+    "JenksCaspallSampled",
+    "HeadTailBreaks",
+    "MaxP",
+    "MaximumBreaks",
+    "NaturalBreaks",
     "Quantiles",
     "Percentiles",
-    "Std_Mean",
-    "User_Defined",
+    "StdMean",
+    "UserDefined",
     "gadf",
-    "K_classifiers",
-    "HeadTail_Breaks",
-    "HeadTailBreaks",
+    "KClassifiers",
     "CLASSIFIERS",
 ]
 
@@ -176,13 +172,6 @@ def _get_table(mc, fmt="{:.2f}"):
         table.append(row)
     return "\n".join(table)
 
-
-@deprecated(reason="use head_tail_breaks")
-def headTail_breaks(values, cuts):
-    """
-    head tail breaks helper function
-    """
-    return head_tail_breaks(values, cuts)
 
 
 def head_tail_breaks(values, cuts):
@@ -574,31 +563,6 @@ def _fisher_jenks_means(values, classes=5, sort=True):
     return kclass
 
 
-def _dep_message(original, replacement, when="2020-01-31", version="2.1.0"):
-    msg = "Deprecated (%s): %s" % (version, original)
-    msg += " is being renamed to %s." % replacement
-    msg += " %s will be removed on %s." % (original, when)
-    return msg
-
-
-class DeprecationHelper(object):
-    def __init__(self, new_target, message="Deprecated"):
-        self.new_target = new_target
-        self.message = message
-
-    def _warn(self):
-        from warnings import warn
-
-        warn(self.message)
-
-    def __call__(self, *args, **kwargs):
-        self._warn()
-        return self.new_target(*args, **kwargs)
-
-    def __getattr__(self, attr):
-        self._warn()
-        return getattr(self.new_target, attr)
-
 
 class MapClassifier(object):
     """
@@ -786,7 +750,7 @@ class MapClassifier(object):
         >>> dbf = ps.io.open(ps.examples.get_path('baltim.dbf'))
         >>> data = dbf.by_col_array('PRICE', 'LOTSZ', 'SQFT')
         >>> my_bins = [1, 10, 20, 40, 80]
-        >>> cl = [mc.User_Defined.make(bins=my_bins)(a) for a in data.T]
+        >>> cl = [mc.UserDefined.make(bins=my_bins)(a) for a in data.T]
         >>> len(cl)
         3
         >>> cl[0][:10]
@@ -1021,11 +985,10 @@ class MapClassifier(object):
         legend=False,
         cmap="YlGnBu",
         axis_on=True,
-        legend_kwds={"loc": "lower right"},
+        legend_kwds={"loc": "lower right", 'fmt':FMT},
         file_name=None,
         dpi=600,
-        ax=None,
-        fmt=FMT,
+        ax=None
     ):
         """
         Plot Mapclassiifer
@@ -1053,7 +1016,7 @@ class MapClassifier(object):
                         (Default: True)
         legend_kwds   : dict, optional
                         options for ax.legend()
-                        (Default: {"loc": "lower right"})
+                        (Default: {"loc": "lower right", 'fmt':FMT})
         file_name     : string, optional
                         Name of file to save figure to.
                         (Default: None)
@@ -1074,9 +1037,10 @@ class MapClassifier(object):
 
         >>> import libpysal as lp
         >>> import geopandas
+        >>> import mapclassify
         >>> gdf = geopandas.read_file(lp.examples.get_path("columbus.shp"))
-        >>> q5 = mapclassify.Quantiles(gdf.crime)
-        >>> q5.plot(gdf)
+        >>> q5 = mapclassify.Quantiles(gdf.CRIME)
+        >>> q5.plot(gdf)  # doctest: +SKIP
         """
         try:
             import matplotlib.pyplot as plt
@@ -1101,7 +1065,6 @@ class MapClassifier(object):
             scheme=self.name,
             legend=legend,
             legend_kwds=legend_kwds,
-            fmt=fmt,
         )
         if not axis_on:
             ax.axis("off")
@@ -1110,10 +1073,6 @@ class MapClassifier(object):
         if file_name:
             plt.savefig(file_name, dpi=dpi)
         return f, ax
-
-
-msg = _dep_message("Map_Classifer", "MapClassifier")
-Map_Classifier = DeprecationHelper(MapClassifier, message=msg)
 
 
 class HeadTailBreaks(MapClassifier):
@@ -1180,10 +1139,6 @@ class HeadTailBreaks(MapClassifier):
         bins = head_tail_breaks(x, bins)
         self.bins = np.array(bins)
         self.k = len(self.bins)
-
-
-msg = _dep_message("HeadTail_Breaks", "HeadTailBreaks")
-HeadTail_Breaks = DeprecationHelper(HeadTailBreaks, message=msg)
 
 
 class EqualInterval(MapClassifier):
@@ -1258,9 +1213,6 @@ class EqualInterval(MapClassifier):
         bins = cuts.copy()
         self.bins = bins
 
-
-msg = _dep_message("Equal_Interval", "EqualInterval")
-Equal_Interval = DeprecationHelper(EqualInterval, message=msg)
 
 
 class Percentiles(MapClassifier):
@@ -1465,10 +1417,6 @@ class BoxPlot(MapClassifier):
             return new
 
 
-msg = _dep_message("Box_Plot", "BoxPlot")
-Box_Plot = DeprecationHelper(BoxPlot, message=msg)
-
-
 class Quantiles(MapClassifier):
     """
     Quantile Map Classification
@@ -1603,9 +1551,6 @@ class StdMean(MapClassifier):
             return new
 
 
-msg = _dep_message("Std_Mean", "StdMean")
-Std_Mean = DeprecationHelper(StdMean, message=msg)
-
 
 class MaximumBreaks(MapClassifier):
     """
@@ -1700,10 +1645,6 @@ class MaximumBreaks(MapClassifier):
             new = copy.deepcopy(self)
             new._update(y, **kwargs)
             return new
-
-
-msg = _dep_message("Maximum_Breaks", "MaximumBreaks")
-Maximum_Breaks = DeprecationHelper(MaximumBreaks, message=msg)
 
 
 class NaturalBreaks(MapClassifier):
@@ -1812,9 +1753,6 @@ class NaturalBreaks(MapClassifier):
             return new
 
 
-msg = _dep_message("Natural_Breaks", "NaturalBreaks")
-Natural_Breaks = DeprecationHelper(NaturalBreaks, message=msg)
-
 
 class FisherJenks(MapClassifier):
     """
@@ -1865,9 +1803,6 @@ class FisherJenks(MapClassifier):
         x = self.y.copy()
         self.bins = np.array(_fisher_jenks_means(x, classes=self.k)[1:])
 
-
-msg = _dep_message("Fisher_Jenks", "FisherJenks")
-Fisher_Jenks = DeprecationHelper(FisherJenks, message=msg)
 
 
 class FisherJenksSampled(MapClassifier):
@@ -1925,12 +1860,12 @@ class FisherJenksSampled(MapClassifier):
         self.yr_n = yr.size
         MapClassifier.__init__(self, yr)
         self.yb, self.counts = bin1d(y, self.bins)
-        self.name = "Fisher_Jenks_Sampled"
+        self.name = "FisherJenksSampled"
         self.y = y
         self._summary()  # have to recalculate summary stats
 
     def _set_bins(self):
-        fj = Fisher_Jenks(self.y, self.k)
+        fj = FisherJenks(self.y, self.k)
         self.bins = fj.bins
 
     def update(self, y=None, inplace=False, **kwargs):
@@ -1958,9 +1893,6 @@ class FisherJenksSampled(MapClassifier):
             new._update(y, **kwargs)
             return new
 
-
-msg = _dep_message("Fisher_Jenks_Sampled", "FisherJenksSampled")
-Fisher_Jenks_Sampled = DeprecationHelper(FisherJenksSampled, message=msg)
 
 
 class JenksCaspall(MapClassifier):
@@ -2035,9 +1967,6 @@ class JenksCaspall(MapClassifier):
         self.bins = cuts
         self.iterations = it
 
-
-msg = _dep_message("Jenks_Caspall", "JenksCaspall")
-Jenks_Caspall = DeprecationHelper(JenksCaspall, message=msg)
 
 
 class JenksCaspallSampled(MapClassifier):
@@ -2149,9 +2078,6 @@ class JenksCaspallSampled(MapClassifier):
             return new
 
 
-msg = _dep_message("Jenks_Caspall_Sampled", "JenksCaspallSampled")
-Jenks_Caspall_Sampled = DeprecationHelper(JenksCaspallSampled, message=msg)
-
 
 class JenksCaspallForced(MapClassifier):
     """
@@ -2184,21 +2110,14 @@ class JenksCaspallForced(MapClassifier):
     >>> jcf.k
     5
     >>> jcf.bins
-    array([[1.34000e+00],
-           [5.90000e+00],
-           [1.67000e+01],
-           [5.06500e+01],
-           [4.11145e+03]])
+    array([1.34000e+00, 5.90000e+00, 1.67000e+01, 5.06500e+01, 4.11145e+03])
     >>> jcf.counts
     array([12, 12, 13,  9, 12])
     >>> jcf4 = mc.JenksCaspallForced(cal, k = 4)
     >>> jcf4.k
     4
     >>> jcf4.bins
-    array([[2.51000e+00],
-           [8.70000e+00],
-           [3.66800e+01],
-           [4.11145e+03]])
+    array([2.51000e+00, 8.70000e+00, 3.66800e+01, 4.11145e+03])
     >>> jcf4.counts
     array([15, 14, 14, 15])
     """
@@ -2292,12 +2211,10 @@ class JenksCaspallForced(MapClassifier):
                 solving = False
             it += 1
         cuts = [max(x[xb == c]) for c in sp.unique(xb)]
-        self.bins = np.array(cuts)
+        cuts = np.reshape(np.array(cuts), (k,))
+        self.bins = cuts
         self.iterations = it
 
-
-msg = _dep_message("Jenks_Caspall_Forced", "JenksCaspallForced")
-Jenks_Caspall_Forced = DeprecationHelper(JenksCaspallForced, message=msg)
 
 
 class UserDefined(MapClassifier):
@@ -2405,11 +2322,10 @@ class UserDefined(MapClassifier):
         legend=False,
         cmap="YlGnBu",
         axis_on=True,
-        legend_kwds={"loc": "lower right"},
+        legend_kwds={"loc": "lower right", 'fmt': FMT},
         file_name=None,
         dpi=600,
-        ax=None,
-        fmt=FMT,
+        ax=None
     ):
         try:
             import matplotlib.pyplot as plt
@@ -2424,6 +2340,10 @@ class UserDefined(MapClassifier):
             ax = plt.gca()
         else:
             f = plt.gcf()
+
+        fmt = FMT
+        if 'fmt' in legend_kwds:
+            fmt = legend_kwds.pop('ft')
 
         ax = gdf.assign(_cl=self.y).plot(
             column="_cl",
@@ -2445,9 +2365,6 @@ class UserDefined(MapClassifier):
             plt.savefig(file_name, dpi=dpi)
         return f, ax
 
-
-msg = _dep_message("User_Defined", "UserDefined")
-User_Defined = DeprecationHelper(UserDefined, message=msg)
 
 
 class MaxP(MapClassifier):
@@ -2481,12 +2398,12 @@ class MaxP(MapClassifier):
     --------
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
-    >>> mp = mc.Max_P_Classifier(cal)
+    >>> mp = mc.MaxP(cal)
     >>> mp.bins
-    array([   8.7 ,   16.7 ,   20.47,  110.74, 4111.45])
+    array([   8.7 ,   16.7 ,   20.47,   66.26, 4111.45])
 
     >>> mp.counts
-    array([29,  8,  1, 12,  8])
+    array([29,  8,  1, 10, 10])
     """
 
     def __init__(self, y, k=K, initial=1000):
@@ -2641,9 +2558,6 @@ class MaxP(MapClassifier):
             new._update(y, bins, **kwargs)
             return new
 
-
-msg = _dep_message("Max_P_Classifier", "MaxP")
-Max_P_Classifier = DeprecationHelper(MaxP, message=msg)
 
 
 def _fit(y, classes):
@@ -2807,7 +2721,3 @@ class KClassifiers(object):
                 pct0 = pct1
         self.results = results
         self.best = best[1]
-
-
-msg = _dep_message("K_classifiers", "KClassifiers")
-K_classifiers = DeprecationHelper(KClassifiers, message=msg)
