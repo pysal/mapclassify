@@ -1,6 +1,13 @@
 """
 A module of classification schemes for choropleth mapping.
 """
+import numpy as np
+import scipy.stats as stats
+import scipy as sp
+import copy
+from sklearn.cluster import KMeans as KMEANS
+from warnings import warn as Warn
+from deprecated import deprecated
 
 __author__ = "Sergio J. Rey"
 
@@ -51,13 +58,6 @@ CLASSIFIERS = (
 K = 5  # default number of classes in any map scheme with this as an argument
 SEEDRANGE = 1000000  # range for drawing random integers from for Natural Breaks
 
-import numpy as np
-import scipy.stats as stats
-import scipy as sp
-import copy
-from sklearn.cluster import KMeans as KMEANS
-from warnings import warn as Warn
-from deprecated import deprecated
 
 FMT = "{:.2f}"
 
@@ -125,7 +125,7 @@ def _get_mpl_labels(mc, fmt="{:.1f}"):
     Returns
     -------
     intervals: list
-             k strings for class intervals 
+             k strings for class intervals
     """
     edges, max_width, lower_open = _format_intervals(mc, fmt)
     k = len(edges) - 1
@@ -928,13 +928,6 @@ class MapClassifier(object):
 
     def _table_string(self, width=12, decimal=3):
         labels, largest = self.get_legend_classes(table=True)
-
-        # fmt = ".%df" % decimal
-        # fmt = "%" + fmt
-        # largest = max([len(fmt % i) for i in self.bins])
-        # width = largest
-        # fmt = "%d.%df" % (width, decimal)
-        # fmt = "%" + fmt
         h1 = "Lower"
         h1 = h1.center(largest)
         h2 = " "
@@ -1921,7 +1914,7 @@ class FisherJenksSampled(MapClassifier):
 
         if (pct * n > 1000) and truncate:
             pct = 1000.0 / n
-        ids = np.random.random_integers(0, n - 1, int(n * pct))
+        ids = np.random.randint(0, n, int(n * pct))
         yr = y[ids]
         yr[-1] = max(y)  # make sure we have the upper bound
         yr[0] = min(y)  # make sure we have the min
@@ -2113,7 +2106,7 @@ class JenksCaspallSampled(MapClassifier):
         n = y.size
         if pct * n > 1000:
             pct = 1000.0 / n
-        ids = np.random.random_integers(0, n - 1, int(n * pct))
+        ids = np.random.randint(0, n, int(n * pct))
         yr = y[ids]
         yr[0] = max(y)  # make sure we have the upper bound
         self.original_y = y
