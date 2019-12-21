@@ -1925,7 +1925,7 @@ class FisherJenksSampled(MapClassifier):
         self.yr_n = yr.size
         MapClassifier.__init__(self, yr)
         self.yb, self.counts = bin1d(y, self.bins)
-        self.name = "Fisher_Jenks_Sampled"
+        self.name = "FisherJenksSampled"
         self.y = y
         self._summary()  # have to recalculate summary stats
 
@@ -2292,7 +2292,8 @@ class JenksCaspallForced(MapClassifier):
                 solving = False
             it += 1
         cuts = [max(x[xb == c]) for c in sp.unique(xb)]
-        self.bins = np.array(cuts)
+        cuts = np.reshape(np.array(cuts), (k,))
+        self.bins = cuts
         self.iterations = it
 
 
