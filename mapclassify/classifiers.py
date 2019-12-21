@@ -1021,11 +1021,10 @@ class MapClassifier(object):
         legend=False,
         cmap="YlGnBu",
         axis_on=True,
-        legend_kwds={"loc": "lower right"},
+        legend_kwds={"loc": "lower right", 'fmt':FMT},
         file_name=None,
         dpi=600,
-        ax=None,
-        fmt=FMT,
+        ax=None
     ):
         """
         Plot Mapclassiifer
@@ -1053,7 +1052,7 @@ class MapClassifier(object):
                         (Default: True)
         legend_kwds   : dict, optional
                         options for ax.legend()
-                        (Default: {"loc": "lower right"})
+                        (Default: {"loc": "lower right", 'fmt':FMT})
         file_name     : string, optional
                         Name of file to save figure to.
                         (Default: None)
@@ -1101,7 +1100,6 @@ class MapClassifier(object):
             scheme=self.name,
             legend=legend,
             legend_kwds=legend_kwds,
-            fmt=fmt,
         )
         if not axis_on:
             ax.axis("off")
@@ -2406,11 +2404,10 @@ class UserDefined(MapClassifier):
         legend=False,
         cmap="YlGnBu",
         axis_on=True,
-        legend_kwds={"loc": "lower right"},
+        legend_kwds={"loc": "lower right", 'fmt': FMT},
         file_name=None,
         dpi=600,
-        ax=None,
-        fmt=FMT,
+        ax=None
     ):
         try:
             import matplotlib.pyplot as plt
@@ -2425,6 +2422,10 @@ class UserDefined(MapClassifier):
             ax = plt.gca()
         else:
             f = plt.gcf()
+
+        fmt = FMT
+        if 'fmt' in legend_kwds:
+            fmt = legend_kwds.pop('ft')
 
         ax = gdf.assign(_cl=self.y).plot(
             column="_cl",
