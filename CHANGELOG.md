@@ -1,3 +1,42 @@
+# Version 2.2.0 (2019-12-21)
+
+This releases brings new functionality for [formatting of legend classes](https://github.com/sjsrey/geopandas/blob/legendkwds/examples/choro_legends.ipynb).
+
+We closed a total of 21 issues (enhancements and bug fixes) through 9 pull requests, since our last release on 2019-06-28.
+
+## Issues Closed
+  - 2.2 (#54)
+  - 2.2 (#53)
+  - conda-forge UnsatisfiableError on windows and python 3.7 (#52)
+  - [MAINT] updating supported Python versions in setup.py (#49)
+  - BUG: RecursiveError in HeadTailBreaks (#46)
+  - BUG: HeadTailBreaks raise RecursionError (#45)
+  - BUG: UserDefined accepts only list if max not in bins (#47)
+  - BUG: avoid deprecation warning in HeadTailBreaks (#44)
+  - remove docs badge (#42)
+  - Remove doc badge (#43)
+  - Docs: moving to project pages on github and off rtd (#41)
+  - BUG: Fix for downstream breakage in geopandas (#40)
+
+## Pull Requests
+  - 2.2 (#54)
+  - 2.2 (#53)
+  - [MAINT] updating supported Python versions in setup.py (#49)
+  - BUG: RecursiveError in HeadTailBreaks (#46)
+  - BUG: UserDefined accepts only list if max not in bins (#47)
+  - BUG: avoid deprecation warning in HeadTailBreaks (#44)
+  - Remove doc badge (#43)
+  - Docs: moving to project pages on github and off rtd (#41)
+  - BUG: Fix for downstream breakage in geopandas (#40)
+
+The following individuals contributed to this release:
+
+  - Serge Rey
+  - James Gaboardi
+  - Wei Kang
+  - Martin Fleischmann
+
+
 # Version 2.1.0 (2019-06-26)
 
 We closed a total of 36 issues (enhancements and bug fixes) through 16 pull requests, since our last release on 2018-10-28.
