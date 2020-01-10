@@ -2355,7 +2355,6 @@ class UserDefined(MapClassifier):
             legend=legend,
             legend_kwds=legend_kwds,
             classification_kwds={"bins": self.bins},  # for UserDefined
-            fmt=fmt,
         )
         if not axis_on:
             ax.axis("off")
