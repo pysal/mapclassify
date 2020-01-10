@@ -2343,7 +2343,7 @@ class UserDefined(MapClassifier):
 
         fmt = FMT
         if 'fmt' in legend_kwds:
-            fmt = legend_kwds.pop('ft')
+            fmt = legend_kwds.pop('fmt')
 
         ax = gdf.assign(_cl=self.y).plot(
             column="_cl",
