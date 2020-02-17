@@ -565,7 +565,7 @@ def _fisher_jenks_means(values, classes=5, sort=True):
 
 
 class MapClassifier(object):
-    """
+    r"""
     Abstract class for all map classifications :cite:`Slocum_2009`
 
     For an array :math:`y` of :math:`n` values, a map classifier places each
