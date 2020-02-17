@@ -1,7 +1,6 @@
-nose
-nose-progressive
-nose-exclude
-coverage
+pytest
+pytest-cov
+codecov
 coveralls
 geopandas
 libpysal

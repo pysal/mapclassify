@@ -7,7 +7,6 @@ from distutils.command.build_py import build_py
 # update it when the contents of directories change.
 if os.path.exists('MANIFEST'):
     os.remove('MANIFEST')
-    
 curdir = os.path.abspath(os.path.dirname(__file__))
 
 # Get __version__ from mapclassify/__init__.py without importing the package
