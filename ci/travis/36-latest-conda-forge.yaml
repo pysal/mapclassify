@@ -6,6 +6,7 @@ dependencies:
   - six
   - scipy
   - beautifulsoup4
+  - scikit-learn
   # required
   # testing
   - pytest
