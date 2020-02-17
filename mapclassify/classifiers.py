@@ -2589,7 +2589,7 @@ kmethods["MaximumBreaks"] = MaximumBreaks
 
 
 def gadf(y, method="Quantiles", maxk=15, pct=0.8):
-    """
+    r"""
     Evaluate the Goodness of Absolute Deviation Fit of a Classifier
     Finds the minimum value of k for which gadf>pct
 
