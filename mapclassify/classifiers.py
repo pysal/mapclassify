@@ -565,7 +565,7 @@ def _fisher_jenks_means(values, classes=5, sort=True):
 
 
 class MapClassifier(object):
-    """
+    r"""
     Abstract class for all map classifications :cite:`Slocum_2009`
 
     For an array :math:`y` of :math:`n` values, a map classifier places each
@@ -1606,7 +1606,7 @@ class MaximumBreaks(MapClassifier):
         min_diff = self.mindiff
         d = xs[1:] - xs[:-1]
         diffs = d[np.nonzero(d > min_diff)]
-        diffs = sp.unique(diffs)
+        diffs = np.unique(diffs)
         k1 = k - 1
         if len(diffs) > k1:
             diffs = diffs[-k1:]
@@ -1962,7 +1962,7 @@ class JenksCaspall(MapClassifier):
                 xb0 = xb
             it += 1
             q = np.array([np.median(x[xb == i]) for i in rk])
-        cuts = np.array([max(x[xb == i]) for i in sp.unique(xb)])
+        cuts = np.array([max(x[xb == i]) for i in np.unique(xb)])
         cuts.shape = (len(cuts),)
         self.bins = cuts
         self.iterations = it
@@ -2151,7 +2151,7 @@ class JenksCaspallForced(MapClassifier):
             # try upward moves first
             moving_up = True
             while moving_up:
-                class_ids = sp.unique(xb)
+                class_ids = np.unique(xb)
                 nk = [sum(xb == j) for j in class_ids]
                 candidates = nk[:-1]
                 i = 0
@@ -2163,7 +2163,7 @@ class JenksCaspallForced(MapClassifier):
                         mover = max(ids[0])
                         tmp = xb.copy()
                         tmp[mover] = xb[mover] + 1
-                        tm = [x[tmp == j].mean() for j in sp.unique(tmp)]
+                        tm = [x[tmp == j].mean() for j in np.unique(tmp)]
                         txbar = np.array([tm[xbi] for xbi in tmp])
                         txbar.shape = (n, 1)
                         tss = x - txbar
@@ -2179,7 +2179,7 @@ class JenksCaspallForced(MapClassifier):
                     moving_up = False
             moving_down = True
             while moving_down:
-                class_ids = sp.unique(xb)
+                class_ids = np.unique(xb)
                 nk = [sum(xb == j) for j in class_ids]
                 candidates = nk[1:]
                 i = 1
@@ -2193,7 +2193,7 @@ class JenksCaspallForced(MapClassifier):
                         target_class = mover_class - 1
                         tmp = xb.copy()
                         tmp[mover] = target_class
-                        tm = [x[tmp == j].mean() for j in sp.unique(tmp)]
+                        tm = [x[tmp == j].mean() for j in np.unique(tmp)]
                         txbar = np.array([tm[xbi] for xbi in tmp])
                         txbar.shape = (n, 1)
                         tss = x - txbar
@@ -2210,7 +2210,7 @@ class JenksCaspallForced(MapClassifier):
             if not up_moves and not down_moves:
                 solving = False
             it += 1
-        cuts = [max(x[xb == c]) for c in sp.unique(xb)]
+        cuts = [max(x[xb == c]) for c in np.unique(xb)]
         cuts = np.reshape(np.array(cuts), (k,))
         self.bins = cuts
         self.iterations = it
@@ -2589,7 +2589,7 @@ kmethods["MaximumBreaks"] = MaximumBreaks
 
 
 def gadf(y, method="Quantiles", maxk=15, pct=0.8):
-    """
+    r"""
     Evaluate the Goodness of Absolute Deviation Fit of a Classifier
     Finds the minimum value of k for which gadf>pct
 
