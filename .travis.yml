@@ -18,6 +18,15 @@ matrix:
       dist: xenial
       sudo: true
       env: NUMBA_TEST=true
+    - python: 3.8
+      dist: xenial
+      sudo: true
+      env: NUMBA_TEST=false
+    - python: 3.8
+      dist: xenial
+      sudo: true
+      env: NUMBA_TEST=true
+
 
 before_install:
   - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
@@ -41,7 +50,7 @@ install:
 script:
   - python setup.py sdist >/dev/null
   - python setup.py install
-  - nosetests --verbose --with-coverage --cover-package=mapclassify;
+  - py.test mapclassify --cov libpysal -v --cov-report term-missing
 
 notifications:
     email:
