@@ -429,7 +429,6 @@ def load_example():
 
     return calemp.load()
 
-
 def _kmeans(y, k=5, n_init=10):
     """
     Helper function to do k-means in one dimension
@@ -608,13 +607,45 @@ class MapClassifier(object):
 
     """
 
-    def __init__(self, y):
-        y = np.asarray(y).flatten()
+    def __init__(self, y, pool=False):
+
         self.name = "Map Classifier"
         self.fmt = FMT
-        self.y = y
-        self._classify()
-        self._summary()
+        y = np.asarray(y)
+        if y.ndim == 1:
+            y = y.flatten()
+            self.y = y
+            self._classify()
+            self._summary()
+        elif pool:
+            print('pool')
+            n, k = y.shape
+            # vec array
+            y = y.reshape((-1, 1), order="f").flatten()
+            self.y = y
+            # apply classifier to array
+            self._classify()
+            self._summary()
+            # reshape the bins
+            self.y = y.reshape((n, k), order='f')
+            self.yb = self.yb.reshape((n, k), order='f')
+        else:
+            # map classifier over columns of y
+            data = y.copy()
+            n, k = y.shape
+            bins = []
+            counts = []
+            yb = []
+            for c in range(k):
+                self.y = y[:,c]
+                self._classify()
+                bins.append(self.bins)
+                yb.append(self.yb)
+                counts.append(self.counts)
+            self.bins = np.array(bins)
+            self.counts = np.array(counts)
+            self.yb = np.array(yb)
+            self.y = data
 
     def get_fmt(self):
         return self._fmt
@@ -1454,9 +1485,9 @@ class Quantiles(MapClassifier):
     array([12, 11, 12, 11, 12])
     """
 
-    def __init__(self, y, k=K):
+    def __init__(self, y, k=K, pool=False):
         self.k = k
-        MapClassifier.__init__(self, y)
+        MapClassifier.__init__(self, y, pool=pool)
         self.name = "Quantiles"
 
     def _set_bins(self):
