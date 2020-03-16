@@ -562,7 +562,6 @@ def _fisher_jenks_means(values, classes=5, sort=True):
     return kclass
 
 
-
 class MapClassifier(object):
     r"""
     Abstract class for all map classifications :cite:`Slocum_2009`
@@ -607,45 +606,13 @@ class MapClassifier(object):
 
     """
 
-    def __init__(self, y, pool=False):
-
+    def __init__(self, y):
+        y = np.asarray(y).flatten()
         self.name = "Map Classifier"
         self.fmt = FMT
-        y = np.asarray(y)
-        if y.ndim == 1:
-            y = y.flatten()
-            self.y = y
-            self._classify()
-            self._summary()
-        elif pool:
-            print('pool')
-            n, k = y.shape
-            # vec array
-            y = y.reshape((-1, 1), order="f").flatten()
-            self.y = y
-            # apply classifier to array
-            self._classify()
-            self._summary()
-            # reshape the bins
-            self.y = y.reshape((n, k), order='f')
-            self.yb = self.yb.reshape((n, k), order='f')
-        else:
-            # map classifier over columns of y
-            data = y.copy()
-            n, k = y.shape
-            bins = []
-            counts = []
-            yb = []
-            for c in range(k):
-                self.y = y[:,c]
-                self._classify()
-                bins.append(self.bins)
-                yb.append(self.yb)
-                counts.append(self.counts)
-            self.bins = np.array(bins)
-            self.counts = np.array(counts)
-            self.yb = np.array(yb)
-            self.y = data
+        self.y = y
+        self._classify()
+        self._summary()
 
     def get_fmt(self):
         return self._fmt
@@ -1485,9 +1452,9 @@ class Quantiles(MapClassifier):
     array([12, 11, 12, 11, 12])
     """
 
-    def __init__(self, y, k=K, pool=False):
+    def __init__(self, y, k=K):
         self.k = k
-        MapClassifier.__init__(self, y, pool=pool)
+        MapClassifier.__init__(self, y)
         self.name = "Quantiles"
 
     def _set_bins(self):
@@ -1635,20 +1602,18 @@ class MaximumBreaks(MapClassifier):
         k = self.k
         xs.sort()
         min_diff = self.mindiff
-        d = xs[1:] - xs[:-1]
-        diffs = d[np.nonzero(d > min_diff)]
-        diffs = np.unique(diffs)
+        diffs = xs[1:] - xs[:-1]
+        idxs = np.argsort(diffs)
         k1 = k - 1
-        if len(diffs) > k1:
-            diffs = diffs[-k1:]
+
+        ud = np.unique(diffs)
+        if len(ud) < k1:
+            print('Insufficient number of unique diffs. Breaks are random.')
         mp = []
-        self.cids = []
-        for diff in diffs:
-            ids = np.nonzero(d == diff)
-            for id in ids:
-                self.cids.append(id[0])
-                cp = (xs[id] + xs[id + 1]) / 2.0
-                mp.append(cp[0])
+        for c in range(1, k):
+            idx = idxs[-c]
+            cp = (xs[idx] + xs[idx + 1]) / 2.0
+            mp.append(cp)
         mp.append(xs[-1])
         mp.sort()
         self.bins = np.array(mp)

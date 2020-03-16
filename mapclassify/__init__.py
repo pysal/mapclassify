@@ -22,3 +22,5 @@ from .classifiers import (
     KClassifiers,
     CLASSIFIERS,
 )
+
+from .pooling import Pooled
