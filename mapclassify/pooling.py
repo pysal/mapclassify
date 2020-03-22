@@ -11,7 +11,8 @@ dispatcher = {'boxplot': BoxPlot,
               'fisherjenkssampled': FisherJenksSampled,
               'quantiles': Quantiles,
               'maximumbreaks': MaximumBreaks,
-              'stdmean': StdMean
+              'stdmean': StdMean,
+              'userdefined': UserDefined
               }
 
 
