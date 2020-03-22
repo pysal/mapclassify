@@ -41,7 +41,27 @@ class Pooled(object):
                Elements are MapClassifier instances with the pooled classifier
                applied to the associated column of Y.
 
+    Examples
+    --------
+    >>> import numpy as np
+    >>> import mapclassify as mc
+    >>> n = 20
+    >>> data = np.array([np.arange(n)+i*n for i in range(1,4)]).T
+    >>> res = mc.Pooled(data)
+    >>> res.col_classifiers[0].counts
+    array([12,  8,  0,  0,  0])
+    >>> res.col_classifiers[1].counts
+    array([ 0,  4, 12,  4,  0])
+    >>> res.col_classifiers[2].counts
+    array([ 0,  0,  0,  8, 12])
+    >>> res.global_classifier.counts
+    array([12, 12, 12, 12, 12])
+    >>> res.global_classifier.bins == res.col_classifiers[0].bins
+    array([ True,  True,  True,  True,  True])
+    >>> res.global_classifier.bins
+    array([31.8, 43.6, 55.4, 67.2, 79. ])
     """
+
     def __init__(self, Y,  classifier='Quantiles', **kwargs):
         self.__dict__.update(kwargs)
         Y = np.asarray(Y)
