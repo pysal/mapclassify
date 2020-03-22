@@ -1,4 +1,4 @@
-GEOPANDAS = /home/serge/Dropbox/g/geopandas
+GEOPANDAS = ~/Dropbox/g/geopandas
 # Linux specific Docker file for mapclassify
 IMAGE='sjsrey/mapclassify:2.2'
 

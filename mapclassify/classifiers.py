@@ -429,7 +429,6 @@ def load_example():
 
     return calemp.load()
 
-
 def _kmeans(y, k=5, n_init=10):
     """
     Helper function to do k-means in one dimension
@@ -561,7 +560,6 @@ def _fisher_jenks_means(values, classes=5, sort=True):
         kclass[countNum - 1] = values[id]
         k = int(pivot - 1)
     return kclass
-
 
 
 class MapClassifier(object):
@@ -1604,20 +1602,18 @@ class MaximumBreaks(MapClassifier):
         k = self.k
         xs.sort()
         min_diff = self.mindiff
-        d = xs[1:] - xs[:-1]
-        diffs = d[np.nonzero(d > min_diff)]
-        diffs = np.unique(diffs)
+        diffs = xs[1:] - xs[:-1]
+        idxs = np.argsort(diffs)
         k1 = k - 1
-        if len(diffs) > k1:
-            diffs = diffs[-k1:]
+
+        ud = np.unique(diffs)
+        if len(ud) < k1:
+            print('Insufficient number of unique diffs. Breaks are random.')
         mp = []
-        self.cids = []
-        for diff in diffs:
-            ids = np.nonzero(d == diff)
-            for id in ids:
-                self.cids.append(id[0])
-                cp = (xs[id] + xs[id + 1]) / 2.0
-                mp.append(cp[0])
+        for c in range(1, k):
+            idx = idxs[-c]
+            cp = (xs[idx] + xs[idx + 1]) / 2.0
+            mp.append(cp)
         mp.append(xs[-1])
         mp.sort()
         self.bins = np.array(mp)

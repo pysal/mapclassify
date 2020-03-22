@@ -1,8 +1,10 @@
-from ..classifiers import *
-from ..classifiers import binC, bin, bin1d, load_example
 import numpy as np
 import unittest
 import types
+from ..classifiers import *
+from ..classifiers import binC, bin, bin1d, load_example
+from ..pooling import Pooled
+
 
 RTOL = 0.0001
 
@@ -599,6 +601,23 @@ class TestKClassifiers(unittest.TestCase):
         self.assertEqual(ks.best.gadf, 0.84810327199081048)
         self.assertEqual(ks.best.k, 4)
 
+class TestPooled(unittest.TestCase):
+    def setUp(self):
+        n = 20
+        self.data = np.array([np.arange(n)+i*n for i in range(1, 4)]).T
+
+    def test_pooled(self):
+        res = Pooled(self.data, k=4)
+        self.assertEqual(res.k, 4)
+        np.testing.assert_array_almost_equal(res.col_classifiers[0].counts,
+                                             np.array([15,  5,  0,  0]))
+        np.testing.assert_array_almost_equal(res.col_classifiers[-1].counts,
+                                             np.array([  0,  0, 5,  15]))
+        np.testing.assert_array_almost_equal(res.global_classifier.counts,
+                                             np.array([15,  15,  15,  15]))
+        res = Pooled(self.data, classifier='BoxPlot', hinge=1.5)
+        np.testing.assert_array_almost_equal(res.col_classifiers[0].bins,
+                                             np.array([ -9.5 ,  34.75,  49.5 ,  64.25, 108.5 ]))
 
 if __name__ == "__main__":
     unittest.main()
