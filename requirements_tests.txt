@@ -5,3 +5,4 @@ coveralls
 geopandas
 libpysal
 networkx
+Rtree
