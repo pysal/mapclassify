@@ -3,16 +3,13 @@ channels:
   - conda-forge
 dependencies:
   - python=3.6
-  - six
+  # required
   - scipy
   - beautifulsoup4
   - scikit-learn
-  # required
   # testing
   - pytest
   - pytest-cov
-  - codecov
-  - nose
   - codecov
   - matplotlib
   # optional
