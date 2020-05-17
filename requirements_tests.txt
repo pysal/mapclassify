@@ -4,3 +4,4 @@ codecov
 coveralls
 geopandas
 libpysal
+networkx
