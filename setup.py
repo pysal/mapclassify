@@ -22,7 +22,7 @@ setup_requires = ["pytest-runner"] if needs_pytest else []
 with open("%s/__init__.py" % package, "r") as f:
     exec(f.readline())
 
-with open("README.rst", "r", encoding="utf8") as file:
+with open("README.md", "r", encoding="utf8") as file:
     long_description = file.read()
 
 
