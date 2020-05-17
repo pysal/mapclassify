@@ -19,6 +19,10 @@ help:
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
+notebooks:
+	rm notebooks/*
+	cp ../notebooks/??_*.ipynb notebooks/.
+
 clean:
 	rm -rf $(BUILDDIR)/*
 	rm -rf auto_examples/
