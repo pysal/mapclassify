@@ -1,9 +1,11 @@
-mapclassify: Classification Schemes for Choropleth Maps
-=======================================================
+# mapclassify: Classification Schemes for Choropleth Maps
 
-[![Build Status](https://travis-ci.org/pysal/mapclassify.svg?branch=master)](https://travis-ci.org/pysal/mapclassify)
+[![unittests](https://github.com/pysal/mapclassify/workflows/.github/workflows/unittests.yml/badge.svg)](https://github.com/pysal/mapclassify/actions?query=workflow%3A.github%2Fworkflows%2Funittests.yml)
+[![codecov](https://codecov.io/gh/pysal/mapclassify/branch/master/graph/badge.svg)](https://codecov.io/gh/pysal/mapclassify)
 [![PyPI version](https://badge.fury.io/py/mapclassify.svg)](https://badge.fury.io/py/mapclassify)
 [![DOI](https://zenodo.org/badge/88918063.svg)](https://zenodo.org/badge/latestdoi/88918063)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## Using `mapclassify`
 
