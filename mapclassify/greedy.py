@@ -153,9 +153,7 @@ def _geos_sw(features, tolerance=0, silence_warnings=False, resolution=5):
     try:
         from libpysal.weights import W
     except ImportError:
-        raise ImportError(
-            "The 'libpysal' package is required."
-        )
+        raise ImportError("The 'libpysal' package is required.")
 
     neighbors = {}
 
@@ -289,21 +287,15 @@ def greedy(
     try:
         import networkx as nx
     except ImportError:
-        raise ImportError(
-            "The 'networkx' package is required."
-        )
+        raise ImportError("The 'networkx' package is required.")
     try:
         import pandas as pd
     except ImportError:
-        raise ImportError(
-            "The 'pandas' package is required."
-        )
+        raise ImportError("The 'pandas' package is required.")
     try:
         from libpysal.weights import Queen, Rook, W
     except ImportError:
-        raise ImportError(
-            "The 'libpysal' package is required."
-        )
+        raise ImportError("The 'libpysal' package is required.")
 
     STRATEGIES = nx.algorithms.coloring.greedy_coloring.STRATEGIES.keys()
 
