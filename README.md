@@ -5,7 +5,7 @@ mapclassify: Classification Schemes for Choropleth Maps
 [![PyPI version](https://badge.fury.io/py/mapclassify.svg)](https://badge.fury.io/py/mapclassify)
 [![DOI](https://zenodo.org/badge/88918063.svg)](https://zenodo.org/badge/latestdoi/88918063)
 
-
+## Using `mapclassify`
 
 ```python
 >>> import mapclassify
