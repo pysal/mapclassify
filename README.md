@@ -1,5 +1,4 @@
-mapclassify: Classification Schemes for Choropleth Maps
-=======================================================
+# mapclassify: Classification Schemes for Choropleth Maps
 
 [![Build Status](https://travis-ci.org/pysal/mapclassify.svg?branch=master)](https://travis-ci.org/pysal/mapclassify)
 [![PyPI version](https://badge.fury.io/py/mapclassify.svg)](https://badge.fury.io/py/mapclassify)
