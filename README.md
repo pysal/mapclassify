@@ -1,6 +1,7 @@
 # mapclassify: Classification Schemes for Choropleth Maps
 
 [![unittests](https://github.com/pysal/mapclassify/workflows/.github/workflows/unittests.yml/badge.svg)](https://github.com/pysal/mapclassify/actions?query=workflow%3A.github%2Fworkflows%2Funittests.yml)
+[![codecov](https://codecov.io/gh/pysal/mapclassify/branch/master/graph/badge.svg)](https://codecov.io/gh/pysal/mapclassify)
 [![PyPI version](https://badge.fury.io/py/mapclassify.svg)](https://badge.fury.io/py/mapclassify)
 [![DOI](https://zenodo.org/badge/88918063.svg)](https://zenodo.org/badge/latestdoi/88918063)
 
