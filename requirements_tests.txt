@@ -1,7 +1,6 @@
 pytest
 pytest-cov
 codecov
-coveralls
 geopandas
 libpysal
 networkx

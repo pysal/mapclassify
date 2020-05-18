@@ -1,0 +1,19 @@
+name: test
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8
+  # required
+  - scipy
+  - beautifulsoup4
+  - scikit-learn
+  # testing
+  - pytest
+  - pytest-cov
+  - codecov
+  - matplotlib
+  # optional
+  - geopandas
+  - zstd
+  - networkx
+  - libpysal
