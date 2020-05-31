@@ -25,3 +25,4 @@ from .classifiers import (
 
 from .pooling import Pooled
 from . import color
+from .greedy import greedy

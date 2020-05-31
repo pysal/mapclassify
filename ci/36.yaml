@@ -2,8 +2,8 @@ name: test
 channels:
   - conda-forge
 dependencies:
-  - python=3.8
-  - six
+  - python=3.6
+  # required
   - scipy
   - beautifulsoup4
   - scikit-learn
@@ -14,5 +14,6 @@ dependencies:
   - matplotlib
   # optional
   - geopandas
-  - numba
   - zstd
+  - networkx
+  - libpysal

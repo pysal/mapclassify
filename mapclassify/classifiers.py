@@ -173,7 +173,6 @@ def _get_table(mc, fmt="{:.2f}"):
     return "\n".join(table)
 
 
-
 def head_tail_breaks(values, cuts):
     """
     head tail breaks helper function
@@ -428,6 +427,7 @@ def load_example():
     from .datasets import calemp
 
     return calemp.load()
+
 
 def _kmeans(y, k=5, n_init=10):
     """
@@ -983,10 +983,10 @@ class MapClassifier(object):
         legend=False,
         cmap="YlGnBu",
         axis_on=True,
-        legend_kwds={"loc": "lower right", 'fmt':FMT},
+        legend_kwds={"loc": "lower right", "fmt": FMT},
         file_name=None,
         dpi=600,
-        ax=None
+        ax=None,
     ):
         """
         Plot Mapclassiifer
@@ -1210,7 +1210,6 @@ class EqualInterval(MapClassifier):
         cuts[-1] = max_y
         bins = cuts.copy()
         self.bins = bins
-
 
 
 class Percentiles(MapClassifier):
@@ -1549,7 +1548,6 @@ class StdMean(MapClassifier):
             return new
 
 
-
 class MaximumBreaks(MapClassifier):
     """
     Maximum Breaks Map Classification
@@ -1608,7 +1606,7 @@ class MaximumBreaks(MapClassifier):
 
         ud = np.unique(diffs)
         if len(ud) < k1:
-            print('Insufficient number of unique diffs. Breaks are random.')
+            print("Insufficient number of unique diffs. Breaks are random.")
         mp = []
         for c in range(1, k):
             idx = idxs[-c]
@@ -1749,7 +1747,6 @@ class NaturalBreaks(MapClassifier):
             return new
 
 
-
 class FisherJenks(MapClassifier):
     """
     Fisher Jenks optimal classifier - mean based
@@ -1798,7 +1795,6 @@ class FisherJenks(MapClassifier):
     def _set_bins(self):
         x = self.y.copy()
         self.bins = np.array(_fisher_jenks_means(x, classes=self.k)[1:])
-
 
 
 class FisherJenksSampled(MapClassifier):
@@ -1890,7 +1886,6 @@ class FisherJenksSampled(MapClassifier):
             return new
 
 
-
 class JenksCaspall(MapClassifier):
     """
     Jenks Caspall  Map Classification
@@ -1962,7 +1957,6 @@ class JenksCaspall(MapClassifier):
         cuts.shape = (len(cuts),)
         self.bins = cuts
         self.iterations = it
-
 
 
 class JenksCaspallSampled(MapClassifier):
@@ -2072,7 +2066,6 @@ class JenksCaspallSampled(MapClassifier):
             new = copy.deepcopy(self)
             new._update(y, **kwargs)
             return new
-
 
 
 class JenksCaspallForced(MapClassifier):
@@ -2212,7 +2205,6 @@ class JenksCaspallForced(MapClassifier):
         self.iterations = it
 
 
-
 class UserDefined(MapClassifier):
     """
     User Specified Binning
@@ -2318,10 +2310,10 @@ class UserDefined(MapClassifier):
         legend=False,
         cmap="YlGnBu",
         axis_on=True,
-        legend_kwds={"loc": "lower right", 'fmt': FMT},
+        legend_kwds={"loc": "lower right", "fmt": FMT},
         file_name=None,
         dpi=600,
-        ax=None
+        ax=None,
     ):
         try:
             import matplotlib.pyplot as plt
@@ -2338,8 +2330,8 @@ class UserDefined(MapClassifier):
             f = plt.gcf()
 
         fmt = FMT
-        if 'fmt' in legend_kwds:
-            fmt = legend_kwds.pop('fmt')
+        if "fmt" in legend_kwds:
+            fmt = legend_kwds.pop("fmt")
 
         ax = gdf.assign(_cl=self.y).plot(
             column="_cl",
@@ -2359,7 +2351,6 @@ class UserDefined(MapClassifier):
         if file_name:
             plt.savefig(file_name, dpi=dpi)
         return f, ax
-
 
 
 class MaxP(MapClassifier):
@@ -2552,7 +2543,6 @@ class MaxP(MapClassifier):
             new = copy.deepcopy(self)
             new._update(y, bins, **kwargs)
             return new
-
 
 
 def _fit(y, classes):

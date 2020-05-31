@@ -536,7 +536,15 @@ class TestJenksCaspallForced(unittest.TestCase):
         jcf = JenksCaspallForced(self.V, k=5)
         np.testing.assert_array_almost_equal(
             jcf.bins,
-            np.array([1.34000000e00, 5.90000000e00, 1.67000000e01, 5.06500000e01, 4.11145000e03])
+            np.array(
+                [
+                    1.34000000e00,
+                    5.90000000e00,
+                    1.67000000e01,
+                    5.06500000e01,
+                    4.11145000e03,
+                ]
+            ),
         )
         np.testing.assert_array_almost_equal(jcf.counts, np.array([12, 12, 13, 9, 12]))
 
@@ -554,7 +562,7 @@ class TestUserDefined(unittest.TestCase):
     def test_UserDefined_max(self):
         bins = np.array([20, 30])
         ud = UserDefined(self.V, bins)
-        np.testing.assert_array_almost_equal(ud.bins, np.array([20.0, 30., 4111.45]))
+        np.testing.assert_array_almost_equal(ud.bins, np.array([20.0, 30.0, 4111.45]))
         np.testing.assert_array_almost_equal(ud.counts, np.array([37, 4, 17]))
 
 
@@ -601,23 +609,29 @@ class TestKClassifiers(unittest.TestCase):
         self.assertEqual(ks.best.gadf, 0.84810327199081048)
         self.assertEqual(ks.best.k, 4)
 
+
 class TestPooled(unittest.TestCase):
     def setUp(self):
         n = 20
-        self.data = np.array([np.arange(n)+i*n for i in range(1, 4)]).T
+        self.data = np.array([np.arange(n) + i * n for i in range(1, 4)]).T
 
     def test_pooled(self):
         res = Pooled(self.data, k=4)
         self.assertEqual(res.k, 4)
-        np.testing.assert_array_almost_equal(res.col_classifiers[0].counts,
-                                             np.array([15,  5,  0,  0]))
-        np.testing.assert_array_almost_equal(res.col_classifiers[-1].counts,
-                                             np.array([  0,  0, 5,  15]))
-        np.testing.assert_array_almost_equal(res.global_classifier.counts,
-                                             np.array([15,  15,  15,  15]))
-        res = Pooled(self.data, classifier='BoxPlot', hinge=1.5)
-        np.testing.assert_array_almost_equal(res.col_classifiers[0].bins,
-                                             np.array([ -9.5 ,  34.75,  49.5 ,  64.25, 108.5 ]))
+        np.testing.assert_array_almost_equal(
+            res.col_classifiers[0].counts, np.array([15, 5, 0, 0])
+        )
+        np.testing.assert_array_almost_equal(
+            res.col_classifiers[-1].counts, np.array([0, 0, 5, 15])
+        )
+        np.testing.assert_array_almost_equal(
+            res.global_classifier.counts, np.array([15, 15, 15, 15])
+        )
+        res = Pooled(self.data, classifier="BoxPlot", hinge=1.5)
+        np.testing.assert_array_almost_equal(
+            res.col_classifiers[0].bins, np.array([-9.5, 34.75, 49.5, 64.25, 108.5])
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

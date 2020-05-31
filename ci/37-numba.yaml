@@ -3,10 +3,10 @@ channels:
   - conda-forge
 dependencies:
   - python=3.7
-  - six
+  # required
   - scipy
-  - scikit-learn
   - beautifulsoup4
+  - scikit-learn
   # testing
   - pytest
   - pytest-cov
@@ -14,5 +14,7 @@ dependencies:
   - matplotlib
   # optional
   - geopandas
-  - numba
   - zstd
+  - networkx
+  - libpysal
+  - numba
