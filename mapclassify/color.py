@@ -2,7 +2,6 @@
 color handling for mapping and geovisualization
 """
 
-<<<<<<< HEAD
 from palettable import colorbrewer
 from collections import defaultdict
 
@@ -20,12 +19,9 @@ sequential = colorbrewer.COLOR_MAPS['Sequential']
 diverging = colorbrewer.COLOR_MAPS['Diverging']
 qualitative = colorbrewer.COLOR_MAPS['Qualitative']
 
-=======
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import matplotlib.colors as mpc
-from palettable import colorbrewer
->>>>>>> generating images for color selector
 
 IMG_DIR = "img"
 def make_color_bar_images(directory=IMG_DIR, width=1.0, height=0.2):
