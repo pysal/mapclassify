@@ -49,6 +49,7 @@ mapclassify is an open-source python library for Choropleth map classification. 
    :caption: Contents:
 
    Installation <installation>
+   Tutorial <tutorial>
    API <api>
    References <references>
 
