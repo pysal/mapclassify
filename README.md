@@ -8,7 +8,6 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## Using `mapclassify`
-=======
 `mapclassify` implements a family of classification schemes for choropleth maps.
 Its focus is on the determination of the number of classes, and the assignment
 of observations to those classes. It is intended for use with upstream mapping
