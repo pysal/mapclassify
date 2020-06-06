@@ -18,8 +18,8 @@ that handle the rendering of the maps.
 For further theoretical background see [Rey, S.J., D. Arribas-Bel, and L.J. Wolf (2020) "Geographic Data Science with PySAL and the PyData Stack”](https://geographicdata.science/book/notebooks/05_choropleth.html).
 
 ## Using `mapclassify`
+Load built-in example data reporting employment density in 58 California counties:
 
->>>>>>> 222e20f48eac93c60b36762a5f949a6a28bccdeb
 ```python
 >>> import mapclassify
 >>> y = mapclassify.load_example()
@@ -333,8 +333,7 @@ array([5, 1, 2, 3, 2, 1, 5, 1, 3, 3, 1, 2, 2, 1, 2, 2, 2, 1, 5, 2, 4, 1, 2,
 ```
 
 
-Development Notes
------------------
+## Development Notes
 
 Because we use `geopandas` in development, and geopandas has stable `mapclassify` as a dependency, setting up a local development installation involves creating a conda environment, then replacing the stable `mapclassify` with the development version of `mapclassify` in the development environment. This can be accomplished with the following steps:
 
@@ -343,6 +342,6 @@ Because we use `geopandas` in development, and geopandas has stable `mapclassify
 conda-env create -f environment.yml
 conda activate mapclassify
 conda remove -n mapclassify mapclassify
-python setup.py develop
+pip install -e .
 ```
 
