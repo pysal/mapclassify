@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 import os
 import sys
 from os.path import relpath, join as pjoin
@@ -94,7 +94,8 @@ def setup_package():
             "Programming Language :: Python :: 3.8",
         ],
         license="3-Clause BSD",
-        packages=find_packages(),
+        packages=[package],
+        py_modules=[package],
         package_data=package_data,
         install_requires=install_reqs,
         extras_require=extras_reqs,
