@@ -13,6 +13,7 @@ dependencies:
   - jupyter
   - jupyterlab
   - nbconvert
+  - networkx
   - palettable
   - descartes
   - pip:
