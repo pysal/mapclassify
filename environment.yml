@@ -9,9 +9,11 @@ dependencies:
   - geopandas
   - ipywidgets
   - libpysal
+  - matplotlib
   - jupyter
   - jupyterlab
   - nbconvert
-  - brewer2mpl
+  - palettable
+  - descartes
   - pip:
     - git+https://github.com/sjsrey/mapclassify.git@binder
