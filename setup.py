@@ -95,6 +95,7 @@ def setup_package():
         ],
         license="3-Clause BSD",
         packages=find_packages(),
+        py_modules=[package],
         package_data=package_data,
         install_requires=install_reqs,
         extras_require=extras_reqs,

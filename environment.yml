@@ -8,7 +8,14 @@ dependencies:
   - pip
   - geopandas
   - ipywidgets
+  - libpysal
+  - matplotlib
   - jupyter
   - jupyterlab
   - nbconvert
-  - brewer2mpl
+  - networkx
+  - palettable
+  - descartes
+  - seaborn
+  - pip:
+    - git+https://github.com/sjsrey/mapclassify.git@binder
