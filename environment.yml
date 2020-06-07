@@ -12,3 +12,5 @@ dependencies:
   - jupyterlab
   - nbconvert
   - brewer2mpl
+  - pip:
+    - - git+https://github.com/sjsrey/mapclassify.git@binder
