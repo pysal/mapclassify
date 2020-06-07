@@ -16,5 +16,6 @@ dependencies:
   - networkx
   - palettable
   - descartes
+  - seaborn
   - pip:
     - git+https://github.com/sjsrey/mapclassify.git@binder
