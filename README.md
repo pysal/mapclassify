@@ -6,6 +6,7 @@
 [![DOI](https://zenodo.org/badge/88918063.svg)](https://zenodo.org/badge/latestdoi/88918063)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/pysal/mapclassify/master)
 
 `mapclassify` implements a family of classification schemes for choropleth maps.
 Its focus is on the determination of the number of classes, and the assignment
