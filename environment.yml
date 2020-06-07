@@ -8,6 +8,7 @@ dependencies:
   - pip
   - geopandas
   - ipywidgets
+  - libpysal
   - jupyter
   - jupyterlab
   - nbconvert
