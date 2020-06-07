@@ -1,0 +1,14 @@
+# Run `conda-env create -f environment.yml`
+name: mapclassify
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.6
+  - pip
+  - geopandas
+  - ipywidgets
+  - jupyter
+  - jupyterlab
+  - nbconvert
+  - brewer2mpl

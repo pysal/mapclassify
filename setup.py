@@ -1,5 +1,6 @@
 from setuptools import setup, find_packages
 import os
+import sys
 from os.path import relpath, join as pjoin
 from distutils.command.build_py import build_py
 

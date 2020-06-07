@@ -24,5 +24,4 @@ from .classifiers import (
 )
 
 from .pooling import Pooled
-
 from .greedy import greedy

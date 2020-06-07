@@ -7,7 +7,18 @@
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
+`mapclassify` implements a family of classification schemes for choropleth maps.
+Its focus is on the determination of the number of classes, and the assignment
+of observations to those classes. It is intended for use with upstream mapping
+and geovisualization packages (see
+[geopandas](https://geopandas.org/mapping.html) and
+[geoplot](https://residentmario.github.io/geoplot/user_guide/Customizing_Plots.html))
+that handle the rendering of the maps.
+
+For further theoretical background see [Rey, S.J., D. Arribas-Bel, and L.J. Wolf (2020) "Geographic Data Science with PySAL and the PyData Stack”](https://geographicdata.science/book/notebooks/05_choropleth.html).
+
 ## Using `mapclassify`
+Load built-in example data reporting employment density in 58 California counties:
 
 ```python
 >>> import mapclassify
@@ -320,3 +331,17 @@ array([5, 1, 2, 3, 2, 1, 5, 1, 3, 3, 1, 2, 2, 1, 2, 2, 2, 1, 5, 2, 4, 1, 2,
 9  4  0  4
 
 ```
+
+
+## Development Notes
+
+Because we use `geopandas` in development, and geopandas has stable `mapclassify` as a dependency, setting up a local development installation involves creating a conda environment, then replacing the stable `mapclassify` with the development version of `mapclassify` in the development environment. This can be accomplished with the following steps:
+
+
+```
+conda-env create -f environment.yml
+conda activate mapclassify
+conda remove -n mapclassify mapclassify
+pip install -e .
+```
+

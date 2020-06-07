@@ -4,3 +4,5 @@ codecov
 geopandas
 libpysal
 networkx
+palettable
+
