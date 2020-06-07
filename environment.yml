@@ -13,4 +13,4 @@ dependencies:
   - nbconvert
   - brewer2mpl
   - pip:
-    - - git+https://github.com/sjsrey/mapclassify.git@binder
+    - git+https://github.com/sjsrey/mapclassify.git@binder
