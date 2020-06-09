@@ -68,7 +68,7 @@ def test_random_sequential(pysal_geos):
     assert len(colors) == len(world)
     # it is based on random, does not return consistent result to be tested
 
-
+@pytest.mark.xfail(reason="temp - see where it fails")
 @pytest.mark.parametrize("pysal_geos", [None, 0])
 def test_smallest_last(pysal_geos):
     colors = greedy(world, strategy="smallest_last", min_distance=pysal_geos)
