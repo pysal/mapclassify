@@ -16,14 +16,24 @@ mapclassify.MaximumBreaks
       ~MaximumBreaks.__init__
       ~MaximumBreaks.find_bin
       ~MaximumBreaks.get_adcm
+      ~MaximumBreaks.get_fmt
       ~MaximumBreaks.get_gadf
+      ~MaximumBreaks.get_legend_classes
       ~MaximumBreaks.get_tss
       ~MaximumBreaks.make
       ~MaximumBreaks.plot
+      ~MaximumBreaks.set_fmt
+      ~MaximumBreaks.table
       ~MaximumBreaks.update
    
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MaximumBreaks.fmt
    
    

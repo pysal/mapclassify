@@ -16,13 +16,24 @@ mapclassify.Percentiles
       ~Percentiles.__init__
       ~Percentiles.find_bin
       ~Percentiles.get_adcm
+      ~Percentiles.get_fmt
       ~Percentiles.get_gadf
+      ~Percentiles.get_legend_classes
       ~Percentiles.get_tss
       ~Percentiles.make
+      ~Percentiles.plot
+      ~Percentiles.set_fmt
+      ~Percentiles.table
       ~Percentiles.update
    
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Percentiles.fmt
    
    

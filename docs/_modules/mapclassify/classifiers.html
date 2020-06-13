@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>mapclassify.classifiers &#8212; mapclassify v2.1.1 Manual</title>
+    <title>mapclassify.classifiers &#8212; mapclassify v2.3.0 Manual</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/pysal-styles.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="shortcut icon" href="../../_static/pysal_favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -38,13 +40,14 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           mapclassify</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.1.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.3.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
           <ul class="nav navbar-nav">
             
                 <li><a href="../../installation.html">Installation</a></li>
+                <li><a href="../../tutorial.html">Tutorial</a></li>
                 <li><a href="../../api.html">API</a></li>
                 <li><a href="../../references.html">References</a></li>
             
@@ -62,6 +65,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../installation.html#installing-released-version">Installing released version</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../installation.html#installing-development-version">Installing development version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/01_maximum_breaks.html">Introduction to mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/02_legends.html">Legends in mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/03_choropleth.html">Choropleth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/04_pooled.html">Pooled Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/05_Greedy_coloring.html">Getting started with mapclassify.greedy</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a><ul>
@@ -114,32 +125,35 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">A module of classification schemes for choropleth mapping.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">stats</span>
+<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span> <span class="k">as</span> <span class="n">KMEANS</span>
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span> <span class="k">as</span> <span class="n">Warn</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Sergio J. Rey&quot;</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;Map_Classifier&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MapClassifier&quot;</span><span class="p">,</span>
     <span class="s2">&quot;quantile&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Box_Plot&quot;</span><span class="p">,</span>
     <span class="s2">&quot;BoxPlot&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Equal_Interval&quot;</span><span class="p">,</span>
     <span class="s2">&quot;EqualInterval&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Fisher_Jenks&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Fisher_Jenks_Sampled&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Jenks_Caspall&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Jenks_Caspall_Forced&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Jenks_Caspall_Sampled&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Max_P_Classifier&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Maximum_Breaks&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Natural_Breaks&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FisherJenks&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FisherJenksSampled&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;JenksCaspall&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;JenksCaspallForced&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;JenksCaspallSampled&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HeadTailBreaks&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MaxP&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MaximumBreaks&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;NaturalBreaks&quot;</span><span class="p">,</span>
     <span class="s2">&quot;Quantiles&quot;</span><span class="p">,</span>
     <span class="s2">&quot;Percentiles&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Std_Mean&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;User_Defined&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;StdMean&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UserDefined&quot;</span><span class="p">,</span>
     <span class="s2">&quot;gadf&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;K_classifiers&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;HeadTail_Breaks&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;HeadTailBreaks&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;KClassifiers&quot;</span><span class="p">,</span>
     <span class="s2">&quot;CLASSIFIERS&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
@@ -164,18 +178,11 @@
 <span class="n">K</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># default number of classes in any map scheme with this as an argument</span>
 <span class="n">SEEDRANGE</span> <span class="o">=</span> <span class="mi">1000000</span>  <span class="c1"># range for drawing random integers from for Natural Breaks</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">stats</span>
-<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
-<span class="kn">import</span> <span class="nn">copy</span>
-<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="k">import</span> <span class="n">KMeans</span> <span class="k">as</span> <span class="n">KMEANS</span>
-<span class="kn">from</span> <span class="nn">warnings</span> <span class="k">import</span> <span class="n">warn</span> <span class="k">as</span> <span class="n">Warn</span>
-<span class="kn">from</span> <span class="nn">deprecated</span> <span class="k">import</span> <span class="n">deprecated</span>
 
 <span class="n">FMT</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">numba</span> <span class="k">import</span> <span class="n">jit</span>
+    <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
 
     <span class="k">def</span> <span class="nf">jit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
@@ -238,7 +245,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    intervals: list</span>
-<span class="sd">             k strings for class intervals </span>
+<span class="sd">             k strings for class intervals</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">edges</span><span class="p">,</span> <span class="n">max_width</span><span class="p">,</span> <span class="n">lower_open</span> <span class="o">=</span> <span class="n">_format_intervals</span><span class="p">(</span><span class="n">mc</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
     <span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
@@ -290,14 +297,6 @@
     <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
 
 
-<span class="nd">@deprecated</span><span class="p">(</span><span class="n">reason</span><span class="o">=</span><span class="s2">&quot;use head_tail_breaks&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">headTail_breaks</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">cuts</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    head tail breaks helper function</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">head_tail_breaks</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">cuts</span><span class="p">)</span>
-
-
 <span class="k">def</span> <span class="nf">head_tail_breaks</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">cuts</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    head tail breaks helper function</span>
@@ -305,8 +304,8 @@
     <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
     <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
     <span class="n">cuts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mean</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">headTail_breaks</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">values</span> <span class="o">&gt;=</span> <span class="n">mean</span><span class="p">],</span> <span class="n">cuts</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">values</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">head_tail_breaks</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">values</span> <span class="o">&gt;=</span> <span class="n">mean</span><span class="p">],</span> <span class="n">cuts</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cuts</span>
 
 
@@ -549,7 +548,7 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Helper function for doc tests</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">.datasets</span> <span class="k">import</span> <span class="n">calemp</span>
+    <span class="kn">from</span> <span class="nn">.datasets</span> <span class="kn">import</span> <span class="n">calemp</span>
 
     <span class="k">return</span> <span class="n">calemp</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
 
@@ -687,34 +686,8 @@
     <span class="k">return</span> <span class="n">kclass</span>
 
 
-<span class="k">def</span> <span class="nf">_dep_message</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">replacement</span><span class="p">,</span> <span class="n">when</span><span class="o">=</span><span class="s2">&quot;2020-01-31&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;2.1.0&quot;</span><span class="p">):</span>
-    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Deprecated (</span><span class="si">%s</span><span class="s2">): </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">original</span><span class="p">)</span>
-    <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot; is being renamed to </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="n">replacement</span>
-    <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">%s</span><span class="s2"> will be removed on </span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">when</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">msg</span>
-
-
-<span class="k">class</span> <span class="nc">DeprecationHelper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_target</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Deprecated&quot;</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">new_target</span> <span class="o">=</span> <span class="n">new_target</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
-
-    <span class="k">def</span> <span class="nf">_warn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">warnings</span> <span class="k">import</span> <span class="n">warn</span>
-
-        <span class="n">warn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_warn</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_target</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_warn</span><span class="p">()</span>
-        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_target</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
-
-
 <span class="k">class</span> <span class="nc">MapClassifier</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Abstract class for all map classifications :cite:`Slocum_2009`</span>
 
 <span class="sd">    For an array :math:`y` of :math:`n` values, a map classifier places each</span>
@@ -757,7 +730,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Map Classifier&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fmt</span> <span class="o">=</span> <span class="n">FMT</span>
@@ -899,7 +872,7 @@
 <span class="sd">        &gt;&gt;&gt; dbf = ps.io.open(ps.examples.get_path(&#39;baltim.dbf&#39;))</span>
 <span class="sd">        &gt;&gt;&gt; data = dbf.by_col_array(&#39;PRICE&#39;, &#39;LOTSZ&#39;, &#39;SQFT&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; my_bins = [1, 10, 20, 40, 80]</span>
-<span class="sd">        &gt;&gt;&gt; cl = [mc.User_Defined.make(bins=my_bins)(a) for a in data.T]</span>
+<span class="sd">        &gt;&gt;&gt; cl = [mc.UserDefined.make(bins=my_bins)(a) for a in data.T]</span>
 <span class="sd">        &gt;&gt;&gt; len(cl)</span>
 <span class="sd">        3</span>
 <span class="sd">        &gt;&gt;&gt; cl[0][:10]</span>
@@ -972,17 +945,17 @@
             <span class="n">new</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">new</span>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">fmt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmt</span>
         <span class="k">return</span> <span class="n">_get_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This will allow the classifier to be called like it&#39;s a function.</span>
 
@@ -1041,13 +1014,6 @@
 
     <span class="k">def</span> <span class="nf">_table_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
         <span class="n">labels</span><span class="p">,</span> <span class="n">largest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_legend_classes</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-        <span class="c1"># fmt = &quot;.%df&quot; % decimal</span>
-        <span class="c1"># fmt = &quot;%&quot; + fmt</span>
-        <span class="c1"># largest = max([len(fmt % i) for i in self.bins])</span>
-        <span class="c1"># width = largest</span>
-        <span class="c1"># fmt = &quot;%d.%df&quot; % (width, decimal)</span>
-        <span class="c1"># fmt = &quot;%&quot; + fmt</span>
         <span class="n">h1</span> <span class="o">=</span> <span class="s2">&quot;Lower&quot;</span>
         <span class="n">h1</span> <span class="o">=</span> <span class="n">h1</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="n">largest</span><span class="p">)</span>
         <span class="n">h2</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
@@ -1141,11 +1107,10 @@
         <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;YlGnBu&quot;</span><span class="p">,</span>
         <span class="n">axis_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">legend_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;loc&quot;</span><span class="p">:</span> <span class="s2">&quot;lower right&quot;</span><span class="p">},</span>
+        <span class="n">legend_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;loc&quot;</span><span class="p">:</span> <span class="s2">&quot;lower right&quot;</span><span class="p">,</span> <span class="s2">&quot;fmt&quot;</span><span class="p">:</span> <span class="n">FMT</span><span class="p">},</span>
         <span class="n">file_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
         <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">fmt</span><span class="o">=</span><span class="n">FMT</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Plot Mapclassiifer</span>
@@ -1173,7 +1138,7 @@
 <span class="sd">                        (Default: True)</span>
 <span class="sd">        legend_kwds   : dict, optional</span>
 <span class="sd">                        options for ax.legend()</span>
-<span class="sd">                        (Default: {&quot;loc&quot;: &quot;lower right&quot;})</span>
+<span class="sd">                        (Default: {&quot;loc&quot;: &quot;lower right&quot;, &#39;fmt&#39;:FMT})</span>
 <span class="sd">        file_name     : string, optional</span>
 <span class="sd">                        Name of file to save figure to.</span>
 <span class="sd">                        (Default: None)</span>
@@ -1194,9 +1159,10 @@
 
 <span class="sd">        &gt;&gt;&gt; import libpysal as lp</span>
 <span class="sd">        &gt;&gt;&gt; import geopandas</span>
+<span class="sd">        &gt;&gt;&gt; import mapclassify</span>
 <span class="sd">        &gt;&gt;&gt; gdf = geopandas.read_file(lp.examples.get_path(&quot;columbus.shp&quot;))</span>
-<span class="sd">        &gt;&gt;&gt; q5 = mapclassify.Quantiles(gdf.crime)</span>
-<span class="sd">        &gt;&gt;&gt; q5.plot(gdf)</span>
+<span class="sd">        &gt;&gt;&gt; q5 = mapclassify.Quantiles(gdf.CRIME)</span>
+<span class="sd">        &gt;&gt;&gt; q5.plot(gdf)  # doctest: +SKIP</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -1221,7 +1187,6 @@
             <span class="n">scheme</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">legend</span><span class="o">=</span><span class="n">legend</span><span class="p">,</span>
             <span class="n">legend_kwds</span><span class="o">=</span><span class="n">legend_kwds</span><span class="p">,</span>
-            <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">axis_on</span><span class="p">:</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
@@ -1230,10 +1195,6 @@
         <span class="k">if</span> <span class="n">file_name</span><span class="p">:</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">dpi</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">ax</span>
-
-
-<span class="n">msg</span> <span class="o">=</span> <span class="n">_dep_message</span><span class="p">(</span><span class="s2">&quot;Map_Classifer&quot;</span><span class="p">,</span> <span class="s2">&quot;MapClassifier&quot;</span><span class="p">)</span>
-<span class="n">Map_Classifier</span> <span class="o">=</span> <span class="n">DeprecationHelper</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="HeadTailBreaks"><a class="viewcode-back" href="../../generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks">[docs]</a><span class="k">class</span> <span class="nc">HeadTailBreaks</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
@@ -1289,7 +1250,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="HeadTailBreaks.__init__"><a class="viewcode-back" href="../../generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<div class="viewcode-block" id="HeadTailBreaks.__init__"><a class="viewcode-back" href="../../generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="n">MapClassifier</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;HeadTailBreaks&quot;</span></div>
 
@@ -1300,10 +1261,6 @@
         <span class="n">bins</span> <span class="o">=</span> <span class="n">head_tail_breaks</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">)</span></div>
-
-
-<span class="n">msg</span> <span class="o">=</span> <span class="n">_dep_message</span><span class="p">(</span><span class="s2">&quot;HeadTail_Breaks&quot;</span><span class="p">,</span> <span class="s2">&quot;HeadTailBreaks&quot;</span><span class="p">)</span>
-<span class="n">HeadTail_Breaks</span> <span class="o">=</span> <span class="n">DeprecationHelper</span><span class="p">(</span><span class="n">HeadTailBreaks</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="EqualInterval"><a class="viewcode-back" href="../../generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval">[docs]</a><span class="k">class</span> <span class="nc">EqualInterval</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
@@ -1354,7 +1311,7 @@
 <span class="sd">    with :math:`w=\\frac{max(y)-min(j)}{k}`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="EqualInterval.__init__"><a class="viewcode-back" href="../../generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">):</span>
+<div class="viewcode-block" id="EqualInterval.__init__"><a class="viewcode-back" href="../../generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        see class docstring</span>
 
@@ -1377,10 +1334,6 @@
         <span class="n">cuts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_y</span>
         <span class="n">bins</span> <span class="o">=</span> <span class="n">cuts</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">bins</span></div>
-
-
-<span class="n">msg</span> <span class="o">=</span> <span class="n">_dep_message</span><span class="p">(</span><span class="s2">&quot;Equal_Interval&quot;</span><span class="p">,</span> <span class="s2">&quot;EqualInterval&quot;</span><span class="p">)</span>
-<span class="n">Equal_Interval</span> <span class="o">=</span> <span class="n">DeprecationHelper</span><span class="p">(</span><span class="n">EqualInterval</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Percentiles"><a class="viewcode-back" href="../../generated/mapclassify.classifiers.Percentiles.html#mapclassify.Percentiles">[docs]</a><span class="k">class</span> <span class="nc">Percentiles</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
@@ -1425,7 +1378,7 @@
 <span class="sd">    2</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Percentiles.__init__"><a class="viewcode-back" href="../../generated/mapclassify.classifiers.Percentiles.html#mapclassify.Percentiles.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">pct</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">100</span><span class="p">]):</span>
+<div class="viewcode-block" id="Percentiles.__init__"><a class="viewcode-back" href="../../generated/mapclassify.classifiers.Percentiles.html#mapclassify.Percentiles.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">pct</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">100</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pct</span> <span class="o">=</span> <span class="n">pct</span>
         <span class="n">MapClassifier</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Percentiles&quot;</span></div>
@@ -1436,7 +1389,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">stats</span><span class="o">.</span><span class="n">scoreatpercentile</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pct</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Percentiles.update"><a class="viewcode-back" href="../../generated/mapclassify.classifiers.Percentiles.html#mapclassify.Percentiles.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add data or change classification parameters.</span>
 
@@ -1457,7 +1410,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">new</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="n">new</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">new</span></div>
+            <span class="k">return</span> <span class="n">new</span></div></div>
 
 
 <div class="viewcode-block" id="BoxPlot"><a class="viewcode-back" href="../../generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot">[docs]</a><span class="k">class</span> <span class="nc">BoxPlot</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
@@ -1526,7 +1479,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="BoxPlot.__init__"><a class="viewcode-back" href="../../generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">hinge</span><span class="o">=</span><span class="mf">1.5</span><span class="p">):</span>
+<div class="viewcode-block" id="BoxPlot.__init__"><a class="viewcode-back" href="../../generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">hinge</span><span class="o">=</span><span class="mf">1.5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1561,7 +1514,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">low_outlier_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yb</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">high_outlier_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yb</span> <span class="o">==</span> <span class="mi">5</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="BoxPlot.update"><a class="viewcode-back" href="../../generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add data or change classification parameters.</span>
 
@@ -1582,11 +1535,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">new</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="n">new</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">new</span></div>
-
-
-<span class="n">msg</span> <span class="o">=</span> <span class="n">_dep_message</span><span class="p">(</span><span class="s2">&quot;Box_Plot&quot;</span><span class="p">,</span> <span class="s2">&quot;BoxPlot&quot;</span><span class="p">)</span>
-<span class="n">Box_Plot</span> <span class="o">=</span> <span class="n">DeprecationHelper</span><span class="p">(</span><span class="n">BoxPlot</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">new</span></div></div>
 
 
 <div class="viewcode-block" id="Quantiles"><a class="viewcode-back" href="../../generated/mapclassify.classifiers.Quantiles.html#mapclassify.Quantiles">[docs]</a><span class="k">class</span> <span class="nc">Quantiles</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
@@ -1626,7 +1575,7 @@
 <span class="sd">    array([12, 11, 12, 11, 12])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Quantiles.__init__"><a class="viewcode-back" href="../../generated/mapclassify.classifiers.Quantiles.html#mapclassify.Quantiles.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">):</span>
+<div class="viewcode-block" id="Quantiles.__init__"><a class="viewcode-back" href="../../generated/mapclassify.classifiers.Quantiles.html#mapclassify.Quantiles.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
         <span class="n">MapClassifier</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Quantiles&quot;</span></div>
@@ -1683,7 +1632,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="StdMean.__init__"><a class="viewcode-back" href="../../generated/mapclassify.StdMean.html#mapclassify.StdMean.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">multiples</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]):</span>
+<div class="viewcode-block" id="StdMean.__init__"><a class="viewcode-back" href="../../generated/mapclassify.StdMean.html#mapclassify.StdMean.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">multiples</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">multiples</span> <span class="o">=</span> <span class="n">multiples</span>
         <span class="n">MapClassifier</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;StdMean&quot;</span></div>
@@ -1699,7 +1648,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cuts</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cuts</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="StdMean.update"><a class="viewcode-back" href="../../generated/mapclassify.StdMean.html#mapclassify.StdMean.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add data or change classification parameters.</span>
 
@@ -1720,11 +1669,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">new</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="n">new</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">new</span></div>
-
-
-<span class="n">msg</span> <span class="o">=</span> <span class="n">_dep_message</span><span class="p">(</span><span class="s2">&quot;Std_Mean&quot;</span><span class="p">,</span> <span class="s2">&quot;StdMean&quot;</span><span class="p">)</span>
-<span class="n">Std_Mean</span> <span class="o">=</span> <span class="n">DeprecationHelper</span><span class="p">(</span><span class="n">StdMean</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">new</span></div></div>
 
 
 <div class="viewcode-block" id="MaximumBreaks"><a class="viewcode-back" href="../../generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks">[docs]</a><span class="k">class</span> <span class="nc">MaximumBreaks</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
@@ -1768,7 +1713,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="MaximumBreaks.__init__"><a class="viewcode-back" href="../../generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">mindiff</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="MaximumBreaks.__init__"><a class="viewcode-back" href="../../generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">mindiff</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mindiff</span> <span class="o">=</span> <span class="n">mindiff</span>
         <span class="n">MapClassifier</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -1779,25 +1724,23 @@
         <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span>
         <span class="n">xs</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
         <span class="n">min_diff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mindiff</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">xs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">xs</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">diffs</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">d</span> <span class="o">&gt;</span> <span class="n">min_diff</span><span class="p">)]</span>
-        <span class="n">diffs</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">diffs</span><span class="p">)</span>
+        <span class="n">diffs</span> <span class="o">=</span> <span class="n">xs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">xs</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">diffs</span><span class="p">)</span>
         <span class="n">k1</span> <span class="o">=</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">diffs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">k1</span><span class="p">:</span>
-            <span class="n">diffs</span> <span class="o">=</span> <span class="n">diffs</span><span class="p">[</span><span class="o">-</span><span class="n">k1</span><span class="p">:]</span>
+
+        <span class="n">ud</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">diffs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ud</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">k1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Insufficient number of unique diffs. Breaks are random.&quot;</span><span class="p">)</span>
         <span class="n">mp</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cids</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">diff</span> <span class="ow">in</span> <span class="n">diffs</span><span class="p">:</span>
-            <span class="n">ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">d</span> <span class="o">==</span> <span class="n">diff</span><span class="p">)</span>
-            <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">cids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">id</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-                <span class="n">cp</span> <span class="o">=</span> <span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">+</span> <span class="n">xs</span><span class="p">[</span><span class="nb">id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span>
-                <span class="n">mp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">idxs</span><span class="p">[</span><span class="o">-</span><span class="n">c</span><span class="p">]</span>
+            <span class="n">cp</span> <span class="o">=</span> <span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+</span> <span class="n">xs</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span>
+            <span class="n">mp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cp</span><span class="p">)</span>
         <span class="n">mp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">mp</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mp</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="MaximumBreaks.update"><a class="viewcode-back" href="../../generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add data or change classification parameters.</span>
 
@@ -1819,11 +1762,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">new</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="n">new</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">new</span></div>
-
-
-<span class="n">msg</span> <span class="o">=</span> <span class="n">_dep_message</span><span class="p">(</span><span class="s2">&quot;Maximum_Breaks&quot;</span><span class="p">,</span> <span class="s2">&quot;MaximumBreaks&quot;</span><span class="p">)</span>
-<span class="n">Maximum_Breaks</span> <span class="o">=</span> <span class="n">DeprecationHelper</span><span class="p">(</span><span class="n">MaximumBreaks</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">new</span></div></div>
 
 
 <div class="viewcode-block" id="NaturalBreaks"><a class="viewcode-back" href="../../generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks">[docs]</a><span class="k">class</span> <span class="nc">NaturalBreaks</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
@@ -1879,7 +1818,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="NaturalBreaks.__init__"><a class="viewcode-back" href="../../generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<div class="viewcode-block" id="NaturalBreaks.__init__"><a class="viewcode-back" href="../../generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="n">initial</span>
         <span class="n">MapClassifier</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -1908,7 +1847,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">res0</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="NaturalBreaks.update"><a class="viewcode-back" href="../../generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add data or change classification parameters.</span>
 
@@ -1929,11 +1868,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">new</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="n">new</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">new</span></div>
-
-
-<span class="n">msg</span> <span class="o">=</span> <span class="n">_dep_message</span><span class="p">(</span><span class="s2">&quot;Natural_Breaks&quot;</span><span class="p">,</span> <span class="s2">&quot;NaturalBreaks&quot;</span><span class="p">)</span>
-<span class="n">Natural_Breaks</span> <span class="o">=</span> <span class="n">DeprecationHelper</span><span class="p">(</span><span class="n">NaturalBreaks</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">new</span></div></div>
 
 
 <div class="viewcode-block" id="FisherJenks"><a class="viewcode-back" href="../../generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks">[docs]</a><span class="k">class</span> <span class="nc">FisherJenks</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
@@ -1972,7 +1907,7 @@
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="FisherJenks.__init__"><a class="viewcode-back" href="../../generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">):</span>
+<div class="viewcode-block" id="FisherJenks.__init__"><a class="viewcode-back" href="../../generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">):</span>
 
         <span class="n">nu</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">nu</span> <span class="o">&lt;</span> <span class="n">k</span><span class="p">:</span>
@@ -1984,10 +1919,6 @@
     <span class="k">def</span> <span class="nf">_set_bins</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">_fisher_jenks_means</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])</span></div>
-
-
-<span class="n">msg</span> <span class="o">=</span> <span class="n">_dep_message</span><span class="p">(</span><span class="s2">&quot;Fisher_Jenks&quot;</span><span class="p">,</span> <span class="s2">&quot;FisherJenks&quot;</span><span class="p">)</span>
-<span class="n">Fisher_Jenks</span> <span class="o">=</span> <span class="n">DeprecationHelper</span><span class="p">(</span><span class="n">FisherJenks</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="FisherJenksSampled"><a class="viewcode-back" href="../../generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled">[docs]</a><span class="k">class</span> <span class="nc">FisherJenksSampled</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
@@ -2028,13 +1959,13 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="FisherJenksSampled.__init__"><a class="viewcode-back" href="../../generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">pct</span><span class="o">=</span><span class="mf">0.10</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="FisherJenksSampled.__init__"><a class="viewcode-back" href="../../generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">pct</span><span class="o">=</span><span class="mf">0.10</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
         <span class="n">n</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="n">pct</span> <span class="o">*</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">)</span> <span class="ow">and</span> <span class="n">truncate</span><span class="p">:</span>
             <span class="n">pct</span> <span class="o">=</span> <span class="mf">1000.0</span> <span class="o">/</span> <span class="n">n</span>
-        <span class="n">ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">pct</span><span class="p">))</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">pct</span><span class="p">))</span>
         <span class="n">yr</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">ids</span><span class="p">]</span>
         <span class="n">yr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># make sure we have the upper bound</span>
         <span class="n">yr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># make sure we have the min</span>
@@ -2045,15 +1976,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">yr_n</span> <span class="o">=</span> <span class="n">yr</span><span class="o">.</span><span class="n">size</span>
         <span class="n">MapClassifier</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yr</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">yb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">counts</span> <span class="o">=</span> <span class="n">bin1d</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Fisher_Jenks_Sampled&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;FisherJenksSampled&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_summary</span><span class="p">()</span>  <span class="c1"># have to recalculate summary stats</span></div>
 
     <span class="k">def</span> <span class="nf">_set_bins</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">fj</span> <span class="o">=</span> <span class="n">Fisher_Jenks</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">fj</span> <span class="o">=</span> <span class="n">FisherJenks</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">fj</span><span class="o">.</span><span class="n">bins</span>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="FisherJenksSampled.update"><a class="viewcode-back" href="../../generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add data or change classification parameters.</span>
 
@@ -2076,11 +2007,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">new</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="n">new</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">new</span></div>
-
-
-<span class="n">msg</span> <span class="o">=</span> <span class="n">_dep_message</span><span class="p">(</span><span class="s2">&quot;Fisher_Jenks_Sampled&quot;</span><span class="p">,</span> <span class="s2">&quot;FisherJenksSampled&quot;</span><span class="p">)</span>
-<span class="n">Fisher_Jenks_Sampled</span> <span class="o">=</span> <span class="n">DeprecationHelper</span><span class="p">(</span><span class="n">FisherJenksSampled</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">new</span></div></div>
 
 
 <div class="viewcode-block" id="JenksCaspall"><a class="viewcode-back" href="../../generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall">[docs]</a><span class="k">class</span> <span class="nc">JenksCaspall</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
@@ -2119,7 +2046,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="JenksCaspall.__init__"><a class="viewcode-back" href="../../generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">):</span>
+<div class="viewcode-block" id="JenksCaspall.__init__"><a class="viewcode-back" href="../../generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
         <span class="n">MapClassifier</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;JenksCaspall&quot;</span></div>
@@ -2150,14 +2077,10 @@
                 <span class="n">xb0</span> <span class="o">=</span> <span class="n">xb</span>
             <span class="n">it</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">xb</span> <span class="o">==</span> <span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rk</span><span class="p">])</span>
-        <span class="n">cuts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">xb</span> <span class="o">==</span> <span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sp</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">xb</span><span class="p">)])</span>
+        <span class="n">cuts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">xb</span> <span class="o">==</span> <span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">xb</span><span class="p">)])</span>
         <span class="n">cuts</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cuts</span><span class="p">),)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">cuts</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span> <span class="o">=</span> <span class="n">it</span></div>
-
-
-<span class="n">msg</span> <span class="o">=</span> <span class="n">_dep_message</span><span class="p">(</span><span class="s2">&quot;Jenks_Caspall&quot;</span><span class="p">,</span> <span class="s2">&quot;JenksCaspall&quot;</span><span class="p">)</span>
-<span class="n">Jenks_Caspall</span> <span class="o">=</span> <span class="n">DeprecationHelper</span><span class="p">(</span><span class="n">JenksCaspall</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="JenksCaspallSampled"><a class="viewcode-back" href="../../generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled">[docs]</a><span class="k">class</span> <span class="nc">JenksCaspallSampled</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
@@ -2221,12 +2144,12 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="JenksCaspallSampled.__init__"><a class="viewcode-back" href="../../generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">pct</span><span class="o">=</span><span class="mf">0.10</span><span class="p">):</span>
+<div class="viewcode-block" id="JenksCaspallSampled.__init__"><a class="viewcode-back" href="../../generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">pct</span><span class="o">=</span><span class="mf">0.10</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
         <span class="n">n</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span>
         <span class="k">if</span> <span class="n">pct</span> <span class="o">*</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">:</span>
             <span class="n">pct</span> <span class="o">=</span> <span class="mf">1000.0</span> <span class="o">/</span> <span class="n">n</span>
-        <span class="n">ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">pct</span><span class="p">))</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">pct</span><span class="p">))</span>
         <span class="n">yr</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">ids</span><span class="p">]</span>
         <span class="n">yr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># make sure we have the upper bound</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">original_y</span> <span class="o">=</span> <span class="n">y</span>
@@ -2244,7 +2167,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">jc</span><span class="o">.</span><span class="n">bins</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span> <span class="o">=</span> <span class="n">jc</span><span class="o">.</span><span class="n">iterations</span>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="JenksCaspallSampled.update"><a class="viewcode-back" href="../../generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add data or change classification parameters.</span>
 
@@ -2266,11 +2189,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">new</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="n">new</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">new</span></div>
-
-
-<span class="n">msg</span> <span class="o">=</span> <span class="n">_dep_message</span><span class="p">(</span><span class="s2">&quot;Jenks_Caspall_Sampled&quot;</span><span class="p">,</span> <span class="s2">&quot;JenksCaspallSampled&quot;</span><span class="p">)</span>
-<span class="n">Jenks_Caspall_Sampled</span> <span class="o">=</span> <span class="n">DeprecationHelper</span><span class="p">(</span><span class="n">JenksCaspallSampled</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">new</span></div></div>
 
 
 <div class="viewcode-block" id="JenksCaspallForced"><a class="viewcode-back" href="../../generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced">[docs]</a><span class="k">class</span> <span class="nc">JenksCaspallForced</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
@@ -2304,26 +2223,19 @@
 <span class="sd">    &gt;&gt;&gt; jcf.k</span>
 <span class="sd">    5</span>
 <span class="sd">    &gt;&gt;&gt; jcf.bins</span>
-<span class="sd">    array([[1.34000e+00],</span>
-<span class="sd">           [5.90000e+00],</span>
-<span class="sd">           [1.67000e+01],</span>
-<span class="sd">           [5.06500e+01],</span>
-<span class="sd">           [4.11145e+03]])</span>
+<span class="sd">    array([1.34000e+00, 5.90000e+00, 1.67000e+01, 5.06500e+01, 4.11145e+03])</span>
 <span class="sd">    &gt;&gt;&gt; jcf.counts</span>
 <span class="sd">    array([12, 12, 13,  9, 12])</span>
 <span class="sd">    &gt;&gt;&gt; jcf4 = mc.JenksCaspallForced(cal, k = 4)</span>
 <span class="sd">    &gt;&gt;&gt; jcf4.k</span>
 <span class="sd">    4</span>
 <span class="sd">    &gt;&gt;&gt; jcf4.bins</span>
-<span class="sd">    array([[2.51000e+00],</span>
-<span class="sd">           [8.70000e+00],</span>
-<span class="sd">           [3.66800e+01],</span>
-<span class="sd">           [4.11145e+03]])</span>
+<span class="sd">    array([2.51000e+00, 8.70000e+00, 3.66800e+01, 4.11145e+03])</span>
 <span class="sd">    &gt;&gt;&gt; jcf4.counts</span>
 <span class="sd">    array([15, 14, 14, 15])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="JenksCaspallForced.__init__"><a class="viewcode-back" href="../../generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">):</span>
+<div class="viewcode-block" id="JenksCaspallForced.__init__"><a class="viewcode-back" href="../../generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
         <span class="n">MapClassifier</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;JenksCaspallForced&quot;</span></div>
@@ -2352,7 +2264,7 @@
             <span class="c1"># try upward moves first</span>
             <span class="n">moving_up</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">while</span> <span class="n">moving_up</span><span class="p">:</span>
-                <span class="n">class_ids</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">xb</span><span class="p">)</span>
+                <span class="n">class_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">xb</span><span class="p">)</span>
                 <span class="n">nk</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">xb</span> <span class="o">==</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">class_ids</span><span class="p">]</span>
                 <span class="n">candidates</span> <span class="o">=</span> <span class="n">nk</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
                 <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
@@ -2364,7 +2276,7 @@
                         <span class="n">mover</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ids</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                         <span class="n">tmp</span> <span class="o">=</span> <span class="n">xb</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
                         <span class="n">tmp</span><span class="p">[</span><span class="n">mover</span><span class="p">]</span> <span class="o">=</span> <span class="n">xb</span><span class="p">[</span><span class="n">mover</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
-                        <span class="n">tm</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="n">tmp</span> <span class="o">==</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">sp</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">tmp</span><span class="p">)]</span>
+                        <span class="n">tm</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="n">tmp</span> <span class="o">==</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">tmp</span><span class="p">)]</span>
                         <span class="n">txbar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">tm</span><span class="p">[</span><span class="n">xbi</span><span class="p">]</span> <span class="k">for</span> <span class="n">xbi</span> <span class="ow">in</span> <span class="n">tmp</span><span class="p">])</span>
                         <span class="n">txbar</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
                         <span class="n">tss</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">txbar</span>
@@ -2380,7 +2292,7 @@
                     <span class="n">moving_up</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">moving_down</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">while</span> <span class="n">moving_down</span><span class="p">:</span>
-                <span class="n">class_ids</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">xb</span><span class="p">)</span>
+                <span class="n">class_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">xb</span><span class="p">)</span>
                 <span class="n">nk</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">xb</span> <span class="o">==</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">class_ids</span><span class="p">]</span>
                 <span class="n">candidates</span> <span class="o">=</span> <span class="n">nk</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
                 <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
@@ -2394,7 +2306,7 @@
                         <span class="n">target_class</span> <span class="o">=</span> <span class="n">mover_class</span> <span class="o">-</span> <span class="mi">1</span>
                         <span class="n">tmp</span> <span class="o">=</span> <span class="n">xb</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
                         <span class="n">tmp</span><span class="p">[</span><span class="n">mover</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_class</span>
-                        <span class="n">tm</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="n">tmp</span> <span class="o">==</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">sp</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">tmp</span><span class="p">)]</span>
+                        <span class="n">tm</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="n">tmp</span> <span class="o">==</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">tmp</span><span class="p">)]</span>
                         <span class="n">txbar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">tm</span><span class="p">[</span><span class="n">xbi</span><span class="p">]</span> <span class="k">for</span> <span class="n">xbi</span> <span class="ow">in</span> <span class="n">tmp</span><span class="p">])</span>
                         <span class="n">txbar</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
                         <span class="n">tss</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">txbar</span>
@@ -2411,13 +2323,10 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">up_moves</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">down_moves</span><span class="p">:</span>
                 <span class="n">solving</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">it</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">cuts</span> <span class="o">=</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">xb</span> <span class="o">==</span> <span class="n">c</span><span class="p">])</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">sp</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">xb</span><span class="p">)]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cuts</span><span class="p">)</span>
+        <span class="n">cuts</span> <span class="o">=</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">xb</span> <span class="o">==</span> <span class="n">c</span><span class="p">])</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">xb</span><span class="p">)]</span>
+        <span class="n">cuts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cuts</span><span class="p">),</span> <span class="p">(</span><span class="n">k</span><span class="p">,))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">cuts</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">iterations</span> <span class="o">=</span> <span class="n">it</span></div>
-
-
-<span class="n">msg</span> <span class="o">=</span> <span class="n">_dep_message</span><span class="p">(</span><span class="s2">&quot;Jenks_Caspall_Forced&quot;</span><span class="p">,</span> <span class="s2">&quot;JenksCaspallForced&quot;</span><span class="p">)</span>
-<span class="n">Jenks_Caspall_Forced</span> <span class="o">=</span> <span class="n">DeprecationHelper</span><span class="p">(</span><span class="n">JenksCaspallForced</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="UserDefined"><a class="viewcode-back" href="../../generated/mapclassify.UserDefined.html#mapclassify.UserDefined">[docs]</a><span class="k">class</span> <span class="nc">UserDefined</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
@@ -2469,9 +2378,9 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="UserDefined.__init__"><a class="viewcode-back" href="../../generated/mapclassify.UserDefined.html#mapclassify.UserDefined.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">bins</span><span class="p">):</span>
+<div class="viewcode-block" id="UserDefined.__init__"><a class="viewcode-back" href="../../generated/mapclassify.UserDefined.html#mapclassify.UserDefined.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">bins</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">bins</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
-            <span class="n">bins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+            <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
@@ -2492,7 +2401,7 @@
             <span class="n">bins</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span>
         <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="UserDefined.update"><a class="viewcode-back" href="../../generated/mapclassify.UserDefined.html#mapclassify.UserDefined.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add data or change classification parameters.</span>
 
@@ -2513,10 +2422,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">new</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="n">new</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">new</span>
+            <span class="k">return</span> <span class="n">new</span></div>
 
     <span class="c1"># We have to override the plot method for additional kwargs for UserDefined</span>
-    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span>
+<div class="viewcode-block" id="UserDefined.plot"><a class="viewcode-back" href="../../generated/mapclassify.UserDefined.html#mapclassify.UserDefined.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">gdf</span><span class="p">,</span>
         <span class="n">border_color</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span>
@@ -2525,11 +2434,10 @@
         <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;YlGnBu&quot;</span><span class="p">,</span>
         <span class="n">axis_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">legend_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;loc&quot;</span><span class="p">:</span> <span class="s2">&quot;lower right&quot;</span><span class="p">},</span>
+        <span class="n">legend_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;loc&quot;</span><span class="p">:</span> <span class="s2">&quot;lower right&quot;</span><span class="p">,</span> <span class="s2">&quot;fmt&quot;</span><span class="p">:</span> <span class="n">FMT</span><span class="p">},</span>
         <span class="n">file_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
         <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">fmt</span><span class="o">=</span><span class="n">FMT</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -2545,6 +2453,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">f</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
 
+        <span class="n">fmt</span> <span class="o">=</span> <span class="n">FMT</span>
+        <span class="k">if</span> <span class="s2">&quot;fmt&quot;</span> <span class="ow">in</span> <span class="n">legend_kwds</span><span class="p">:</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="n">legend_kwds</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;fmt&quot;</span><span class="p">)</span>
+
         <span class="n">ax</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">_cl</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
             <span class="n">column</span><span class="o">=</span><span class="s2">&quot;_cl&quot;</span><span class="p">,</span>
             <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
@@ -2555,7 +2467,6 @@
             <span class="n">legend</span><span class="o">=</span><span class="n">legend</span><span class="p">,</span>
             <span class="n">legend_kwds</span><span class="o">=</span><span class="n">legend_kwds</span><span class="p">,</span>
             <span class="n">classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;bins&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">},</span>  <span class="c1"># for UserDefined</span>
-            <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">axis_on</span><span class="p">:</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
@@ -2563,11 +2474,7 @@
             <span class="n">f</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">file_name</span><span class="p">:</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">dpi</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">ax</span></div>
-
-
-<span class="n">msg</span> <span class="o">=</span> <span class="n">_dep_message</span><span class="p">(</span><span class="s2">&quot;User_Defined&quot;</span><span class="p">,</span> <span class="s2">&quot;UserDefined&quot;</span><span class="p">)</span>
-<span class="n">User_Defined</span> <span class="o">=</span> <span class="n">DeprecationHelper</span><span class="p">(</span><span class="n">UserDefined</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">ax</span></div></div>
 
 
 <div class="viewcode-block" id="MaxP"><a class="viewcode-back" href="../../generated/mapclassify.MaxP.html#mapclassify.MaxP">[docs]</a><span class="k">class</span> <span class="nc">MaxP</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
@@ -2601,15 +2508,15 @@
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; import mapclassify as mc</span>
 <span class="sd">    &gt;&gt;&gt; cal = mc.load_example()</span>
-<span class="sd">    &gt;&gt;&gt; mp = mc.Max_P_Classifier(cal)</span>
+<span class="sd">    &gt;&gt;&gt; mp = mc.MaxP(cal)</span>
 <span class="sd">    &gt;&gt;&gt; mp.bins</span>
-<span class="sd">    array([   8.7 ,   16.7 ,   20.47,  110.74, 4111.45])</span>
+<span class="sd">    array([   8.7 ,   16.7 ,   20.47,   66.26, 4111.45])</span>
 
 <span class="sd">    &gt;&gt;&gt; mp.counts</span>
-<span class="sd">    array([29,  8,  1, 12,  8])</span>
+<span class="sd">    array([29,  8,  1, 10, 10])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="MaxP.__init__"><a class="viewcode-back" href="../../generated/mapclassify.MaxP.html#mapclassify.MaxP.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<div class="viewcode-block" id="MaxP.__init__"><a class="viewcode-back" href="../../generated/mapclassify.MaxP.html#mapclassify.MaxP.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="n">initial</span>
         <span class="n">MapClassifier</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -2738,7 +2645,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="MaxP.update"><a class="viewcode-back" href="../../generated/mapclassify.MaxP.html#mapclassify.MaxP.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add data or change classification parameters.</span>
 
@@ -2759,11 +2666,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">new</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="n">new</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">new</span></div>
-
-
-<span class="n">msg</span> <span class="o">=</span> <span class="n">_dep_message</span><span class="p">(</span><span class="s2">&quot;Max_P_Classifier&quot;</span><span class="p">,</span> <span class="s2">&quot;MaxP&quot;</span><span class="p">)</span>
-<span class="n">Max_P_Classifier</span> <span class="o">=</span> <span class="n">DeprecationHelper</span><span class="p">(</span><span class="n">MaxP</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">new</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">_fit</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">classes</span><span class="p">):</span>
@@ -2796,7 +2699,7 @@
 
 
 <div class="viewcode-block" id="gadf"><a class="viewcode-back" href="../../generated/mapclassify.gadf.html#mapclassify.gadf">[docs]</a><span class="k">def</span> <span class="nf">gadf</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Quantiles&quot;</span><span class="p">,</span> <span class="n">maxk</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">pct</span><span class="o">=</span><span class="mf">0.8</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Evaluate the Goodness of Absolute Deviation Fit of a Classifier</span>
 <span class="sd">    Finds the minimum value of k for which gadf&gt;pct</span>
 
@@ -2909,7 +2812,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="KClassifiers.__init__"><a class="viewcode-back" href="../../generated/mapclassify.KClassifiers.html#mapclassify.KClassifiers.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">pct</span><span class="o">=</span><span class="mf">0.8</span><span class="p">):</span>
+<div class="viewcode-block" id="KClassifiers.__init__"><a class="viewcode-back" href="../../generated/mapclassify.KClassifiers.html#mapclassify.KClassifiers.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">pct</span><span class="o">=</span><span class="mf">0.8</span><span class="p">):</span>
         <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">best</span> <span class="o">=</span> <span class="n">gadf</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="s2">&quot;FisherJenks&quot;</span><span class="p">,</span> <span class="n">maxk</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">pct</span><span class="o">=</span><span class="n">pct</span><span class="p">)</span>
         <span class="n">pct0</span> <span class="o">=</span> <span class="n">best</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -2927,10 +2830,6 @@
                 <span class="n">pct0</span> <span class="o">=</span> <span class="n">pct1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">results</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">best</span> <span class="o">=</span> <span class="n">best</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div></div>
-
-
-<span class="n">msg</span> <span class="o">=</span> <span class="n">_dep_message</span><span class="p">(</span><span class="s2">&quot;K_classifiers&quot;</span><span class="p">,</span> <span class="s2">&quot;KClassifiers&quot;</span><span class="p">)</span>
-<span class="n">K_classifiers</span> <span class="o">=</span> <span class="n">DeprecationHelper</span><span class="p">(</span><span class="n">KClassifiers</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -2947,8 +2846,8 @@
       
     </p>
     <p>
-        &copy; Copyright 2018, pysal developers.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.0.<br/>
+        &copy; Copyright 2018-, pysal developers.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.<br/>
     </p>
   </div>
 </footer>

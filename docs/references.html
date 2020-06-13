@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>References &#8212; mapclassify v2.1.1 Manual</title>
+    <title>References &#8212; mapclassify v2.3.0 Manual</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/pysal-styles.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="shortcut icon" href="_static/pysal_favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -39,13 +41,14 @@
         </button>
         <a class="navbar-brand" href="index.html">
           mapclassify</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.1.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.3.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
           <ul class="nav navbar-nav">
             
                 <li><a href="installation.html">Installation</a></li>
+                <li><a href="tutorial.html">Tutorial</a></li>
                 <li><a href="api.html">API</a></li>
                 <li><a href="#">References</a></li>
             
@@ -63,6 +66,14 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#installing-released-version">Installing released version</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#installing-development-version">Installing development version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/01_maximum_breaks.html">Introduction to mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/02_legends.html">Legends in mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/03_choropleth.html">Choropleth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/04_pooled.html">Pooled Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/05_Greedy_coloring.html">Getting started with mapclassify.greedy</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a><ul>
@@ -117,13 +128,13 @@
   <div class="section" id="references">
 <h1>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h1>
 <p id="bibtex-bibliography-references-0"><dl class="citation">
-<dt class="label" id="jiang-2013"><span class="brackets">Jia13</span></dt>
+<dt class="bibtex label" id="jiang-2013"><span class="brackets">Jia13</span></dt>
 <dd><p>Bin Jiang. Head/tail breaks: a new classification scheme for data with a heavy-tailed distribution. <em>The Professional Geographer</em>, 65(3):482–494, Aug 2013. URL: <a class="reference external" href="http://dx.doi.org/10.1080/00330124.2012.700499">http://dx.doi.org/10.1080/00330124.2012.700499</a>, <a class="reference external" href="https://doi.org/10.1080/00330124.2012.700499">doi:10.1080/00330124.2012.700499</a>.</p>
 </dd>
-<dt class="label" id="rey-2016"><span class="brackets">RSL16</span></dt>
+<dt class="bibtex label" id="rey-2016"><span class="brackets">RSL16</span></dt>
 <dd><p>Sergio J. Rey, Philip Stephens, and Jason Laura. An evaluation of sampling and full enumeration strategies for Fisher Jenks classification in big data settings. <em>Transactions in GIS</em>, 21(4):796–810, Oct 2016. URL: <a class="reference external" href="http://dx.doi.org/10.1111/tgis.12236">http://dx.doi.org/10.1111/tgis.12236</a>, <a class="reference external" href="https://doi.org/10.1111/tgis.12236">doi:10.1111/tgis.12236</a>.</p>
 </dd>
-<dt class="label" id="slocum-2009"><span class="brackets">SMKH09</span></dt>
+<dt class="bibtex label" id="slocum-2009"><span class="brackets">SMKH09</span></dt>
 <dd><p>Terry A. Slocum, Robert B. McMaster, Fritz C. Kessler, and Hugh H. Howard. <em>Thematic cartography and geovisualization</em>. Pearson Prentice Hall, Upper Saddle River, 2009.</p>
 </dd>
 </dl>
@@ -149,8 +160,8 @@
       
     </p>
     <p>
-        &copy; Copyright 2018, pysal developers.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.0.<br/>
+        &copy; Copyright 2018-, pysal developers.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.<br/>
     </p>
   </div>
 </footer>

@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>giddy.markov.Spatial_Markov &#8212; mapclassify v2.1.1 Manual</title>
+    <title>giddy.markov.Spatial_Markov &#8212; mapclassify v2.3.0 Manual</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/pysal-styles.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="shortcut icon" href="../_static/pysal_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -38,13 +40,14 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           mapclassify</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.1.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.3.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
           <ul class="nav navbar-nav">
             
                 <li><a href="../installation.html">Installation</a></li>
+                <li><a href="../tutorial.html">Tutorial</a></li>
                 <li><a href="../api.html">API</a></li>
                 <li><a href="../references.html">References</a></li>
             
@@ -62,6 +65,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-released-version">Installing released version</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-development-version">Installing development version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/01_maximum_breaks.html">Introduction to mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/02_legends.html">Legends in mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/03_choropleth.html">Choropleth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/04_pooled.html">Pooled Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/05_Greedy_coloring.html">Getting started with mapclassify.greedy</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api.html">API</a><ul>
@@ -115,9 +126,9 @@
       
   <div class="section" id="giddy-markov-spatial-markov">
 <h1>giddy.markov.Spatial_Markov<a class="headerlink" href="#giddy-markov-spatial-markov" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="giddy.markov.Spatial_Markov">
-<em class="property">class </em><code class="sig-prename descclassname">giddy.markov.</code><code class="sig-name descname">Spatial_Markov</code><span class="sig-paren">(</span><em class="sig-param">y</em>, <em class="sig-param">w</em>, <em class="sig-param">k=4</em>, <em class="sig-param">m=4</em>, <em class="sig-param">permutations=0</em>, <em class="sig-param">fixed=True</em>, <em class="sig-param">discrete=False</em>, <em class="sig-param">cutoffs=None</em>, <em class="sig-param">lag_cutoffs=None</em>, <em class="sig-param">variable_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/giddy/markov.html#Spatial_Markov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#giddy.markov.Spatial_Markov" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">giddy.markov.</code><code class="sig-name descname">Spatial_Markov</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">w</span></em>, <em class="sig-param"><span class="n">k</span><span class="o">=</span><span class="default_value">4</span></em>, <em class="sig-param"><span class="n">m</span><span class="o">=</span><span class="default_value">4</span></em>, <em class="sig-param"><span class="n">permutations</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">fixed</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">discrete</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">cutoffs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lag_cutoffs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">variable_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fill_empty_classes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/giddy/markov.html#Spatial_Markov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#giddy.markov.Spatial_Markov" title="Permalink to this definition">¶</a></dt>
 <dd><p>Markov transitions conditioned on the value of the spatial lag.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -161,18 +172,24 @@ discretization.</p>
 </dd>
 <dt><strong>variable_name</strong><span class="classifier">string</span></dt><dd><p>name of variable.</p>
 </dd>
+<dt><strong>fill_empty_classes: bool</strong></dt><dd><p>If True, assign 1 to diagonal elements which fall in rows
+full of 0s to ensure each conditional transition
+probability matrix is a stochastic matrix (each row
+sums up to 1). In other words, the probability of
+staying at that state is 1.</p>
+</dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>Based on <span id="id1">[Rey2001]</span>.</p>
+<p>Based on <span class="bibtex" id="id1">[Rey2001]</span>.</p>
 <p>The shtest and chi2 tests should be used with caution as they are based on
 classic theory assuming random transitions. The x2 based test is
 preferable since it simulates the randomness under the null. It is an
 experimental test requiring further analysis.</p>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">libpysal</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">giddy.markov</span> <span class="k">import</span> <span class="n">Spatial_Markov</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">libpysal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">giddy.markov</span> <span class="kn">import</span> <span class="n">Spatial_Markov</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">libpysal</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">libpysal</span><span class="o">.</span><span class="n">examples</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="s2">&quot;usjoin.csv&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pci</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">f</span><span class="o">.</span><span class="n">by_col</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">)]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1929</span><span class="p">,</span><span class="mi">2010</span><span class="p">)])</span>
@@ -188,11 +205,11 @@ implementation allows users to classify the continuous incomes in a more
 flexible way.</p>
 <p>(1) Global quintiles to discretize the income data (k=5), and global
 quintiles to discretize the spatial lags of incomes (m=5).</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span> <span class="o">=</span> <span class="n">Spatial_Markov</span><span class="p">(</span><span class="n">rpci</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">variable_name</span><span class="o">=</span><span class="s1">&#39;rpci&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span> <span class="o">=</span> <span class="n">Spatial_Markov</span><span class="p">(</span><span class="n">rpci</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">variable_name</span><span class="o">=</span><span class="s1">&#39;rpci&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>We can examine the cutoffs for the incomes and cutoffs for the spatial lags</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">cutoffs</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">cutoffs</span>
 <span class="go">array([0.83999133, 0.94707545, 1.03242697, 1.14911154])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">lag_cutoffs</span>
 <span class="go">array([0.88973386, 0.95891917, 1.01469758, 1.1183566 ])</span>
@@ -201,7 +218,7 @@ quintiles to discretize the spatial lags of incomes (m=5).</p>
 <p>Obviously, they are slightly different.</p>
 <p>We now look at the estimated spatially lag conditioned transition
 probability matrices.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">sm</span><span class="o">.</span><span class="n">P</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">sm</span><span class="o">.</span><span class="n">P</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 <span class="go">[[0.96341463 0.0304878  0.00609756 0.         0.        ]</span>
 <span class="go"> [0.06040268 0.83221477 0.10738255 0.         0.        ]</span>
@@ -236,7 +253,7 @@ in the 2nd quintile. The probability of a rich economy remaining
 rich is 0.976 if their neighbors are in the 5th quintile, but if their
 neighbors are in the 4th quintile this drops to 0.903.</p>
 <p>The global transition probability matrix is estimated:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">p</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sm</span><span class="o">.</span><span class="n">p</span><span class="p">)</span>
 <span class="go">[[0.91461837 0.07503234 0.00905563 0.00129366 0.        ]</span>
 <span class="go"> [0.06570302 0.82654402 0.10512484 0.00131406 0.00131406]</span>
 <span class="go"> [0.00520833 0.10286458 0.79427083 0.09505208 0.00260417]</span>
@@ -246,7 +263,7 @@ neighbors are in the 4th quintile this drops to 0.903.</p>
 </div>
 <p>The Q and likelihood ratio statistics are both significant indicating
 the dynamics are not homogeneous across the lag classes:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;</span><span class="si">%.3f</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">sm</span><span class="o">.</span><span class="n">LR</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;</span><span class="si">%.3f</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">sm</span><span class="o">.</span><span class="n">LR</span>
 <span class="go">&#39;170.659&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;</span><span class="si">%.3f</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">sm</span><span class="o">.</span><span class="n">Q</span>
 <span class="go">&#39;200.624&#39;</span>
@@ -262,7 +279,7 @@ the dynamics are not homogeneous across the lag classes:</p>
 0.435 (0.018) of the values in the first quintile, 0.263 (0.200) in
 the second quintile, 0.204 (0.190) in the third, 0.0684 (0.255) in the
 fourth and 0.029 (0.337) in the fifth quintile.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">S</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">S</span>
 <span class="go">array([[0.43509425, 0.2635327 , 0.20363044, 0.06841983, 0.02932278],</span>
 <span class="go">       [0.13391287, 0.33993305, 0.25153036, 0.23343016, 0.04119356],</span>
 <span class="go">       [0.12124869, 0.21137444, 0.2635101 , 0.29013417, 0.1137326 ],</span>
@@ -277,9 +294,8 @@ leaving the first quintile. They enter the fourth quintile after
 Poor states within neighbors in the fourth quintile return to the
 first quintile, on average, after 12.88 years, and would enter the
 fourth quintile after 28.473 years.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">sm</span><span class="o">.</span><span class="n">F</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">sm</span><span class="o">.</span><span class="n">F</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-<span class="gp">...</span>
 <span class="go">[[  2.29835259  28.95614035  46.14285714  80.80952381 279.42857143]</span>
 <span class="go"> [ 33.86549708   3.79459555  22.57142857  57.23809524 255.85714286]</span>
 <span class="go"> [ 43.60233918   9.73684211   4.91085714  34.66666667 233.28571429]</span>
@@ -309,12 +325,12 @@ fourth quintile after 28.473 years.</p>
 </div>
 <p>(2) Global quintiles to discretize the income data (k=5), and global
 quartiles to discretize the spatial lags of incomes (m=4).</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span> <span class="o">=</span> <span class="n">Spatial_Markov</span><span class="p">(</span><span class="n">rpci</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">variable_name</span><span class="o">=</span><span class="s1">&#39;rpci&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span> <span class="o">=</span> <span class="n">Spatial_Markov</span><span class="p">(</span><span class="n">rpci</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">variable_name</span><span class="o">=</span><span class="s1">&#39;rpci&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>We can also examine the cutoffs for the incomes and cutoffs for the spatial
 lags:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">cutoffs</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">cutoffs</span>
 <span class="go">array([0.83999133, 0.94707545, 1.03242697, 1.14911154])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">lag_cutoffs</span>
 <span class="go">array([0.91440247, 0.98583079, 1.08698351])</span>
@@ -322,7 +338,7 @@ lags:</p>
 </div>
 <p>We now look at the estimated spatially lag conditioned transition
 probability matrices.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">sm</span><span class="o">.</span><span class="n">P</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">sm</span><span class="o">.</span><span class="n">P</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 <span class="go">[[0.95708955 0.03544776 0.00746269 0.         0.        ]</span>
 <span class="go"> [0.05825243 0.83980583 0.10194175 0.         0.        ]</span>
@@ -349,7 +365,7 @@ probability matrices.</p>
 <p>We now obtain 4 5*5 spatial lag conditioned transition probability
 matrices instead of 5 as in case (1).</p>
 <p>The Q and likelihood ratio statistics are still both significant.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;</span><span class="si">%.3f</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">sm</span><span class="o">.</span><span class="n">LR</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;</span><span class="si">%.3f</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">sm</span><span class="o">.</span><span class="n">LR</span>
 <span class="go">&#39;172.105&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;</span><span class="si">%.3f</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">sm</span><span class="o">.</span><span class="n">Q</span>
 <span class="go">&#39;321.128&#39;</span>
@@ -370,7 +386,7 @@ meaning that relative incomes:
 2.3 between 0.9 and 1.0 : class 2
 2.4 between 1.0 and 1.2: class 3
 2.5 larger than 1.2: class 4</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span> <span class="o">=</span> <span class="n">Spatial_Markov</span><span class="p">(</span><span class="n">rpci</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">cutoffs</span><span class="o">=</span><span class="n">cc</span><span class="p">,</span> <span class="n">lag_cutoffs</span><span class="o">=</span><span class="n">cc</span><span class="p">,</span> <span class="n">variable_name</span><span class="o">=</span><span class="s1">&#39;rpci&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">cutoffs</span>
 <span class="go">array([0.8, 0.9, 1. , 1.2])</span>
@@ -409,12 +425,56 @@ meaning that relative incomes:
 <span class="go"> [0.         0.         0.         0.03932584 0.96067416]]</span>
 </pre></div>
 </div>
+<p>(3.1) As we can see from the above estimated conditional transition
+probability matrix, some rows are full of zeros which violate the
+requirement of a transition probability matrix that every row sums to 1.
+We can easily adjust this assigning fill_empty_classes = True when initializing
+Spatial_Markov.
+&gt;&gt;&gt; sm = Spatial_Markov(rpci, w, cutoffs=cc, lag_cutoffs=cc, fill_empty_classes=True)
+&gt;&gt;&gt; for p in sm.P:
+…     print(p)
+[[0.96703297 0.03296703 0.         0.         0.        ]</p>
+<blockquote>
+<div><p>[0.10638298 0.68085106 0.21276596 0.         0.        ]
+[0.         0.14285714 0.7755102  0.08163265 0.        ]
+[0.         0.         0.5        0.5        0.        ]
+[0.         0.         0.         0.         1.        ]]</p>
+</div></blockquote>
+<dl class="simple">
+<dt>[[0.88636364 0.10606061 0.00757576 0.         0.        ]</dt><dd><p>[0.04402516 0.89308176 0.06289308 0.         0.        ]
+[0.         0.05882353 0.8627451  0.07843137 0.        ]
+[0.         0.         0.13846154 0.86153846 0.        ]
+[0.         0.         0.         0.         1.        ]]</p>
+</dd>
+<dt>[[0.78082192 0.17808219 0.02739726 0.01369863 0.        ]</dt><dd><p>[0.03488372 0.90406977 0.05813953 0.00290698 0.        ]
+[0.         0.05919003 0.84735202 0.09034268 0.00311526]
+[0.         0.         0.05811623 0.92985972 0.01202405]
+[0.         0.         0.         0.14285714 0.85714286]]</p>
+</dd>
+<dt>[[0.82692308 0.15384615 0.         0.01923077 0.        ]</dt><dd><p>[0.0703125  0.7890625  0.125      0.015625   0.        ]
+[0.00295858 0.06213018 0.82248521 0.10946746 0.00295858]
+[0.         0.00185529 0.07606679 0.88497217 0.03710575]
+[0.         0.         0.         0.07803468 0.92196532]]</p>
+</dd>
+<dt>[[1.         0.         0.         0.         0.        ]</dt><dd><p>[0.         1.         0.         0.         0.        ]
+[0.         0.06666667 0.9        0.03333333 0.        ]
+[0.         0.         0.05660377 0.90566038 0.03773585]
+[0.         0.         0.         0.03932584 0.96067416]]</p>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">array([[0.54148249, 0.16780007, 0.24991499, 0.04080245, 0.        ],</span>
+<span class="go">       [0.        , 0.        , 0.        , 0.        , 1.        ]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span><span class="o">.</span><span class="n">S</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="go">array([0.03607655, 0.22667277, 0.25883041, 0.43607249, 0.04234777])</span>
+</pre></div>
+</div>
 <p>(4) Spatial_Markov also accept discrete time series and calculate
 categorical spatial lags on which several transition probability matrices
 are conditioned.
 Let’s still use the US state income time series to demonstrate. We first
 discretize them into categories and then pass them to Spatial_Markov.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">mapclassify</span> <span class="k">as</span> <span class="nn">mc</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">mapclassify</span> <span class="k">as</span> <span class="nn">mc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">Quantiles</span><span class="p">(</span><span class="n">rpci</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">yb</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">rpci</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sm</span> <span class="o">=</span> <span class="n">Spatial_Markov</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">discrete</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">variable_name</span><span class="o">=</span><span class="s1">&#39;discretized rpci&#39;</span><span class="p">)</span>
@@ -467,24 +527,30 @@ spatial lags.</p>
 <dt><strong>p</strong><span class="classifier">array</span></dt><dd><p>(k, k), transition probability matrix for a-spatial
 Markov.</p>
 </dd>
-<dt><strong>s</strong><span class="classifier">array</span></dt><dd><p>(k, 1), ergodic distribution for a-spatial Markov.</p>
+<dt><strong>s</strong><span class="classifier">array</span></dt><dd><p>(k, ), steady state distribution for a-spatial Markov.</p>
+</dd>
+<dt><strong>f</strong><span class="classifier">array</span></dt><dd><p>(k, k), first mean passage times for a-spatial Markov.</p>
 </dd>
 <dt><strong>transitions</strong><span class="classifier">array</span></dt><dd><p>(k, k), counts of transitions between each state i and j
 for a-spatial Markov.</p>
 </dd>
-<dt><strong>T</strong><span class="classifier">array</span></dt><dd><p>(k, k, k), counts of transitions for each conditional
+<dt><strong>T</strong><span class="classifier">array</span></dt><dd><p>(m, k, k), counts of transitions for each conditional
 Markov.  T[0] is the matrix of transitions for
-observations with lags in the 0th quantile; T[k-1] is the
-transitions for the observations with lags in the k-1th.</p>
+observations with lags in the 0th quantile; T[m-1] is the
+transitions for the observations with lags in the m-1th.</p>
 </dd>
-<dt><strong>P</strong><span class="classifier">array</span></dt><dd><p>(k, k, k), transition probability matrix for spatial
+<dt><strong>P</strong><span class="classifier">array</span></dt><dd><p>(m, k, k), transition probability matrix for spatial
 Markov first dimension is the conditioned on the lag.</p>
 </dd>
-<dt><strong>S</strong><span class="classifier">array</span></dt><dd><p>(k, k), steady state distributions for spatial Markov.
-Each row is a conditional steady_state.</p>
+<dt><strong>S</strong><span class="classifier">arraylike</span></dt><dd><p>(m, k), steady state distributions for spatial Markov.
+Each row is a conditional steady state distribution.
+If one (or more) spatially conditional Markov chain is
+reducible (having more than 1 steady state distribution),
+this attribute is an array of m arrays of varying
+dimensions.</p>
 </dd>
-<dt><strong>F</strong><span class="classifier">array</span></dt><dd><p>(k, k, k),first mean passage times.
-First dimension is conditioned on the lag.</p>
+<dt><strong>F</strong><span class="classifier">array</span></dt><dd><p>(m, k, k),first mean passage times.
+First dimension is conditioned on the spatial lag.</p>
 </dd>
 <dt><strong>shtest</strong><span class="classifier">list</span></dt><dd><p>(k elements), each element of the list is a tuple for a
 multinomial difference test between the steady state
@@ -519,12 +585,12 @@ permutations of the rows of the original transitions.</p>
 permutations.</p>
 </dd>
 <dt><strong>Q</strong><span class="classifier">float</span></dt><dd><p>Chi-square test of homogeneity across lag classes based
-on <span id="id2">[Bickenbach2003]</span>.</p>
+on <span class="bibtex" id="id2">[Bickenbach2003]</span>.</p>
 </dd>
 <dt><strong>Q_p_value</strong><span class="classifier">float</span></dt><dd><p>p-value for Q.</p>
 </dd>
 <dt><strong>LR</strong><span class="classifier">float</span></dt><dd><p>Likelihood ratio statistic for homogeneity across lag
-classes based on <span id="id3">[Bickenbach2003]</span>.</p>
+classes based on <span class="bibtex" id="id3">[Bickenbach2003]</span>.</p>
 </dd>
 <dt><strong>LR_p_value</strong><span class="classifier">float</span></dt><dd><p>p-value for LR.</p>
 </dd>
@@ -533,22 +599,19 @@ classes based on <span id="id3">[Bickenbach2003]</span>.</p>
 </dl>
 </dd>
 </dl>
-<p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="giddy.markov.Spatial_Markov.summary.html#giddy.markov.Spatial_Markov.summary" title="giddy.markov.Spatial_Markov.summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summary</span></code></a>(self[, file_name])</p></td>
-<td><p>A summary method to call the Markov homogeneity test to test for temporally lagged spatial dependence.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
+<dl class="py method">
 <dt id="giddy.markov.Spatial_Markov.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">y</em>, <em class="sig-param">w</em>, <em class="sig-param">k=4</em>, <em class="sig-param">m=4</em>, <em class="sig-param">permutations=0</em>, <em class="sig-param">fixed=True</em>, <em class="sig-param">discrete=False</em>, <em class="sig-param">cutoffs=None</em>, <em class="sig-param">lag_cutoffs=None</em>, <em class="sig-param">variable_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/giddy/markov.html#Spatial_Markov.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#giddy.markov.Spatial_Markov.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">w</span></em>, <em class="sig-param"><span class="n">k</span><span class="o">=</span><span class="default_value">4</span></em>, <em class="sig-param"><span class="n">m</span><span class="o">=</span><span class="default_value">4</span></em>, <em class="sig-param"><span class="n">permutations</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">fixed</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">discrete</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">cutoffs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">lag_cutoffs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">variable_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fill_empty_classes</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/giddy/markov.html#Spatial_Markov.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#giddy.markov.Spatial_Markov.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="giddy.markov.Spatial_Markov.summary">
+<code class="sig-name descname">summary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">file_name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/giddy/markov.html#Spatial_Markov.summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#giddy.markov.Spatial_Markov.summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>A summary method to call the Markov homogeneity test to test for
+temporally lagged spatial dependence.</p>
+<p>To learn more about the properties of the tests, refer to
+<span class="bibtex" id="id4">[Rey2016a]</span> and <span class="bibtex" id="id5">[Kang2018]</span>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -574,8 +637,8 @@ classes based on <span id="id3">[Bickenbach2003]</span>.</p>
       
     </p>
     <p>
-        &copy; Copyright 2018, pysal developers.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.0.<br/>
+        &copy; Copyright 2018-, pysal developers.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.<br/>
     </p>
   </div>
 </footer>

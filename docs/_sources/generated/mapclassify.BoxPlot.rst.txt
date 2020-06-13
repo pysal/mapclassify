@@ -16,14 +16,24 @@ mapclassify.BoxPlot
       ~BoxPlot.__init__
       ~BoxPlot.find_bin
       ~BoxPlot.get_adcm
+      ~BoxPlot.get_fmt
       ~BoxPlot.get_gadf
+      ~BoxPlot.get_legend_classes
       ~BoxPlot.get_tss
       ~BoxPlot.make
       ~BoxPlot.plot
+      ~BoxPlot.set_fmt
+      ~BoxPlot.table
       ~BoxPlot.update
    
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BoxPlot.fmt
    
    

@@ -24,9 +24,10 @@ notebooks:
 	cp ../notebooks/??_*.ipynb notebooks/.
 
 sync:
-	@rsync -avh --exclude '.nojekyll' _build/html ../docs/ --delete
+	@rsync -avh --exclude '.nojekyll' _build/html/ ../docs/ --delete
 	@make clean
 
 clean:
 	rm -rf $(BUILDDIR)/*
 	rm -rf auto_examples/
+
