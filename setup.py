@@ -74,6 +74,7 @@ def setup_package():
         version=__version__,
         description="Classification Schemes for Choropleth Maps.",
         long_description=long_description,
+        long_description_content_type="text/markdown",
         url="https://github.com/pysal/%s" % package,
         maintainer="Serge Rey, Wei Kang",
         maintainer_email="sjsrey@gmail.com, weikang9009@gmail.com",
