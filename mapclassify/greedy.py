@@ -284,10 +284,15 @@ def greedy(
     color : pd.Series
         pandas.Series representing assinged color codes
     """
-    try:
-        import networkx as nx
-    except ImportError:
-        raise ImportError("The 'networkx' package is required.")
+    if strategy != "balanced":
+        try:
+            import networkx as nx
+
+            STRATEGIES = nx.algorithms.coloring.greedy_coloring.STRATEGIES.keys()
+            
+        except ImportError:
+            raise ImportError("The 'networkx' package is required.")
+
     try:
         import pandas as pd
     except ImportError:
@@ -297,9 +302,8 @@ def greedy(
     except ImportError:
         raise ImportError("The 'libpysal' package is required.")
 
-    STRATEGIES = nx.algorithms.coloring.greedy_coloring.STRATEGIES.keys()
-
     if min_distance is not None:
+        # TODO: use libpysal's fuzzy_contiguity instead of _geos_sw once pysal/libpysal#280 is released
         sw = _geos_sw(gdf, tolerance=min_distance, silence_warnings=silence_warnings)
 
     if not isinstance(sw, W):

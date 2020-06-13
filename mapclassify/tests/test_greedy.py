@@ -1,3 +1,5 @@
+import sys
+
 import geopandas as gpd
 from libpysal.weights import Queen
 
@@ -16,7 +18,6 @@ def test_default():
     assert colors.value_counts().to_list() == [36, 36, 35, 35, 35]
 
 
-@pytest.mark.xfail(reason="rtree missing on CI")
 @pytest.mark.parametrize("pysal_geos", [None, 0])
 def test_count(pysal_geos):
     colors = greedy(
@@ -27,7 +28,6 @@ def test_count(pysal_geos):
     assert colors.value_counts().to_list() == [36, 36, 35, 35, 35]
 
 
-@pytest.mark.xfail(reason="rtree missing on CI")
 @pytest.mark.parametrize("pysal_geos", [None, 0])
 def test_area(pysal_geos):
     colors = greedy(world, strategy="balanced", balance="area", min_distance=pysal_geos)
@@ -36,7 +36,6 @@ def test_area(pysal_geos):
     assert colors.value_counts().to_list() == [55, 49, 39, 32, 2]
 
 
-@pytest.mark.xfail(reason="rtree missing on CI")
 @pytest.mark.parametrize("pysal_geos", [None, 0])
 def test_centroid(pysal_geos):
     colors = greedy(
@@ -47,7 +46,6 @@ def test_centroid(pysal_geos):
     assert colors.value_counts().to_list() == [39, 36, 36, 34, 32]
 
 
-@pytest.mark.xfail(reason="rtree missing on CI")
 @pytest.mark.parametrize("pysal_geos", [None, 0])
 def test_distance(pysal_geos):
     colors = greedy(
@@ -58,7 +56,6 @@ def test_distance(pysal_geos):
     assert colors.value_counts().to_list() == [38, 36, 35, 34, 34]
 
 
-@pytest.mark.xfail(reason="rtree missing on CI")
 @pytest.mark.parametrize("pysal_geos", [None, 0])
 def test_largest_first(pysal_geos):
     colors = greedy(world, strategy="largest_first", min_distance=pysal_geos)
@@ -67,7 +64,6 @@ def test_largest_first(pysal_geos):
     assert colors.value_counts().to_list() == [64, 49, 42, 21, 1]
 
 
-@pytest.mark.xfail(reason="rtree missing on CI")
 @pytest.mark.parametrize("pysal_geos", [None, 0])
 def test_random_sequential(pysal_geos):
     colors = greedy(world, strategy="random_sequential", min_distance=pysal_geos)
@@ -75,7 +71,9 @@ def test_random_sequential(pysal_geos):
     # it is based on random, does not return consistent result to be tested
 
 
-@pytest.mark.xfail(reason="rtree missing on CI")
+@pytest.mark.skipif(
+    sys.version_info < (3, 7), reason="networkx issue networkx/networkx#3993"
+)
 @pytest.mark.parametrize("pysal_geos", [None, 0])
 def test_smallest_last(pysal_geos):
     colors = greedy(world, strategy="smallest_last", min_distance=pysal_geos)
@@ -84,7 +82,6 @@ def test_smallest_last(pysal_geos):
     assert colors.value_counts().to_list() == [71, 52, 39, 15]
 
 
-@pytest.mark.xfail(reason="rtree missing on CI")
 @pytest.mark.parametrize("pysal_geos", [None, 0])
 def test_independent_set(pysal_geos):
     colors = greedy(world, strategy="independent_set", min_distance=pysal_geos)
@@ -93,7 +90,6 @@ def test_independent_set(pysal_geos):
     assert colors.value_counts().to_list() == [91, 42, 26, 13, 5]
 
 
-@pytest.mark.xfail(reason="rtree missing on CI")
 @pytest.mark.parametrize("pysal_geos", [None, 0])
 def test_connected_sequential_bfs(pysal_geos):
     colors = greedy(world, strategy="connected_sequential_bfs", min_distance=pysal_geos)
@@ -102,7 +98,6 @@ def test_connected_sequential_bfs(pysal_geos):
     assert colors.value_counts().to_list() == [77, 46, 34, 18, 2]
 
 
-@pytest.mark.xfail(reason="rtree missing on CI")
 @pytest.mark.parametrize("pysal_geos", [None, 0])
 def test_connected_sequential_dfs(pysal_geos):
     colors = greedy(world, strategy="connected_sequential_dfs", min_distance=pysal_geos)
@@ -111,7 +106,6 @@ def test_connected_sequential_dfs(pysal_geos):
     assert colors.value_counts().to_list() == [75, 52, 34, 14, 2]
 
 
-@pytest.mark.xfail(reason="rtree missing on CI")
 @pytest.mark.parametrize("pysal_geos", [None, 0])
 def test_connected_sequential(pysal_geos):
     colors = greedy(world, strategy="connected_sequential", min_distance=pysal_geos)
@@ -120,7 +114,6 @@ def test_connected_sequential(pysal_geos):
     assert colors.value_counts().to_list() == [77, 46, 34, 18, 2]
 
 
-@pytest.mark.xfail(reason="rtree missing on CI")
 @pytest.mark.parametrize("pysal_geos", [None, 0])
 def test_saturation_largest_first(pysal_geos):
     colors = greedy(world, strategy="saturation_largest_first", min_distance=pysal_geos)
@@ -129,7 +122,6 @@ def test_saturation_largest_first(pysal_geos):
     assert colors.value_counts().to_list() == [71, 47, 42, 17]
 
 
-@pytest.mark.xfail(reason="rtree missing on CI")
 @pytest.mark.parametrize("pysal_geos", [None, 0])
 def test_DSATUR(pysal_geos):
     colors = greedy(world, strategy="DSATUR", min_distance=pysal_geos)
@@ -157,7 +149,6 @@ def test_sw():
     assert colors.value_counts().to_list() == [36, 36, 35, 35, 35]
 
 
-@pytest.mark.xfail(reason="rtree missing on CI")
 @pytest.mark.parametrize("pysal_geos", [None, 0])
 def test_index(pysal_geos):
     world["ten"] = world.index * 10
@@ -168,7 +159,6 @@ def test_index(pysal_geos):
     assert colors.value_counts().to_list() == [36, 36, 35, 35, 35]
 
 
-@pytest.mark.xfail(reason="rtree missing on CI")
 def test_min_distance():
     europe = world.loc[world.continent == "Europe"].to_crs(epsg=3035)
     colors = greedy(europe, min_distance=500000)
