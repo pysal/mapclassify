@@ -12,27 +12,27 @@ mapclassify is an open-source python library for Choropleth map classification. 
         <div class="col-sm-1 col-xs-hidden">
         </div>
         <div class="col-md-3 col-xs-12">
-            <a href="http://nbviewer.jupyter.org/github/pysal/mapclassify/blob/master/notebooks/south.ipynb" class="thumbnail">
-                <img src="_static/images/hr60q10.png" class="img-responsive center-block">
+            <a href="http://nbviewer.jupyter.org/github/pysal/mapclassify/blob/master/notebooks/03_choropleth.ipynb" class="thumbnail">
+                <img src="_static/images/equalinterval.png" class="img-responsive center-block">
                 <div class="caption text-center">
-                <h6>Homicide Rates - Deciles</h6>
+                <h6>Equal Interval</h6>
                 </div>
             </a>
         </div>
         <div class="col-sm-3 col-xs-12">
-            <a href="http://nbviewer.jupyter.org/github/pysal/mapclassify/blob/master/notebooks/south.ipynb" class="thumbnail">
-                <img src="_static/images/hr60fj10.png" class="img-responsive center-block">
+            <a href="http://nbviewer.jupyter.org/github/pysal/mapclassify/blob/master/notebooks/03_choropleth.ipynb" class="thumbnail">
+                <img src="_static/images/quantiles.png" class="img-responsive center-block">
                 <div class="caption text-center">
-                <h6>Homicide Rates - Fisher Jenks</h6>
+                <h6>Quantiles</h6>
                 </div>
             </a>
         </div>
         <div class="col-sm-3 col-xs-12">
-            <a href="http://nbviewer.jupyter.org/github/pysal/mapclassify/blob/master/notebooks/south.ipynb" class="thumbnail">
-                <img src="_static/images/hr60mb10.png"
+            <a href="http://nbviewer.jupyter.org/github/pysal/mapclassify/blob/master/notebooks/03_choropleth.ipynb" class="thumbnail">
+                <img src="_static/images/fisherjenks.png"
                 class="img-responsive center-block">
                 <div class="caption text-center">
-                <h6>Homicide Rates - Maximum Breaks
+                <h6>Fisher Jenks
                 </h6>
                 </div>
             </a>
