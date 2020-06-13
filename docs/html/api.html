@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>API reference &#8212; mapclassify v2.3.0 Manual</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pysal-styles.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="shortcut icon" href="_static/pysal_favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="mapclassify.BoxPlot" href="generated/mapclassify.BoxPlot.html" />
+    <link rel="prev" title="Getting started with mapclassify.greedy" href="notebooks/05_Greedy_coloring.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          mapclassify</a>
+        <span class="navbar-text navbar-version pull-left"><b>2.3.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="installation.html">Installation</a></li>
+                <li><a href="tutorial.html">Tutorial</a></li>
+                <li><a href="#">API</a></li>
+                <li><a href="references.html">References</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-released-version">Installing released version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-development-version">Installing development version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/01_maximum_breaks.html">Introduction to mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/02_legends.html">Legends in mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/03_choropleth.html">Choropleth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/04_pooled.html">Pooled Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/05_Greedy_coloring.html">Getting started with mapclassify.greedy</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#classifiers">Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">API reference</a><ul>
+<li><a class="reference internal" href="#classifiers">Classifiers</a></li>
+<li><a class="reference internal" href="#utilities">Utilities</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="api-reference">
+<span id="api-ref"></span><h1>API reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="classifiers">
+<span id="classifiers-api"></span><h2>Classifiers<a class="headerlink" href="#classifiers" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot" title="mapclassify.BoxPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapclassify.BoxPlot</span></code></a>(y[, hinge])</p></td>
+<td><p>BoxPlot Map Classification</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval" title="mapclassify.EqualInterval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapclassify.EqualInterval</span></code></a>(y[, k])</p></td>
+<td><p>Equal Interval Classification</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks" title="mapclassify.FisherJenks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapclassify.FisherJenks</span></code></a>(y[, k])</p></td>
+<td><p>Fisher Jenks optimal classifier - mean based</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled" title="mapclassify.FisherJenksSampled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapclassify.FisherJenksSampled</span></code></a>(y[, k, pct, …])</p></td>
+<td><p>Fisher Jenks optimal classifier - mean based using random sample</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/mapclassify.greedy.html#mapclassify.greedy" title="mapclassify.greedy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapclassify.greedy</span></code></a>(gdf[, strategy, balance, …])</p></td>
+<td><p>Color GeoDataFrame using various strategies of greedy (topological) colouring.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks" title="mapclassify.HeadTailBreaks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapclassify.HeadTailBreaks</span></code></a>(y)</p></td>
+<td><p>Head/tail Breaks Map Classification for Heavy-tailed Distributions</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall" title="mapclassify.JenksCaspall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapclassify.JenksCaspall</span></code></a>(y[, k])</p></td>
+<td><p>Jenks Caspall  Map Classification</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced" title="mapclassify.JenksCaspallForced"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapclassify.JenksCaspallForced</span></code></a>(y[, k])</p></td>
+<td><p>Jenks Caspall  Map Classification with forced movements</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled" title="mapclassify.JenksCaspallSampled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapclassify.JenksCaspallSampled</span></code></a>(y[, k, pct])</p></td>
+<td><p>Jenks Caspall Map Classification using a random sample</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/mapclassify.MaxP.html#mapclassify.MaxP" title="mapclassify.MaxP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapclassify.MaxP</span></code></a>(y[, k, initial])</p></td>
+<td><p>MaxP Map Classification</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks" title="mapclassify.MaximumBreaks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapclassify.MaximumBreaks</span></code></a>(y[, k, mindiff])</p></td>
+<td><p>Maximum Breaks Map Classification</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks" title="mapclassify.NaturalBreaks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapclassify.NaturalBreaks</span></code></a>(y[, k, initial])</p></td>
+<td><p>Natural Breaks Map Classification</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles" title="mapclassify.Quantiles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapclassify.Quantiles</span></code></a>(y[, k])</p></td>
+<td><p>Quantile Map Classification</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles" title="mapclassify.Percentiles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapclassify.Percentiles</span></code></a>(y[, pct])</p></td>
+<td><p>Percentiles Map Classification</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/mapclassify.StdMean.html#mapclassify.StdMean" title="mapclassify.StdMean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapclassify.StdMean</span></code></a>(y[, multiples])</p></td>
+<td><p>Standard Deviation and Mean Map Classification</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined" title="mapclassify.UserDefined"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapclassify.UserDefined</span></code></a>(y, bins)</p></td>
+<td><p>User Specified Binning</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="utilities">
+<h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/mapclassify.KClassifiers.html#mapclassify.KClassifiers" title="mapclassify.KClassifiers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapclassify.KClassifiers</span></code></a>(y[, pct])</p></td>
+<td><p>Evaluate all k-classifers and pick optimal based on k and GADF</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/mapclassify.gadf.html#mapclassify.gadf" title="mapclassify.gadf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mapclassify.gadf</span></code></a>(y[, method, maxk, pct])</p></td>
+<td><p>Evaluate the Goodness of Absolute Deviation Fit of a Classifier Finds the minimum value of k for which gadf&gt;pct</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="_sources/api.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-, pysal developers.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
