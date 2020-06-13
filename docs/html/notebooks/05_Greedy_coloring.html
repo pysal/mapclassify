@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Getting started with mapclassify.greedy &#8212; mapclassify v2.3.0 Manual</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pysal-styles.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="shortcut icon" href="../_static/pysal_favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API reference" href="../api.html" />
+    <link rel="prev" title="Pooled Classification" href="04_pooled.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          mapclassify</a>
+        <span class="navbar-text navbar-version pull-left"><b>2.3.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../installation.html">Installation</a></li>
+                <li><a href="../tutorial.html">Tutorial</a></li>
+                <li><a href="../api.html">API</a></li>
+                <li><a href="../references.html">References</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-released-version">Installing released version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-development-version">Installing development version</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01_maximum_breaks.html">Introduction to mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_legends.html">Legends in mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_choropleth.html">Choropleth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_pooled.html">Pooled Classification</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Getting started with mapclassify.greedy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#classifiers">Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Getting started with mapclassify.greedy</a><ul>
+<li><a class="reference internal" href="#Default">Default</a></li>
+<li><a class="reference internal" href="#Strategies">Strategies</a><ul>
+<li><a class="reference internal" href="#Balanced">Balanced</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#NetworkX-strategies">NetworkX strategies</a></li>
+<li><a class="reference internal" href="#Defining-adjacency">Defining adjacency</a><ul>
+<li><a class="reference internal" href="#libpysal-adjacency">libpysal adjacency</a><ul>
+<li><a class="reference internal" href="#Rook">Rook</a></li>
+<li><a class="reference internal" href="#Queen">Queen</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Intersection-based-adjacency">Intersection-based adjacency</a></li>
+<li><a class="reference internal" href="#Reusing-spatial-weights">Reusing spatial weights</a></li>
+<li><a class="reference internal" href="#Performance">Performance</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Comparison-of-strategies">Comparison of strategies</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container,
+div.nbinput.container div.prompt,
+div.nbinput.container div.input_area,
+div.nbinput.container div[class*=highlight],
+div.nbinput.container div[class*=highlight] pre,
+div.nboutput.container,
+div.nboutput.container div.prompt,
+div.nboutput.container div.output_area,
+div.nboutput.container div[class*=highlight],
+div.nboutput.container div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    background: #f5f5f5;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<div class="section" id="Getting-started-with-mapclassify.greedy">
+<h1>Getting started with mapclassify.greedy<a class="headerlink" href="#Getting-started-with-mapclassify.greedy" title="Permalink to this headline">¶</a></h1>
+<p>Greedy or topological coloring (or sequential coloring) is a cartographic method of assigning colors to polygons (or other geoemtries, <code class="docutils literal notranslate"><span class="pre">mapclassify.greedy</span></code> supports all geometry types) in such a way, that no two adjacent polygons share the same color.</p>
+<p><code class="docutils literal notranslate"><span class="pre">greedy</span></code> is a small toolkit within <code class="docutils literal notranslate"><span class="pre">mapclassify</span></code> providing such a functionality on top of GeoPandas GeoDataFrames. <code class="docutils literal notranslate"><span class="pre">mapclassify.greedy()</span></code> is all we need.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+
+<span class="kn">from</span> <span class="nn">mapclassify</span> <span class="kn">import</span> <span class="n">greedy</span>
+</pre></div>
+</div>
+</div>
+<p>Few of <code class="docutils literal notranslate"><span class="pre">greedy</span></code>‘s methods of coloring require either measuring of areas or distances. To obtain proper values, our GeoDataFrame needs to be in projected CRS. Let’s use Africa and reproject it to ’ESRI:102022’:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">world</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">gpd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="s1">&#39;naturalearth_lowres&#39;</span><span class="p">))</span>
+<span class="n">africa</span> <span class="o">=</span> <span class="n">world</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">world</span><span class="o">.</span><span class="n">continent</span> <span class="o">==</span> <span class="s1">&#39;Africa&#39;</span><span class="p">]</span>
+<span class="n">africa</span> <span class="o">=</span> <span class="n">africa</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="s1">&#39;ESRI:102022&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">africa</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_3_0.png" src="../_images/notebooks_05_Greedy_coloring_3_0.png" />
+</div>
+</div>
+<div class="section" id="Default">
+<h2>Default<a class="headerlink" href="#Default" title="Permalink to this headline">¶</a></h2>
+<p>The default usage of <code class="docutils literal notranslate"><span class="pre">greedy</span></code> is extremely simple. Greedy returns Series with color codes, so we can assign it directly as a new column of our GeoDataFrame:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">africa</span><span class="p">[</span><span class="s1">&#39;greedy_default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">africa</span><span class="p">)</span>
+<span class="n">africa</span><span class="p">[</span><span class="s1">&#39;greedy_default&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1     1
+2     0
+11    0
+12    1
+13    4
+Name: greedy_default, dtype: int64
+</pre></div></div>
+</div>
+<p>Using resulting color codes as plotting categories gives us following plot:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">africa</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;greedy_default&#39;</span><span class="p">,</span> <span class="n">categorical</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set3&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_7_0.png" src="../_images/notebooks_05_Greedy_coloring_7_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Strategies">
+<h2>Strategies<a class="headerlink" href="#Strategies" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Balanced">
+<h3>Balanced<a class="headerlink" href="#Balanced" title="Permalink to this headline">¶</a></h3>
+<p>Greedy offers several strategies of coloring. The default strategy is <code class="docutils literal notranslate"><span class="pre">balanced</span></code> based on <code class="docutils literal notranslate"><span class="pre">count</span></code> attempting to balance the number of features per each color. Other balanced modes are <code class="docutils literal notranslate"><span class="pre">area</span></code> (balance the area covered by each color), <code class="docutils literal notranslate"><span class="pre">distance</span></code> and <code class="docutils literal notranslate"><span class="pre">centroid</span></code> (both attemtps to balance the distance between colors). Each of them attempts to balance the color assignemnt according to different conditions and hence can result in a different number of colors.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">africa</span><span class="p">[</span><span class="s1">&#39;greedy_area&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">africa</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;balanced&#39;</span><span class="p">,</span> <span class="n">balance</span><span class="o">=</span><span class="s1">&#39;area&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">africa</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;greedy_area&#39;</span><span class="p">,</span> <span class="n">categorical</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set3&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_9_0.png" src="../_images/notebooks_05_Greedy_coloring_9_0.png" />
+</div>
+</div>
+<p>Different modes of balancing within <code class="docutils literal notranslate"><span class="pre">balanced</span></code> strategy can be set using <code class="docutils literal notranslate"><span class="pre">balance</span></code> keyword.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">africa</span><span class="p">[</span><span class="s1">&#39;greedy_distance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">africa</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;balanced&#39;</span><span class="p">,</span> <span class="n">balance</span><span class="o">=</span><span class="s1">&#39;distance&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">africa</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;greedy_distance&#39;</span><span class="p">,</span> <span class="n">categorical</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set3&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_11_0.png" src="../_images/notebooks_05_Greedy_coloring_11_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="NetworkX-strategies">
+<h2>NetworkX strategies<a class="headerlink" href="#NetworkX-strategies" title="Permalink to this headline">¶</a></h2>
+<p>On top of four modes of balanced coloring strategy, <code class="docutils literal notranslate"><span class="pre">greedy</span></code> offers all <code class="docutils literal notranslate"><span class="pre">networkx.greedy_coloring()</span></code> strategies, like <code class="docutils literal notranslate"><span class="pre">largest_first</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">africa</span><span class="p">[</span><span class="s1">&#39;greedy_largest_first&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">africa</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;largest_first&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">africa</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;greedy_largest_first&#39;</span><span class="p">,</span> <span class="n">categorical</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set3&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_13_0.png" src="../_images/notebooks_05_Greedy_coloring_13_0.png" />
+</div>
+</div>
+<p>Another strategy provided by networkX is <code class="docutils literal notranslate"><span class="pre">smallest_last</span></code>. All strategies provide different results. Check Comparison of strategies below for details.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">africa</span><span class="p">[</span><span class="s1">&#39;greedy_s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">africa</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;smallest_last&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">africa</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;greedy_s&#39;</span><span class="p">,</span> <span class="n">categorical</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set3&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_15_0.png" src="../_images/notebooks_05_Greedy_coloring_15_0.png" />
+</div>
+</div>
+<p>Greedy is variable in a way how to define adjacency and which coloring strategy to use. All options are described in this documentation together with comparison of their performance.</p>
+</div>
+<div class="section" id="Defining-adjacency">
+<h2>Defining adjacency<a class="headerlink" href="#Defining-adjacency" title="Permalink to this headline">¶</a></h2>
+<p>The key in toplogical coloring is the definition of adjacency, to understand which features are neighboring and could not share the same color. <code class="docutils literal notranslate"><span class="pre">mapclassify.greedy</span></code> comes with several methods of defining it. Binary spatial weights denoting adjacency are then stored as libpysal’s weight objects.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>For illustration purposes, let’s generate a 10x10 mesh of squared polygons:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">polys</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">polys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cap_style</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">polys</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_20_0.png" src="../_images/notebooks_05_Greedy_coloring_20_0.png" />
+</div>
+</div>
+<div class="section" id="libpysal-adjacency">
+<h3>libpysal adjacency<a class="headerlink" href="#libpysal-adjacency" title="Permalink to this headline">¶</a></h3>
+<p>The most performant way of generating spatial weights is using libpysal contiguity weights. As they are based on the shared nodes or edges, dataset needs to be topologically correct. Neighboring polygons needs to share vertices and edges, otherwise their relationship will not be captured.</p>
+<div class="section" id="Rook">
+<h4>Rook<a class="headerlink" href="#Rook" title="Permalink to this headline">¶</a></h4>
+<p>There are two ways how to define contiguity weights - <code class="docutils literal notranslate"><span class="pre">rook</span></code> and <code class="docutils literal notranslate"><span class="pre">queen</span></code>. Rook identifies two objects as neighboring only if they share at least on edge - line between two shared points. Use rook if you do not mind two polygons touching by hteir corners having the same color:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;rook&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">sw</span><span class="o">=</span><span class="s1">&#39;rook&#39;</span><span class="p">,</span> <span class="n">min_colors</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;rook&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">categorical</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set3&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_22_0.png" src="../_images/notebooks_05_Greedy_coloring_22_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Queen">
+<h4>Queen<a class="headerlink" href="#Queen" title="Permalink to this headline">¶</a></h4>
+<p>The default option in <code class="docutils literal notranslate"><span class="pre">greedy</span></code> is <code class="docutils literal notranslate"><span class="pre">queen</span></code> adjacency. That identifies two objects as neighboring if they share at least one point. It ensures that even poygons sharing only one corner will not share a color:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;queen&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">sw</span><span class="o">=</span><span class="s1">&#39;queen&#39;</span><span class="p">,</span> <span class="n">min_colors</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;queen&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">categorical</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set3&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_24_0.png" src="../_images/notebooks_05_Greedy_coloring_24_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Intersection-based-adjacency">
+<h3>Intersection-based adjacency<a class="headerlink" href="#Intersection-based-adjacency" title="Permalink to this headline">¶</a></h3>
+<p>As noted above, if the topology of the dataset is not ideal, libpysal might not identify two visually neighboring features as neighbors. <code class="docutils literal notranslate"><span class="pre">greedy</span></code> can use intersection-based algorithm using GEOS intersection to define if two features intersects in any way. They do not have to share any points. Naturally, such an approach is significantly slower (details below), but it can provide correct adjacency when libpysal fails.</p>
+<p>To make <code class="docutils literal notranslate"><span class="pre">greedy</span></code> to use this algorithm, one just needs to define <code class="docutils literal notranslate"><span class="pre">min_distance</span></code>. If it is set to 0, it behaves similarly to <code class="docutils literal notranslate"><span class="pre">queen</span></code> contiguity, just capturing all intersections:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;geos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">min_distance</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">min_colors</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;geos&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">categorical</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set3&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_26_0.png" src="../_images/notebooks_05_Greedy_coloring_26_0.png" />
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">min_distance</span></code> also sets the minimal distance between colors. To do that, all features within such a distance are identified as neighbors, hence no two features wihtin set distance can share the same color:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;dist1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">min_distance</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">min_colors</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;dist1&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">categorical</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set3&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_28_0.png" src="../_images/notebooks_05_Greedy_coloring_28_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Reusing-spatial-weights">
+<h3>Reusing spatial weights<a class="headerlink" href="#Reusing-spatial-weights" title="Permalink to this headline">¶</a></h3>
+<p>Passing <code class="docutils literal notranslate"><span class="pre">libpysal.weights.W</span></code> object to <code class="docutils literal notranslate"><span class="pre">sw</span></code>, will skip generating spatial weights and use the passed object instead. That will improve the performance if one intends to repeate the coloring multiple times. In that case, weights should be denoted using GeodataFrame’s index.</p>
+</div>
+<div class="section" id="Performance">
+<h3>Performance<a class="headerlink" href="#Performance" title="Permalink to this headline">¶</a></h3>
+<p>The difference in performance of libpysal and GEOS-based method is large, so it is recommended to use libpysal if possible. Details of comparison between all methods are below:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">times</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rook&#39;</span><span class="p">,</span> <span class="s1">&#39;queen&#39;</span><span class="p">,</span> <span class="s1">&#39;geos&#39;</span><span class="p">,</span> <span class="s1">&#39;dist1&#39;</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+    <span class="n">polys</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+            <span class="n">polys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cap_style</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">polys</span><span class="p">)</span>
+    <span class="n">timer</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">sw</span><span class="o">=</span><span class="s1">&#39;rook&#39;</span><span class="p">,</span> <span class="n">min_colors</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">s</span>
+        <span class="n">timer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="n">times</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;rook&#39;</span><span class="p">,</span> <span class="n">number</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">timer</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;rook: &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">timer</span><span class="p">),</span> <span class="s1">&#39;s; &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;colors&#39;</span><span class="p">)</span>
+    <span class="n">timer</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">sw</span><span class="o">=</span><span class="s1">&#39;queen&#39;</span><span class="p">,</span> <span class="n">min_colors</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">s</span>
+        <span class="n">timer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="n">times</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;queen&#39;</span><span class="p">,</span> <span class="n">number</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">timer</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;queen: &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">timer</span><span class="p">),</span> <span class="s1">&#39;s; &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;colors&#39;</span><span class="p">)</span>
+    <span class="n">timer</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">min_distance</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">min_colors</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">s</span>
+        <span class="n">timer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="n">times</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;geos&#39;</span><span class="p">,</span> <span class="n">number</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">timer</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;geos: &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">timer</span><span class="p">),</span> <span class="s1">&#39;s; &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;colors&#39;</span><span class="p">)</span>
+    <span class="n">timer</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">min_distance</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">min_colors</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">s</span>
+        <span class="n">timer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="n">times</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;dist1&#39;</span><span class="p">,</span> <span class="n">number</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">timer</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;dist1: &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">timer</span><span class="p">),</span> <span class="s1">&#39;s; &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;colors&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+10
+rook:  0.012784147262573242 s;  2 colors
+queen:  0.005277395248413086 s;  4 colors
+geos:  0.09882774353027343 s;  4 colors
+dist1:  0.13624219894409179 s;  10 colors
+20
+rook:  0.014943456649780274 s;  2 colors
+queen:  0.013994264602661132 s;  4 colors
+geos:  0.39907083511352537 s;  4 colors
+dist1:  0.547985029220581 s;  10 colors
+30
+rook:  0.045798969268798825 s;  2 colors
+queen:  0.03402729034423828 s;  4 colors
+geos:  0.9942648410797119 s;  4 colors
+dist1:  1.3713165283203126 s;  10 colors
+40
+rook:  0.07214193344116211 s;  2 colors
+queen:  0.06085910797119141 s;  4 colors
+geos:  1.7829225063323975 s;  4 colors
+dist1:  2.3820394039154054 s;  10 colors
+50
+rook:  0.11196293830871581 s;  2 colors
+queen:  0.10349822044372559 s;  4 colors
+geos:  2.5976396560668946 s;  4 colors
+dist1:  3.596402406692505 s;  10 colors
+60
+rook:  0.1528311252593994 s;  2 colors
+queen:  0.1566312789916992 s;  4 colors
+geos:  3.7294684410095216 s;  4 colors
+dist1:  5.268119859695434 s;  10 colors
+70
+rook:  0.21897730827331544 s;  2 colors
+queen:  0.2062161922454834 s;  4 colors
+geos:  5.2663861274719235 s;  4 colors
+dist1:  7.211857843399048 s;  10 colors
+80
+rook:  0.2827901840209961 s;  2 colors
+queen:  0.2973599433898926 s;  4 colors
+geos:  6.945807266235351 s;  4 colors
+dist1:  10.106542253494263 s;  10 colors
+90
+rook:  0.3535776138305664 s;  2 colors
+queen:  0.33614187240600585 s;  4 colors
+geos:  8.633152198791503 s;  4 colors
+dist1:  12.608657598495483 s;  10 colors
+100
+rook:  0.44251093864440916 s;  2 colors
+queen:  0.4285282611846924 s;  4 colors
+geos:  10.92662205696106 s;  4 colors
+dist1:  15.187224531173706 s;  10 colors
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">times</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;time (s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;# of polygons&#39;</span><span class="p">)</span>
+<span class="n">locs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">locs</span><span class="p">,</span> <span class="p">(</span><span class="n">times</span><span class="o">.</span><span class="n">columns</span> <span class="o">**</span> <span class="mi">2</span><span class="p">),</span> <span class="n">rotation</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+([&lt;matplotlib.axis.XTick at 0x7f7d5299db10&gt;,
+  &lt;matplotlib.axis.XTick at 0x7f7d5299d110&gt;,
+  &lt;matplotlib.axis.XTick at 0x7f7d5297a810&gt;,
+  &lt;matplotlib.axis.XTick at 0x7f7d52501090&gt;,
+  &lt;matplotlib.axis.XTick at 0x7f7d525013d0&gt;,
+  &lt;matplotlib.axis.XTick at 0x7f7d524ab290&gt;,
+  &lt;matplotlib.axis.XTick at 0x7f7d524abf10&gt;],
+ [Text(0, 0, &#39;100&#39;),
+  Text(0, 0, &#39;400&#39;),
+  Text(0, 0, &#39;900&#39;),
+  Text(0, 0, &#39;1600&#39;),
+  Text(0, 0, &#39;2500&#39;),
+  Text(0, 0, &#39;3600&#39;),
+  Text(0, 0, &#39;4900&#39;)])
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_31_1.png" src="../_images/notebooks_05_Greedy_coloring_31_1.png" />
+</div>
+</div>
+<p>Plotting without the GEOS methods, the difference between <code class="docutils literal notranslate"><span class="pre">queen</span></code> and <code class="docutils literal notranslate"><span class="pre">rook</span></code> is minimal:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">times</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s1">&#39;rook&#39;</span><span class="p">,</span> <span class="s1">&#39;queen&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;time (s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;# of polygons&#39;</span><span class="p">)</span>
+<span class="n">locs</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">locs</span><span class="p">,</span> <span class="p">(</span><span class="n">times</span><span class="o">.</span><span class="n">columns</span> <span class="o">**</span> <span class="mi">2</span><span class="p">),</span> <span class="n">rotation</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+([&lt;matplotlib.axis.XTick at 0x122684880&gt;,
+  &lt;matplotlib.axis.XTick at 0x124885d60&gt;,
+  &lt;matplotlib.axis.XTick at 0x12476e250&gt;,
+  &lt;matplotlib.axis.XTick at 0x1246dd250&gt;,
+  &lt;matplotlib.axis.XTick at 0x124751d30&gt;,
+  &lt;matplotlib.axis.XTick at 0x1247513a0&gt;,
+  &lt;matplotlib.axis.XTick at 0x124751e20&gt;],
+ [Text(0, 0, &#39;100&#39;),
+  Text(0, 0, &#39;400&#39;),
+  Text(0, 0, &#39;900&#39;),
+  Text(0, 0, &#39;1600&#39;),
+  Text(0, 0, &#39;2500&#39;),
+  Text(0, 0, &#39;3600&#39;),
+  Text(0, 0, &#39;4900&#39;)])
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_33_1.png" src="../_images/notebooks_05_Greedy_coloring_33_1.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Comparison-of-strategies">
+<h2>Comparison of strategies<a class="headerlink" href="#Comparison-of-strategies" title="Permalink to this headline">¶</a></h2>
+<p>Different coloring strategies lead to different results, but also have different performance. It all depends on preferences, what is the goal.</p>
+<p>If one want visually balanced result, <code class="docutils literal notranslate"><span class="pre">'balanced'</span></code> strategy could be the right choice. It comes with four different modes of balancing - <code class="docutils literal notranslate"><span class="pre">'count'</span></code>, <code class="docutils literal notranslate"><span class="pre">'area'</span></code>, <code class="docutils literal notranslate"><span class="pre">'distance'</span></code>, and <code class="docutils literal notranslate"><span class="pre">'centroid'</span></code>. The first one attempts to balance the number of features per each color, second the area covered by each color, and two last based on the distance between features. Either represented by the geometry itself or its centroid (a bit faster).</p>
+<p>Other strategies might be helpful if one wants to minimise number of colors as not all strategies use the same amount in the end. Or they just might look better on your map.</p>
+<p>Below is a comparison of performance and the result of each of the strategies supported by <code class="docutils literal notranslate"><span class="pre">greedy</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">libpysal</span>
+</pre></div>
+</div>
+</div>
+<p>When using <code class="docutils literal notranslate"><span class="pre">'balanced'</span></code> strategy with <code class="docutils literal notranslate"><span class="pre">'area'</span></code>, <code class="docutils literal notranslate"><span class="pre">'distance'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'centroid'</span></code> modes, keep in mind that your data needs to be in projected CRS to obtain correct results. For the simplicity of this comparison, let’s pretend that dataset below is (even though it is not).</p>
+<p>Strategies used in <code class="docutils literal notranslate"><span class="pre">mapclassify.greedy</span></code> have two origins - <code class="docutils literal notranslate"><span class="pre">'balanced'</span></code> is ported from QGIS while the rest comes from <code class="docutils literal notranslate"><span class="pre">networkX</span></code>. Snippet below generates each option 20x and returns the mean time elapsed together with the number of colors used.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">strategies</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;balanced&#39;</span><span class="p">,</span> <span class="s1">&#39;largest_first&#39;</span><span class="p">,</span> <span class="s1">&#39;random_sequential&#39;</span><span class="p">,</span> <span class="s1">&#39;smallest_last&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;independent_set&#39;</span><span class="p">,</span> <span class="s1">&#39;connected_sequential_bfs&#39;</span><span class="p">,</span> <span class="s1">&#39;connected_sequential_dfs&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;saturation_largest_first&#39;</span><span class="p">]</span>
+<span class="n">balanced_modes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="s1">&#39;area&#39;</span><span class="p">,</span> <span class="s1">&#39;centroid&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">]</span>
+
+<span class="n">times</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">sw</span> <span class="o">=</span> <span class="n">libpysal</span><span class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">Queen</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
+                <span class="n">world</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="n">world</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_list</span><span class="p">(),</span> <span class="n">silence_warnings</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+<span class="k">for</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="n">strategies</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">strategy</span> <span class="o">==</span> <span class="s1">&#39;balanced&#39;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">balanced_modes</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">strategy</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+            <span class="n">timer</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+                <span class="n">colors</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">world</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="n">strategy</span><span class="p">,</span> <span class="n">balance</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">sw</span><span class="o">=</span><span class="n">sw</span><span class="p">)</span>
+                <span class="n">e</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">s</span>
+                <span class="n">timer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">world</span><span class="p">[</span><span class="n">strategy</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">colors</span>
+            <span class="n">times</span><span class="p">[</span><span class="n">strategy</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">mode</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">timer</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;time: &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">timer</span><span class="p">),</span> <span class="s1">&#39;s; &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;colors&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
+        <span class="n">timer</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+            <span class="n">colors</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">world</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="n">strategy</span><span class="p">,</span> <span class="n">sw</span><span class="o">=</span><span class="n">sw</span><span class="p">)</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">s</span>
+            <span class="n">timer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="n">world</span><span class="p">[</span><span class="n">strategy</span><span class="p">]</span> <span class="o">=</span> <span class="n">colors</span>
+        <span class="n">times</span><span class="p">[</span><span class="n">strategy</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">timer</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;time: &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">timer</span><span class="p">),</span> <span class="s1">&#39;s; &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;colors&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+balanced count
+time:  0.0012734532356262207 s;  5 colors
+balanced area
+time:  0.04488915205001831 s;  5 colors
+balanced centroid
+time:  0.6184169292449951 s;  5 colors
+balanced distance
+time:  3.698784148693085 s;  5 colors
+largest_first
+time:  0.00743335485458374 s;  5 colors
+random_sequential
+time:  0.0073337554931640625 s;  5 colors
+smallest_last
+time:  0.012673044204711914 s;  4 colors
+independent_set
+time:  0.21364336013793944 s;  5 colors
+connected_sequential_bfs
+time:  0.010818779468536377 s;  5 colors
+connected_sequential_dfs
+time:  0.01690601110458374 s;  5 colors
+saturation_largest_first
+time:  0.04053806066513062 s;  4 colors
+</pre></div></div>
+</div>
+<p>As you can see, <code class="docutils literal notranslate"><span class="pre">smallest_last</span></code> and <code class="docutils literal notranslate"><span class="pre">saturation_largest_first</span></code> were able, for this particular dataset, to generate greedy coloring using only 4 colors. If one wants to use higher number than the minimal, <code class="docutils literal notranslate"><span class="pre">'balanced'</span></code> strategy allows setting of <code class="docutils literal notranslate"><span class="pre">min_colors</span></code> to be used.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">times</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">times</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_39_0.png" src="../_images/notebooks_05_Greedy_coloring_39_0.png" />
+</div>
+</div>
+<p>Plot above shows the performance of each strategy. Note that the vertical axis is using log scale.</p>
+<p>Below are all results plotted on the map.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="n">times</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">world</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">strategy</span><span class="p">,</span> <span class="n">categorical</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Set3&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_41_0.png" src="../_images/notebooks_05_Greedy_coloring_41_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_41_1.png" src="../_images/notebooks_05_Greedy_coloring_41_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_41_2.png" src="../_images/notebooks_05_Greedy_coloring_41_2.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_41_3.png" src="../_images/notebooks_05_Greedy_coloring_41_3.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_41_4.png" src="../_images/notebooks_05_Greedy_coloring_41_4.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_41_5.png" src="../_images/notebooks_05_Greedy_coloring_41_5.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_41_6.png" src="../_images/notebooks_05_Greedy_coloring_41_6.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_41_7.png" src="../_images/notebooks_05_Greedy_coloring_41_7.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_41_8.png" src="../_images/notebooks_05_Greedy_coloring_41_8.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_41_9.png" src="../_images/notebooks_05_Greedy_coloring_41_9.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_41_10.png" src="../_images/notebooks_05_Greedy_coloring_41_10.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../_sources/notebooks/05_Greedy_coloring.ipynb.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-, pysal developers.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
