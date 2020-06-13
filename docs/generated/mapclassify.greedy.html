@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>mapclassify.greedy &#8212; mapclassify v2.3.0 Manual</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pysal-styles.css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="shortcut icon" href="../_static/pysal_favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="mapclassify.HeadTailBreaks" href="mapclassify.HeadTailBreaks.html" />
+    <link rel="prev" title="mapclassify.FisherJenksSampled" href="mapclassify.FisherJenksSampled.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          mapclassify</a>
+        <span class="navbar-text navbar-version pull-left"><b>2.3.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../installation.html">Installation</a></li>
+                <li><a href="../tutorial.html">Tutorial</a></li>
+                <li><a href="../api.html">API</a></li>
+                <li><a href="../references.html">References</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-released-version">Installing released version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-development-version">Installing development version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/01_maximum_breaks.html">Introduction to mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/02_legends.html">Legends in mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/03_choropleth.html">Choropleth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/04_pooled.html">Pooled Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/05_Greedy_coloring.html">Getting started with mapclassify.greedy</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#classifiers">Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">mapclassify.greedy</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="mapclassify-greedy">
+<h1>mapclassify.greedy<a class="headerlink" href="#mapclassify-greedy" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="mapclassify.greedy">
+<code class="sig-prename descclassname">mapclassify.</code><code class="sig-name descname">greedy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gdf</span></em>, <em class="sig-param"><span class="n">strategy</span><span class="o">=</span><span class="default_value">'balanced'</span></em>, <em class="sig-param"><span class="n">balance</span><span class="o">=</span><span class="default_value">'count'</span></em>, <em class="sig-param"><span class="n">min_colors</span><span class="o">=</span><span class="default_value">4</span></em>, <em class="sig-param"><span class="n">sw</span><span class="o">=</span><span class="default_value">'queen'</span></em>, <em class="sig-param"><span class="n">min_distance</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">silence_warnings</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">interchange</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mapclassify/greedy.html#greedy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mapclassify.greedy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Color GeoDataFrame using various strategies of greedy (topological) colouring.</p>
+<p>Attempts to color a GeoDataFrame using as few colors as possible, where no
+neighbours can have same color as the feature itself. Offers various strategies
+ported from QGIS or implemented within networkX for greedy graph coloring.</p>
+<p><code class="docutils literal notranslate"><span class="pre">greedy</span></code> will return pandas.Series representing assinged color codes.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>gdf</strong><span class="classifier">GeoDataFrame</span></dt><dd><p>GeoDataFrame</p>
+</dd>
+<dt><strong>strategy</strong><span class="classifier">str (default ‘balanced’)</span></dt><dd><p>Determine coloring strategy. Options are <code class="docutils literal notranslate"><span class="pre">'balanced'</span></code> for algorithm based on
+QGIS Topological coloring. It is aiming for a visual balance, defined by the
+balance parameter.</p>
+<p>Other options are those supported by networkx.greedy_color:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'largest_first'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'random_sequential'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'smallest_last'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'independent_set'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'connected_sequential_bfs'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'connected_sequential_dfs'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'connected_sequential'</span></code> (alias for the previous strategy)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'saturation_largest_first'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'DSATUR'</span></code> (alias for the previous strategy)</p></li>
+</ul>
+<p>For details see
+<a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.coloring.greedy_color.html">https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.coloring.greedy_color.html</a></p>
+</dd>
+<dt><strong>balance</strong><span class="classifier">str (default ‘count’)</span></dt><dd><p>If strategy is <code class="docutils literal notranslate"><span class="pre">'balanced'</span></code>, determine the method of color balancing.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'count'</span></code> attempts to balance the number of features per each color.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'area'</span></code> attempts to balance the area covered by each color.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'centroid'</span></code> attempts to balance the distance between colors based on the distance between centroids.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'distance'</span></code> attempts to balance the distance between colors based on the distance between geometries. Slower than <code class="docutils literal notranslate"><span class="pre">'centroid'</span></code>, but more precise.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">'centroid'</span></code> and <code class="docutils literal notranslate"><span class="pre">'distance'</span></code> are significantly slower than other especially
+for larger GeoDataFrames.</p>
+<p>Apart from <code class="docutils literal notranslate"><span class="pre">'count'</span></code>, all require CRS to be projected (not in degrees) to ensure
+metric values are correct.</p>
+</dd>
+<dt><strong>min_colors: int (default 4)</strong></dt><dd><p>If strategy is <code class="docutils literal notranslate"><span class="pre">'balanced'</span></code>, define the minimal number of colors to be used.</p>
+</dd>
+<dt><strong>sw</strong><span class="classifier">‘queen’, ‘rook’ or libpysal.weights.W (default ‘queen’)</span></dt><dd><p>If min_distance is None, one can pass <code class="docutils literal notranslate"><span class="pre">'libpysal.weights.W'</span></code> object denoting neighbors
+or let greedy to generate one based on <code class="docutils literal notranslate"><span class="pre">'queen'</span></code> or <code class="docutils literal notranslate"><span class="pre">'rook'</span></code> contiguity.</p>
+</dd>
+<dt><strong>min_distance</strong><span class="classifier">float</span></dt><dd><p>Set minimal distance between colors.</p>
+<p>If min_distance is not None, slower algorithm for generating spatial weghts is used
+based on intersection between geometries. Min_distance is then used as a tolerance
+of intersection.</p>
+</dd>
+<dt><strong>silence_warnings</strong><span class="classifier">bool (default True)</span></dt><dd><p>Silence libpysal warnings when creating spatial weights.</p>
+</dd>
+<dt><strong>interchange</strong><span class="classifier">bool (defaul False)</span></dt><dd><p>Use the color interchange algorithm (applicable for networkx strategies)</p>
+<p>For details see
+<a class="reference external" href="https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.coloring.greedy_color.html">https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.coloring.greedy_color.html</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>color</strong><span class="classifier">pd.Series</span></dt><dd><p>pandas.Series representing assinged color codes</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Default:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;greedy_colors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">gdf</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Balanced by area:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;balanced_area&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;balanced&#39;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                              <span class="n">balance</span><span class="o">=</span><span class="s1">&#39;area&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using rook adjacency:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;rook_adjacency&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">sw</span><span class="o">=</span><span class="s1">&#39;rook&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Adding minimal distance between colors:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;min_distance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">min_distance</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using different coloring strategy:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;smallest_last&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">greedy</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;smallest_last&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../_sources/generated/mapclassify.greedy.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-, pysal developers.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
