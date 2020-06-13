@@ -16,14 +16,24 @@ mapclassify.HeadTailBreaks
       ~HeadTailBreaks.__init__
       ~HeadTailBreaks.find_bin
       ~HeadTailBreaks.get_adcm
+      ~HeadTailBreaks.get_fmt
       ~HeadTailBreaks.get_gadf
+      ~HeadTailBreaks.get_legend_classes
       ~HeadTailBreaks.get_tss
       ~HeadTailBreaks.make
       ~HeadTailBreaks.plot
+      ~HeadTailBreaks.set_fmt
+      ~HeadTailBreaks.table
       ~HeadTailBreaks.update
    
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~HeadTailBreaks.fmt
    
    

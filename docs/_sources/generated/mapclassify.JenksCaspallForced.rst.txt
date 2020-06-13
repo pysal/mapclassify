@@ -16,14 +16,24 @@ mapclassify.JenksCaspallForced
       ~JenksCaspallForced.__init__
       ~JenksCaspallForced.find_bin
       ~JenksCaspallForced.get_adcm
+      ~JenksCaspallForced.get_fmt
       ~JenksCaspallForced.get_gadf
+      ~JenksCaspallForced.get_legend_classes
       ~JenksCaspallForced.get_tss
       ~JenksCaspallForced.make
       ~JenksCaspallForced.plot
+      ~JenksCaspallForced.set_fmt
+      ~JenksCaspallForced.table
       ~JenksCaspallForced.update
    
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~JenksCaspallForced.fmt
    
    

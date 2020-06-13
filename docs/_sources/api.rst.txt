@@ -17,6 +17,7 @@ Classifiers
     mapclassify.EqualInterval
     mapclassify.FisherJenks
     mapclassify.FisherJenksSampled
+    mapclassify.greedy
     mapclassify.HeadTailBreaks
     mapclassify.JenksCaspall
     mapclassify.JenksCaspallForced
@@ -37,4 +38,3 @@ Utilities
 
     mapclassify.KClassifiers
     mapclassify.gadf
-	

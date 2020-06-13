@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>mapclassify.Maximum_Breaks &#8212; mapclassify v2.1.1 Manual</title>
+    <title>mapclassify.Maximum_Breaks &#8212; mapclassify v2.3.0 Manual</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/pysal-styles.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="shortcut icon" href="../_static/pysal_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -38,13 +40,14 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           mapclassify</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.1.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.3.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
           <ul class="nav navbar-nav">
             
                 <li><a href="../installation.html">Installation</a></li>
+                <li><a href="../tutorial.html">Tutorial</a></li>
                 <li><a href="../api.html">API</a></li>
                 <li><a href="../references.html">References</a></li>
             
@@ -62,6 +65,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-released-version">Installing released version</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-development-version">Installing development version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/01_maximum_breaks.html">Introduction to mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/02_legends.html">Legends in mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/03_choropleth.html">Choropleth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/04_pooled.html">Pooled Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/05_Greedy_coloring.html">Getting started with mapclassify.greedy</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api.html">API</a><ul>
@@ -115,12 +126,6 @@
       
   <div class="section" id="mapclassify-maximum-breaks">
 <h1>mapclassify.Maximum_Breaks<a class="headerlink" href="#mapclassify-maximum-breaks" title="Permalink to this headline">¶</a></h1>
-<dl class="attribute">
-<dt id="mapclassify.Maximum_Breaks">
-<code class="sig-prename descclassname">mapclassify.</code><code class="sig-name descname">Maximum_Breaks</code><a class="headerlink" href="#mapclassify.Maximum_Breaks" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">mapclassify.classifiers.MaximumBreaks</span></code></p>
-</dd></dl>
-
 </div>
 
 
@@ -142,8 +147,8 @@
       
     </p>
     <p>
-        &copy; Copyright 2018, pysal developers.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.0.<br/>
+        &copy; Copyright 2018-, pysal developers.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.<br/>
     </p>
   </div>
 </footer>

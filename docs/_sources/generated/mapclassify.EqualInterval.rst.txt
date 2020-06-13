@@ -16,14 +16,24 @@ mapclassify.EqualInterval
       ~EqualInterval.__init__
       ~EqualInterval.find_bin
       ~EqualInterval.get_adcm
+      ~EqualInterval.get_fmt
       ~EqualInterval.get_gadf
+      ~EqualInterval.get_legend_classes
       ~EqualInterval.get_tss
       ~EqualInterval.make
       ~EqualInterval.plot
+      ~EqualInterval.set_fmt
+      ~EqualInterval.table
       ~EqualInterval.update
    
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~EqualInterval.fmt
    
    
