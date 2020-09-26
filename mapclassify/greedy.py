@@ -289,7 +289,7 @@ def greedy(
             import networkx as nx
 
             STRATEGIES = nx.algorithms.coloring.greedy_coloring.STRATEGIES.keys()
-            
+
         except ImportError:
             raise ImportError("The 'networkx' package is required.")
 
@@ -308,24 +308,21 @@ def greedy(
 
     if not isinstance(sw, W):
         if sw == "queen":
-            sw = Queen.from_dataframe(
-                gdf, ids=gdf.index.to_list(), silence_warnings=silence_warnings
-            )
+            sw = Queen.from_dataframe(gdf, silence_warnings=silence_warnings)
         elif sw == "rook":
-            sw = Rook.from_dataframe(
-                gdf, ids=gdf.index.to_list(), silence_warnings=silence_warnings
-            )
+            sw = Rook.from_dataframe(gdf, silence_warnings=silence_warnings)
 
     if strategy == "balanced":
-        return pd.Series(_balanced(gdf, sw, balance=balance, min_colors=min_colors))
+        color = pd.Series(_balanced(gdf, sw, balance=balance, min_colors=min_colors))
 
     elif strategy in STRATEGIES:
         color = nx.greedy_color(
             sw.to_networkx(), strategy=strategy, interchange=interchange
         )
-        color = pd.Series(color).sort_index()
-        color.index = gdf.index
-        return color
 
     else:
         raise ValueError("{} is not a valid strategy.".format(strategy))
+
+    color = pd.Series(color).sort_index()
+    color.index = gdf.index
+    return color

@@ -16,6 +16,7 @@ def test_default():
     assert len(colors) == len(world)
     assert set(colors) == set([0, 1, 2, 3, 4])
     assert colors.value_counts().to_list() == [36, 36, 35, 35, 35]
+    assert (colors.index == world.index).all()
 
 
 @pytest.mark.parametrize("pysal_geos", [None, 0])
