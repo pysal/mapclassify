@@ -26,4 +26,4 @@ from .classifiers import (
 from .pooling import Pooled
 from .greedy import greedy
 
-from .classify import classify
+from ._classify_API import classify
