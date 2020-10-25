@@ -630,8 +630,11 @@ class MapClassifier(object):
         self.gadf = self.get_gadf()
 
     def _classify(self):
-        self._set_bins()
-        self.yb, self.counts = bin1d(self.y, self.bins)
+        if min(self.y) == max(self.y):
+            raise ValueError("Minimum and maximum of input data are equal, cannot create bins.")
+        else:
+            self._set_bins()
+            self.yb, self.counts = bin1d(self.y, self.bins)
 
     def _update(self, data, *args, **kwargs):
         """
