@@ -61,7 +61,7 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
     
     Returns
     -------
-    classifier : pysal.mapclassify instance
+    classifier : pysal.mapclassify.classifier instance
             Object containing bin ids for each observation (.yb),
             upper bounds of each class (.bins), number of classes (.k)
             and number of onservations falling in each class (.counts)
@@ -87,11 +87,11 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
     
     Classify values by quantiles
     
-    >>> quantiles = mapclassify_bin(x, 'quantiles')
+    >>> quantiles = classify(x, 'quantiles')
     
     Classify values by box_plot and set hinge to 2
     
-    >>> box_plot = mapclassify_bin(x, 'box_plot', hinge=2)
+    >>> box_plot = classify(x, 'box_plot', hinge=2)
     
     """
     # reformat 
