@@ -7,10 +7,12 @@ _classifiers = {
     'boxplot': mapclassify.BoxPlot,
     'equalinterval': mapclassify.EqualInterval,
     'fisherjenks': mapclassify.FisherJenks,
+    'fisherjenkssampled': mapclassify.FisherJenksSampled,
     'headtailbreaks': mapclassify.HeadTailBreaks,
     'jenkscaspall': mapclassify.JenksCaspall,
     'jenkscaspallforced': mapclassify.JenksCaspallForced,
-    'maxpclassifier': mapclassify.MaxP,
+    'jenkscaspallsampled': mapclassify.JenksCaspallSampled,
+    'maxp': mapclassify.MaxP,
     'maximumbreaks': mapclassify.MaximumBreaks,
     'naturalbreaks': mapclassify.NaturalBreaks,
     'quantiles': mapclassify.Quantiles,
@@ -21,6 +23,7 @@ _classifiers = {
 
 
 def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
+             pct_sampled=0.10, truncate=True,
              hinge=1.5, multiples=[-2,-1,1,2], mindiff=0,
              initial=100, bins=None):
     """
@@ -38,6 +41,12 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
     pct  : array, optional
         Percentiles used for classification with `percentiles`.
         Default=[1,10,50,90,99,100]
+    pct_sampled : float, optional
+        The percentage of n that should form the sample
+        (JenksCaspallSampled, FisherJenksSampled)
+        If pct is specified such that n*pct > 1000, then pct = 1000./n
+    truncate : boolean, optional
+        truncate pct_sampled in cases where pct * n > 1000., (Default True)
     hinge : float, optional
         Multiplier for IQR when `BoxPlot` classifier used.
         Default=1.5.
@@ -104,19 +113,26 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
                          " set: %r" % _classifiers.keys())
 
     elif scheme == 'boxplot':
-        classifier = _classifiers[classifier](y, hinge)
+        classifier = _classifiers[scheme](y, hinge)
+    elif scheme == 'fisherjenkssampled':
+        classifier = _classifiers[scheme](y, k,
+                                          pct_sampled, truncate)
     elif scheme == 'headtailbreaks':
-        classifier = _classifiers[classifier](y)
+        classifier = _classifiers[scheme](y)
     elif scheme == 'percentiles':
-        classifier = _classifiers[classifier](y, pct)
+        classifier = _classifiers[scheme](y, pct)
     elif scheme == 'stdmean':
-        classifier = _classifiers[classifier](y, multiples)
+        classifier = _classifiers[scheme](y, multiples)
+    elif scheme == 'jenkscaspallsampled':
+        classifier = _classifiers[scheme](y, k,
+                                          pct_sampled)
     elif scheme == 'maximumbreaks':
-        classifier = _classifiers[classifier](y, k, mindiff)
+        classifier = _classifiers[scheme](y, k, mindiff)
     elif scheme in ['naturalbreaks', 'maxpclassifier']:
-        classifier = _classifiers[classifier](y, k, initial)
+        classifier = _classifiers[scheme](y, k, initial)
     elif scheme == 'userdefined':
-        classifier = _classifiers[classifier](y, bins)
+        classifier = _classifiers[scheme](y, bins)
     else:
-        classifier = _classifiers[classifier](y, k)
+        classifier = _classifiers[scheme](y, k)
+        
     return classifier
