@@ -2,21 +2,23 @@ import mapclassify
 
 __author__ = ("Stefanie Lumnitz <stefanie.lumitz@gmail.com>")
 
+
 _classifiers = {
-    'box_plot': mapclassify.BoxPlot,
-    'equal_interval': mapclassify.EqualInterval,
-    'fisher_jenks': mapclassify.FisherJenks,
-    'headtail_breaks': mapclassify.HeadTailBreaks,
-    'jenks_caspall': mapclassify.JenksCaspall,
-    'jenks_caspall_forced': mapclassify.JenksCaspallForced,
-    'max_p_classifier': mapclassify.MaxP,
-    'maximum_breaks': mapclassify.MaximumBreaks,
-    'natural_breaks': mapclassify.NaturalBreaks,
+    'boxplot': mapclassify.BoxPlot,
+    'equalinterval': mapclassify.EqualInterval,
+    'fisherjenks': mapclassify.FisherJenks,
+    'headtailbreaks': mapclassify.HeadTailBreaks,
+    'jenkscaspall': mapclassify.JenksCaspall,
+    'jenkscaspallforced': mapclassify.JenksCaspallForced,
+    'maxpclassifier': mapclassify.MaxP,
+    'maximumbreaks': mapclassify.MaximumBreaks,
+    'naturalbreaks': mapclassify.NaturalBreaks,
     'quantiles': mapclassify.Quantiles,
     'percentiles': mapclassify.Percentiles,
-    'std_mean': mapclassify.StdMean,
-    'user_defined': mapclassify.UserDefined,
+    'stdmean': mapclassify.StdMean,
+    'userdefined': mapclassify.UserDefined,
     }
+
 
 def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
                     hinge=1.5, multiples=[-2,-1,1,2], mindiff=0,
@@ -59,10 +61,10 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
     
     Returns
     -------
-    bins : pysal.mapclassify instance
-        Object containing bin ids for each observation (.yb),
-        upper bounds of each class (.bins), number of classes (.k)
-        and number of onservations falling in each class (.counts)
+    classifier : pysal.mapclassify instance
+            Object containing bin ids for each observation (.yb),
+            upper bounds of each class (.bins), number of classes (.k)
+            and number of onservations falling in each class (.counts)
     
     Note: Supported classifiers include: quantiles, box_plot, euqal_interval,
         fisher_jenks, headtail_breaks, jenks_caspall, jenks_caspall_forced,
@@ -92,24 +94,29 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
     >>> box_plot = mapclassify_bin(x, 'box_plot', hinge=2)
     
     """
-    classifier = classifier.lower()
+    # reformat 
+    scheme_lower = scheme.lower()
+    scheme = scheme_lower.replace('_', '')    
+    
+    # check if scheme is a valid scheme
     if scheme not in _classifiers:
         raise ValueError("Invalid scheme. Scheme must be in the"
                          " set: %r" % _classifiers.keys())
-    elif scheme == 'box_plot':
-        bins = _classifiers[classifier](y, hinge)
-    elif scheme == 'headtail_breaks':
-        bins = _classifiers[classifier](y)
+
+    elif scheme == 'boxplot':
+        classifier = _classifiers[classifier](y, hinge)
+    elif scheme == 'headtailbreaks':
+        classifier = _classifiers[classifier](y)
     elif scheme == 'percentiles':
-        bins = _classifiers[classifier](y, pct)
-    elif scheme == 'std_mean':
-        bins = _classifiers[classifier](y, multiples)
-    elif scheme == 'maximum_breaks':
-        bins = _classifiers[classifier](y, k, mindiff)
-    elif scheme in ['natural_breaks', 'max_p_classifier']:
-        bins = _classifiers[classifier](y, k, initial)
-    elif scheme == 'user_defined':
-        bins = _classifiers[classifier](y, bins)
+        classifier = _classifiers[classifier](y, pct)
+    elif scheme == 'stdmean':
+        classifier = _classifiers[classifier](y, multiples)
+    elif scheme == 'maximumbreaks':
+        classifier = _classifiers[classifier](y, k, mindiff)
+    elif scheme in ['naturalbreaks', 'maxpclassifier']:
+        classifier = _classifiers[classifier](y, k, initial)
+    elif scheme == 'userdefined':
+        classifier = _classifiers[classifier](y, bins)
     else:
-        bins = _classifiers[classifier](y, k)
-    return bins
+        classifier = _classifiers[classifier](y, k)
+    return classifier
