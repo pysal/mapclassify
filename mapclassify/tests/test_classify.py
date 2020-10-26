@@ -31,8 +31,8 @@ def test_classify():
     b = mapclassify.FisherJenks(x, k=3)
     _assertions(a, b)
     
-    a= classify(x, "FisherJenksSampled", k=3)
-    b = mapclassify.FisherJenksSampled(x, k=3)
+    a= classify(x, "FisherJenksSampled", k=3, pct_sampled=0.5, truncate=False)
+    b = mapclassify.FisherJenksSampled(x, k=3, pct=0.5,truncate=False)
     _assertions(a, b)
     
     # headtail_breaks
@@ -59,8 +59,8 @@ def test_classify():
     b = mapclassify.JenksCaspallForced(x, k=3)
     _assertions(a, b)
     
-    a = classify(x, 'JenksCaspallSampled', pct_sampled=0.09)
-    b = mapclassify.JenksCaspallSampled(x, pct=0.09)
+    a = classify(x, 'JenksCaspallSampled', pct_sampled=0.5)
+    b = mapclassify.JenksCaspallSampled(x, pct=0.5)
     _assertions(a, b)
     
     # maximum_breaks
@@ -73,7 +73,7 @@ def test_classify():
     b = mapclassify.NaturalBreaks(x)
     _assertions(a, b)
     
-    a = classify(x, 'max_p_classifier', k=3, initial=50)
+    a = classify(x, 'max_p', k=3, initial=50)
     b = mapclassify.MaxP(x, k=3, initial=50)
     _assertions(a, b)
     
