@@ -132,7 +132,9 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
         classifier = _classifiers[scheme](y, k, initial)
     elif scheme == 'userdefined':
         classifier = _classifiers[scheme](y, bins)
-    else:
+    elif scheme in ['equalinterval', 'fisherjenks',
+                    'jenkscaspall','jenkscaspallforced',
+                    'quantiles']
         classifier = _classifiers[scheme](y, k)
         
     return classifier
