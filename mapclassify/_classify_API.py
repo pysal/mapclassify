@@ -73,7 +73,7 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
     classifier : pysal.mapclassify.classifier instance
             Object containing bin ids for each observation (.yb),
             upper bounds of each class (.bins), number of classes (.k)
-            and number of onservations falling in each class (.counts)
+            and number of observations falling in each class (.counts)
     
     Note: Supported classifiers include: quantiles, box_plot, euqal_interval,
         fisher_jenks, headtail_breaks, jenks_caspall, jenks_caspall_forced,
@@ -128,7 +128,7 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
                                           pct_sampled)
     elif scheme == 'maximumbreaks':
         classifier = _classifiers[scheme](y, k, mindiff)
-    elif scheme in ['naturalbreaks', 'maxpclassifier']:
+    elif scheme in ['naturalbreaks', 'maxp']:
         classifier = _classifiers[scheme](y, k, initial)
     elif scheme == 'userdefined':
         classifier = _classifiers[scheme](y, bins)
