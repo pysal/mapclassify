@@ -27,7 +27,7 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
              hinge=1.5, multiples=[-2,-1,1,2], mindiff=0,
              initial=100, bins=None):
     """
-    Classify your data with `pysal.mapclassify.classify`
+    Classify your data with `mapclassify.classify`
     Note: Input parameters are dependent on classifier used.
     
     Parameters
