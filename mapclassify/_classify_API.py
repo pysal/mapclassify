@@ -1,24 +1,40 @@
-import mapclassify
+from .classifiers import (
+    BoxPlot,
+    EqualInterval,
+    FisherJenks,
+    FisherJenksSampled,
+    HeadTailBreaks,
+    JenksCaspall,
+    JenksCaspallForced,
+    JenksCaspallSampled,
+    MaxP,
+    MaximumBreaks,
+    NaturalBreaks,
+    Quantiles,
+    Percentiles,
+    StdMean,
+    UserDefined
+)
 
 __author__ = ("Stefanie Lumnitz <stefanie.lumitz@gmail.com>")
 
 
 _classifiers = {
-    'boxplot': mapclassify.BoxPlot,
-    'equalinterval': mapclassify.EqualInterval,
-    'fisherjenks': mapclassify.FisherJenks,
-    'fisherjenkssampled': mapclassify.FisherJenksSampled,
-    'headtailbreaks': mapclassify.HeadTailBreaks,
-    'jenkscaspall': mapclassify.JenksCaspall,
-    'jenkscaspallforced': mapclassify.JenksCaspallForced,
-    'jenkscaspallsampled': mapclassify.JenksCaspallSampled,
-    'maxp': mapclassify.MaxP,
-    'maximumbreaks': mapclassify.MaximumBreaks,
-    'naturalbreaks': mapclassify.NaturalBreaks,
-    'quantiles': mapclassify.Quantiles,
-    'percentiles': mapclassify.Percentiles,
-    'stdmean': mapclassify.StdMean,
-    'userdefined': mapclassify.UserDefined,
+    'boxplot': BoxPlot,
+    'equalinterval': EqualInterval,
+    'fisherjenks': FisherJenks,
+    'fisherjenkssampled': FisherJenksSampled,
+    'headtailbreaks': HeadTailBreaks,
+    'jenkscaspall': JenksCaspall,
+    'jenkscaspallforced': JenksCaspallForced,
+    'jenkscaspallsampled': JenksCaspallSampled,
+    'maxp': MaxP,
+    'maximumbreaks': MaximumBreaks,
+    'naturalbreaks': NaturalBreaks,
+    'quantiles': Quantiles,
+    'percentiles': Percentiles,
+    'stdmean': StdMean,
+    'userdefined': UserDefined,
     }
 
 
@@ -29,7 +45,7 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
     """
     Classify your data with `pysal.mapclassify.classify`
     Note: Input parameters are dependent on classifier used.
-    
+
     Parameters
     ----------
     y : array
@@ -67,46 +83,46 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
         (k,1), upper bounds of classes (have to be monotically  
         increasing) if using `user_defined` classifier.
         Default =None, Example =[20, max(y)].
-    
+
     Returns
     -------
     classifier : pysal.mapclassify.classifier instance
             Object containing bin ids for each observation (.yb),
             upper bounds of each class (.bins), number of classes (.k)
             and number of onservations falling in each class (.counts)
-    
+
     Note: Supported classifiers include: quantiles, box_plot, euqal_interval,
         fisher_jenks, headtail_breaks, jenks_caspall, jenks_caspall_forced,
         max_p_classifier, maximum_breaks, natural_breaks, percentiles, std_mean,
         user_defined
-    
+
     Examples
     --------
     Imports
-    
+
     >>> from libpysal import examples
     >>> import geopandas as gpd
     >>> from mapclassify import classify
-    
+
     Load Example Data
-    
+
     >>> link_to_data = examples.get_path('columbus.shp')
     >>> gdf = gpd.read_file(link_to_data)
     >>> x = gdf['HOVAL'].values
-    
+
     Classify values by quantiles
-    
+
     >>> quantiles = classify(x, 'quantiles')
-    
+
     Classify values by box_plot and set hinge to 2
-    
+
     >>> box_plot = classify(x, 'box_plot', hinge=2)
-    
+
     """
-    # reformat 
+    # reformat
     scheme_lower = scheme.lower()
-    scheme = scheme_lower.replace('_', '')    
-    
+    scheme = scheme_lower.replace('_', '')
+
     # check if scheme is a valid scheme
     if scheme not in _classifiers:
         raise ValueError("Invalid scheme. Scheme must be in the"
@@ -134,5 +150,5 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
         classifier = _classifiers[scheme](y, bins)
     else:
         classifier = _classifiers[scheme](y, k)
-        
+
     return classifier
