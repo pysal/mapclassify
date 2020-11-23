@@ -16,6 +16,7 @@ from .classifiers import (
     UserDefined
 )
 
+
 __author__ = ("Stefanie Lumnitz <stefanie.lumitz@gmail.com>")
 
 
@@ -43,9 +44,10 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
              hinge=1.5, multiples=[-2,-1,1,2], mindiff=0,
              initial=100, bins=None):
     """
-    Classify your data with `pysal.mapclassify.classify`
-    Note: Input parameters are dependent on classifier used.
 
+    Classify your data with `mapclassify.classify`
+    Note: Input parameters are dependent on classifier used.
+    
     Parameters
     ----------
     y : array
@@ -89,40 +91,41 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
     classifier : pysal.mapclassify.classifier instance
             Object containing bin ids for each observation (.yb),
             upper bounds of each class (.bins), number of classes (.k)
-            and number of onservations falling in each class (.counts)
-
+            and number of observations falling in each class (.counts)
+    
     Note: Supported classifiers include: quantiles, box_plot, euqal_interval,
         fisher_jenks, headtail_breaks, jenks_caspall, jenks_caspall_forced,
         max_p_classifier, maximum_breaks, natural_breaks, percentiles, std_mean,
         user_defined
 
+    
     Examples
     --------
     Imports
-
+    
     >>> from libpysal import examples
     >>> import geopandas as gpd
     >>> from mapclassify import classify
-
+    
     Load Example Data
-
+    
     >>> link_to_data = examples.get_path('columbus.shp')
     >>> gdf = gpd.read_file(link_to_data)
     >>> x = gdf['HOVAL'].values
-
+    
     Classify values by quantiles
-
+    
     >>> quantiles = classify(x, 'quantiles')
-
+    
     Classify values by box_plot and set hinge to 2
-
+    
     >>> box_plot = classify(x, 'box_plot', hinge=2)
-
+    
     """
-    # reformat
+    # reformat 
     scheme_lower = scheme.lower()
-    scheme = scheme_lower.replace('_', '')
-
+    scheme = scheme_lower.replace('_', '')    
+    
     # check if scheme is a valid scheme
     if scheme not in _classifiers:
         raise ValueError("Invalid scheme. Scheme must be in the"
@@ -144,11 +147,14 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
                                           pct_sampled)
     elif scheme == 'maximumbreaks':
         classifier = _classifiers[scheme](y, k, mindiff)
-    elif scheme in ['naturalbreaks', 'maxpclassifier']:
+
+    elif scheme in ['naturalbreaks', 'maxp']:
         classifier = _classifiers[scheme](y, k, initial)
     elif scheme == 'userdefined':
         classifier = _classifiers[scheme](y, bins)
-    else:
+    elif scheme in ['equalinterval', 'fisherjenks',
+                    'jenkscaspall','jenkscaspallforced',
+                    'quantiles']:
         classifier = _classifiers[scheme](y, k)
-
+        
     return classifier

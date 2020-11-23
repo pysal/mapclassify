@@ -31,15 +31,16 @@ def test_classify():
     b = mapclassify.FisherJenks(x, k=3)
     _assertions(a, b)
 
-    # FisherJenksSampled
-    a= classify(x, "FisherJenksSampled", k=3)
-    b = mapclassify.FisherJenksSampled(x, k=3)
+    
+    a= classify(x, "FisherJenksSampled", k=3, pct_sampled=0.5, truncate=False)
+    b = mapclassify.FisherJenksSampled(x, k=3, pct=0.5,truncate=False)
     _assertions(a, b)
-
-#    a = classify(x, 'headtailbreaks')
-#    b = mapclassify.HeadTailBreaks(x)
-#    _assertions(a, b)
-
+    
+    # headtail_breaks
+    a = classify(x, 'headtail_breaks')
+    b = mapclassify.HeadTailBreaks(x)
+    _assertions(a, b)
+    
     # quantiles
     a = classify(x, 'quantiles',k=3)
     b = mapclassify.Quantiles(x, k=3)
@@ -58,30 +59,29 @@ def test_classify():
     a = classify(x, 'JenksCaspallForced', k=3) 
     b = mapclassify.JenksCaspallForced(x, k=3)
     _assertions(a, b)
-
-    a = classify(x, 'JenksCaspallSampled', pct_sampled=0.19)
-    b = mapclassify.JenksCaspallSampled(x, pct=0.19)
+    
+    a = classify(x, 'JenksCaspallSampled', pct_sampled=0.5)
+    b = mapclassify.JenksCaspallSampled(x, pct=0.5)
     _assertions(a, b)
+    
 
-    # maximum_breaks
-    a = classify(x, 'maximum_breaks', k=3, mindiff=0.1)
-    b = mapclassify.MaximumBreaks(x, k=3, mindiff=0.1)
-    _assertions(a, b)
-#
     # natural_breaks, max_p_classifier
     a = classify(x, 'natural_breaks')
     b = mapclassify.NaturalBreaks(x)
     _assertions(a, b)
 
-    a = classify(x, 'maxp', k=3, initial=50)
+    
+    a = classify(x, 'max_p', k=3, initial=50)
     b = mapclassify.MaxP(x, k=3, initial=50)
     _assertions(a, b)
+    
 
     # std_mean
     a = classify(x, 'std_mean', multiples=[-1,-0.5,0.5,1])
     b = mapclassify.StdMean(x, multiples=[-1,-0.5,0.5,1])
     _assertions(a, b)
 
+    
     # user_defined
     a = classify(x, 'user_defined', bins=[20, max(x)]) 
     b = mapclassify.UserDefined(x, bins=[20, max(x)])
