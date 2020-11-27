@@ -1828,12 +1828,8 @@ class FisherJenksSampled(MapClassifier):
     counts  : array
               (k,1), the number of observations falling in each class
 
-    Examples
-    --------
-
-    (Turned off due to timing being different across hardware)
-
-
+    Notes
+    -----
     For theoretical details see :cite:`Rey_2016`.
 
     """
