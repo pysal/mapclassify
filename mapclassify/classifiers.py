@@ -181,7 +181,11 @@ def head_tail_breaks(values, cuts):
     mean = np.mean(values)
     cuts.append(mean)
     if len(set(values)) > 1:
-        return head_tail_breaks(values[values >= mean], cuts)
+        try:
+            return head_tail_breaks(values[values >= mean], cuts)
+        except RecursionError:
+            n = len(values)
+            return cuts[:n-1]
     return cuts
 
 
@@ -1137,17 +1141,10 @@ class HeadTailBreaks(MapClassifier):
 
         x = self.y.copy()
         bins = []
-        try:
-            bins = head_tail_breaks(x, bins)
-            self.bins = np.array(bins)
-            self.k = len(self.bins)
-        except RecursionError:
-            message = "Floating point issues with head-tails."
-            message += " Reverting to quantiles."
-            Warn(message, UserWarning)
-            self.bins = quantile(x, k=5)
-            self.k = len(self.bins)
-
+        bins = head_tail_breaks(x, bins)
+        self.bins = np.array(bins)
+        self.k = len(self.bins)
+        
 
 class EqualInterval(MapClassifier):
     """
