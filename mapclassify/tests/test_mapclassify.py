@@ -339,6 +339,13 @@ class TestHeadTailBreaks(unittest.TestCase):
         self.assertEqual(len(htb.counts), 4)
         np.testing.assert_array_almost_equal(htb.counts, np.array([980, 17, 1, 2]))
 
+    def test_HeadTailBreaks_float(self):
+        V = np.array([1 + 2**-52, 1, 1])
+        htb = HeadTailBreaks(V)
+        self.assertEqual(htb.k, 2)
+        self.assertEqual(len(htb.counts), 2)
+        np.testing.assert_array_almost_equal(htb.counts, np.array([2, 1]))
+
 
 class TestMapClassifier(unittest.TestCase):
     def test_Map_Classifier(self):
