@@ -3,7 +3,6 @@ A module of classification schemes for choropleth mapping.
 """
 import numpy as np
 import scipy.stats as stats
-import scipy as sp
 import copy
 from sklearn.cluster import KMeans as KMEANS
 from warnings import warn as Warn
@@ -52,7 +51,7 @@ CLASSIFIERS = (
 )
 
 K = 5  # default number of classes in any map scheme with this as an argument
-SEEDRANGE = 1000000  # range for drawing random integers from for Natural Breaks
+SEEDRANGE = 1000000  # range for drawing random ints from for Natural Breaks
 
 
 FMT = "{:.2f}"
@@ -181,11 +180,7 @@ def head_tail_breaks(values, cuts):
     mean = np.mean(values)
     cuts.append(mean)
     if len(set(values)) > 1:
-        try:
-            return head_tail_breaks(values[values >= mean], cuts)
-        except RecursionError:
-            n = len(values)
-            return cuts[:n-1]
+        return head_tail_breaks(values[values > mean], cuts)
     return cuts
 
 
@@ -1144,7 +1139,6 @@ class HeadTailBreaks(MapClassifier):
         bins = head_tail_breaks(x, bins)
         self.bins = np.array(bins)
         self.k = len(self.bins)
-        
 
 class EqualInterval(MapClassifier):
     """
