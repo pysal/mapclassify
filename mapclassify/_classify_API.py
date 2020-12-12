@@ -47,7 +47,7 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
 
     Classify your data with `mapclassify.classify`
     Note: Input parameters are dependent on classifier used.
-    
+
     Parameters
     ----------
     y : array
