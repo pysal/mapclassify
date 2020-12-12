@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>mapclassify.gadf &#8212; mapclassify v2.4.0 Manual</title>
+    <title>mapclassify.classify &#8212; mapclassify v2.4.0 Manual</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/pysal-styles.css" />
@@ -18,8 +18,8 @@
     <link rel="shortcut icon" href="../_static/pysal_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="mapclassify.classify" href="mapclassify.classify.html" />
-    <link rel="prev" title="mapclassify.KClassifiers" href="mapclassify.KClassifiers.html" />
+    <link rel="next" title="References" href="../references.html" />
+    <link rel="prev" title="mapclassify.gadf" href="mapclassify.gadf.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -99,7 +99,7 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">mapclassify.gadf</a></li>
+<li><a class="reference internal" href="#">mapclassify.classify</a></li>
 </ul>
 </ul>
 </li>
@@ -129,69 +129,85 @@
   <div class="row">
     <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="mapclassify-gadf">
-<h1>mapclassify.gadf<a class="headerlink" href="#mapclassify-gadf" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="mapclassify-classify">
+<h1>mapclassify.classify<a class="headerlink" href="#mapclassify-classify" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="mapclassify.gadf">
-<code class="sig-prename descclassname">mapclassify.</code><code class="sig-name descname">gadf</code><span class="sig-paren">(</span><em class="sig-param">y</em>, <em class="sig-param">method='Quantiles'</em>, <em class="sig-param">maxk=15</em>, <em class="sig-param">pct=0.8</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mapclassify/classifiers.html#gadf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mapclassify.gadf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate the Goodness of Absolute Deviation Fit of a Classifier
-Finds the minimum value of k for which gadf&gt;pct</p>
+<dt id="mapclassify.classify">
+<code class="sig-prename descclassname">mapclassify.</code><code class="sig-name descname">classify</code><span class="sig-paren">(</span><em class="sig-param">y, scheme, k=5, pct=[1, 10, 50, 90, 99, 100], pct_sampled=0.1, truncate=True, hinge=1.5, multiples=[-2, -1, 1, 2], mindiff=0, initial=100, bins=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mapclassify/_classify_API.html#classify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mapclassify.classify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classify your data with <cite>mapclassify.classify</cite>
+Note: Input parameters are dependent on classifier used.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>y</strong><span class="classifier">array</span></dt><dd><p>(n, 1) values to be classified</p>
+<dt><strong>y</strong><span class="classifier">array</span></dt><dd><p>(n,1), values to classify</p>
 </dd>
-<dt><strong>method</strong><span class="classifier">{‘Quantiles, ‘Fisher_Jenks’, ‘Maximum_Breaks’, ‘Natrual_Breaks’}</span></dt><dd></dd>
-<dt><strong>maxk</strong><span class="classifier">int</span></dt><dd><p>maximum value of k to evaluate</p>
+<dt><strong>scheme</strong><span class="classifier">str</span></dt><dd><p>pysal.mapclassify classification scheme</p>
 </dd>
-<dt><strong>pct</strong><span class="classifier">float</span></dt><dd><p>The percentage of GADF to exceed</p>
+<dt><strong>k</strong><span class="classifier">int, optional</span></dt><dd><p>The number of classes. Default=5.</p>
+</dd>
+<dt><strong>pct</strong><span class="classifier">array, optional</span></dt><dd><p>Percentiles used for classification with <cite>percentiles</cite>.
+Default=[1,10,50,90,99,100]</p>
+</dd>
+<dt><strong>pct_sampled</strong><span class="classifier">float, optional</span></dt><dd><p>The percentage of n that should form the sample
+(JenksCaspallSampled, FisherJenksSampled)
+If pct is specified such that n*pct &gt; 1000, then pct = 1000./n</p>
+</dd>
+<dt><strong>truncate</strong><span class="classifier">boolean, optional</span></dt><dd><p>truncate pct_sampled in cases where pct * n &gt; 1000., (Default True)</p>
+</dd>
+<dt><strong>hinge</strong><span class="classifier">float, optional</span></dt><dd><p>Multiplier for IQR when <cite>BoxPlot</cite> classifier used.
+Default=1.5.</p>
+</dd>
+<dt><strong>multiples</strong><span class="classifier">array, optional</span></dt><dd><p>The multiples of the standard deviation to add/subtract from
+the sample mean to define the bins using <cite>std_mean</cite>.
+Default=[-2,-1,1,2].</p>
+</dd>
+<dt><strong>mindiff</strong><span class="classifier">float, optional</span></dt><dd><p>The minimum difference between class breaks
+if using <cite>maximum_breaks</cite> classifier. Deafult =0.</p>
+</dd>
+<dt><strong>initial</strong><span class="classifier">int</span></dt><dd><p>Number of initial solutions to generate or number of runs
+when using <cite>natural_breaks</cite> or <cite>max_p_classifier</cite>.
+Default =100.
+Note: setting initial to 0 will result in the quickest
+calculation of bins.</p>
+</dd>
+<dt><strong>bins</strong><span class="classifier">array, optional</span></dt><dd><p>(k,1), upper bounds of classes (have to be monotically  
+increasing) if using <cite>user_defined</cite> classifier.
+Default =None, Example =[20, max(y)].</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>k</strong><span class="classifier">int</span></dt><dd><p>number of classes</p>
+<dt><strong>classifier</strong><span class="classifier">pysal.mapclassify.classifier instance</span></dt><dd><p>Object containing bin ids for each observation (.yb),
+upper bounds of each class (.bins), number of classes (.k)
+and number of observations falling in each class (.counts)</p>
 </dd>
-<dt><strong>cl</strong><span class="classifier">object</span></dt><dd><p>instance of the classifier at k</p>
-</dd>
-<dt><strong>gadf</strong><span class="classifier">float</span></dt><dd><p>goodness of absolute deviation fit</p>
+<dt>Note: Supported classifiers include: quantiles, box_plot, euqal_interval,</dt><dd><p>fisher_jenks, headtail_breaks, jenks_caspall, jenks_caspall_forced,
+max_p_classifier, maximum_breaks, natural_breaks, percentiles, std_mean,
+user_defined</p>
 </dd>
 </dl>
 </dd>
 </dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><a class="reference internal" href="mapclassify.KClassifiers.html#mapclassify.KClassifiers" title="mapclassify.KClassifiers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KClassifiers</span></code></a></dt><dd></dd>
-</dl>
-</div>
-<p class="rubric">Notes</p>
-<p>The GADF is defined as:</p>
-<blockquote>
-<div><div class="math notranslate nohighlight">
-\[GADF = 1 - \sum_c \sum_{i \in c}
-       |y_i - y_{c,med}|  / \sum_i |y_i - y_{med}|\]</div>
-<p>where <span class="math notranslate nohighlight">\(y_{med}\)</span> is the global median and <span class="math notranslate nohighlight">\(y_{c,med}\)</span> is
-the median for class <span class="math notranslate nohighlight">\(c\)</span>.</p>
-</div></blockquote>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">mapclassify</span> <span class="k">as</span> <span class="nn">mc</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cal</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">load_example</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">qgadf</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">classifiers</span><span class="o">.</span><span class="n">gadf</span><span class="p">(</span><span class="n">cal</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">qgadf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="go">15</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">qgadf</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-<span class="go">0.3740257590909283</span>
+<p>Imports</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">libpysal</span> <span class="kn">import</span> <span class="n">examples</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mapclassify</span> <span class="kn">import</span> <span class="n">classify</span>
 </pre></div>
 </div>
-<p>Quantiles fail to exceed 0.80 before 15 classes. If we lower the bar to
-0.2 we see quintiles as a result</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qgadf2</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">classifiers</span><span class="o">.</span><span class="n">gadf</span><span class="p">(</span><span class="n">cal</span><span class="p">,</span> <span class="n">pct</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">qgadf2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="go">5</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">qgadf2</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-<span class="go">0.21710231966462412</span>
-<span class="go">&gt;&gt;&gt;</span>
+<p>Load Example Data</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">link_to_data</span> <span class="o">=</span> <span class="n">examples</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="s1">&#39;columbus.shp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">link_to_data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;HOVAL&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+<p>Classify values by quantiles</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">quantiles</span> <span class="o">=</span> <span class="n">classify</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;quantiles&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Classify values by box_plot and set hinge to 2</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">box_plot</span> <span class="o">=</span> <span class="n">classify</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;box_plot&#39;</span><span class="p">,</span> <span class="n">hinge</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -211,7 +227,7 @@ the median for class <span class="math notranslate nohighlight">\(c\)</span>.</p
         <br/>
         
 <div id="sourcelink">
-  <a href="../_sources/generated/mapclassify.gadf.rst.txt"
+  <a href="../_sources/generated/mapclassify.classify.rst.txt"
      rel="nofollow">Source</a>
 </div>
       

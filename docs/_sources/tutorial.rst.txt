@@ -10,4 +10,5 @@ Tutorial
     notebooks/03_choropleth.ipynb
     notebooks/04_pooled.ipynb
     notebooks/05_Greedy_coloring.ipynb
+    notebooks/06_api.ipynb
 
