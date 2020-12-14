@@ -47,7 +47,7 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
 
     Classify your data with `mapclassify.classify`
     Note: Input parameters are dependent on classifier used.
-    
+
     Parameters
     ----------
     y : array
@@ -94,11 +94,10 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
             and number of observations falling in each class (.counts)
     
     Note: Supported classifiers include: quantiles, box_plot, euqal_interval,
-        fisher_jenks, headtail_breaks, jenks_caspall, jenks_caspall_forced,
-        max_p_classifier, maximum_breaks, natural_breaks, percentiles, std_mean,
-        user_defined
+        fisher_jenks, fisher_jenks_sampled, headtail_breaks, jenks_caspall,
+        jenks_caspall_sampled, jenks_caspall_forced, max_p, maximum_breaks,
+        natural_breaks, percentiles, std_mean, user_defined
 
-    
     Examples
     --------
     Imports

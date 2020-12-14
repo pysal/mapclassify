@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>mapclassify.JenksCaspallSampled &#8212; mapclassify v2.3.0 Manual</title>
+    <title>mapclassify.JenksCaspallSampled &#8212; mapclassify v2.4.0 Manual</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/pysal-styles.css" />
@@ -42,7 +42,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           mapclassify</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.3.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.4.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -75,6 +75,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/03_choropleth.html">Choropleth</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/04_pooled.html">Pooled Classification</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../notebooks/05_Greedy_coloring.html">Getting started with mapclassify.greedy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/06_api.html">Overview of the mapclassify API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/06_api.html#Original-API-(&lt;-2.4.0)">Original API (&lt; 2.4.0)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/06_api.html#Extended-API-(&gt;=-2.40)">Extended API (&gt;= 2.40)</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
@@ -128,9 +131,9 @@
       
   <div class="section" id="mapclassify-jenkscaspallsampled">
 <h1>mapclassify.JenksCaspallSampled<a class="headerlink" href="#mapclassify-jenkscaspallsampled" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
+<dl class="class">
 <dt id="mapclassify.JenksCaspallSampled">
-<em class="property">class </em><code class="sig-prename descclassname">mapclassify.</code><code class="sig-name descname">JenksCaspallSampled</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">k</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">pct</span><span class="o">=</span><span class="default_value">0.1</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mapclassify/classifiers.html#JenksCaspallSampled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mapclassify.JenksCaspallSampled" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">mapclassify.</code><code class="sig-name descname">JenksCaspallSampled</code><span class="sig-paren">(</span><em class="sig-param">y</em>, <em class="sig-param">k=5</em>, <em class="sig-param">pct=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mapclassify/classifiers.html#JenksCaspallSampled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mapclassify.JenksCaspallSampled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Jenks Caspall Map Classification using a random sample</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -187,9 +190,9 @@ trade off some “accuracy” for a gain in speed.</p>
 </dl>
 </dd>
 </dl>
-<dl class="py method">
+<dl class="method">
 <dt id="mapclassify.JenksCaspallSampled.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">k</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">pct</span><span class="o">=</span><span class="default_value">0.1</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mapclassify/classifiers.html#JenksCaspallSampled.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mapclassify.JenksCaspallSampled.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">y</em>, <em class="sig-param">k=5</em>, <em class="sig-param">pct=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mapclassify/classifiers.html#JenksCaspallSampled.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mapclassify.JenksCaspallSampled.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
@@ -250,9 +253,9 @@ trade off some “accuracy” for a gain in speed.</p>
 </tr>
 </tbody>
 </table>
-<dl class="py method">
+<dl class="method">
 <dt id="mapclassify.JenksCaspallSampled.update">
-<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">y=None</em>, <em class="sig-param">inplace=False</em>, <em class="sig-param">\*\*kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mapclassify/classifiers.html#JenksCaspallSampled.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mapclassify.JenksCaspallSampled.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">y=None</em>, <em class="sig-param">inplace=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mapclassify/classifiers.html#JenksCaspallSampled.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mapclassify.JenksCaspallSampled.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add data or change classification parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -293,7 +296,7 @@ copy estimated from the additional specifications.</p>
     </p>
     <p>
         &copy; Copyright 2018-, pysal developers.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.3.<br/>
     </p>
   </div>
 </footer>

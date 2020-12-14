@@ -50,6 +50,7 @@ BoxPlot
 ```
 
 
+
 ### EqualInterval
 
 ```python
@@ -267,6 +268,29 @@ UserDefined
 (  22.00,  674.00] |    18
 ( 674.00, 4112.00] |     2
 ```
+
+## Alternative API 
+
+As of version 2.4.0 the API has been extended. A `classify` function is now
+available for a streamlined interface:
+
+```python
+>>> classify(y, 'boxplot')                                  
+BoxPlot                   
+
+     Interval        Count
+--------------------------
+(   -inf,  -52.88] |     0
+( -52.88,    2.57] |    15
+(   2.57,    9.36] |    14
+(   9.36,   39.53] |    14
+(  39.53,   94.97] |     6
+(  94.97, 4111.45] |     9
+
+```
+
+
+
 
 ## Use Cases
 

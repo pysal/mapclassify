@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>mapclassify.greedy &#8212; mapclassify v2.3.0 Manual</title>
+    <title>mapclassify.greedy &#8212; mapclassify v2.4.0 Manual</title>
     <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/pysal-styles.css" />
@@ -40,7 +40,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           mapclassify</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.3.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.4.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -73,6 +73,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/03_choropleth.html">Choropleth</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/04_pooled.html">Pooled Classification</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../notebooks/05_Greedy_coloring.html">Getting started with mapclassify.greedy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/06_api.html">Overview of the mapclassify API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/06_api.html#Original-API-(&lt;-2.4.0)">Original API (&lt; 2.4.0)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/06_api.html#Extended-API-(&gt;=-2.40)">Extended API (&gt;= 2.40)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a><ul>
@@ -408,10 +411,15 @@
 <span class="sd">    color : pd.Series</span>
 <span class="sd">        pandas.Series representing assinged color codes</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
-    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;The &#39;networkx&#39; package is required.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">strategy</span> <span class="o">!=</span> <span class="s2">&quot;balanced&quot;</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+
+            <span class="n">STRATEGIES</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">algorithms</span><span class="o">.</span><span class="n">coloring</span><span class="o">.</span><span class="n">greedy_coloring</span><span class="o">.</span><span class="n">STRATEGIES</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;The &#39;networkx&#39; package is required.&quot;</span><span class="p">)</span>
+
     <span class="k">try</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
@@ -421,34 +429,30 @@
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;The &#39;libpysal&#39; package is required.&quot;</span><span class="p">)</span>
 
-    <span class="n">STRATEGIES</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">algorithms</span><span class="o">.</span><span class="n">coloring</span><span class="o">.</span><span class="n">greedy_coloring</span><span class="o">.</span><span class="n">STRATEGIES</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-
     <span class="k">if</span> <span class="n">min_distance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># TODO: use libpysal&#39;s fuzzy_contiguity instead of _geos_sw once pysal/libpysal#280 is released</span>
         <span class="n">sw</span> <span class="o">=</span> <span class="n">_geos_sw</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="n">min_distance</span><span class="p">,</span> <span class="n">silence_warnings</span><span class="o">=</span><span class="n">silence_warnings</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sw</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">sw</span> <span class="o">==</span> <span class="s2">&quot;queen&quot;</span><span class="p">:</span>
-            <span class="n">sw</span> <span class="o">=</span> <span class="n">Queen</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
-                <span class="n">gdf</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_list</span><span class="p">(),</span> <span class="n">silence_warnings</span><span class="o">=</span><span class="n">silence_warnings</span>
-            <span class="p">)</span>
+            <span class="n">sw</span> <span class="o">=</span> <span class="n">Queen</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">silence_warnings</span><span class="o">=</span><span class="n">silence_warnings</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">sw</span> <span class="o">==</span> <span class="s2">&quot;rook&quot;</span><span class="p">:</span>
-            <span class="n">sw</span> <span class="o">=</span> <span class="n">Rook</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span>
-                <span class="n">gdf</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="n">gdf</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_list</span><span class="p">(),</span> <span class="n">silence_warnings</span><span class="o">=</span><span class="n">silence_warnings</span>
-            <span class="p">)</span>
+            <span class="n">sw</span> <span class="o">=</span> <span class="n">Rook</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">silence_warnings</span><span class="o">=</span><span class="n">silence_warnings</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">strategy</span> <span class="o">==</span> <span class="s2">&quot;balanced&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">_balanced</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">sw</span><span class="p">,</span> <span class="n">balance</span><span class="o">=</span><span class="n">balance</span><span class="p">,</span> <span class="n">min_colors</span><span class="o">=</span><span class="n">min_colors</span><span class="p">))</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">_balanced</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">sw</span><span class="p">,</span> <span class="n">balance</span><span class="o">=</span><span class="n">balance</span><span class="p">,</span> <span class="n">min_colors</span><span class="o">=</span><span class="n">min_colors</span><span class="p">))</span>
 
     <span class="k">elif</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="n">STRATEGIES</span><span class="p">:</span>
         <span class="n">color</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">greedy_color</span><span class="p">(</span>
             <span class="n">sw</span><span class="o">.</span><span class="n">to_networkx</span><span class="p">(),</span> <span class="n">strategy</span><span class="o">=</span><span class="n">strategy</span><span class="p">,</span> <span class="n">interchange</span><span class="o">=</span><span class="n">interchange</span>
         <span class="p">)</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">color</span><span class="p">)</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
-        <span class="n">color</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">index</span>
-        <span class="k">return</span> <span class="n">color</span>
 
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> is not a valid strategy.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">strategy</span><span class="p">))</span></div>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> is not a valid strategy.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">strategy</span><span class="p">))</span>
+
+    <span class="n">color</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">color</span><span class="p">)</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+    <span class="n">color</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">index</span>
+    <span class="k">return</span> <span class="n">color</span></div>
 </pre></div>
 
     </div>
@@ -466,7 +470,7 @@
     </p>
     <p>
         &copy; Copyright 2018-, pysal developers.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.3.<br/>
     </p>
   </div>
 </footer>

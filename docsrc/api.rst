@@ -38,3 +38,4 @@ Utilities
 
     mapclassify.KClassifiers
     mapclassify.gadf
+    mapclassify.classify

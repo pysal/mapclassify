@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Index &#8212; mapclassify v2.3.0 Manual</title>
+    <title>Index &#8212; mapclassify v2.4.0 Manual</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/pysal-styles.css" />
@@ -41,7 +41,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           mapclassify</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.3.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.4.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -74,6 +74,9 @@
 <li class="toctree-l2"><a class="reference internal" href="notebooks/03_choropleth.html">Choropleth</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/04_pooled.html">Pooled Classification</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/05_Greedy_coloring.html">Getting started with mapclassify.greedy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/06_api.html">Overview of the mapclassify API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/06_api.html#Original-API-(&lt;-2.4.0)">Original API (&lt; 2.4.0)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/06_api.html#Extended-API-(&gt;=-2.40)">Extended API (&gt;= 2.40)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a><ul>
@@ -128,6 +131,7 @@
 <div class="genindex-jumpbox">
  <a href="#_"><strong>_</strong></a>
  | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
@@ -145,17 +149,9 @@
 <h2 id="_">_</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="generated/giddy.markov.Markov.html#giddy.markov.Markov.__init__">__init__() (giddy.markov.Markov method)</a>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.__init__">__init__() (mapclassify.BoxPlot method)</a>
 
       <ul>
-        <li><a href="generated/giddy.markov.Spatial_Markov.html#giddy.markov.Spatial_Markov.__init__">(giddy.markov.Spatial_Markov method)</a>
-</li>
-        <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.__init__">(mapclassify.BoxPlot method)</a>
-</li>
-        <li><a href="generated/mapclassify.classifiers.Percentiles.html#mapclassify.classifiers.Percentiles.__init__">(mapclassify.classifiers.Percentiles method)</a>
-</li>
-        <li><a href="generated/mapclassify.classifiers.Quantiles.html#mapclassify.classifiers.Quantiles.__init__">(mapclassify.classifiers.Quantiles method)</a>
-</li>
         <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.__init__">(mapclassify.EqualInterval method)</a>
 </li>
         <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.__init__">(mapclassify.FisherJenks method)</a>
@@ -198,6 +194,14 @@
   </ul></td>
 </tr></table>
 
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.classify.html#mapclassify.classify">classify() (in module mapclassify)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -222,11 +226,7 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/mapclassify.gadf.html#mapclassify.gadf">gadf() (in module mapclassify)</a>
-
-      <ul>
-        <li><a href="generated/mapclassify.classifiers.gadf.html#mapclassify.classifiers.gadf">(in module mapclassify.classifiers)</a>
 </li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/mapclassify.greedy.html#mapclassify.greedy">greedy() (in module mapclassify)</a>
@@ -267,12 +267,10 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="generated/giddy.markov.Markov.html#giddy.markov.Markov">Markov (class in giddy.markov)</a>
+      <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks">MaximumBreaks (class in mapclassify)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks">MaximumBreaks (class in mapclassify)</a>
-</li>
       <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP">MaxP (class in mapclassify)</a>
 </li>
   </ul></td>
@@ -290,11 +288,7 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles">Percentiles (class in mapclassify)</a>
-
-      <ul>
-        <li><a href="generated/mapclassify.classifiers.Percentiles.html#mapclassify.classifiers.Percentiles">(class in mapclassify.classifiers)</a>
 </li>
-      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.plot">plot() (mapclassify.UserDefined method)</a>
@@ -306,24 +300,14 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles">Quantiles (class in mapclassify)</a>
-
-      <ul>
-        <li><a href="generated/mapclassify.classifiers.Quantiles.html#mapclassify.classifiers.Quantiles">(class in mapclassify.classifiers)</a>
 </li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="generated/giddy.markov.Spatial_Markov.html#giddy.markov.Spatial_Markov">Spatial_Markov (class in giddy.markov)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean">StdMean (class in mapclassify)</a>
-</li>
-      <li><a href="generated/giddy.markov.Spatial_Markov.html#giddy.markov.Spatial_Markov.summary">summary() (giddy.markov.Spatial_Markov method)</a>, <a href="generated/giddy.markov.Spatial_Markov.summary.html#giddy.markov.Spatial_Markov.summary">[1]</a>
 </li>
   </ul></td>
 </tr></table>
@@ -334,8 +318,6 @@
       <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.update">update() (mapclassify.BoxPlot method)</a>
 
       <ul>
-        <li><a href="generated/mapclassify.classifiers.Percentiles.html#mapclassify.classifiers.Percentiles.update">(mapclassify.classifiers.Percentiles method)</a>
-</li>
         <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.update">(mapclassify.FisherJenksSampled method)</a>
 </li>
         <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.update">(mapclassify.JenksCaspallSampled method)</a>
@@ -377,7 +359,7 @@
     </p>
     <p>
         &copy; Copyright 2018-, pysal developers.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.3.<br/>
     </p>
   </div>
 </footer>
