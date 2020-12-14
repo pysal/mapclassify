@@ -630,7 +630,9 @@ class MapClassifier(object):
 
     def _classify(self):
         if min(self.y) == max(self.y):
-            raise ValueError("Minimum and maximum of input data are equal, cannot create bins.")
+            raise ValueError(
+                "Minimum and maximum of input data are equal, cannot create bins."
+            )
         else:
             self._set_bins()
             self.yb, self.counts = bin1d(self.y, self.bins)
@@ -1139,6 +1141,7 @@ class HeadTailBreaks(MapClassifier):
         bins = head_tail_breaks(x, bins)
         self.bins = np.array(bins)
         self.k = len(self.bins)
+
 
 class EqualInterval(MapClassifier):
     """
@@ -1839,6 +1842,7 @@ class FisherJenksSampled(MapClassifier):
         if (pct * n > 1000) and truncate:
             pct = 1000.0 / n
         ids = np.random.randint(0, n, int(n * pct))
+        y = np.asarray(y)
         yr = y[ids]
         yr[-1] = max(y)  # make sure we have the upper bound
         yr[0] = min(y)  # make sure we have the min
@@ -2023,6 +2027,7 @@ class JenksCaspallSampled(MapClassifier):
         if pct * n > 1000:
             pct = 1000.0 / n
         ids = np.random.randint(0, n, int(n * pct))
+        y = np.asarray(y)
         yr = y[ids]
         yr[0] = max(y)  # make sure we have the upper bound
         self.original_y = y
