@@ -10,3 +10,4 @@ mapclassify/datasets/calemp/.ropeproject/
 mapclassify/tests/.ropeproject/
 setup.cfg
 .DS_Store
+.vscode/settings.json
