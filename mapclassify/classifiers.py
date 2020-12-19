@@ -1196,7 +1196,8 @@ class EqualInterval(MapClassifier):
         see class docstring
 
         """
-
+        if min(y) == max(y):
+            raise ValueError("Not enough unique values in array to form k classes.")
         self.k = k
         MapClassifier.__init__(self, y)
         self.name = "EqualInterval"
@@ -1594,6 +1595,8 @@ class MaximumBreaks(MapClassifier):
     """
 
     def __init__(self, y, k=5, mindiff=0):
+        if min(y) == max(y):
+            raise ValueError("Not enough unique values in array to form k classes.")
         self.k = k
         self.mindiff = mindiff
         MapClassifier.__init__(self, y)
@@ -2114,6 +2117,8 @@ class JenksCaspallForced(MapClassifier):
     """
 
     def __init__(self, y, k=K):
+        if min(y) == max(y):
+            raise ValueError("Not enough unique values in array to form k classes.")
         self.k = k
         MapClassifier.__init__(self, y)
         self.name = "JenksCaspallForced"
@@ -2395,6 +2400,8 @@ class MaxP(MapClassifier):
     """
 
     def __init__(self, y, k=K, initial=1000):
+        if min(y) == max(y):
+            raise ValueError("Not enough unique values in array to form k classes.")
         self.k = k
         self.initial = initial
         MapClassifier.__init__(self, y)

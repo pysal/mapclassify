@@ -1,6 +1,7 @@
 import numpy as np
 import unittest
 import types
+import pytest
 from ..classifiers import *
 from ..classifiers import binC, bin, bin1d, load_example
 from ..pooling import Pooled
@@ -340,7 +341,7 @@ class TestHeadTailBreaks(unittest.TestCase):
         np.testing.assert_array_almost_equal(htb.counts, np.array([980, 17, 1, 2]))
 
     def test_HeadTailBreaks_float(self):
-        V = np.array([1 + 2**-52, 1, 1])
+        V = np.array([1 + 2 ** -52, 1, 1])
         htb = HeadTailBreaks(V)
         self.assertEqual(htb.k, 2)
         self.assertEqual(len(htb.counts), 2)
@@ -388,6 +389,11 @@ class TestEqualInterval(unittest.TestCase):
         np.testing.assert_array_almost_equal(
             ei.bins, np.array([822.394, 1644.658, 2466.922, 3289.186, 4111.45])
         )
+
+        with pytest.raises(
+            ValueError, match="Not enough unique values in array to form k classes."
+        ):
+            EqualInterval(np.array([1, 1, 1, 1]))
 
 
 class TestPercentiles(unittest.TestCase):
@@ -479,6 +485,11 @@ class TestMaximumBreaks(unittest.TestCase):
         )
         np.testing.assert_array_almost_equal(mb.counts, np.array([50, 2, 4, 1, 1]))
 
+        with pytest.raises(
+            ValueError, match="Not enough unique values in array to form k classes."
+        ):
+            MaximumBreaks(np.array([1, 1, 1, 1]))
+
 
 class TestFisherJenks(unittest.TestCase):
     def setUp(self):
@@ -555,6 +566,11 @@ class TestJenksCaspallForced(unittest.TestCase):
         )
         np.testing.assert_array_almost_equal(jcf.counts, np.array([12, 12, 13, 9, 12]))
 
+        with pytest.raises(
+            ValueError, match="Not enough unique values in array to form k classes."
+        ):
+            JenksCaspallForced(np.array([1, 1, 1, 1]))
+
 
 class TestUserDefined(unittest.TestCase):
     def setUp(self):
@@ -593,6 +609,11 @@ class TestMaxP(unittest.TestCase):
             ),
         )
         np.testing.assert_array_almost_equal(mp.counts, np.array([29, 8, 1, 10, 10]))
+
+        with pytest.raises(
+            ValueError, match="Not enough unique values in array to form k classes."
+        ):
+            MaxP(np.array([1, 1, 1, 1]))
 
 
 class TestGadf(unittest.TestCase):
