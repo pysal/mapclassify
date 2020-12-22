@@ -588,6 +588,12 @@ class TestUserDefined(unittest.TestCase):
         np.testing.assert_array_almost_equal(ud.bins, np.array([20.0, 30.0, 4111.45]))
         np.testing.assert_array_almost_equal(ud.counts, np.array([37, 4, 17]))
 
+    def test_UserDefined_invariant(self):
+        bins = [10, 20, 30, 40]
+        ud = UserDefined(np.array([12, 12, 12]), bins)
+        np.testing.assert_array_almost_equal(ud.bins, np.array([10, 20, 30, 40]))
+        np.testing.assert_array_almost_equal(ud.counts, np.array([0, 3, 0, 0]))
+
 
 class TestMaxP(unittest.TestCase):
     def setUp(self):
