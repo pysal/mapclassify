@@ -1137,6 +1137,7 @@ class HeadTailBreaks(MapClassifier):
         self.bins = np.array(bins)
         self.k = len(self.bins)
 
+
 class EqualInterval(MapClassifier):
     """
     Equal Interval Classification
@@ -1839,6 +1840,7 @@ class FisherJenksSampled(MapClassifier):
         if (pct * n > 1000) and truncate:
             pct = 1000.0 / n
         ids = np.random.randint(0, n, int(n * pct))
+        y = np.asarray(y)
         yr = y[ids]
         yr[-1] = max(y)  # make sure we have the upper bound
         yr[0] = min(y)  # make sure we have the min
@@ -2023,6 +2025,7 @@ class JenksCaspallSampled(MapClassifier):
         if pct * n > 1000:
             pct = 1000.0 / n
         ids = np.random.randint(0, n, int(n * pct))
+        y = np.asarray(y)
         yr = y[ids]
         yr[0] = max(y)  # make sure we have the upper bound
         self.original_y = y

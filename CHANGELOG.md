@@ -1,3 +1,140 @@
+# Version 2.4.1 (2020-12-20)
+
+This is a bug-fix release.
+
+We closed a total of 9 issues (enhancements and bug fixes) through 3 pull requests, since our last release on 2020-12-13.
+
+## Issues Closed
+  - BUG: support series in sampled classifiers (#99)
+  - BUG: FisherJenksSampled returns ValueError if Series is passed as y (#98)
+  - REGR: fix invariant array regression (#101)
+  - REGR: UserDefined classifier returns ValueError("Minimum and maximum of input data are equal, cannot create bins.") (#100)
+  - [DOC] add example nb for new classify API (#91)
+  - 2.4.0 Release (#97)
+
+## Pull Requests
+  - BUG: support series in sampled classifiers (#99)
+  - REGR: fix invariant array regression (#101)
+  - 2.4.0 Release (#97)
+
+The following individuals contributed to this release:
+
+  - Serge Rey
+  - Martin Fleischmann
+  - Stefanie Lumnitz
+  
+# Version 2.4.0 (2020-12-13)
+
+We closed a total of 39 issues (enhancements and bug fixes) through 15 pull requests, since our last release on 2020-06-13.
+Issues Closed
+
+ - Remove timeout on tests. (#96)
+ - BUG: HeadTailBreaks RecursionError due to floating point issue (#92)
+ - Handle recursion error for head tails. (#95)
+ - Add streamlined API (#72)
+ - [API] add high-level API mapclassify.classify() (#90)
+ - BUG: Fix mapclassify #88 (#89)
+ - exclude Python 3.6 for Windows (#94)
+ - CI: update conda action (#93)
+ - EqualInterval unclear error when max_y - min_y = 0 (#88)
+ - BUG: fix unordered series in greedy (#87)
+ - BUG: greedy(strategy='balanced') does not return correct labels (#86)
+ - Extra files in PyPI sdist (#56)
+ - MAINT: fix repos name (#85)
+ - DOC: content type for long description (#84)
+ - MAINT: update gitcount notebook (#83)
+ - Update documentations to include tutorial (#63)
+ - build binder for notebooks (#71)
+ - current version of mapclassify in docs? (#70)
+ - 404 for notebook/tutorials links in docs (#79)
+ - DOC: figs (#82)
+ - DOCS: new images for tutorial (#81)
+ - DOC: missing figs (#80)
+ - DOCS: update documentation pages (#78)
+ - Make networkx optional, remove xfail from greedy (#77)
+
+## Pull Requests
+
+ - Remove timeout on tests. (#96)
+ - Handle recursion error for head tails. (#95)
+ - [API] add high-level API mapclassify.classify() (#90)
+ - BUG: Fix mapclassify #88 (#89)
+ - exclude Python 3.6 for Windows (#94)
+ - CI: update conda action (#93)
+ - BUG: fix unordered series in greedy (#87)
+ - MAINT: fix repos name (#85)
+ - DOC: content type for long description (#84)
+ - MAINT: update gitcount notebook (#83)
+ - DOC: figs (#82)
+ - DOCS: new images for tutorial (#81)
+ - DOC: missing figs (#80)
+ - DOCS: update documentation pages (#78)
+ - Make networkx optional, remove xfail from greedy (#77)
+
+The following individuals contributed to this release:
+
+    Serge Rey
+    Stefanie Lumnitz
+    James Gaboardi
+    Martin Fleischmann
+
+ 
+# Version 2.3.0 (2020-06-13)
+## Key Enhancements
+
+- Topological coloring to ensure no two adjacent polygons share the same color.
+- Pooled classification allows for the use of the same class intervals across maps.
+
+## Details
+
+We closed a total of 30 issues (enhancements and bug fixes) through 10 pull requests, since our last release on 2020-01-04.
+## Issues Closed
+
+  - Make networkx optional, remove xfail from greedy (#77)
+  - BINDER: point to upstream (#76)
+  - add binder badge (#75)
+  - Binder (#74)
+  - sys import missing from setup.py (#73)
+  - [WIP] DOC: Updating tutorial (#66)
+  - chorobrewer branch has begun (#27)
+  - Is mapclassify code black? (#68)
+  - Code format and README (#69)
+  - Move testing over to github actions (#64)
+  - Add pinning in pooled example documentation (#67)
+  - Migrate to GHA (#65)
+  - Add a Pooled classifier (#51)
+  - Backwards compatability (#48)
+  - Difference between Natural Breaks and Fisher Jenks schemes (#62)
+  - ENH: add greedy (topological) coloring (#61)
+  - Error while running mapclassify (#60)
+  - Pooled (#59)
+  - Invalid escape sequences in strings (#57)
+  - 3.8, appveyor, deprecation fixes (#58)
+
+## Pull Requests
+
+  - Make networkx optional, remove xfail from greedy (#77)
+  - BINDER: point to upstream (#76)
+  - add binder badge (#75)
+  - Binder (#74)
+  - [WIP] DOC: Updating tutorial (#66)
+  - Code format and README (#69)
+  - Migrate to GHA (#65)
+  - ENH: add greedy (topological) coloring (#61)
+  - Pooled (#59)
+  - 3.8, appveyor, deprecation fixes (#58)
+
+## Acknowledgements
+
+The following individuals contributed to this release:
+
+  - Serge Rey
+  - James Gaboardi
+  - Eli Knaap
+  - Martin Fleischmann
+
+ 
+  
 # Version 2.2.0 (2019-12-21)
 
 This releases brings new functionality for [formatting of legend classes](https://github.com/sjsrey/geopandas/blob/legendkwds/examples/choro_legends.ipynb).
