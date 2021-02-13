@@ -18,7 +18,7 @@
          environment-file: [ci/36.yaml, ci/36-numba.yaml, ci/37.yaml, ci/37-numba.yaml, ci/38.yaml, ci/38-numba.yaml]
          exclude:
            - environment-file: ci/36.yaml
-             os: windows-latest
+             os: [windows-latest, ubuntu-latest]
            - environment-file: ci/36-numba.yaml
              os: windows-latest
      steps:
