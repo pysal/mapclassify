@@ -89,7 +89,7 @@ class Pooled(object):
         name = f"Pooled {classifier}"
         for c in range(cols):
             res = UserDefined(Y[:, c], bins=global_classifier.bins,
-                              min=ymin)
+                              lowest=ymin)
             res.name = name
             col_classifiers.append(res)
         self.col_classifiers = col_classifiers

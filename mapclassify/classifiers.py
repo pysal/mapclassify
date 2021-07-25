@@ -95,9 +95,9 @@ def _format_intervals(mc, fmt="{:.0f}"):
 
 
     lowest = mc.y.min()
-    if hasattr(mc, 'min'):
-        if mc.min:
-            lowest = mc.min
+    if hasattr(mc, 'lowest'):
+        if mc.lowest:
+            lowest = mc.lowest
     lower_open = False
     if lowest > mc.bins[0]:
         lowest = np.NINF
@@ -2222,9 +2222,10 @@ class UserDefined(MapClassifier):
     bins : array
            (k,1), upper bounds of classes (have to be monotically increasing)
 
-    min  : float
-           scalar minimum value of lowest class. Default is to set the minimum to min([-inf, y.min()])
-           setting this will override the default
+    lowest  : float (optional)
+           scalar minimum value of lowest class. Default is to set the minimum
+           to -inf if  y.min() > first upper bound, otherwise minimum is set to
+           y.min(). lowest will override the default
 
 
 
@@ -2266,10 +2267,10 @@ class UserDefined(MapClassifier):
 
     """
 
-    def __init__(self, y, bins, min=None):
+    def __init__(self, y, bins, lowest=None):
         if bins[-1] < max(y):
             bins = np.append(bins, max(y))
-        self.min = min
+        self.lowest = lowest
         self.k = len(bins)
         self.bins = np.array(bins)
         self.y = y
