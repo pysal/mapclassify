@@ -96,7 +96,7 @@ def _format_intervals(mc, fmt="{:.0f}"):
 
     lowest = mc.y.min()
     if hasattr(mc, 'lowest'):
-        if mc.lowest:
+        if mc.lowest is not None:
             lowest = mc.lowest
     lower_open = False
     if lowest > mc.bins[0]:
