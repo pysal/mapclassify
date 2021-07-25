@@ -78,6 +78,7 @@ class Pooled(object):
         Y = np.asarray(Y)
         n, cols = Y.shape
         y = np.reshape(Y, (-1, 1), order="f")
+        ymin = y.min()
         method = classifier.lower()
         if method not in dispatcher:
             print(f"{method} not a valid classifier.")
@@ -87,7 +88,8 @@ class Pooled(object):
         col_classifiers = []
         name = f"Pooled {classifier}"
         for c in range(cols):
-            res = UserDefined(Y[:, c], bins=global_classifier.bins)
+            res = UserDefined(Y[:, c], bins=global_classifier.bins,
+                              lowest=ymin)
             res.name = name
             col_classifiers.append(res)
         self.col_classifiers = col_classifiers

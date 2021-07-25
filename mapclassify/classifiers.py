@@ -93,7 +93,11 @@ def _format_intervals(mc, fmt="{:.0f}"):
     For some classifiers, it is possible that the upper bound of the first interval is less than the minimum value of the attribute that is being classified. In these cases `lower_open=True` and the lower bound of the interval is set to `np.NINF`.
     """
 
+
     lowest = mc.y.min()
+    if hasattr(mc, 'lowest'):
+        if mc.lowest is not None:
+            lowest = mc.lowest
     lower_open = False
     if lowest > mc.bins[0]:
         lowest = np.NINF
@@ -2218,6 +2222,13 @@ class UserDefined(MapClassifier):
     bins : array
            (k,1), upper bounds of classes (have to be monotically increasing)
 
+    lowest  : float (optional)
+           scalar minimum value of lowest class. Default is to set the minimum
+           to -inf if  y.min() > first upper bound, otherwise minimum is set to
+           y.min(). lowest will override the default
+
+
+
     Attributes
     ----------
     yb      : array
@@ -2256,9 +2267,10 @@ class UserDefined(MapClassifier):
 
     """
 
-    def __init__(self, y, bins):
+    def __init__(self, y, bins, lowest=None):
         if bins[-1] < max(y):
             bins = np.append(bins, max(y))
+        self.lowest = lowest
         self.k = len(bins)
         self.bins = np.array(bins)
         self.y = y
