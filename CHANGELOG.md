@@ -1,3 +1,33 @@
+# Version 2.4.3 (2021-07-26)
+
+This is a bug-fix release
+
+We closed a total of 14 issues (enhancements and bug fixes) through 5 pull requests, since our last release on 2020-12-22.
+
+## Issues Closed
+  - Add min arg to UserDefined (#114)
+  - Enable python 2 install (#110)
+  - Inconsistent UserDefined Scale With Multiple Axes (#109)
+  - Turn off 3.6 testing on ubuntu (#107)
+  - 3.9 (#108)
+  - about the classification method's output interval's precision (#106)
+  - 2.4.2 prep (#103)
+  - Update change log and version (#102)
+  - REGR: invariant array fix (#104)
+
+## Pull Requests
+  - Add min arg to UserDefined (#114)
+  - Enable python 2 install (#110)
+  - 2.4.2 prep (#103)
+  - Update change log and version (#102)
+  - REGR: invariant array fix (#104)
+
+The following individuals contributed to this release:
+
+  - Serge Rey
+  - Justin Pihony
+  - Martin Fleischmann
+
 # Version 2.4.1 (2020-12-20)
 
 This is a bug-fix release.
