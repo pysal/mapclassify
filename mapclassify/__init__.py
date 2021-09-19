@@ -1,6 +1,3 @@
-__version__ = "2.4.2"
-# __version__ has to be defined in the first line
-
 from .classifiers import (
     BoxPlot,
     EqualInterval,
@@ -27,3 +24,6 @@ from .pooling import Pooled
 from .greedy import greedy
 
 from ._classify_API import classify
+
+from . import _version
+__version__ = _version.get_versions()['version']
