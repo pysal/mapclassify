@@ -10,3 +10,4 @@ mapclassify/datasets/calemp/.ropeproject/
 mapclassify/tests/.ropeproject/
 .DS_Store
 .vscode/settings.json
+__pycache__
