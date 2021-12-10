@@ -1,6 +1,7 @@
 """
 A module of classification schemes for choropleth mapping.
 """
+import functools
 import numpy as np
 import scipy.stats as stats
 import copy
@@ -61,8 +62,13 @@ try:
     HAS_NUMBA = True
 except ImportError:
     HAS_NUMBA = False
-    def njit(func):
-        return func
+    def njit(type, cache):
+        def decorator_njit(func):
+            @functools.wraps(func)
+            def wrapper_decorator(*args, **kwargs):
+                return func(*args, **kwargs)
+            return wrapper_decorator
+        return decorator_njit
 
 
 def _format_intervals(mc, fmt="{:.0f}"):
