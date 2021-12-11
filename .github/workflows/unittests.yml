@@ -58,7 +58,7 @@ jobs:
           conda config --show
 
       - name: Run pytest
-        run: pytest mapclassify --cov mapclassify -v --cov-report=xml
+        run: pytest mapclassify --cov mapclassify -v --cov-report=xml --color=yes
 
       - name: codecov (${{ matrix.os }}, ${{ matrix.env }})
         uses: codecov/codecov-action@v2
