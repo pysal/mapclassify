@@ -1,0 +1,20 @@
+name: test
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  # required
+  - scipy
+  - beautifulsoup4
+  - scikit-learn
+  # testing
+  - pytest
+  - pytest-cov
+  - codecov
+  - matplotlib
+  # optional
+  - geopandas
+  - palettable
+  - zstd
+  - networkx
+  - libpysal
