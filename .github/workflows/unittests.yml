@@ -29,7 +29,6 @@ jobs:
             ci/39.yaml,
             ci/39-numba.yaml,
             ci/310.yaml,
-            ci/310-numba.yaml,
           ]
         include:
           - env: ci/39.yaml
