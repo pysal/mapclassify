@@ -100,9 +100,8 @@ def _format_intervals(mc, fmt="{:.0f}"):
     For some classifiers, it is possible that the upper bound of the first interval is less than the minimum value of the attribute that is being classified. In these cases `lower_open=True` and the lower bound of the interval is set to `np.NINF`.
     """
 
-
     lowest = mc.y.min()
-    if hasattr(mc, 'lowest'):
+    if hasattr(mc, "lowest"):
         if mc.lowest is not None:
             lowest = mc.lowest
     lower_open = False
@@ -189,6 +188,8 @@ def head_tail_breaks(values, cuts):
     """
     values = np.array(values)
     mean = np.mean(values)
+    if len(cuts) > 0 and cuts[-1] == mean:  # fix floating point issue #117
+        return cuts
     cuts.append(mean)
     if len(set(values)) > 1:
         return head_tail_breaks(values[values > mean], cuts)
