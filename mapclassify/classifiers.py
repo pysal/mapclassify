@@ -1,6 +1,7 @@
 """
 A module of classification schemes for choropleth mapping.
 """
+import functools
 import numpy as np
 import scipy.stats as stats
 import copy
@@ -57,11 +58,17 @@ SEEDRANGE = 1000000  # range for drawing random ints from for Natural Breaks
 FMT = "{:.2f}"
 
 try:
-    from numba import jit
+    from numba import njit
+    HAS_NUMBA = True
 except ImportError:
-
-    def jit(func):
-        return func
+    HAS_NUMBA = False
+    def njit(type, cache):
+        def decorator_njit(func):
+            @functools.wraps(func)
+            def wrapper_decorator(*args, **kwargs):
+                return func(*args, **kwargs)
+            return wrapper_decorator
+        return decorator_njit
 
 
 def _format_intervals(mc, fmt="{:.0f}"):
@@ -508,8 +515,8 @@ def natural_breaks(values, k=5, init=10):
     return (sids, class_ids, fit, cuts)
 
 
-@jit
-def _fisher_jenks_means(values, classes=5, sort=True):
+@njit("f8[:](f8[:], u2)", cache=True)
+def _fisher_jenks_means(values, classes=5):
     """
     Jenks Optimal (Natural Breaks) algorithm implemented in Python.
 
@@ -524,8 +531,6 @@ def _fisher_jenks_means(values, classes=5, sort=True):
     assuring heterogeneity among classes.
 
     """
-    if sort:
-        values.sort()
     n_data = len(values)
     mat1 = np.zeros((n_data + 1, classes + 1), dtype=np.int32)
     mat2 = np.zeros((n_data + 1, classes + 1), dtype=np.float32)
@@ -563,7 +568,7 @@ def _fisher_jenks_means(values, classes=5, sort=True):
         id = int(pivot - 2)
         kclass[countNum - 1] = values[id]
         k = int(pivot - 1)
-    return kclass
+    return np.delete(kclass, 0)
 
 
 class MapClassifier(object):
@@ -1762,8 +1767,8 @@ class FisherJenks(MapClassifier):
     ----------
     y : array
         (n,1), values to classify
-    k : int
-        number of classes required
+    k : int, optional
+        number of classes, defatuls to 5
 
     Attributes
     ----------
@@ -1791,6 +1796,9 @@ class FisherJenks(MapClassifier):
     """
 
     def __init__(self, y, k=K):
+        if not HAS_NUMBA:
+            Warn("Numba not installed. Using slow pure python version.",
+                 UserWarning)
 
         nu = len(np.unique(y))
         if nu < k:
@@ -1800,8 +1808,8 @@ class FisherJenks(MapClassifier):
         self.name = "FisherJenks"
 
     def _set_bins(self):
-        x = self.y.copy()
-        self.bins = np.array(_fisher_jenks_means(x, classes=self.k)[1:])
+        x = np.sort(self.y).astype("f8")
+        self.bins = _fisher_jenks_means(x, classes=self.k)
 
 
 class FisherJenksSampled(MapClassifier):

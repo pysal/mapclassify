@@ -58,6 +58,7 @@ package_data = get_data_files()
 def setup_package():
     _groups_files = {
         "base": "requirements.txt",
+        "speedups": "requirements_speedups.txt",
         "tests": "requirements_tests.txt",
         "docs": "requirements_docs.txt",
     }
