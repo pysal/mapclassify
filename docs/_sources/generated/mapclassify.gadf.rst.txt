@@ -1,6 +1,0 @@
-mapclassify.gadf
-================
-
-.. currentmodule:: mapclassify
-
-.. autofunction:: gadf

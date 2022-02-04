@@ -1,6 +1,0 @@
-mapclassify.classify
-====================
-
-.. currentmodule:: mapclassify
-
-.. autofunction:: classify
