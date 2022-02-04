@@ -1,4 +1,4 @@
-mapclassify.classify
+﻿mapclassify.classify
 ====================
 
 .. currentmodule:: mapclassify

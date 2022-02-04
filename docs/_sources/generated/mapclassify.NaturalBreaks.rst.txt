@@ -1,4 +1,4 @@
-mapclassify.NaturalBreaks
+﻿mapclassify.NaturalBreaks
 =========================
 
 .. currentmodule:: mapclassify

@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>mapclassify.BoxPlot &#8212; mapclassify v2.4.0 Manual</title>
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mapclassify.BoxPlot &#8212; mapclassify v2.4.2+26.g7bc901d3.dirty Manual</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pysal-styles.css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="shortcut icon" href="../_static/pysal_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -24,9 +23,9 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js "></script>
 <script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js "></script>
 <script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
 
   </head><body>
@@ -42,7 +41,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           mapclassify</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.4.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.4.2+26.g7bc901d3.dirty</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -131,9 +130,9 @@
       
   <div class="section" id="mapclassify-boxplot">
 <h1>mapclassify.BoxPlot<a class="headerlink" href="#mapclassify-boxplot" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="mapclassify.BoxPlot">
-<em class="property">class </em><code class="sig-prename descclassname">mapclassify.</code><code class="sig-name descname">BoxPlot</code><span class="sig-paren">(</span><em class="sig-param">y</em>, <em class="sig-param">hinge=1.5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mapclassify/classifiers.html#BoxPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mapclassify.BoxPlot" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="mapclassify.BoxPlot">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">mapclassify.</span></span><span class="sig-name descname"><span class="pre">BoxPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hinge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mapclassify/classifiers.html#BoxPlot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mapclassify.BoxPlot" title="Permalink to this definition">¶</a></dt>
 <dd><p>BoxPlot Map Classification</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -197,9 +196,9 @@ outlier.</p>
 </dl>
 </dd>
 </dl>
-<dl class="method">
-<dt id="mapclassify.BoxPlot.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">y</em>, <em class="sig-param">hinge=1.5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mapclassify/classifiers.html#BoxPlot.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mapclassify.BoxPlot.__init__" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="mapclassify.BoxPlot.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hinge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mapclassify/classifiers.html#BoxPlot.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mapclassify.BoxPlot.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -219,44 +218,44 @@ outlier.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#mapclassify.BoxPlot.__init__" title="mapclassify.BoxPlot.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(self, y[, hinge])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mapclassify.BoxPlot.__init__" title="mapclassify.BoxPlot.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(y[, hinge])</p></td>
 <td><p><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p></p></dd>
 </dl>
 </p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_bin</span></code>(self, x)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_bin</span></code>(x)</p></td>
 <td><p>Sort input or inputs according to the current bin estimate</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_adcm</span></code>(self)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_adcm</span></code>()</p></td>
 <td><p>Absolute deviation around class median (ADCM).</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_fmt</span></code>(self)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_fmt</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_gadf</span></code>(self)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_gadf</span></code>()</p></td>
 <td><p>Goodness of absolute deviation of fit</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_legend_classes</span></code>(self[, fmt])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_legend_classes</span></code>([fmt])</p></td>
 <td><p>Format the strings for the classes on the legend</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_tss</span></code>(self)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_tss</span></code>()</p></td>
 <td><p>Total sum of squares around class means</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">make</span></code>(\*args, \*\*kwargs)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">make</span></code>(*args, **kwargs)</p></td>
 <td><p>Configure and create a classifier that will consume data and produce classifications, given the configuration options specified by this function.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code>(self, gdf[, border_color, …])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code>(gdf[, border_color, border_width, …])</p></td>
 <td><p>Plot Mapclassiifer NOTE: Requires matplotlib, and implicitly requires geopandas dataframe as input.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_fmt</span></code>(self, fmt)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_fmt</span></code>(fmt)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">table</span></code>(self)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">table</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#mapclassify.BoxPlot.update" title="mapclassify.BoxPlot.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(self[, y, inplace])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#mapclassify.BoxPlot.update" title="mapclassify.BoxPlot.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>([y, inplace])</p></td>
 <td><p>Add data or change classification parameters.</p></td>
 </tr>
 </tbody>
@@ -273,9 +272,9 @@ outlier.</p>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="mapclassify.BoxPlot.update">
-<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">y=None</em>, <em class="sig-param">inplace=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mapclassify/classifiers.html#BoxPlot.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mapclassify.BoxPlot.update" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="mapclassify.BoxPlot.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inplace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mapclassify/classifiers.html#BoxPlot.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mapclassify.BoxPlot.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add data or change classification parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -316,7 +315,7 @@ copy estimated from the additional specifications.</p>
     </p>
     <p>
         &copy; Copyright 2018-, pysal developers.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.3.<br/>
     </p>
   </div>
 </footer>

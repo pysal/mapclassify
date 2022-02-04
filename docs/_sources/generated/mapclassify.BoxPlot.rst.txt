@@ -1,4 +1,4 @@
-mapclassify.BoxPlot
+﻿mapclassify.BoxPlot
 ===================
 
 .. currentmodule:: mapclassify

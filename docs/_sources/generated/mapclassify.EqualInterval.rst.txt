@@ -1,4 +1,4 @@
-mapclassify.EqualInterval
+﻿mapclassify.EqualInterval
 =========================
 
 .. currentmodule:: mapclassify

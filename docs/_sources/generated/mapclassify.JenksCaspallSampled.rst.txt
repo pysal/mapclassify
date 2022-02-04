@@ -1,4 +1,4 @@
-mapclassify.JenksCaspallSampled
+﻿mapclassify.JenksCaspallSampled
 ===============================
 
 .. currentmodule:: mapclassify

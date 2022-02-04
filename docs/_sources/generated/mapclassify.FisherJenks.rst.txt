@@ -1,4 +1,4 @@
-mapclassify.FisherJenks
+﻿mapclassify.FisherJenks
 =======================
 
 .. currentmodule:: mapclassify

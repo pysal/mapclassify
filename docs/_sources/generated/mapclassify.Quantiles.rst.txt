@@ -1,4 +1,4 @@
-mapclassify.Quantiles
+﻿mapclassify.Quantiles
 =====================
 
 .. currentmodule:: mapclassify

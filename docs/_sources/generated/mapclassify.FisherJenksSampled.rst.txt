@@ -1,4 +1,4 @@
-mapclassify.FisherJenksSampled
+﻿mapclassify.FisherJenksSampled
 ==============================
 
 .. currentmodule:: mapclassify

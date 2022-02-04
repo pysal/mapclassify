@@ -1,4 +1,4 @@
-mapclassify.greedy
+﻿mapclassify.greedy
 ==================
 
 .. currentmodule:: mapclassify

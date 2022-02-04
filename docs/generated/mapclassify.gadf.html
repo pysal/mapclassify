@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>mapclassify.gadf &#8212; mapclassify v2.4.0 Manual</title>
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mapclassify.gadf &#8212; mapclassify v2.4.2+26.g7bc901d3.dirty Manual</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../_static/pysal-styles.css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/language_data.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
     <link rel="shortcut icon" href="../_static/pysal_favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -24,9 +25,9 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js "></script>
 <script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js "></script>
 <script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
 
   </head><body>
@@ -42,7 +43,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           mapclassify</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.4.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.4.2+26.g7bc901d3.dirty</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -131,9 +132,9 @@
       
   <div class="section" id="mapclassify-gadf">
 <h1>mapclassify.gadf<a class="headerlink" href="#mapclassify-gadf" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="mapclassify.gadf">
-<code class="sig-prename descclassname">mapclassify.</code><code class="sig-name descname">gadf</code><span class="sig-paren">(</span><em class="sig-param">y</em>, <em class="sig-param">method='Quantiles'</em>, <em class="sig-param">maxk=15</em>, <em class="sig-param">pct=0.8</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mapclassify/classifiers.html#gadf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mapclassify.gadf" title="Permalink to this definition">¶</a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="mapclassify.gadf">
+<span class="sig-prename descclassname"><span class="pre">mapclassify.</span></span><span class="sig-name descname"><span class="pre">gadf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Quantiles'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pct</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mapclassify/classifiers.html#gadf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mapclassify.gadf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate the Goodness of Absolute Deviation Fit of a Classifier
 Finds the minimum value of k for which gadf&gt;pct</p>
 <dl class="field-list simple">
@@ -218,7 +219,7 @@ the median for class <span class="math notranslate nohighlight">\(c\)</span>.</p
     </p>
     <p>
         &copy; Copyright 2018-, pysal developers.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.3.<br/>
     </p>
   </div>
 </footer>

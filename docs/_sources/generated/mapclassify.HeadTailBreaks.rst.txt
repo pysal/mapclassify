@@ -1,4 +1,4 @@
-mapclassify.HeadTailBreaks
+﻿mapclassify.HeadTailBreaks
 ==========================
 
 .. currentmodule:: mapclassify

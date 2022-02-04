@@ -1,4 +1,4 @@
-mapclassify.MaximumBreaks
+﻿mapclassify.MaximumBreaks
 =========================
 
 .. currentmodule:: mapclassify

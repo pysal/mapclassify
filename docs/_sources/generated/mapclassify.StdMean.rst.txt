@@ -1,4 +1,4 @@
-mapclassify.StdMean
+﻿mapclassify.StdMean
 ===================
 
 .. currentmodule:: mapclassify

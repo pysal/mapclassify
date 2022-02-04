@@ -1,4 +1,4 @@
-mapclassify.MaxP
+﻿mapclassify.MaxP
 ================
 
 .. currentmodule:: mapclassify

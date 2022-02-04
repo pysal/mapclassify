@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>mapclassify.classifiers &#8212; mapclassify v2.4.0 Manual</title>
-    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mapclassify.classifiers &#8212; mapclassify v2.4.2+26.g7bc901d3.dirty Manual</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/pysal-styles.css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="shortcut icon" href="../../_static/pysal_favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -22,9 +21,9 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js "></script>
 <script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js "></script>
 <script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
 
   </head><body>
@@ -40,7 +39,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           mapclassify</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.4.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>2.4.2+26.g7bc901d3.dirty</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -128,6 +127,7 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">A module of classification schemes for choropleth mapping.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">stats</span>
 <span class="kn">import</span> <span class="nn">copy</span>
@@ -184,11 +184,17 @@
 <span class="n">FMT</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
+    <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
+    <span class="n">HAS_NUMBA</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-
-    <span class="k">def</span> <span class="nf">jit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">func</span>
+    <span class="n">HAS_NUMBA</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">def</span> <span class="nf">njit</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">cache</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">decorator_njit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+            <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+            <span class="k">def</span> <span class="nf">wrapper_decorator</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">wrapper_decorator</span>
+        <span class="k">return</span> <span class="n">decorator_njit</span>
 
 
 <span class="k">def</span> <span class="nf">_format_intervals</span><span class="p">(</span><span class="n">mc</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{:.0f}</span><span class="s2">&quot;</span><span class="p">):</span>
@@ -221,6 +227,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">lowest</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">mc</span><span class="p">,</span> <span class="s2">&quot;lowest&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">mc</span><span class="o">.</span><span class="n">lowest</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">lowest</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">lowest</span>
     <span class="n">lower_open</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">if</span> <span class="n">lowest</span> <span class="o">&gt;</span> <span class="n">mc</span><span class="o">.</span><span class="n">bins</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
         <span class="n">lowest</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">NINF</span>
@@ -305,6 +314,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
     <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cuts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">cuts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">mean</span><span class="p">:</span>  <span class="c1"># fix floating point issue #117</span>
+        <span class="k">return</span> <span class="n">cuts</span>
     <span class="n">cuts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mean</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">values</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">head_tail_breaks</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">values</span> <span class="o">&gt;</span> <span class="n">mean</span><span class="p">],</span> <span class="n">cuts</span><span class="p">)</span>
@@ -630,8 +641,8 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">sids</span><span class="p">,</span> <span class="n">class_ids</span><span class="p">,</span> <span class="n">fit</span><span class="p">,</span> <span class="n">cuts</span><span class="p">)</span>
 
 
-<span class="nd">@jit</span>
-<span class="k">def</span> <span class="nf">_fisher_jenks_means</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="nd">@njit</span><span class="p">(</span><span class="s2">&quot;f8[:](f8[:], u2)&quot;</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_fisher_jenks_means</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Jenks Optimal (Natural Breaks) algorithm implemented in Python.</span>
 
@@ -646,8 +657,6 @@
 <span class="sd">    assuring heterogeneity among classes.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">sort</span><span class="p">:</span>
-        <span class="n">values</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
     <span class="n">n_data</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
     <span class="n">mat1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_data</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
     <span class="n">mat2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_data</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
@@ -685,7 +694,7 @@
         <span class="nb">id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pivot</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">kclass</span><span class="p">[</span><span class="n">countNum</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
         <span class="n">k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pivot</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">kclass</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">kclass</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">MapClassifier</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -756,11 +765,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">gadf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_gadf</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_classify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Minimum and maximum of input data are equal, cannot create bins.&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_set_bins</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">yb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">counts</span> <span class="o">=</span> <span class="n">bin1d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_bins</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">counts</span> <span class="o">=</span> <span class="n">bin1d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1267,6 +1273,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">)</span></div>
 
+
 <div class="viewcode-block" id="EqualInterval"><a class="viewcode-back" href="../../generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval">[docs]</a><span class="k">class</span> <span class="nc">EqualInterval</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Equal Interval Classification</span>
@@ -1320,7 +1327,8 @@
 <span class="sd">        see class docstring</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-
+        <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Not enough unique values in array to form k classes.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
         <span class="n">MapClassifier</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;EqualInterval&quot;</span></div>
@@ -1340,7 +1348,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">bins</span></div>
 
 
-<div class="viewcode-block" id="Percentiles"><a class="viewcode-back" href="../../generated/mapclassify.Percentiles.html#mapclassify.Percentiles">[docs]</a><span class="k">class</span> <span class="nc">Percentiles</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
+<div class="viewcode-block" id="Percentiles"><a class="viewcode-back" href="../../generated/mapclassify.classifiers.Percentiles.html#mapclassify.Percentiles">[docs]</a><span class="k">class</span> <span class="nc">Percentiles</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Percentiles Map Classification</span>
 
@@ -1382,7 +1390,7 @@
 <span class="sd">    2</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Percentiles.__init__"><a class="viewcode-back" href="../../generated/mapclassify.Percentiles.html#mapclassify.Percentiles.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">pct</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">100</span><span class="p">]):</span>
+<div class="viewcode-block" id="Percentiles.__init__"><a class="viewcode-back" href="../../generated/mapclassify.classifiers.Percentiles.html#mapclassify.Percentiles.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">pct</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">100</span><span class="p">]):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pct</span> <span class="o">=</span> <span class="n">pct</span>
         <span class="n">MapClassifier</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Percentiles&quot;</span></div>
@@ -1393,7 +1401,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">stats</span><span class="o">.</span><span class="n">scoreatpercentile</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pct</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Percentiles.update"><a class="viewcode-back" href="../../generated/mapclassify.Percentiles.html#mapclassify.Percentiles.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Percentiles.update"><a class="viewcode-back" href="../../generated/mapclassify.classifiers.Percentiles.html#mapclassify.Percentiles.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add data or change classification parameters.</span>
 
@@ -1542,7 +1550,7 @@
             <span class="k">return</span> <span class="n">new</span></div></div>
 
 
-<div class="viewcode-block" id="Quantiles"><a class="viewcode-back" href="../../generated/mapclassify.Quantiles.html#mapclassify.Quantiles">[docs]</a><span class="k">class</span> <span class="nc">Quantiles</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
+<div class="viewcode-block" id="Quantiles"><a class="viewcode-back" href="../../generated/mapclassify.classifiers.Quantiles.html#mapclassify.Quantiles">[docs]</a><span class="k">class</span> <span class="nc">Quantiles</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Quantile Map Classification</span>
 
@@ -1579,7 +1587,7 @@
 <span class="sd">    array([12, 11, 12, 11, 12])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Quantiles.__init__"><a class="viewcode-back" href="../../generated/mapclassify.Quantiles.html#mapclassify.Quantiles.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">):</span>
+<div class="viewcode-block" id="Quantiles.__init__"><a class="viewcode-back" href="../../generated/mapclassify.classifiers.Quantiles.html#mapclassify.Quantiles.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
         <span class="n">MapClassifier</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Quantiles&quot;</span></div>
@@ -1718,6 +1726,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="MaximumBreaks.__init__"><a class="viewcode-back" href="../../generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">mindiff</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Not enough unique values in array to form k classes.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mindiff</span> <span class="o">=</span> <span class="n">mindiff</span>
         <span class="n">MapClassifier</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -1883,8 +1893,8 @@
 <span class="sd">    ----------</span>
 <span class="sd">    y : array</span>
 <span class="sd">        (n,1), values to classify</span>
-<span class="sd">    k : int</span>
-<span class="sd">        number of classes required</span>
+<span class="sd">    k : int, optional</span>
+<span class="sd">        number of classes, defatuls to 5</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -1912,6 +1922,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="FisherJenks.__init__"><a class="viewcode-back" href="../../generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">HAS_NUMBA</span><span class="p">:</span>
+            <span class="n">Warn</span><span class="p">(</span><span class="s2">&quot;Numba not installed. Using slow pure python version.&quot;</span><span class="p">,</span>
+                 <span class="ne">UserWarning</span><span class="p">)</span>
 
         <span class="n">nu</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">nu</span> <span class="o">&lt;</span> <span class="n">k</span><span class="p">:</span>
@@ -1921,8 +1934,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;FisherJenks&quot;</span></div>
 
     <span class="k">def</span> <span class="nf">_set_bins</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">_fisher_jenks_means</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])</span></div>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;f8&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">_fisher_jenks_means</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FisherJenksSampled"><a class="viewcode-back" href="../../generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled">[docs]</a><span class="k">class</span> <span class="nc">FisherJenksSampled</span><span class="p">(</span><span class="n">MapClassifier</span><span class="p">):</span>
@@ -1966,6 +1979,7 @@
         <span class="k">if</span> <span class="p">(</span><span class="n">pct</span> <span class="o">*</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">)</span> <span class="ow">and</span> <span class="n">truncate</span><span class="p">:</span>
             <span class="n">pct</span> <span class="o">=</span> <span class="mf">1000.0</span> <span class="o">/</span> <span class="n">n</span>
         <span class="n">ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">pct</span><span class="p">))</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
         <span class="n">yr</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">ids</span><span class="p">]</span>
         <span class="n">yr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># make sure we have the upper bound</span>
         <span class="n">yr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># make sure we have the min</span>
@@ -2150,6 +2164,7 @@
         <span class="k">if</span> <span class="n">pct</span> <span class="o">*</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">:</span>
             <span class="n">pct</span> <span class="o">=</span> <span class="mf">1000.0</span> <span class="o">/</span> <span class="n">n</span>
         <span class="n">ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">pct</span><span class="p">))</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
         <span class="n">yr</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">ids</span><span class="p">]</span>
         <span class="n">yr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># make sure we have the upper bound</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">original_y</span> <span class="o">=</span> <span class="n">y</span>
@@ -2236,6 +2251,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="JenksCaspallForced.__init__"><a class="viewcode-back" href="../../generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Not enough unique values in array to form k classes.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
         <span class="n">MapClassifier</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;JenksCaspallForced&quot;</span></div>
@@ -2340,6 +2357,13 @@
 <span class="sd">    bins : array</span>
 <span class="sd">           (k,1), upper bounds of classes (have to be monotically increasing)</span>
 
+<span class="sd">    lowest  : float (optional)</span>
+<span class="sd">           scalar minimum value of lowest class. Default is to set the minimum</span>
+<span class="sd">           to -inf if  y.min() &gt; first upper bound, otherwise minimum is set to</span>
+<span class="sd">           y.min(). lowest will override the default</span>
+
+
+
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    yb      : array</span>
@@ -2378,9 +2402,10 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="UserDefined.__init__"><a class="viewcode-back" href="../../generated/mapclassify.UserDefined.html#mapclassify.UserDefined.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">bins</span><span class="p">):</span>
+<div class="viewcode-block" id="UserDefined.__init__"><a class="viewcode-back" href="../../generated/mapclassify.UserDefined.html#mapclassify.UserDefined.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">lowest</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">bins</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
             <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lowest</span> <span class="o">=</span> <span class="n">lowest</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
@@ -2517,6 +2542,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="MaxP.__init__"><a class="viewcode-back" href="../../generated/mapclassify.MaxP.html#mapclassify.MaxP.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Not enough unique values in array to form k classes.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">k</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="n">initial</span>
         <span class="n">MapClassifier</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -2847,7 +2874,7 @@
     </p>
     <p>
         &copy; Copyright 2018-, pysal developers.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.3.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.3.<br/>
     </p>
   </div>
 </footer>
