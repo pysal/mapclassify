@@ -20,8 +20,6 @@ jobs:
         os: ["ubuntu-latest"]
         env:
           [
-            ci/36.yaml,
-            ci/36-numba.yaml,
             ci/37.yaml,
             ci/37-numba.yaml,
             ci/38.yaml,
@@ -29,15 +27,16 @@ jobs:
             ci/39.yaml,
             ci/39-numba.yaml,
             ci/310.yaml,
+            ci/310-numba.yaml,
           ]
         include:
-          - env: ci/39.yaml
+          - env: ci/310.yaml
             os: macos-latest
-          - env: ci/39-numba.yaml
+          - env: ci/310-numba.yaml
             os: macos-latest
-          - env: ci/39.yaml
+          - env: ci/310.yaml
             os: windows-latest
-          - env: ci/39-numba.yaml
+          - env: ci/310-numba.yaml
             os: windows-latest
 
     steps:
