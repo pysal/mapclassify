@@ -26,4 +26,5 @@ from .greedy import greedy
 from ._classify_API import classify
 
 from . import _version
-__version__ = _version.get_versions()['version']
+
+__version__ = _version.get_versions()["version"]

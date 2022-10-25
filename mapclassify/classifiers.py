@@ -59,15 +59,19 @@ FMT = "{:.2f}"
 
 try:
     from numba import njit
+
     HAS_NUMBA = True
 except ImportError:
     HAS_NUMBA = False
+
     def njit(type, cache):
         def decorator_njit(func):
             @functools.wraps(func)
             def wrapper_decorator(*args, **kwargs):
                 return func(*args, **kwargs)
+
             return wrapper_decorator
+
         return decorator_njit
 
 
@@ -1797,8 +1801,7 @@ class FisherJenks(MapClassifier):
 
     def __init__(self, y, k=K):
         if not HAS_NUMBA:
-            Warn("Numba not installed. Using slow pure python version.",
-                 UserWarning)
+            Warn("Numba not installed. Using slow pure python version.", UserWarning)
 
         nu = len(np.unique(y))
         if nu < k:
