@@ -1,11 +1,12 @@
-import numpy as np
-import unittest
 import types
-import pytest
-from ..classifiers import *
-from ..classifiers import binC, bin, bin1d, load_example
-from ..pooling import Pooled
+import unittest
 
+import numpy as np
+import pytest
+
+from ..classifiers import *
+from ..classifiers import bin, bin1d, binC, load_example
+from ..pooling import Pooled
 
 RTOL = 0.0001
 
@@ -341,7 +342,7 @@ class TestHeadTailBreaks(unittest.TestCase):
         np.testing.assert_array_almost_equal(htb.counts, np.array([980, 17, 1, 2]))
 
     def test_HeadTailBreaks_float(self):
-        V = np.array([1 + 2 ** -52, 1, 1])
+        V = np.array([1 + 2**-52, 1, 1])
         htb = HeadTailBreaks(V)
         self.assertEqual(htb.k, 2)
         self.assertEqual(len(htb.counts), 2)

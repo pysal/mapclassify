@@ -1,21 +1,8 @@
-from .classifiers import (
-    BoxPlot,
-    EqualInterval,
-    FisherJenks,
-    FisherJenksSampled,
-    HeadTailBreaks,
-    JenksCaspall,
-    JenksCaspallForced,
-    JenksCaspallSampled,
-    MaxP,
-    MaximumBreaks,
-    NaturalBreaks,
-    Quantiles,
-    Percentiles,
-    StdMean,
-    UserDefined,
-)
-
+from .classifiers import (BoxPlot, EqualInterval, FisherJenks,
+                          FisherJenksSampled, HeadTailBreaks, JenksCaspall,
+                          JenksCaspallForced, JenksCaspallSampled,
+                          MaximumBreaks, MaxP, NaturalBreaks, Percentiles,
+                          Quantiles, StdMean, UserDefined)
 
 __author__ = "Stefanie Lumnitz <stefanie.lumitz@gmail.com>"
 

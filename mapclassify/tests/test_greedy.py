@@ -1,11 +1,10 @@
 import sys
 
 import geopandas as gpd
+import pytest
 from libpysal.weights import Queen
 
 from ..greedy import greedy
-import pytest
-
 
 world = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))
 sw = Queen.from_dataframe(world, ids=world.index.to_list(), silence_warnings=True)

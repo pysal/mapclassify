@@ -12,19 +12,19 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+import os
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import sys, os
-import sphinx_bootstrap_theme
+import sys
 
+import sphinx_bootstrap_theme
 
 sys.path.insert(0, os.path.abspath("../"))
 
 # import your package to obtain the version info to display on the docs website
 import mapclassify
-
 
 # -- General configuration ------------------------------------------------
 

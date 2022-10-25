@@ -1,10 +1,13 @@
-from setuptools import setup, find_packages
 import os
 import sys
-import versioneer
-from io import open
-from os.path import relpath, join as pjoin
 from distutils.command.build_py import build_py
+from io import open
+from os.path import join as pjoin
+from os.path import relpath
+
+from setuptools import find_packages, setup
+
+import versioneer
 
 package = "mapclassify"
 

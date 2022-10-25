@@ -1,12 +1,13 @@
 """
 A module of classification schemes for choropleth mapping.
 """
+import copy
 import functools
+from warnings import warn as Warn
+
 import numpy as np
 import scipy.stats as stats
-import copy
 from sklearn.cluster import KMeans as KMEANS
-from warnings import warn as Warn
 
 __author__ = "Sergio J. Rey"
 
