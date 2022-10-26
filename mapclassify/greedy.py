@@ -264,27 +264,67 @@ def greedy(
 
     Examples
     --------
+
+    >>> import geopandas as gpd
+    >>> from mapclassify import greedy
+    >>> world = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))
+    >>> africa = world.loc[world.continent == "Africa"].copy()
+    >>> africa = africa.to_crs("ESRI:102022").reset_index(drop=True)
+
     Default:
 
-    >>> gdf['greedy_colors'] = greedy(gdf)
+    >>> africa["greedy_colors"] = greedy(africa)
+    >>> africa["greedy_colors"].head()
+    0    1
+    1    0
+    2    0
+    3    1
+    4    4
+    Name: greedy_colors, dtype: int64
 
     Balanced by area:
 
-    >>> gdf['balanced_area'] = greedy(gdf, strategy='balanced',
-    >>>                               balance='area')
+    >>> africa["balanced_area"] = greedy(africa, strategy="balanced", balance="area")
+    >>> africa["balanced_area"].head()
+    0    1
+    1    2
+    2    0
+    3    1
+    4    3
+    Name: balanced_area, dtype: int64
 
     Using rook adjacency:
 
-    >>> gdf['rook_adjacency'] = greedy(gdf, sw='rook')
+    >>> africa["rook_adjacency"] = greedy(africa, sw="rook")
+    >>> africa["rook_adjacency"].tail()
+    46    3
+    47    0
+    48    2
+    49    3
+    50    1
+    Name: rook_adjacency, dtype: int64
 
     Adding minimal distance between colors:
 
-    >>> gdf['min_distance'] = greedy(gdf, min_distance=100)
+    >>> africa["min_distance"] = greedy(africa, min_distance=1000000)
+    >>> africa["min_distance"].head()
+    0    1
+    1    8
+    2    0
+    3    7
+    4    4
+    Name: min_distance, dtype: int64
 
     Using different coloring strategy:
 
-    >>> gdf['smallest_last'] = greedy(gdf, strategy='smallest_last')
-
+    >>> africa["smallest_last"] = greedy(africa, strategy="smallest_last")
+    >>> africa["smallest_last"].head()
+    0    3
+    1    1
+    2    1
+    3    3
+    4    1
+    Name: smallest_last, dtype: int64
 
     Returns
     -------

@@ -761,7 +761,7 @@ class MapClassifier(object):
         3  1  3  0
         4  2  2  1
         5  2  1  2
-        6  3  0  4
+        6  3  1  4
         7  3  0  4
         8  4  0  4
         9  4  0  4
@@ -2012,18 +2012,20 @@ class JenksCaspallSampled(MapClassifier):
     Examples
     --------
     >>> import mapclassify as mc
+    >>> import numpy as np
     >>> cal = mc.load_example()
+    >>> np.random.seed(0)
     >>> x = np.random.random(100000)
     >>> jc = mc.JenksCaspall(x)
     >>> jcs = mc.JenksCaspallSampled(x)
     >>> jc.bins
-    array([0.1988721 , 0.39624334, 0.59441487, 0.79624357, 0.99999251])
+    array([0.20108144, 0.4025151 , 0.60396127, 0.80302249, 0.99997795])
     >>> jcs.bins
-    array([0.20998558, 0.42112792, 0.62752937, 0.80543819, 0.99999251])
+    array([0.19978245, 0.40793025, 0.59253555, 0.78241472, 0.99997795])
     >>> jc.counts
-    array([19943, 19510, 19547, 20297, 20703])
+    array([20286, 19951, 20310, 19708, 19745])
     >>> jcs.counts
-    array([21039, 20908, 20425, 17813, 19815])
+    array([20147, 20633, 18591, 18857, 21772])
 
     # not for testing since we get different times on different hardware
     # just included for documentation of likely speed gains
@@ -2418,10 +2420,10 @@ class MaxP(MapClassifier):
     >>> cal = mc.load_example()
     >>> mp = mc.MaxP(cal)
     >>> mp.bins
-    array([   8.7 ,   16.7 ,   20.47,   66.26, 4111.45])
+    array([   8.7 ,   16.7 ,   20.47,  110.74, 4111.45])
 
     >>> mp.counts
-    array([29,  8,  1, 10, 10])
+    array([29,  8,  1, 12,  8])
     """
 
     def __init__(self, y, k=K, initial=1000):
