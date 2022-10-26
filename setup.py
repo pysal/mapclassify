@@ -44,7 +44,7 @@ def get_data_files():
     data_files = {}
     root = pjoin(curdir, package, "datasets")
     for i in os.listdir(root):
-        if i is "tests":
+        if i == "tests":
             continue
         path = pjoin(root, i)
         if os.path.isdir(path):
