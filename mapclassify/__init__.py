@@ -1,4 +1,7 @@
+from . import _version
+from ._classify_API import classify
 from .classifiers import (
+    CLASSIFIERS,
     BoxPlot,
     EqualInterval,
     FisherJenks,
@@ -7,23 +10,18 @@ from .classifiers import (
     JenksCaspall,
     JenksCaspallForced,
     JenksCaspallSampled,
-    MaxP,
+    KClassifiers,
     MaximumBreaks,
+    MaxP,
     NaturalBreaks,
-    Quantiles,
     Percentiles,
+    Quantiles,
     StdMean,
     UserDefined,
-    load_example,
     gadf,
-    KClassifiers,
-    CLASSIFIERS,
+    load_example,
 )
-
-from .pooling import Pooled
 from .greedy import greedy
+from .pooling import Pooled
 
-from ._classify_API import classify
-
-from . import _version
-__version__ = _version.get_versions()['version']
+__version__ = _version.get_versions()["version"]

@@ -20,8 +20,6 @@ jobs:
         os: ["ubuntu-latest"]
         env:
           [
-            ci/37.yaml,
-            ci/37-numba.yaml,
             ci/38.yaml,
             ci/38-numba.yaml,
             ci/39.yaml,
@@ -57,7 +55,7 @@ jobs:
           conda config --show
 
       - name: Run pytest
-        run: pytest mapclassify --cov mapclassify -v --cov-report=xml --color=yes
+        run: pytest mapclassify --cov mapclassify -v -n auto --doctest-modules --cov-config .coveragerc --cov-report xml --color yes --cov-append --cov-report term-missing
 
       - name: codecov (${{ matrix.os }}, ${{ matrix.env }})
         uses: codecov/codecov-action@v2

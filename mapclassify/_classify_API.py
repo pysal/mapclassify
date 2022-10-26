@@ -7,42 +7,50 @@ from .classifiers import (
     JenksCaspall,
     JenksCaspallForced,
     JenksCaspallSampled,
-    MaxP,
     MaximumBreaks,
+    MaxP,
     NaturalBreaks,
-    Quantiles,
     Percentiles,
+    Quantiles,
     StdMean,
-    UserDefined
+    UserDefined,
 )
 
-
-__author__ = ("Stefanie Lumnitz <stefanie.lumitz@gmail.com>")
+__author__ = "Stefanie Lumnitz <stefanie.lumitz@gmail.com>"
 
 
 _classifiers = {
-    'boxplot': BoxPlot,
-    'equalinterval': EqualInterval,
-    'fisherjenks': FisherJenks,
-    'fisherjenkssampled': FisherJenksSampled,
-    'headtailbreaks': HeadTailBreaks,
-    'jenkscaspall': JenksCaspall,
-    'jenkscaspallforced': JenksCaspallForced,
-    'jenkscaspallsampled': JenksCaspallSampled,
-    'maxp': MaxP,
-    'maximumbreaks': MaximumBreaks,
-    'naturalbreaks': NaturalBreaks,
-    'quantiles': Quantiles,
-    'percentiles': Percentiles,
-    'stdmean': StdMean,
-    'userdefined': UserDefined,
-    }
+    "boxplot": BoxPlot,
+    "equalinterval": EqualInterval,
+    "fisherjenks": FisherJenks,
+    "fisherjenkssampled": FisherJenksSampled,
+    "headtailbreaks": HeadTailBreaks,
+    "jenkscaspall": JenksCaspall,
+    "jenkscaspallforced": JenksCaspallForced,
+    "jenkscaspallsampled": JenksCaspallSampled,
+    "maxp": MaxP,
+    "maximumbreaks": MaximumBreaks,
+    "naturalbreaks": NaturalBreaks,
+    "quantiles": Quantiles,
+    "percentiles": Percentiles,
+    "stdmean": StdMean,
+    "userdefined": UserDefined,
+}
 
 
-def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
-             pct_sampled=0.10, truncate=True,
-             hinge=1.5, multiples=[-2,-1,1,2], mindiff=0,
-             initial=100, bins=None):
+def classify(
+    y,
+    scheme,
+    k=5,
+    pct=[1, 10, 50, 90, 99, 100],
+    pct_sampled=0.10,
+    truncate=True,
+    hinge=1.5,
+    multiples=[-2, -1, 1, 2],
+    mindiff=0,
+    initial=100,
+    bins=None,
+):
     """
 
     Classify your data with `mapclassify.classify`
@@ -82,7 +90,7 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
         Note: setting initial to 0 will result in the quickest
         calculation of bins.
     bins : array, optional
-        (k,1), upper bounds of classes (have to be monotically  
+        (k,1), upper bounds of classes (have to be monotically
         increasing) if using `user_defined` classifier.
         Default =None, Example =[20, max(y)].
 
@@ -92,7 +100,7 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
             Object containing bin ids for each observation (.yb),
             upper bounds of each class (.bins), number of classes (.k)
             and number of observations falling in each class (.counts)
-    
+
     Note: Supported classifiers include: quantiles, box_plot, euqal_interval,
         fisher_jenks, fisher_jenks_sampled, headtail_breaks, jenks_caspall,
         jenks_caspall_sampled, jenks_caspall_forced, max_p, maximum_breaks,
@@ -101,59 +109,62 @@ def classify(y, scheme, k=5, pct=[1,10,50,90,99,100],
     Examples
     --------
     Imports
-    
+
     >>> from libpysal import examples
     >>> import geopandas as gpd
     >>> from mapclassify import classify
-    
+
     Load Example Data
-    
+
     >>> link_to_data = examples.get_path('columbus.shp')
     >>> gdf = gpd.read_file(link_to_data)
     >>> x = gdf['HOVAL'].values
-    
+
     Classify values by quantiles
-    
+
     >>> quantiles = classify(x, 'quantiles')
-    
+
     Classify values by box_plot and set hinge to 2
-    
+
     >>> box_plot = classify(x, 'box_plot', hinge=2)
-    
+
     """
-    # reformat 
+    # reformat
     scheme_lower = scheme.lower()
-    scheme = scheme_lower.replace('_', '')    
-    
+    scheme = scheme_lower.replace("_", "")
+
     # check if scheme is a valid scheme
     if scheme not in _classifiers:
-        raise ValueError("Invalid scheme. Scheme must be in the"
-                         " set: %r" % _classifiers.keys())
+        raise ValueError(
+            "Invalid scheme. Scheme must be in the" " set: %r" % _classifiers.keys()
+        )
 
-    elif scheme == 'boxplot':
+    elif scheme == "boxplot":
         classifier = _classifiers[scheme](y, hinge)
-    elif scheme == 'fisherjenkssampled':
-        classifier = _classifiers[scheme](y, k,
-                                          pct_sampled, truncate)
-    elif scheme == 'headtailbreaks':
+    elif scheme == "fisherjenkssampled":
+        classifier = _classifiers[scheme](y, k, pct_sampled, truncate)
+    elif scheme == "headtailbreaks":
         classifier = _classifiers[scheme](y)
-    elif scheme == 'percentiles':
+    elif scheme == "percentiles":
         classifier = _classifiers[scheme](y, pct)
-    elif scheme == 'stdmean':
+    elif scheme == "stdmean":
         classifier = _classifiers[scheme](y, multiples)
-    elif scheme == 'jenkscaspallsampled':
-        classifier = _classifiers[scheme](y, k,
-                                          pct_sampled)
-    elif scheme == 'maximumbreaks':
+    elif scheme == "jenkscaspallsampled":
+        classifier = _classifiers[scheme](y, k, pct_sampled)
+    elif scheme == "maximumbreaks":
         classifier = _classifiers[scheme](y, k, mindiff)
 
-    elif scheme in ['naturalbreaks', 'maxp']:
+    elif scheme in ["naturalbreaks", "maxp"]:
         classifier = _classifiers[scheme](y, k, initial)
-    elif scheme == 'userdefined':
+    elif scheme == "userdefined":
         classifier = _classifiers[scheme](y, bins)
-    elif scheme in ['equalinterval', 'fisherjenks',
-                    'jenkscaspall','jenkscaspallforced',
-                    'quantiles']:
+    elif scheme in [
+        "equalinterval",
+        "fisherjenks",
+        "jenkscaspall",
+        "jenkscaspallforced",
+        "quantiles",
+    ]:
         classifier = _classifiers[scheme](y, k)
-        
+
     return classifier

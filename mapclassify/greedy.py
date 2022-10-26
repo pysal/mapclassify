@@ -16,7 +16,8 @@ def _balanced(features, sw, balance="count", min_colors=4):
     """
     Strategy to color features in a way which is visually balanced.
 
-    Algorithm ported from QGIS to be used with GeoDataFrames and libpysal weights objects.
+    Algorithm ported from QGIS to be used with GeoDataFrames
+    and libpysal weights objects.
 
     Original algorithm:
     Date                 : February 2017
@@ -46,7 +47,7 @@ def _balanced(features, sw, balance="count", min_colors=4):
     # calculate count of neighbours
     neighbour_count = sw.cardinalities
 
-    # sort features by neighbour count - we want to handle those with more neighbours first
+    # sort features by neighbour count - handle those with more neighbours first
     sorted_by_count = [
         feature_id
         for feature_id in sorted(
@@ -77,7 +78,7 @@ def _balanced(features, sw, balance="count", min_colors=4):
 
         feature_color = -1
         if len(available_colors) == 0:
-            # no existing colors available for this feature, so add new color to pool and repeat
+            # no existing colors available for this feature; add new color and repeat
             min_colors += 1
             return _balanced(features, sw, balance, min_colors)
         else:
@@ -107,7 +108,7 @@ def _balanced(features, sw, balance="count", min_colors=4):
                 }
 
                 distances = features.loc[other_features.keys()].distance(this_feature)
-                # loop through these, and calculate the minimum distance from this feature to the nearest
+                # calculate the min distance from this feature to the nearest
                 # feature with each assigned color
                 for other_feature_id, c in other_features.items():
 
@@ -115,8 +116,8 @@ def _balanced(features, sw, balance="count", min_colors=4):
                     if distance < min_distances[c]:
                         min_distances[c] = distance
 
-                # choose color such that minimum distance is maximised! ie we want MAXIMAL separation between
-                # features with the same color
+                # choose color such that min distance is maximised!
+                # - ie we want MAXIMAL separation between features with the same color
                 feature_color = sorted(
                     min_distances, key=min_distances.__getitem__, reverse=True
                 )[0]
@@ -163,7 +164,7 @@ def _geos_sw(features, tolerance=0, silence_warnings=False, resolution=5):
 
     sindex = features.sindex
 
-    for i, (ix, g) in enumerate(features.geometry.iteritems()):
+    for i, (ix, g) in enumerate(features.geometry.items()):
 
         possible_matches_index = list(sindex.intersection(g.bounds))
         possible_matches_index.remove(i)
@@ -216,35 +217,40 @@ def greedy(
         * ``'DSATUR'`` (alias for the previous strategy)
 
         For details see
-        https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.coloring.greedy_color.html
+        https://networkx.github.io/documentation/stable/reference/algorithms/
+        generated/networkx.algorithms.coloring.greedy_color.html
 
     balance : str (default 'count')
         If strategy is ``'balanced'``, determine the method of color balancing.
 
         * ``'count'`` attempts to balance the number of features per each color.
         * ``'area'`` attempts to balance the area covered by each color.
-        * ``'centroid'`` attempts to balance the distance between colors based on the distance between centroids.
-        * ``'distance'`` attempts to balance the distance between colors based on the distance between geometries. Slower than ``'centroid'``, but more precise.
+        * ``'centroid'`` attempts to balance the distance between colors based
+            on the distance between centroids.
+        * ``'distance'`` attempts to balance the distance between colors based
+            on the distance between geometries. Slower than ``'centroid'``,
+            but more precise.
 
-        ``'centroid'`` and ``'distance'`` are significantly slower than other especially
-        for larger GeoDataFrames.
+        ``'centroid'`` and ``'distance'`` are significantly slower than other
+        especially for larger GeoDataFrames.
 
-        Apart from ``'count'``, all require CRS to be projected (not in degrees) to ensure
-        metric values are correct.
+        Apart from ``'count'``, all require CRS to be projected (not in degrees)
+        to ensure metric values are correct.
 
     min_colors: int (default 4)
         If strategy is ``'balanced'``, define the minimal number of colors to be used.
 
     sw : 'queen', 'rook' or libpysal.weights.W (default 'queen')
-        If min_distance is None, one can pass ``'libpysal.weights.W'`` object denoting neighbors
-        or let greedy to generate one based on ``'queen'`` or ``'rook'`` contiguity.
+        If min_distance is None, one can pass ``'libpysal.weights.W'``
+        object denoting neighbors or let greedy to generate one based on
+        `'queen'`` or ``'rook'`` contiguity.
 
     min_distance : float
         Set minimal distance between colors.
 
-        If min_distance is not None, slower algorithm for generating spatial weghts is used
-        based on intersection between geometries. Min_distance is then used as a tolerance
-        of intersection.
+        If min_distance is not None, slower algorithm for generating
+        spatial weghts is used based on intersection between geometries.
+        ``'min_distance'`` is then used as a tolerance of intersection.
 
     silence_warnings : bool (default True)
         Silence libpysal warnings when creating spatial weights.
@@ -253,31 +259,72 @@ def greedy(
         Use the color interchange algorithm (applicable for networkx strategies)
 
         For details see
-        https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.coloring.greedy_color.html
+        https://networkx.github.io/documentation/stable/reference/algorithms/
+        generated/networkx.algorithms.coloring.greedy_color.html
 
     Examples
     --------
+
+    >>> import geopandas as gpd
+    >>> from mapclassify import greedy
+    >>> world = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))
+    >>> africa = world.loc[world.continent == "Africa"].copy()
+    >>> africa = africa.to_crs("ESRI:102022").reset_index(drop=True)
+
     Default:
 
-    >>> gdf['greedy_colors'] = greedy(gdf)
+    >>> africa["greedy_colors"] = greedy(africa)
+    >>> africa["greedy_colors"].head()
+    0    1
+    1    0
+    2    0
+    3    1
+    4    4
+    Name: greedy_colors, dtype: int64
 
     Balanced by area:
 
-    >>> gdf['balanced_area'] = greedy(gdf, strategy='balanced',
-    >>>                               balance='area')
+    >>> africa["balanced_area"] = greedy(africa, strategy="balanced", balance="area")
+    >>> africa["balanced_area"].head()
+    0    1
+    1    2
+    2    0
+    3    1
+    4    3
+    Name: balanced_area, dtype: int64
 
     Using rook adjacency:
 
-    >>> gdf['rook_adjacency'] = greedy(gdf, sw='rook')
+    >>> africa["rook_adjacency"] = greedy(africa, sw="rook")
+    >>> africa["rook_adjacency"].tail()
+    46    3
+    47    0
+    48    2
+    49    3
+    50    1
+    Name: rook_adjacency, dtype: int64
 
     Adding minimal distance between colors:
 
-    >>> gdf['min_distance'] = greedy(gdf, min_distance=100)
+    >>> africa["min_distance"] = greedy(africa, min_distance=1000000)
+    >>> africa["min_distance"].head()
+    0    1
+    1    8
+    2    0
+    3    7
+    4    4
+    Name: min_distance, dtype: int64
 
     Using different coloring strategy:
 
-    >>> gdf['smallest_last'] = greedy(gdf, strategy='smallest_last')
-
+    >>> africa["smallest_last"] = greedy(africa, strategy="smallest_last")
+    >>> africa["smallest_last"].head()
+    0    3
+    1    1
+    2    1
+    3    3
+    4    1
+    Name: smallest_last, dtype: int64
 
     Returns
     -------
@@ -303,7 +350,8 @@ def greedy(
         raise ImportError("The 'libpysal' package is required.")
 
     if min_distance is not None:
-        # TODO: use libpysal's fuzzy_contiguity instead of _geos_sw once pysal/libpysal#280 is released
+        # TODO: use libpysal's fuzzy_contiguity instead of
+        # ``_geos_sw`` once pysal/libpysal#280 is released
         sw = _geos_sw(gdf, tolerance=min_distance, silence_warnings=silence_warnings)
 
     if not isinstance(sw, W):

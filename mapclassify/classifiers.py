@@ -1,12 +1,13 @@
 """
 A module of classification schemes for choropleth mapping.
 """
+import copy
 import functools
+from warnings import warn as Warn
+
 import numpy as np
 import scipy.stats as stats
-import copy
 from sklearn.cluster import KMeans as KMEANS
-from warnings import warn as Warn
 
 __author__ = "Sergio J. Rey"
 
@@ -59,15 +60,19 @@ FMT = "{:.2f}"
 
 try:
     from numba import njit
+
     HAS_NUMBA = True
 except ImportError:
     HAS_NUMBA = False
+
     def njit(type, cache):
         def decorator_njit(func):
             @functools.wraps(func)
             def wrapper_decorator(*args, **kwargs):
                 return func(*args, **kwargs)
+
             return wrapper_decorator
+
         return decorator_njit
 
 
@@ -97,7 +102,12 @@ def _format_intervals(mc, fmt="{:.0f}"):
 
     Notes
     -----
-    For some classifiers, it is possible that the upper bound of the first interval is less than the minimum value of the attribute that is being classified. In these cases `lower_open=True` and the lower bound of the interval is set to `np.NINF`.
+
+    For some classifiers, it is possible that the upper bound of the first
+    interval is less than the minimum value of the attribute that is being
+    classified. In these cases ``lower_open=True`` and the lower bound of the
+    interval is set to ``np.NINF```.
+
     """
 
     lowest = mc.y.min()
@@ -141,9 +151,9 @@ def _get_mpl_labels(mc, fmt="{:.1f}"):
     right = "]" * (k + 1)
     lower = ["{:>{width}}".format(edges[i], width=max_width) for i in range(k)]
     upper = ["{:>{width}}".format(edges[i], width=max_width) for i in range(1, k + 1)]
-    lower = [l + r for l, r in zip(left, lower)]
-    upper = [l + r for l, r in zip(upper, right)]
-    intervals = [l + ", " + r for l, r in zip(lower, upper)]
+    lower = [_l + r for _l, r in zip(left, lower)]
+    upper = [_l + r for _l, r in zip(upper, right)]
+    intervals = [_l + ", " + r for _l, r in zip(lower, upper)]
     return intervals
 
 
@@ -219,7 +229,7 @@ def quantile(y, k=4):
     >>> x = np.arange(1000)
     >>> mc.classifiers.quantile(x)
     array([249.75, 499.5 , 749.25, 999.  ])
-    >>> mc.classifiers.quantile(x, k = 3)
+    >>> mc.classifiers.quantile(x, k=3)
     array([333., 666., 999.])
 
     Note that if there are enough ties that the quantile values repeat, we
@@ -414,8 +424,8 @@ def bin1d(x, bins):
            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
            1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2])
-    >>> counts
-    array([26, 49, 25])
+    >>> list(counts)
+    [26, 49, 25]
     """
     left = [-float("inf")]
     left.extend(bins[0:-1])
@@ -494,7 +504,8 @@ def natural_breaks(values, k=5, init=10):
         Number of classes
 
     init: int, default:10
-        Number of different solutions to obtain using different centroids. Best solution is returned.
+        Number of different solutions to obtain using different centroids.
+        Best solution is returned.
 
 
     """
@@ -538,12 +549,12 @@ def _fisher_jenks_means(values, classes=5):
     mat2[2:, 1:] = np.inf
 
     v = np.float32(0)
-    for l in range(2, len(values) + 1):
+    for _l in range(2, len(values) + 1):
         s1 = np.float32(0)
         s2 = np.float32(0)
         w = np.float32(0)
-        for m in range(1, l + 1):
-            i3 = l - m + 1
+        for m in range(1, _l + 1):
+            i3 = _l - m + 1
             val = np.float32(values[i3 - 1])
             s2 += val * val
             s1 += val
@@ -552,11 +563,11 @@ def _fisher_jenks_means(values, classes=5):
             i4 = i3 - 1
             if i4 != 0:
                 for j in range(2, classes + 1):
-                    if mat2[l, j] >= (v + mat2[i4, j - 1]):
-                        mat1[l, j] = i3
-                        mat2[l, j] = v + mat2[i4, j - 1]
-        mat1[l, 1] = 1
-        mat2[l, 1] = v
+                    if mat2[_l, j] >= (v + mat2[i4, j - 1]):
+                        mat1[_l, j] = i3
+                        mat2[_l, j] = v + mat2[i4, j - 1]
+        mat1[_l, 1] = 1
+        mat2[_l, 1] = v
 
     k = len(values)
 
@@ -750,7 +761,7 @@ class MapClassifier(object):
         3  1  3  0
         4  2  2  1
         5  2  1  2
-        6  3  0  4
+        6  3  1  4
         7  3  0  4
         8  4  0  4
         9  4  0  4
@@ -1111,8 +1122,8 @@ class HeadTailBreaks(MapClassifier):
     >>> htb = mc.HeadTailBreaks(cal)
     >>> htb.k
     3
-    >>> htb.counts
-    array([50,  7,  1])
+    >>> list(htb.counts)
+    [50, 7, 1]
     >>> htb.bins
     array([ 125.92810345,  811.26      , 4111.45      ])
     >>> np.random.seed(123456)
@@ -1121,15 +1132,16 @@ class HeadTailBreaks(MapClassifier):
     >>> htb.bins
     array([ 32.26204423,  72.50205622, 128.07150107, 190.2899093 ,
            264.82847377, 457.88157946, 576.76046949])
-    >>> htb.counts
-    array([695, 209,  62,  22,  10,   1,   1])
+    >>> list(htb.counts)
+    [695, 209, 62, 22, 10, 1, 1]
 
     Notes
     -----
     Head/tail Breaks is a relatively new classification method developed
     for data with a heavy-tailed distribution.
 
-    Implementation based on contributions by Alessandra Sozzi <alessandra.sozzi@gmail.com>.
+    Implementation based on contributions by
+    Alessandra Sozzi <alessandra.sozzi@gmail.com>.
 
     For theoretical details see :cite:`Jiang_2013`.
 
@@ -1177,11 +1189,11 @@ class EqualInterval(MapClassifier):
     --------
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
-    >>> ei = mc.EqualInterval(cal, k = 5)
+    >>> ei = mc.EqualInterval(cal, k=5)
     >>> ei.k
     5
-    >>> ei.counts
-    array([57,  0,  0,  0,  1])
+    >>> list(ei.counts)
+    [57, 0, 0, 0, 1]
     >>> ei.bins
     array([ 822.394, 1644.658, 2466.922, 3289.186, 4111.45 ])
 
@@ -1253,13 +1265,13 @@ class Percentiles(MapClassifier):
     >>> p.bins
     array([1.357000e-01, 5.530000e-01, 9.365000e+00, 2.139140e+02,
            2.179948e+03, 4.111450e+03])
-    >>> p.counts
-    array([ 1,  5, 23, 23,  5,  1])
+    >>> list(p.counts)
+    [1, 5, 23, 23, 5, 1]
     >>> p2 = mc.Percentiles(cal, pct = [50, 100])
     >>> p2.bins
     array([   9.365, 4111.45 ])
-    >>> p2.counts
-    array([29, 29])
+    >>> list(p2.counts)
+    [29, 29]
     >>> p2.k
     2
     """
@@ -1346,16 +1358,17 @@ class BoxPlot(MapClassifier):
 
     Examples
     --------
+
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
     >>> bp = mc.BoxPlot(cal)
     >>> bp.bins
     array([-5.287625e+01,  2.567500e+00,  9.365000e+00,  3.953000e+01,
             9.497375e+01,  4.111450e+03])
-    >>> bp.counts
-    array([ 0, 15, 14, 14,  6,  9])
-    >>> bp.high_outlier_ids
-    array([ 0,  6, 18, 29, 33, 36, 37, 40, 42])
+    >>> list(bp.counts)
+    [0, 15, 14, 14, 6, 9]
+    >>> list(bp.high_outlier_ids)
+    [0, 6, 18, 29, 33, 36, 37, 40, 42]
     >>> cal[bp.high_outlier_ids].values
     array([ 329.92,  181.27,  370.5 ,  722.85,  192.05,  110.74, 4111.45,
             317.11,  264.93])
@@ -1454,11 +1467,11 @@ class Quantiles(MapClassifier):
     --------
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
-    >>> q = mc.Quantiles(cal, k = 5)
+    >>> q = mc.Quantiles(cal, k=5)
     >>> q.bins
     array([1.46400e+00, 5.79800e+00, 1.32780e+01, 5.46160e+01, 4.11145e+03])
-    >>> q.counts
-    array([12, 11, 12, 11, 12])
+    >>> list(q.counts)
+    [12, 11, 12, 11, 12]
     """
 
     def __init__(self, y, k=K):
@@ -1506,15 +1519,15 @@ class StdMean(MapClassifier):
     >>> st.bins
     array([-967.36235382, -420.71712519,  672.57333208, 1219.21856072,
            4111.45      ])
-    >>> st.counts
-    array([ 0,  0, 56,  1,  1])
+    >>> list(st.counts)
+    [0, 0, 56, 1, 1]
     >>>
     >>> st3 = mc.StdMean(cal, multiples = [-3, -1.5, 1.5, 3])
     >>> st3.bins
     array([-1514.00758246,  -694.03973951,   945.8959464 ,  1765.86378936,
             4111.45      ])
-    >>> st3.counts
-    array([ 0,  0, 57,  0,  1])
+    >>> list(st3.counts)
+    [0, 0, 57, 0, 1]
 
     """
 
@@ -1589,13 +1602,13 @@ class MaximumBreaks(MapClassifier):
     --------
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
-    >>> mb = mc.MaximumBreaks(cal, k = 5)
+    >>> mb = mc.MaximumBreaks(cal, k=5)
     >>> mb.k
     5
     >>> mb.bins
     array([ 146.005,  228.49 ,  546.675, 2417.15 , 4111.45 ])
-    >>> mb.counts
-    array([50,  2,  4,  1,  1])
+    >>> list(mb.counts)
+    [50, 2, 4, 1, 1]
 
     """
 
@@ -1611,7 +1624,6 @@ class MaximumBreaks(MapClassifier):
         xs = self.y.copy()
         k = self.k
         xs.sort()
-        min_diff = self.mindiff
         diffs = xs[1:] - xs[:-1]
         idxs = np.argsort(diffs)
         k1 = k - 1
@@ -1665,7 +1677,8 @@ class NaturalBreaks(MapClassifier):
               number of classes required
 
     initial : int, default: 10
-              Number of initial solutions generated with different centroids. Best of initial results is returned.
+              Number of initial solutions generated with different centroids.
+              Best of initial results is returned.
 
     Attributes
     ----------
@@ -1688,21 +1701,21 @@ class NaturalBreaks(MapClassifier):
     >>> nb = mc.NaturalBreaks(cal, k=5)
     >>> nb.k
     5
-    >>> nb.counts
-    array([49,  3,  4,  1,  1])
+    >>> list(nb.counts)
+    [49, 3, 4, 1, 1]
     >>> nb.bins
     array([  75.29,  192.05,  370.5 ,  722.85, 4111.45])
     >>> x = np.array([1] * 50)
     >>> x[-1] = 20
-    >>> nb = mc.NaturalBreaks(x, k = 5)
+    >>> nb = mc.NaturalBreaks(x, k=5)
 
     Warning: Not enough unique values in array to form k classes
     Warning: setting k to 2
 
     >>> nb.bins
     array([ 1, 20])
-    >>> nb.counts
-    array([49,  1])
+    >>> list(nb.counts)
+    [49, 1]
 
     """
 
@@ -1731,7 +1744,6 @@ class NaturalBreaks(MapClassifier):
             self.k = k
         else:
             res0 = natural_breaks(x, k, init=self.init)
-            fit = res0[2]
             self.bins = np.array(res0[-1])
             self.k = len(self.bins)
 
@@ -1765,6 +1777,7 @@ class FisherJenks(MapClassifier):
 
     Parameters
     ----------
+
     y : array
         (n,1), values to classify
     k : int, optional
@@ -1772,6 +1785,7 @@ class FisherJenks(MapClassifier):
 
     Attributes
     ----------
+
     yb      : array
               (n,1), bin ids for observations
     bins    : array
@@ -1783,22 +1797,22 @@ class FisherJenks(MapClassifier):
 
     Examples
     --------
+
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
     >>> fj = mc.FisherJenks(cal)
     >>> fj.adcm
     799.24
-    >>> fj.bins
-    array([  75.29,  192.05,  370.5 ,  722.85, 4111.45])
-    >>> fj.counts
-    array([49,  3,  4,  1,  1])
-    >>>
+    >>> list(fj.bins)
+    [75.29, 192.05, 370.5, 722.85, 4111.45]
+    >>> list(fj.counts)
+    [49, 3, 4, 1, 1]
+
     """
 
     def __init__(self, y, k=K):
         if not HAS_NUMBA:
-            Warn("Numba not installed. Using slow pure python version.",
-                 UserWarning)
+            Warn("Numba not installed. Using slow pure python version.", UserWarning)
 
         nu = len(np.unique(y))
         if nu < k:
@@ -1926,11 +1940,11 @@ class JenksCaspall(MapClassifier):
     --------
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
-    >>> jc = mc.JenksCaspall(cal, k = 5)
+    >>> jc = mc.JenksCaspall(cal, k=5)
     >>> jc.bins
     array([1.81000e+00, 7.60000e+00, 2.98200e+01, 1.81270e+02, 4.11145e+03])
-    >>> jc.counts
-    array([14, 13, 14, 10,  7])
+    >>> list(jc.counts)
+    [14, 13, 14, 10, 7]
 
     """
 
@@ -2002,18 +2016,20 @@ class JenksCaspallSampled(MapClassifier):
     Examples
     --------
     >>> import mapclassify as mc
+    >>> import numpy as np
     >>> cal = mc.load_example()
+    >>> np.random.seed(0)
     >>> x = np.random.random(100000)
     >>> jc = mc.JenksCaspall(x)
     >>> jcs = mc.JenksCaspallSampled(x)
     >>> jc.bins
-    array([0.1988721 , 0.39624334, 0.59441487, 0.79624357, 0.99999251])
+    array([0.20108144, 0.4025151 , 0.60396127, 0.80302249, 0.99997795])
     >>> jcs.bins
-    array([0.20998558, 0.42112792, 0.62752937, 0.80543819, 0.99999251])
-    >>> jc.counts
-    array([19943, 19510, 19547, 20297, 20703])
-    >>> jcs.counts
-    array([21039, 20908, 20425, 17813, 19815])
+    array([0.19978245, 0.40793025, 0.59253555, 0.78241472, 0.99997795])
+    >>> list(jc.counts)
+    [20286, 19951, 20310, 19708, 19745]
+    >>> list(jcs.counts)
+    [20147, 20633, 18591, 18857, 21772]
 
     # not for testing since we get different times on different hardware
     # just included for documentation of likely speed gains
@@ -2108,20 +2124,20 @@ class JenksCaspallForced(MapClassifier):
     --------
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
-    >>> jcf = mc.JenksCaspallForced(cal, k = 5)
+    >>> jcf = mc.JenksCaspallForced(cal, k=5)
     >>> jcf.k
     5
     >>> jcf.bins
     array([1.34000e+00, 5.90000e+00, 1.67000e+01, 5.06500e+01, 4.11145e+03])
-    >>> jcf.counts
-    array([12, 12, 13,  9, 12])
-    >>> jcf4 = mc.JenksCaspallForced(cal, k = 4)
+    >>> list(jcf.counts)
+    [12, 12, 13, 9, 12]
+    >>> jcf4 = mc.JenksCaspallForced(cal, k=4)
     >>> jcf4.k
     4
     >>> jcf4.bins
     array([2.51000e+00, 8.70000e+00, 3.66800e+01, 4.11145e+03])
-    >>> jcf4.counts
-    array([15, 14, 14, 15])
+    >>> list(jcf4.counts)
+    [15, 14, 14, 15]
     """
 
     def __init__(self, y, k=K):
@@ -2258,16 +2274,16 @@ class UserDefined(MapClassifier):
     >>> bins
     [20, 4111.45]
     >>> ud = mc.UserDefined(cal, bins)
-    >>> ud.bins
-    array([  20.  , 4111.45])
-    >>> ud.counts
-    array([37, 21])
+    >>> list(ud.bins)
+    [20.0, 4111.45]
+    >>> list(ud.counts)
+    [37, 21]
     >>> bins = [20, 30]
     >>> ud = mc.UserDefined(cal, bins)
-    >>> ud.bins
-    array([  20.  ,   30.  , 4111.45])
-    >>> ud.counts
-    array([37,  4, 17])
+    >>> list(ud.bins)
+    [20.0, 30.0, 4111.45]
+    >>> list(ud.counts)
+    [37, 4, 17]
 
     Notes
     -----
@@ -2352,9 +2368,8 @@ class UserDefined(MapClassifier):
         else:
             f = plt.gcf()
 
-        fmt = FMT
         if "fmt" in legend_kwds:
-            fmt = legend_kwds.pop("fmt")
+            legend_kwds.pop("fmt")
 
         ax = gdf.assign(_cl=self.y).plot(
             column="_cl",
@@ -2378,48 +2393,55 @@ class UserDefined(MapClassifier):
 
 class MaxP(MapClassifier):
     """
-    MaxP Map Classification
-
-    Based on Max-p regionalization algorithm
+    MaxP Map Classification. Based on Max-p regionalization algorithm.
 
     Parameters
     ----------
-    y       : array
-              (n,1), values to classify
-    k       : int
-              number of classes required
+
+    y : array
+        ``(n,1)``, values to classify
+    k : int
+        number of classes required
     initial : int
-              number of initial solutions to use prior to swapping
+        number of initial solutions to use prior to swapping
+    seed1 : int
+        Random state for initial building process. Default is ``0``.
+    seed2 : int
+        Random state for swapping process. Default is ``1``.
 
     Attributes
     ----------
 
-    yb      : array
-              (n,1), bin ids for observations,
-    bins    : array
-              (k,1), the upper bounds of each class
-    k       : int
-              the number of classes
+    yb : array
+        ``(n,1)``, bin ids for observations
+    bins : array
+        ``(k,1)``, the upper bounds of each class
+    k : int
+        the number of classes
     counts  : array
-              (k,1), the number of observations falling in each class
+        ``(k,1)``, the number of observations falling in each class
 
     Examples
     --------
+
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
     >>> mp = mc.MaxP(cal)
     >>> mp.bins
-    array([   8.7 ,   16.7 ,   20.47,   66.26, 4111.45])
+    array([3.16000e+00, 1.26300e+01, 1.67000e+01, 2.04700e+01, 4.11145e+03])
 
-    >>> mp.counts
-    array([29,  8,  1, 10, 10])
+    >>> list(mp.counts)
+    [18, 16, 3, 1, 20]
+
     """
 
-    def __init__(self, y, k=K, initial=1000):
+    def __init__(self, y, k=K, initial=1000, seed1=0, seed2=1):
         if min(y) == max(y):
             raise ValueError("Not enough unique values in array to form k classes.")
         self.k = k
         self.initial = initial
+        self.seed1 = seed1
+        self.seed2 = seed2
         MapClassifier.__init__(self, y)
         self.name = "MaxP"
 
@@ -2440,6 +2462,7 @@ class MaxP(MapClassifier):
             seeds = [
                 np.nonzero(di == min(di))[0][0] for di in [np.abs(x - qi) for qi in q]
             ]
+            np.random.seed(self.seed1)
             rseeds = np.random.permutation(list(range(k))).tolist()
             [remaining.remove(seed) for seed in seeds]
             self.classes = classes = []
@@ -2484,6 +2507,7 @@ class MaxP(MapClassifier):
                 a2c[a] = r
         swapping = True
         while swapping:
+            np.random.seed(self.seed2)
             rseeds = np.random.permutation(list(range(k))).tolist()
             total_moves = 0
             while rseeds:
@@ -2546,6 +2570,7 @@ class MaxP(MapClassifier):
         else:
             return True
 
+    '''
     def update(self, y=None, inplace=False, **kwargs):
         """
         Add data or change classification parameters.
@@ -2568,6 +2593,7 @@ class MaxP(MapClassifier):
             new = copy.deepcopy(self)
             new._update(y, bins, **kwargs)
             return new
+    '''
 
 
 def _fit(y, classes):

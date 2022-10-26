@@ -1,0 +1,11 @@
+[run]
+include=mapclassify/*
+disable_warnings=include-ignored
+[report]
+omit = 
+    docs/conf.py
+    setup.py
+    */tests/*
+    versioneer.py
+    *_version.py
+    

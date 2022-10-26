@@ -1,11 +1,12 @@
-import numpy as np
-import unittest
 import types
-import pytest
-from ..classifiers import *
-from ..classifiers import binC, bin, bin1d, load_example
-from ..pooling import Pooled
+import unittest
 
+import numpy as np
+import pytest
+
+from ..classifiers import *
+from ..classifiers import bin, bin1d, binC, load_example
+from ..pooling import Pooled
 
 RTOL = 0.0001
 
@@ -341,7 +342,7 @@ class TestHeadTailBreaks(unittest.TestCase):
         np.testing.assert_array_almost_equal(htb.counts, np.array([980, 17, 1, 2]))
 
     def test_HeadTailBreaks_float(self):
-        V = np.array([1 + 2 ** -52, 1, 1])
+        V = np.array([1 + 2**-52, 1, 1])
         htb = HeadTailBreaks(V)
         self.assertEqual(htb.k, 2)
         self.assertEqual(len(htb.counts), 2)
@@ -604,17 +605,9 @@ class TestMaxP(unittest.TestCase):
         mp = MaxP(self.V)
         np.testing.assert_array_almost_equal(
             mp.bins,
-            np.array(
-                [
-                    8.6999999999999993,
-                    16.699999999999999,
-                    20.469999999999999,
-                    66.260000000000005,
-                    4111.4499999999998,
-                ]
-            ),
+            np.array([3.16000e00, 1.26300e01, 1.67000e01, 2.04700e01, 4.11145e03]),
         )
-        np.testing.assert_array_almost_equal(mp.counts, np.array([29, 8, 1, 10, 10]))
+        np.testing.assert_array_almost_equal(mp.counts, np.array([18, 16, 3, 1, 20]))
 
         with pytest.raises(
             ValueError, match="Not enough unique values in array to form k classes."

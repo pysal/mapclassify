@@ -1,5 +1,6 @@
+from os.path import abspath, dirname
+
 import pandas as pd
-from os.path import dirname, abspath
 
 
 def load():

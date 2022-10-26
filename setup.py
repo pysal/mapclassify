@@ -1,10 +1,13 @@
-from setuptools import setup, find_packages
 import os
 import sys
-import versioneer
-from io import open
-from os.path import relpath, join as pjoin
 from distutils.command.build_py import build_py
+from io import open
+from os.path import join as pjoin
+from os.path import relpath
+
+from setuptools import find_packages, setup
+
+import versioneer
 
 package = "mapclassify"
 
@@ -41,7 +44,7 @@ def get_data_files():
     data_files = {}
     root = pjoin(curdir, package, "datasets")
     for i in os.listdir(root):
-        if i is "tests":
+        if i == "tests":
             continue
         path = pjoin(root, i)
         if os.path.isdir(path):
@@ -89,7 +92,6 @@ def setup_package():
             "Topic :: Scientific/Engineering :: GIS",
             "License :: OSI Approved :: BSD License",
             "Programming Language :: Python",
-            "Programming Language :: Python :: 3.7",
             "Programming Language :: Python :: 3.8",
             "Programming Language :: Python :: 3.9",
             "Programming Language :: Python :: 3.10",

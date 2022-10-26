@@ -1,15 +1,14 @@
 import numpy as np
+
 from .classifiers import (
     BoxPlot,
     EqualInterval,
     FisherJenks,
     FisherJenksSampled,
-    Quantiles,
-    UserDefined,
-    NaturalBreaks,
     MaximumBreaks,
-    MaxP,
+    Quantiles,
     StdMean,
+    UserDefined,
 )
 
 __all__ = ["Pooled"]
@@ -59,14 +58,14 @@ class Pooled(object):
     >>> n = 20
     >>> data = np.array([np.arange(n)+i*n for i in range(1,4)]).T
     >>> res = mc.Pooled(data)
-    >>> res.col_classifiers[0].counts
-    array([12,  8,  0,  0,  0])
-    >>> res.col_classifiers[1].counts
-    array([ 0,  4, 12,  4,  0])
-    >>> res.col_classifiers[2].counts
-    array([ 0,  0,  0,  8, 12])
-    >>> res.global_classifier.counts
-    array([12, 12, 12, 12, 12])
+    >>> list(res.col_classifiers[0].counts)
+    [12, 8, 0, 0, 0]
+    >>> list(res.col_classifiers[1].counts)
+    [0, 4, 12, 4, 0]
+    >>> list(res.col_classifiers[2].counts)
+    [0, 0, 0, 8, 12]
+    >>> list(res.global_classifier.counts)
+    [12, 12, 12, 12, 12]
     >>> res.global_classifier.bins == res.col_classifiers[0].bins
     array([ True,  True,  True,  True,  True])
     >>> res.global_classifier.bins
@@ -88,8 +87,7 @@ class Pooled(object):
         col_classifiers = []
         name = f"Pooled {classifier}"
         for c in range(cols):
-            res = UserDefined(Y[:, c], bins=global_classifier.bins,
-                              lowest=ymin)
+            res = UserDefined(Y[:, c], bins=global_classifier.bins, lowest=ymin)
             res.name = name
             col_classifiers.append(res)
         self.col_classifiers = col_classifiers
@@ -97,7 +95,6 @@ class Pooled(object):
         self._summary()
 
     def _summary(self):
-        yb = self.global_classifier.yb
         self.classes = self.global_classifier.classes
         self.tss = self.global_classifier.tss
         self.adcm = self.global_classifier.adcm
