@@ -2389,48 +2389,55 @@ class UserDefined(MapClassifier):
 
 class MaxP(MapClassifier):
     """
-    MaxP Map Classification
-
-    Based on Max-p regionalization algorithm
+    MaxP Map Classification. Based on Max-p regionalization algorithm.
 
     Parameters
     ----------
-    y       : array
-              (n,1), values to classify
-    k       : int
-              number of classes required
+
+    y : array
+        ``(n,1)``, values to classify
+    k : int
+        number of classes required
     initial : int
-              number of initial solutions to use prior to swapping
+        number of initial solutions to use prior to swapping
+    seed1 : int
+        Random state for initial building process. Default is ``0``.
+    seed2 : int
+        Random state for swapping process. Default is ``1``.
 
     Attributes
     ----------
 
-    yb      : array
-              (n,1), bin ids for observations,
-    bins    : array
-              (k,1), the upper bounds of each class
-    k       : int
-              the number of classes
+    yb : array
+        ``(n,1)``, bin ids for observations
+    bins : array
+        ``(k,1)``, the upper bounds of each class
+    k : int
+        the number of classes
     counts  : array
-              (k,1), the number of observations falling in each class
+        ``(k,1)``, the number of observations falling in each class
 
     Examples
     --------
+
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
     >>> mp = mc.MaxP(cal)
     >>> mp.bins
-    array([   8.7 ,   16.7 ,   20.47,  110.74, 4111.45])
+    array([3.16000e+00, 1.26300e+01, 1.67000e+01, 2.04700e+01, 4.11145e+03])
 
     >>> mp.counts
-    array([29,  8,  1, 12,  8])
+    array([18, 16,  3,  1, 20])
+
     """
 
-    def __init__(self, y, k=K, initial=1000):
+    def __init__(self, y, k=K, initial=1000, seed1=0, seed2=1):
         if min(y) == max(y):
             raise ValueError("Not enough unique values in array to form k classes.")
         self.k = k
         self.initial = initial
+        self.seed1 = seed1
+        self.seed2 = seed2
         MapClassifier.__init__(self, y)
         self.name = "MaxP"
 
@@ -2451,6 +2458,7 @@ class MaxP(MapClassifier):
             seeds = [
                 np.nonzero(di == min(di))[0][0] for di in [np.abs(x - qi) for qi in q]
             ]
+            np.random.seed(self.seed1)
             rseeds = np.random.permutation(list(range(k))).tolist()
             [remaining.remove(seed) for seed in seeds]
             self.classes = classes = []
@@ -2495,6 +2503,7 @@ class MaxP(MapClassifier):
                 a2c[a] = r
         swapping = True
         while swapping:
+            np.random.seed(self.seed2)
             rseeds = np.random.permutation(list(range(k))).tolist()
             total_moves = 0
             while rseeds:

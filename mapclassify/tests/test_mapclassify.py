@@ -605,17 +605,9 @@ class TestMaxP(unittest.TestCase):
         mp = MaxP(self.V)
         np.testing.assert_array_almost_equal(
             mp.bins,
-            np.array(
-                [
-                    8.6999999999999993,
-                    16.699999999999999,
-                    20.469999999999999,
-                    66.260000000000005,
-                    4111.4499999999998,
-                ]
-            ),
+            np.array([3.16000e00, 1.26300e01, 1.67000e01, 2.04700e01, 4.11145e03]),
         )
-        np.testing.assert_array_almost_equal(mp.counts, np.array([29, 8, 1, 10, 10]))
+        np.testing.assert_array_almost_equal(mp.counts, np.array([18, 16, 3, 1, 20]))
 
         with pytest.raises(
             ValueError, match="Not enough unique values in array to form k classes."
