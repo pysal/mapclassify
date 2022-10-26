@@ -10,6 +10,7 @@ dependencies:
   # testing
   - pytest
   - pytest-cov
+  - pytest-xdist
   - codecov
   - matplotlib
   # optional
