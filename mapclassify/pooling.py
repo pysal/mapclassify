@@ -58,8 +58,8 @@ class Pooled(object):
     >>> n = 20
     >>> data = np.array([np.arange(n)+i*n for i in range(1,4)]).T
     >>> res = mc.Pooled(data)
-    >>> res.col_classifiers[0].counts
-    array([12,  8,  0,  0,  0])
+    >>> list(res.col_classifiers[0].counts)
+    [12, 8, 0, 0, 0]
     >>> res.col_classifiers[1].counts
     array([ 0,  4, 12,  4,  0])
     >>> res.col_classifiers[2].counts

@@ -229,7 +229,7 @@ def quantile(y, k=4):
     >>> x = np.arange(1000)
     >>> mc.classifiers.quantile(x)
     array([249.75, 499.5 , 749.25, 999.  ])
-    >>> mc.classifiers.quantile(x, k = 3)
+    >>> mc.classifiers.quantile(x, k=3)
     array([333., 666., 999.])
 
     Note that if there are enough ties that the quantile values repeat, we
@@ -424,8 +424,8 @@ def bin1d(x, bins):
            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
            1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2])
-    >>> counts
-    array([26, 49, 25])
+    >>> list(counts)
+    [26, 49, 25]
     """
     left = [-float("inf")]
     left.extend(bins[0:-1])
@@ -1122,8 +1122,8 @@ class HeadTailBreaks(MapClassifier):
     >>> htb = mc.HeadTailBreaks(cal)
     >>> htb.k
     3
-    >>> htb.counts
-    array([50,  7,  1])
+    >>> list(htb.counts)
+    [50, 7, 1]
     >>> htb.bins
     array([ 125.92810345,  811.26      , 4111.45      ])
     >>> np.random.seed(123456)
@@ -1132,8 +1132,8 @@ class HeadTailBreaks(MapClassifier):
     >>> htb.bins
     array([ 32.26204423,  72.50205622, 128.07150107, 190.2899093 ,
            264.82847377, 457.88157946, 576.76046949])
-    >>> htb.counts
-    array([695, 209,  62,  22,  10,   1,   1])
+    >>> list(htb.counts)
+    [695, 209, 62, 22, 10, 1, 1]
 
     Notes
     -----
@@ -1189,11 +1189,11 @@ class EqualInterval(MapClassifier):
     --------
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
-    >>> ei = mc.EqualInterval(cal, k = 5)
+    >>> ei = mc.EqualInterval(cal, k=5)
     >>> ei.k
     5
-    >>> ei.counts
-    array([57,  0,  0,  0,  1])
+    >>> list(ei.counts)
+    [57, 0, 0, 0, 1]
     >>> ei.bins
     array([ 822.394, 1644.658, 2466.922, 3289.186, 4111.45 ])
 
@@ -1265,8 +1265,8 @@ class Percentiles(MapClassifier):
     >>> p.bins
     array([1.357000e-01, 5.530000e-01, 9.365000e+00, 2.139140e+02,
            2.179948e+03, 4.111450e+03])
-    >>> p.counts
-    array([ 1,  5, 23, 23,  5,  1])
+    >>> list(p.counts)
+    [1, 5, 23, 23, 5, 1]
     >>> p2 = mc.Percentiles(cal, pct = [50, 100])
     >>> p2.bins
     array([   9.365, 4111.45 ])
@@ -1358,14 +1358,15 @@ class BoxPlot(MapClassifier):
 
     Examples
     --------
+
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
     >>> bp = mc.BoxPlot(cal)
     >>> bp.bins
     array([-5.287625e+01,  2.567500e+00,  9.365000e+00,  3.953000e+01,
             9.497375e+01,  4.111450e+03])
-    >>> bp.counts
-    array([ 0, 15, 14, 14,  6,  9])
+    >>> list(bp.counts)
+    [0, 15, 14, 14, 6, 9]
     >>> bp.high_outlier_ids
     array([ 0,  6, 18, 29, 33, 36, 37, 40, 42])
     >>> cal[bp.high_outlier_ids].values
@@ -1466,11 +1467,11 @@ class Quantiles(MapClassifier):
     --------
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
-    >>> q = mc.Quantiles(cal, k = 5)
+    >>> q = mc.Quantiles(cal, k=5)
     >>> q.bins
     array([1.46400e+00, 5.79800e+00, 1.32780e+01, 5.46160e+01, 4.11145e+03])
-    >>> q.counts
-    array([12, 11, 12, 11, 12])
+    >>> list(q.counts)
+    [12, 11, 12, 11, 12]
     """
 
     def __init__(self, y, k=K):
@@ -1518,8 +1519,8 @@ class StdMean(MapClassifier):
     >>> st.bins
     array([-967.36235382, -420.71712519,  672.57333208, 1219.21856072,
            4111.45      ])
-    >>> st.counts
-    array([ 0,  0, 56,  1,  1])
+    >>> list(st.counts)
+    [0, 0, 56, 1, 1]
     >>>
     >>> st3 = mc.StdMean(cal, multiples = [-3, -1.5, 1.5, 3])
     >>> st3.bins
@@ -1601,13 +1602,13 @@ class MaximumBreaks(MapClassifier):
     --------
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
-    >>> mb = mc.MaximumBreaks(cal, k = 5)
+    >>> mb = mc.MaximumBreaks(cal, k=5)
     >>> mb.k
     5
     >>> mb.bins
     array([ 146.005,  228.49 ,  546.675, 2417.15 , 4111.45 ])
-    >>> mb.counts
-    array([50,  2,  4,  1,  1])
+    >>> list(mb.counts)
+    [50, 2, 4, 1, 1]
 
     """
 
@@ -1700,13 +1701,13 @@ class NaturalBreaks(MapClassifier):
     >>> nb = mc.NaturalBreaks(cal, k=5)
     >>> nb.k
     5
-    >>> nb.counts
-    array([49,  3,  4,  1,  1])
+    >>> list(nb.counts)
+    [49, 3, 4, 1, 1]
     >>> nb.bins
     array([  75.29,  192.05,  370.5 ,  722.85, 4111.45])
     >>> x = np.array([1] * 50)
     >>> x[-1] = 20
-    >>> nb = mc.NaturalBreaks(x, k = 5)
+    >>> nb = mc.NaturalBreaks(x, k=5)
 
     Warning: Not enough unique values in array to form k classes
     Warning: setting k to 2
@@ -1776,6 +1777,7 @@ class FisherJenks(MapClassifier):
 
     Parameters
     ----------
+
     y : array
         (n,1), values to classify
     k : int, optional
@@ -1783,6 +1785,7 @@ class FisherJenks(MapClassifier):
 
     Attributes
     ----------
+
     yb      : array
               (n,1), bin ids for observations
     bins    : array
@@ -1794,13 +1797,14 @@ class FisherJenks(MapClassifier):
 
     Examples
     --------
+
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
     >>> fj = mc.FisherJenks(cal)
     >>> fj.adcm
     799.24
-    >>> fj.bins
-    array([  75.29,  192.05,  370.5 ,  722.85, 4111.45])
+    >>> list(fj.bins)
+    [75.29, 192.05, 370.5, 722.85, 4111.45]
     >>> fj.counts
     array([49,  3,  4,  1,  1])
     >>>
@@ -1936,11 +1940,11 @@ class JenksCaspall(MapClassifier):
     --------
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
-    >>> jc = mc.JenksCaspall(cal, k = 5)
+    >>> jc = mc.JenksCaspall(cal, k=5)
     >>> jc.bins
     array([1.81000e+00, 7.60000e+00, 2.98200e+01, 1.81270e+02, 4.11145e+03])
-    >>> jc.counts
-    array([14, 13, 14, 10,  7])
+    >>> list(jc.counts)
+    [14, 13, 14, 10, 7]
 
     """
 
@@ -2022,8 +2026,8 @@ class JenksCaspallSampled(MapClassifier):
     array([0.20108144, 0.4025151 , 0.60396127, 0.80302249, 0.99997795])
     >>> jcs.bins
     array([0.19978245, 0.40793025, 0.59253555, 0.78241472, 0.99997795])
-    >>> jc.counts
-    array([20286, 19951, 20310, 19708, 19745])
+    >>> list(jc.counts)
+    [20286, 19951, 20310, 19708, 19745]
     >>> jcs.counts
     array([20147, 20633, 18591, 18857, 21772])
 
@@ -2120,20 +2124,20 @@ class JenksCaspallForced(MapClassifier):
     --------
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
-    >>> jcf = mc.JenksCaspallForced(cal, k = 5)
+    >>> jcf = mc.JenksCaspallForced(cal, k=5)
     >>> jcf.k
     5
     >>> jcf.bins
     array([1.34000e+00, 5.90000e+00, 1.67000e+01, 5.06500e+01, 4.11145e+03])
     >>> jcf.counts
     array([12, 12, 13,  9, 12])
-    >>> jcf4 = mc.JenksCaspallForced(cal, k = 4)
+    >>> jcf4 = mc.JenksCaspallForced(cal, k=4)
     >>> jcf4.k
     4
     >>> jcf4.bins
     array([2.51000e+00, 8.70000e+00, 3.66800e+01, 4.11145e+03])
-    >>> jcf4.counts
-    array([15, 14, 14, 15])
+    >>> list(jcf4.counts)
+    [15, 14, 14, 15]
     """
 
     def __init__(self, y, k=K):
@@ -2270,16 +2274,16 @@ class UserDefined(MapClassifier):
     >>> bins
     [20, 4111.45]
     >>> ud = mc.UserDefined(cal, bins)
-    >>> ud.bins
-    array([  20.  , 4111.45])
-    >>> ud.counts
-    array([37, 21])
+    >>> list(ud.bins)
+    [20.0, 4111.45]
+    >>> list(ud.counts)
+    [37, 21]
     >>> bins = [20, 30]
     >>> ud = mc.UserDefined(cal, bins)
-    >>> ud.bins
-    array([  20.  ,   30.  , 4111.45])
-    >>> ud.counts
-    array([37,  4, 17])
+    >>> list(ud.bins)
+    [20.0, 30.0, 4111.45]
+    >>> list(ud.counts)
+    [37, 4, 17]
 
     Notes
     -----
@@ -2426,8 +2430,8 @@ class MaxP(MapClassifier):
     >>> mp.bins
     array([3.16000e+00, 1.26300e+01, 1.67000e+01, 2.04700e+01, 4.11145e+03])
 
-    >>> mp.counts
-    array([18, 16,  3,  1, 20])
+    >>> list(mp.counts)
+    [18, 16, 3, 1, 20]
 
     """
 
