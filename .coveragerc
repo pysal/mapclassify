@@ -1,0 +1,13 @@
+[run]
+include=mapclassify/*
+disable_warnings=include-ignored
+[report]
+omit = 
+    */datasets/*
+    docs/conf.py
+    *__init__.py
+    setup.py
+    */tests/*
+    versioneer.py
+    *_version.py
+    
