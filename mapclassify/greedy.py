@@ -164,7 +164,7 @@ def _geos_sw(features, tolerance=0, silence_warnings=False, resolution=5):
 
     sindex = features.sindex
 
-    for i, (ix, g) in enumerate(features.geometry.iteritems()):
+    for i, (ix, g) in enumerate(features.geometry.items()):
 
         possible_matches_index = list(sindex.intersection(g.bounds))
         possible_matches_index.remove(i)
