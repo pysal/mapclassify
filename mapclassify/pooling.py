@@ -60,12 +60,12 @@ class Pooled(object):
     >>> res = mc.Pooled(data)
     >>> list(res.col_classifiers[0].counts)
     [12, 8, 0, 0, 0]
-    >>> res.col_classifiers[1].counts
-    array([ 0,  4, 12,  4,  0])
-    >>> res.col_classifiers[2].counts
-    array([ 0,  0,  0,  8, 12])
-    >>> res.global_classifier.counts
-    array([12, 12, 12, 12, 12])
+    >>> list(res.col_classifiers[1].counts)
+    [0, 4, 12, 4, 0]
+    >>> list(res.col_classifiers[2].counts)
+    [0, 0, 0, 8, 12]
+    >>> list(res.global_classifier.counts)
+    [12, 12, 12, 12, 12]
     >>> res.global_classifier.bins == res.col_classifiers[0].bins
     array([ True,  True,  True,  True,  True])
     >>> res.global_classifier.bins

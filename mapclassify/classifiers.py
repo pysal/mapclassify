@@ -1270,8 +1270,8 @@ class Percentiles(MapClassifier):
     >>> p2 = mc.Percentiles(cal, pct = [50, 100])
     >>> p2.bins
     array([   9.365, 4111.45 ])
-    >>> p2.counts
-    array([29, 29])
+    >>> list(p2.counts)
+    [29, 29]
     >>> p2.k
     2
     """
@@ -1367,8 +1367,8 @@ class BoxPlot(MapClassifier):
             9.497375e+01,  4.111450e+03])
     >>> list(bp.counts)
     [0, 15, 14, 14, 6, 9]
-    >>> bp.high_outlier_ids
-    array([ 0,  6, 18, 29, 33, 36, 37, 40, 42])
+    >>> list(bp.high_outlier_ids)
+    [0, 6, 18, 29, 33, 36, 37, 40, 42]
     >>> cal[bp.high_outlier_ids].values
     array([ 329.92,  181.27,  370.5 ,  722.85,  192.05,  110.74, 4111.45,
             317.11,  264.93])
@@ -1526,8 +1526,8 @@ class StdMean(MapClassifier):
     >>> st3.bins
     array([-1514.00758246,  -694.03973951,   945.8959464 ,  1765.86378936,
             4111.45      ])
-    >>> st3.counts
-    array([ 0,  0, 57,  0,  1])
+    >>> list(st3.counts)
+    [0, 0, 57, 0, 1]
 
     """
 
@@ -1714,8 +1714,8 @@ class NaturalBreaks(MapClassifier):
 
     >>> nb.bins
     array([ 1, 20])
-    >>> nb.counts
-    array([49,  1])
+    >>> list(nb.counts)
+    [49, 1]
 
     """
 
@@ -1805,9 +1805,9 @@ class FisherJenks(MapClassifier):
     799.24
     >>> list(fj.bins)
     [75.29, 192.05, 370.5, 722.85, 4111.45]
-    >>> fj.counts
-    array([49,  3,  4,  1,  1])
-    >>>
+    >>> list(fj.counts)
+    [49, 3, 4, 1, 1]
+
     """
 
     def __init__(self, y, k=K):
@@ -2028,8 +2028,8 @@ class JenksCaspallSampled(MapClassifier):
     array([0.19978245, 0.40793025, 0.59253555, 0.78241472, 0.99997795])
     >>> list(jc.counts)
     [20286, 19951, 20310, 19708, 19745]
-    >>> jcs.counts
-    array([20147, 20633, 18591, 18857, 21772])
+    >>> list(jcs.counts)
+    [20147, 20633, 18591, 18857, 21772]
 
     # not for testing since we get different times on different hardware
     # just included for documentation of likely speed gains
@@ -2129,8 +2129,8 @@ class JenksCaspallForced(MapClassifier):
     5
     >>> jcf.bins
     array([1.34000e+00, 5.90000e+00, 1.67000e+01, 5.06500e+01, 4.11145e+03])
-    >>> jcf.counts
-    array([12, 12, 13,  9, 12])
+    >>> list(jcf.counts)
+    [12, 12, 13, 9, 12]
     >>> jcf4 = mc.JenksCaspallForced(cal, k=4)
     >>> jcf4.k
     4
