@@ -1,5 +1,3 @@
-import sys
-
 import geopandas as gpd
 import pytest
 from libpysal.weights import Queen

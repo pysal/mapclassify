@@ -6,8 +6,6 @@ from .classifiers import (
     FisherJenks,
     FisherJenksSampled,
     MaximumBreaks,
-    MaxP,
-    NaturalBreaks,
     Quantiles,
     StdMean,
     UserDefined,
@@ -97,7 +95,6 @@ class Pooled(object):
         self._summary()
 
     def _summary(self):
-        yb = self.global_classifier.yb
         self.classes = self.global_classifier.classes
         self.tss = self.global_classifier.tss
         self.adcm = self.global_classifier.adcm

@@ -102,7 +102,12 @@ def _format_intervals(mc, fmt="{:.0f}"):
 
     Notes
     -----
-    For some classifiers, it is possible that the upper bound of the first interval is less than the minimum value of the attribute that is being classified. In these cases `lower_open=True` and the lower bound of the interval is set to `np.NINF`.
+
+    For some classifiers, it is possible that the upper bound of the first
+    interval is less than the minimum value of the attribute that is being
+    classified. In these cases ``lower_open=True`` and the lower bound of the
+    interval is set to ``np.NINF```.
+
     """
 
     lowest = mc.y.min()
@@ -146,9 +151,9 @@ def _get_mpl_labels(mc, fmt="{:.1f}"):
     right = "]" * (k + 1)
     lower = ["{:>{width}}".format(edges[i], width=max_width) for i in range(k)]
     upper = ["{:>{width}}".format(edges[i], width=max_width) for i in range(1, k + 1)]
-    lower = [l + r for l, r in zip(left, lower)]
-    upper = [l + r for l, r in zip(upper, right)]
-    intervals = [l + ", " + r for l, r in zip(lower, upper)]
+    lower = [_l + r for _l, r in zip(left, lower)]
+    upper = [_l + r for _l, r in zip(upper, right)]
+    intervals = [_l + ", " + r for _l, r in zip(lower, upper)]
     return intervals
 
 
@@ -499,7 +504,8 @@ def natural_breaks(values, k=5, init=10):
         Number of classes
 
     init: int, default:10
-        Number of different solutions to obtain using different centroids. Best solution is returned.
+        Number of different solutions to obtain using different centroids.
+        Best solution is returned.
 
 
     """
@@ -543,12 +549,12 @@ def _fisher_jenks_means(values, classes=5):
     mat2[2:, 1:] = np.inf
 
     v = np.float32(0)
-    for l in range(2, len(values) + 1):
+    for _l in range(2, len(values) + 1):
         s1 = np.float32(0)
         s2 = np.float32(0)
         w = np.float32(0)
-        for m in range(1, l + 1):
-            i3 = l - m + 1
+        for m in range(1, _l + 1):
+            i3 = _l - m + 1
             val = np.float32(values[i3 - 1])
             s2 += val * val
             s1 += val
@@ -557,11 +563,11 @@ def _fisher_jenks_means(values, classes=5):
             i4 = i3 - 1
             if i4 != 0:
                 for j in range(2, classes + 1):
-                    if mat2[l, j] >= (v + mat2[i4, j - 1]):
-                        mat1[l, j] = i3
-                        mat2[l, j] = v + mat2[i4, j - 1]
-        mat1[l, 1] = 1
-        mat2[l, 1] = v
+                    if mat2[_l, j] >= (v + mat2[i4, j - 1]):
+                        mat1[_l, j] = i3
+                        mat2[_l, j] = v + mat2[i4, j - 1]
+        mat1[_l, 1] = 1
+        mat2[_l, 1] = v
 
     k = len(values)
 
@@ -1134,7 +1140,8 @@ class HeadTailBreaks(MapClassifier):
     Head/tail Breaks is a relatively new classification method developed
     for data with a heavy-tailed distribution.
 
-    Implementation based on contributions by Alessandra Sozzi <alessandra.sozzi@gmail.com>.
+    Implementation based on contributions by
+    Alessandra Sozzi <alessandra.sozzi@gmail.com>.
 
     For theoretical details see :cite:`Jiang_2013`.
 
@@ -1616,7 +1623,6 @@ class MaximumBreaks(MapClassifier):
         xs = self.y.copy()
         k = self.k
         xs.sort()
-        min_diff = self.mindiff
         diffs = xs[1:] - xs[:-1]
         idxs = np.argsort(diffs)
         k1 = k - 1
@@ -1670,7 +1676,8 @@ class NaturalBreaks(MapClassifier):
               number of classes required
 
     initial : int, default: 10
-              Number of initial solutions generated with different centroids. Best of initial results is returned.
+              Number of initial solutions generated with different centroids.
+              Best of initial results is returned.
 
     Attributes
     ----------
@@ -1736,7 +1743,6 @@ class NaturalBreaks(MapClassifier):
             self.k = k
         else:
             res0 = natural_breaks(x, k, init=self.init)
-            fit = res0[2]
             self.bins = np.array(res0[-1])
             self.k = len(self.bins)
 
@@ -2356,9 +2362,8 @@ class UserDefined(MapClassifier):
         else:
             f = plt.gcf()
 
-        fmt = FMT
         if "fmt" in legend_kwds:
-            fmt = legend_kwds.pop("fmt")
+            legend_kwds.pop("fmt")
 
         ax = gdf.assign(_cl=self.y).plot(
             column="_cl",
@@ -2550,6 +2555,7 @@ class MaxP(MapClassifier):
         else:
             return True
 
+    '''
     def update(self, y=None, inplace=False, **kwargs):
         """
         Add data or change classification parameters.
@@ -2572,6 +2578,7 @@ class MaxP(MapClassifier):
             new = copy.deepcopy(self)
             new._update(y, bins, **kwargs)
             return new
+    '''
 
 
 def _fit(y, classes):
