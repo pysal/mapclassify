@@ -905,7 +905,10 @@ class MapClassifier(object):
         Goodness of absolute deviation of fit
         """
         adam = (np.abs(self.y - np.median(self.y))).sum()
-        gadf = 1 - self.adcm / adam
+        if adam == 0:   # array is invariant
+            gadf = 1
+        else:
+            gadf = 1 - self.adcm / adam
         return gadf
 
     def _table_string(self, width=12, decimal=3):
