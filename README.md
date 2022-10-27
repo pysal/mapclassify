@@ -1,12 +1,12 @@
 # mapclassify: Classification Schemes for Choropleth Maps
 
 [![unittests](https://github.com/pysal/mapclassify/workflows/.github/workflows/unittests.yml/badge.svg)](https://github.com/pysal/mapclassify/actions?query=workflow%3A.github%2Fworkflows%2Funittests.yml)
-[![codecov](https://codecov.io/gh/pysal/mapclassify/branch/master/graph/badge.svg)](https://codecov.io/gh/pysal/mapclassify)
+[![codecov](https://codecov.io/gh/pysal/mapclassify/branch/main/graph/badge.svg)](https://codecov.io/gh/pysal/mapclassify)
 [![PyPI version](https://badge.fury.io/py/mapclassify.svg)](https://badge.fury.io/py/mapclassify)
 [![DOI](https://zenodo.org/badge/88918063.svg)](https://zenodo.org/badge/latestdoi/88918063)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/pysal/mapclassify/master)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/pysal/mapclassify/main)
 
 `mapclassify` implements a family of classification schemes for choropleth maps.
 Its focus is on the determination of the number of classes, and the assignment
