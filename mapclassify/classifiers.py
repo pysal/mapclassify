@@ -201,7 +201,7 @@ def head_tail_breaks(values, cuts):
     """
     values = np.array(values)
     mean = np.mean(values)
-    if len(cuts) > 0 and cuts[-1] == mean:
+    if len(cuts) > 0 and cuts[-1] == mean:  # this fixes floating point from GH#117
         return cuts
     cuts.append(mean)
     if len(set(values)) > 1:
