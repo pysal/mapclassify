@@ -1,5 +1,6 @@
 
  name: Build Docs
+ 
  on:
    push:
      # Sequence of patterns matched against refs/tags
@@ -20,7 +21,7 @@
      strategy:
        matrix:
          os: ['ubuntu-latest']
-         environment-file: [ci/10.yaml]
+         environment-file: [ci/310.yaml]
          experimental: [false]
      defaults:
        run:
