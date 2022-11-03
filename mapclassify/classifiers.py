@@ -3,7 +3,7 @@ A module of classification schemes for choropleth mapping.
 """
 import copy
 import functools
-from warnings import warn as Warn
+import warnings
 
 import numpy as np
 import scipy.stats as stats
@@ -91,14 +91,15 @@ def _format_intervals(mc, fmt="{:.0f}"):
 
     Returns
     -------
+
     tuple:
-         edges: list
-                k strings for class intervals
-         max_width: int
-                length of largest interval string
-         lower_open: boolean
-                True: lower bound of first interval is open
-                False: lower bound of first interval is closed
+        edges : list
+            k strings for class intervals
+        max_width : int
+            length of largest interval string
+        lower_open : bool
+            True: lower bound of first interval is open
+            False: lower bound of first interval is closed
 
     Notes
     -----
@@ -135,12 +136,13 @@ def _get_mpl_labels(mc, fmt="{:.1f}"):
     mc: MapClassifier
 
     fmt: str
-         specification of formatting for legend
+        specification of formatting for legend
 
     Returns
     -------
+
     intervals: list
-             k strings for class intervals
+        k strings for class intervals
     """
     edges, max_width, lower_open = _format_intervals(mc, fmt)
     k = len(edges) - 1
@@ -167,12 +169,13 @@ def _get_table(mc, fmt="{:.2f}"):
     mc: MapClassifier
 
     fmt: str
-         specification of formatting for legend
+        specification of formatting for legend
 
     Returns
     -------
-    table: string
-           formatted table of classification results
+
+    table : str
+        formatted table of classification results
 
     """
     intervals = _get_mpl_labels(mc, fmt)
@@ -198,7 +201,7 @@ def head_tail_breaks(values, cuts):
     """
     values = np.array(values)
     mean = np.mean(values)
-    if len(cuts) > 0 and cuts[-1] == mean:  # fix floating point issue #117
+    if len(cuts) > 0 and cuts[-1] == mean:
         return cuts
     cuts.append(mean)
     if len(set(values)) > 1:
@@ -212,6 +215,7 @@ def quantile(y, k=4):
 
     Parameters
     ----------
+
     y : array
         (n,1), values to classify
     k : int
@@ -219,11 +223,13 @@ def quantile(y, k=4):
 
     Returns
     -------
-    q         : array
-                (n,1), quantile values
+
+    q : array
+        (n,1), quantile values
 
     Examples
     --------
+
     >>> import numpy as np
     >>> import mapclassify as mc
     >>> x = np.arange(1000)
@@ -243,6 +249,7 @@ def quantile(y, k=4):
     >>> y = np.array(x)
     >>> mc.classifiers.quantile(y)
     array([1., 3.])
+
     """
 
     w = 100.0 / k
@@ -253,10 +260,11 @@ def quantile(y, k=4):
     q = np.unique(q)
     k_q = len(q)
     if k_q < k:
-        Warn(
-            "Warning: Not enough unique values in array to form k classes", UserWarning
+        warnings.warn(
+            "Not enough unique values in array to form k classes. "
+            f"Setting k to {k_q}.",
+            UserWarning,
         )
-        Warn("Warning: setting k to %d" % k_q, UserWarning)
     return q
 
 
@@ -266,18 +274,21 @@ def binC(y, bins):
 
     Parameters
     ----------
-    y    : array
-           (n,q), categorical values
+
+    y : array
+        (n,q), categorical values
     bins : array
-           (k,1),  unique values associated with each bin
+        (k,1),  unique values associated with each bin
 
     Return
     ------
+
     b : array
         (n,q), bin membership, values between 0 and k-1
 
     Examples
     --------
+
     >>> import numpy as np
     >>> import mapclassify as mc
     >>> np.random.seed(1)
@@ -306,6 +317,7 @@ def binC(y, bins):
            [2, 4, 5],
            [2, 4, 1],
            [1, 0, 5]])
+
     """
 
     if np.ndim(y) == 1:
@@ -321,8 +333,7 @@ def binC(y, bins):
     vals = set(y.flatten())
     for val in vals:
         if val not in bins:
-            Warn("value not in bin: {}".format(val), UserWarning)
-            Warn("bins: {}".format(bins), UserWarning)
+            warnings.warn(f"\nValue not in bin: {val}\nBins: {bins}", UserWarning)
 
     return b
 
@@ -333,18 +344,21 @@ def bin(y, bins):
 
     Parameters
     ----------
+
     y : array
         (n,q), values to bin
     bins : array
-           (k,1), upper bounds of each bin (monotonic)
+        (k,1), upper bounds of each bin (monotonic)
 
     Returns
     -------
+
     b : array
         (n,q), values of values between 0 and k-1
 
     Examples
     --------
+
     >>> import numpy as np
     >>> import mapclassify as mc
     >>> np.random.seed(1)
@@ -373,6 +387,7 @@ def bin(y, bins):
            [2, 0, 1],
            [1, 1, 0],
            [0, 0, 2]])
+
     """
     if np.ndim(y) == 1:
         k = 1
@@ -398,21 +413,24 @@ def bin1d(x, bins):
 
     Parameters
     ----------
+
     x : array
         (n, 1), values to bin
     bins : array
-           (k,1), upper bounds of each bin (monotonic)
+        (k,1), upper bounds of each bin (monotonic)
 
     Returns
     -------
+
     binIds : array
-             1-d array of integer bin Ids
+        1-d array of integer bin Ids
 
     counts : int
-            number of elements of x falling in each bin
+        number of elements of x falling in each bin
 
     Examples
     --------
+
     >>> import numpy as np
     >>> import mapclassify as mc
     >>> x = np.arange(100, dtype = 'float')
@@ -426,6 +444,7 @@ def bin1d(x, bins):
            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2])
     >>> list(counts)
     [26, 49, 25]
+
     """
     left = [-float("inf")]
     left.extend(bins[0:-1])
@@ -457,13 +476,13 @@ def _kmeans(y, k=5, n_init=10):
     Parameters
     ----------
 
-    y       : array
-              (n,1), values to classify
-    k       : int
-              number of classes to form
-
+    y : array
+        (n,1), values to classify
+    k : int
+        number of classes to form
     n_init : int, default: 10
-              number of initial  solutions. Best of initial results is returned.
+        number of initial  solutions. Best of initial results is returned.
+
     """
 
     y = y * 1.0  # KMEANS needs float or double dtype
@@ -498,25 +517,23 @@ def natural_breaks(values, k=5, init=10):
     ----------
 
     values : array
-             (n, 1) values to bin
-
+        (n, 1) values to bin
     k : int
         Number of classes
-
     init: int, default:10
         Number of different solutions to obtain using different centroids.
         Best solution is returned.
-
 
     """
     values = np.array(values)
     uv = np.unique(values)
     uvk = len(uv)
     if uvk < k:
-        Warn(
-            "Warning: Not enough unique values in array to form k classes", UserWarning
+        warnings.warn(
+            "Not enough unique values in array to form k classes. "
+            f"Setting k to {uvk}.",
+            UserWarning,
         )
-        Warn("Warning: setting k to %d" % uvk, UserWarning)
         k = uvk
     kres = _kmeans(values, k, n_init=init)
     sids = kres[-1]  # centroids
@@ -533,6 +550,7 @@ def _fisher_jenks_means(values, classes=5):
 
     Notes
     -----
+
     The original Python code comes from here:
     http://danieljlewis.org/2010/06/07/jenks-natural-breaks-algorithm-in-python/
     and is based on a JAVA and Fortran code available here:
@@ -692,6 +710,7 @@ class MapClassifier(object):
 
         Parameters
         ----------
+
         *args           : required positional arguments
                           all positional arguments required by the classifier,
                           excluding the input data.
@@ -715,17 +734,20 @@ class MapClassifier(object):
 
         Returns
         -------
+
         A function that consumes data and returns their bins (and object,
         bins/breaks, or counts, if requested).
 
         Note
         ----
+
         This is most useful when you want to run a classifier many times
         with a given configuration, such as when classifying many columns of an
         array or dataframe using the same configuration.
 
         Examples
         --------
+
         >>> import libpysal as ps
         >>> import mapclassify as mc
         >>> import geopandas as gpd
@@ -773,6 +795,7 @@ class MapClassifier(object):
         3
         >>> cl[0][:10]
         array([4, 5, 5, 5, 4, 4, 5, 4, 4, 5])
+
         """
 
         # only flag overrides return flag
@@ -824,6 +847,7 @@ class MapClassifier(object):
 
         Parameters
         ----------
+
         y       :   array
                     (n,1) array of data to classify
         inplace :   bool
@@ -832,6 +856,7 @@ class MapClassifier(object):
 
         Additional parameters provided in **kwargs are passed to the init
         function of the class. For documentation, check the class constructor.
+
         """
         kwargs.update({"k": kwargs.pop("k", self.k)})
         if inplace:
@@ -955,12 +980,14 @@ class MapClassifier(object):
 
         Parameters
         ----------
+
         x       :   array or numeric
                     a value or array of values to fit within the estimated
                     bins
 
         Returns
         -------
+
         a bin index or array of bin indices that classify the input into one of
         the classifiers' bins.
 
@@ -972,6 +999,7 @@ class MapClassifier(object):
 
         numpy.digitize returns k+1 for data greater than the greatest bin, but retains 0
         for data below the lowest bin.
+
         """
         x = np.asarray(x).flatten()
         right = np.digitize(x, self.bins, right=True)
@@ -985,15 +1013,17 @@ class MapClassifier(object):
 
 
         Parameters
-        ==========
+        ----------
 
         fmt : string
               formatting specification
 
         Returns
-        =======
+        -------
+
         classes: list
                k strings with class interval definitions
+
         """
         return _get_mpl_labels(self, fmt)
 
@@ -1017,7 +1047,8 @@ class MapClassifier(object):
         dataframe as input.
 
         Parameters
-        ---------
+        ----------
+
         gdf           : geopandas geodataframe
                         Contains the geometry column for the choropleth map
         border_color  : string, optional
@@ -1049,6 +1080,7 @@ class MapClassifier(object):
                         (Default: None, so plots on the current figure)
         Returns
         -------
+
         f,ax        : tuple
                       matplotlib figure, axis on which the plot is made.
 
@@ -1062,6 +1094,7 @@ class MapClassifier(object):
         >>> gdf = geopandas.read_file(lp.examples.get_path("columbus.shp"))
         >>> q5 = mapclassify.Quantiles(gdf.CRIME)
         >>> q5.plot(gdf)  # doctest: +SKIP
+
         """
         try:
             import matplotlib.pyplot as plt
@@ -1102,11 +1135,13 @@ class HeadTailBreaks(MapClassifier):
 
     Parameters
     ----------
+
     y       : array
               (n,1), values to classify
 
     Attributes
     ----------
+
     yb      : array
               (n,1), bin ids for observations,
     bins    : array
@@ -1118,6 +1153,7 @@ class HeadTailBreaks(MapClassifier):
 
     Examples
     --------
+
     >>> import numpy as np
     >>> import mapclassify as mc
     >>> np.random.seed(10)
@@ -1140,6 +1176,7 @@ class HeadTailBreaks(MapClassifier):
 
     Notes
     -----
+
     Head/tail Breaks is a relatively new classification method developed
     for data with a heavy-tailed distribution.
 
@@ -1169,6 +1206,7 @@ class EqualInterval(MapClassifier):
 
     Parameters
     ----------
+
     y : array
         (n,1), values to classify
     k : int
@@ -1176,6 +1214,7 @@ class EqualInterval(MapClassifier):
 
     Attributes
     ----------
+
     yb      : array
               (n,1), bin ids for observations,
               each value is the id of the class the observation belongs to
@@ -1190,6 +1229,7 @@ class EqualInterval(MapClassifier):
 
     Examples
     --------
+
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
     >>> ei = mc.EqualInterval(cal, k=5)
@@ -1202,6 +1242,7 @@ class EqualInterval(MapClassifier):
 
     Notes
     -----
+
     Intervals defined to have equal width:
 
     .. math::
@@ -1209,6 +1250,7 @@ class EqualInterval(MapClassifier):
         bins_j = min(y)+w*(j+1)
 
     with :math:`w=\\frac{max(y)-min(j)}{k}`
+
     """
 
     def __init__(self, y, k=K):
@@ -1243,6 +1285,7 @@ class Percentiles(MapClassifier):
 
     Parameters
     ----------
+
     y    : array
            attribute to classify
     pct  : array
@@ -1250,6 +1293,7 @@ class Percentiles(MapClassifier):
 
     Attributes
     ----------
+
     yb     : array
              bin ids for observations (numpy array n x 1)
     bins   : array
@@ -1262,6 +1306,7 @@ class Percentiles(MapClassifier):
 
     Examples
     --------
+
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
     >>> p = mc.Percentiles(cal)
@@ -1277,6 +1322,7 @@ class Percentiles(MapClassifier):
     [29, 29]
     >>> p2.k
     2
+
     """
 
     def __init__(self, y, pct=[1, 10, 50, 90, 99, 100]):
@@ -1296,6 +1342,7 @@ class Percentiles(MapClassifier):
 
         Parameters
         ----------
+
         y   :   array
                     (n,1) array of data to classify
         inplace :   bool
@@ -1304,6 +1351,7 @@ class Percentiles(MapClassifier):
 
         Additional parameters provided in **kwargs are passed to the init
         function of the class. For documentation, check the class constructor.
+
         """
         kwargs.update({"pct": kwargs.pop("pct", self.pct)})
         if inplace:
@@ -1320,6 +1368,7 @@ class BoxPlot(MapClassifier):
 
     Parameters
     ----------
+
     y     : array
             attribute to classify
     hinge : float
@@ -1327,6 +1376,7 @@ class BoxPlot(MapClassifier):
 
     Attributes
     ----------
+
     yb : array
         (n,1), bin ids for observations
     bins : array
@@ -1383,13 +1433,17 @@ class BoxPlot(MapClassifier):
 
     def __init__(self, y, hinge=1.5):
         """
+
         Parameters
         ----------
+
         y : array (n,1)
             attribute to classify
         hinge : float
             multiple of inter-quartile range (default=1.5)
+
         """
+
         self.hinge = hinge
         MapClassifier.__init__(self, y)
         self.name = "BoxPlot"
@@ -1422,6 +1476,7 @@ class BoxPlot(MapClassifier):
 
         Parameters
         ----------
+
         y       :   array
                         (n,1) array of data to classify
         inplace     :   bool
@@ -1430,6 +1485,7 @@ class BoxPlot(MapClassifier):
 
         Additional parameters provided in **kwargs are passed to the init
         function of the class. For documentation, check the class constructor.
+
         """
         kwargs.update({"hinge": kwargs.pop("hinge", self.hinge)})
         if inplace:
@@ -1446,6 +1502,7 @@ class Quantiles(MapClassifier):
 
     Parameters
     ----------
+
     y : array
         (n,1), values to classify
     k : int
@@ -1453,6 +1510,7 @@ class Quantiles(MapClassifier):
 
     Attributes
     ----------
+
     yb      : array
               (n,1), bin ids for observations,
               each value is the id of the class the observation belongs to
@@ -1468,6 +1526,7 @@ class Quantiles(MapClassifier):
 
     Examples
     --------
+
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
     >>> q = mc.Quantiles(cal, k=5)
@@ -1475,6 +1534,7 @@ class Quantiles(MapClassifier):
     array([1.46400e+00, 5.79800e+00, 1.32780e+01, 5.46160e+01, 4.11145e+03])
     >>> list(q.counts)
     [12, 11, 12, 11, 12]
+
     """
 
     def __init__(self, y, k=K):
@@ -1494,6 +1554,7 @@ class StdMean(MapClassifier):
 
     Parameters
     ----------
+
     y         : array
                 (n,1), values to classify
     multiples : array
@@ -1514,6 +1575,7 @@ class StdMean(MapClassifier):
 
     Examples
     --------
+
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
     >>> st = mc.StdMean(cal)
@@ -1556,6 +1618,7 @@ class StdMean(MapClassifier):
 
         Parameters
         ----------
+
         y   :   array
                     (n,1) array of data to classify
         inplace :   bool
@@ -1564,6 +1627,7 @@ class StdMean(MapClassifier):
 
         Additional parameters provided in **kwargs are passed to the init
         function of the class. For documentation, check the class constructor.
+
         """
         kwargs.update({"multiples": kwargs.pop("multiples", self.multiples)})
         if inplace:
@@ -1580,6 +1644,7 @@ class MaximumBreaks(MapClassifier):
 
     Parameters
     ----------
+
     y  : array
          (n, 1), values to classify
 
@@ -1591,6 +1656,7 @@ class MaximumBreaks(MapClassifier):
 
     Attributes
     ----------
+
     yb : array
          (n, 1), bin ids for observations
     bins : array
@@ -1603,6 +1669,7 @@ class MaximumBreaks(MapClassifier):
 
     Examples
     --------
+
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
     >>> mb = mc.MaximumBreaks(cal, k=5)
@@ -1633,7 +1700,9 @@ class MaximumBreaks(MapClassifier):
 
         ud = np.unique(diffs)
         if len(ud) < k1:
-            print("Insufficient number of unique diffs. Breaks are random.")
+            warnings.warn(
+                "Insufficient number of unique diffs. Breaks are random.", UserWarning
+            )
         mp = []
         for c in range(1, k):
             idx = idxs[-c]
@@ -1649,6 +1718,7 @@ class MaximumBreaks(MapClassifier):
 
         Parameters
         ----------
+
         y   :   array
                     (n,1) array of data to classify
         inplace :   bool
@@ -1657,6 +1727,7 @@ class MaximumBreaks(MapClassifier):
 
         Additional parameters provided in **kwargs are passed to the init
         function of the class. For documentation, check the class constructor.
+
         """
         kwargs.update({"k": kwargs.pop("k", self.k)})
         kwargs.update({"mindiff": kwargs.pop("mindiff", self.mindiff)})
@@ -1674,6 +1745,7 @@ class NaturalBreaks(MapClassifier):
 
     Parameters
     ----------
+
     y       : array
               (n,1), values to classify
     k       : int
@@ -1697,6 +1769,7 @@ class NaturalBreaks(MapClassifier):
 
     Examples
     --------
+
     >>> import numpy as np
     >>> import mapclassify as mc
     >>> np.random.seed(123456)
@@ -1736,9 +1809,11 @@ class NaturalBreaks(MapClassifier):
         uv = np.unique(values)
         uvk = len(uv)
         if uvk < k:
-            ms = "Warning: Not enough unique values in array to form k classes"
-            Warn(ms, UserWarning)
-            Warn("Warning: setting k to %d" % uvk, UserWarning)
+            warnings.warn(
+                "Not enough unique values in array to form k classes. "
+                f"Setting k to {uvk}.",
+                UserWarning,
+            )
             k = uvk
             uv.sort()
             # we set the bins equal to the sorted unique values and ramp k
@@ -1756,6 +1831,7 @@ class NaturalBreaks(MapClassifier):
 
         Parameters
         ----------
+
         y           :   array
                         (n,1) array of data to classify
         inplace     :   bool
@@ -1764,6 +1840,7 @@ class NaturalBreaks(MapClassifier):
 
         Additional parameters provided in **kwargs are passed to the init
         function of the class. For documentation, check the class constructor.
+
         """
         kwargs.update({"k": kwargs.pop("k", self.k)})
         if inplace:
@@ -1815,7 +1892,9 @@ class FisherJenks(MapClassifier):
 
     def __init__(self, y, k=K):
         if not HAS_NUMBA:
-            Warn("Numba not installed. Using slow pure python version.", UserWarning)
+            warnings.warn(
+                "Numba not installed. Using slow pure python version.", UserWarning
+            )
 
         nu = len(np.unique(y))
         if nu < k:
@@ -1835,6 +1914,7 @@ class FisherJenksSampled(MapClassifier):
 
     Parameters
     ----------
+
     y      : array
              (n,1), values to classify
     k      : int
@@ -1848,6 +1928,7 @@ class FisherJenksSampled(MapClassifier):
 
     Attributes
     ----------
+
     yb      : array
               (n,1), bin ids for observations
     bins    : array
@@ -1859,6 +1940,7 @@ class FisherJenksSampled(MapClassifier):
 
     Notes
     -----
+
     For theoretical details see :cite:`Rey_2016`.
 
     """
@@ -1895,6 +1977,7 @@ class FisherJenksSampled(MapClassifier):
 
         Parameters
         ----------
+
         y           :   array
                         (n,1) array of data to classify
         inplace     :   bool
@@ -1903,6 +1986,7 @@ class FisherJenksSampled(MapClassifier):
 
         Additional parameters provided in **kwargs are passed to the init
         function of the class. For documentation, check the class constructor.
+
         """
         kwargs.update({"k": kwargs.pop("k", self.k)})
         kwargs.update({"pct": kwargs.pop("pct", self.pct)})
@@ -1921,6 +2005,7 @@ class JenksCaspall(MapClassifier):
 
     Parameters
     ----------
+
     y : array
         (n,1), values to classify
     k : int
@@ -1941,6 +2026,7 @@ class JenksCaspall(MapClassifier):
 
     Examples
     --------
+
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
     >>> jc = mc.JenksCaspall(cal, k=5)
@@ -2018,6 +2104,7 @@ class JenksCaspallSampled(MapClassifier):
 
     Examples
     --------
+
     >>> import mapclassify as mc
     >>> import numpy as np
     >>> cal = mc.load_example()
@@ -2044,6 +2131,7 @@ class JenksCaspallSampled(MapClassifier):
 
     Notes
     -----
+
     This is intended for large n problems. The logic is to apply
     Jenks_Caspall to a random subset of the y space and then bin the
     complete vector y on the bins obtained from the subset. This would
@@ -2081,6 +2169,7 @@ class JenksCaspallSampled(MapClassifier):
 
         Parameters
         ----------
+
         y           :   array
                         (n,1) array of data to classify
         inplace     :   bool
@@ -2106,6 +2195,7 @@ class JenksCaspallForced(MapClassifier):
 
     Parameters
     ----------
+
     y : array
         (n,1), values to classify
     k : int
@@ -2113,6 +2203,7 @@ class JenksCaspallForced(MapClassifier):
 
     Attributes
     ----------
+
     yb      : array
               (n,1), bin ids for observations
     bins    : array
@@ -2125,6 +2216,7 @@ class JenksCaspallForced(MapClassifier):
 
     Examples
     --------
+
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
     >>> jcf = mc.JenksCaspallForced(cal, k=5)
@@ -2141,6 +2233,7 @@ class JenksCaspallForced(MapClassifier):
     array([2.51000e+00, 8.70000e+00, 3.66800e+01, 4.11145e+03])
     >>> list(jcf4.counts)
     [15, 14, 14, 15]
+
     """
 
     def __init__(self, y, k=K):
@@ -2245,6 +2338,7 @@ class UserDefined(MapClassifier):
 
     Parameters
     ----------
+
     y    : array
            (n,1), values to classify
     bins : array
@@ -2255,10 +2349,9 @@ class UserDefined(MapClassifier):
            to -inf if  y.min() > first upper bound, otherwise minimum is set to
            y.min(). lowest will override the default
 
-
-
     Attributes
     ----------
+
     yb      : array
               (n,1), bin ids for observations,
     bins    : array
@@ -2268,9 +2361,9 @@ class UserDefined(MapClassifier):
     counts  : array
               (k,1), the number of observations falling in each class
 
-
     Examples
     --------
+
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
     >>> bins = [20, max(cal)]
@@ -2290,6 +2383,7 @@ class UserDefined(MapClassifier):
 
     Notes
     -----
+
     If upper bound of user bins does not exceed max(y) we append an
     additional bin.
 
@@ -2325,6 +2419,7 @@ class UserDefined(MapClassifier):
 
         Parameters
         ----------
+
         y           :   array
                         (n,1) array of data to classify
         inplace     :   bool
@@ -2333,6 +2428,7 @@ class UserDefined(MapClassifier):
 
         Additional parameters provided in **kwargs are passed to the init
         function of the class. For documentation, check the class constructor.
+
         """
         bins = kwargs.pop("bins", self.bins)
         if inplace:
@@ -2580,6 +2676,7 @@ class MaxP(MapClassifier):
 
         Parameters
         ----------
+
         y           :   array
                         (n,1) array of data to classify
         inplace     :   bool
@@ -2588,7 +2685,9 @@ class MaxP(MapClassifier):
 
         Additional parameters provided in **kwargs are passed to the init
         function of the class. For documentation, check the class constructor.
+
         """
+
         kwargs.update({"initial": kwargs.pop("initial", self.initial)})
         if inplace:
             self._update(y, bins, **kwargs)
@@ -2600,16 +2699,15 @@ class MaxP(MapClassifier):
 
 
 def _fit(y, classes):
-    """Calculate the total sum of squares for a vector y classified into
-    classes
+    """Calculate the total sum of squares for a vector y classified into classes.
 
     Parameters
     ----------
+
     y : array
         (n,1), variable to be classified
-
     classes : array
-              (k,1), integer values denoting class membership
+        (k,1), integer values denoting class membership
 
     """
     tss = 0
@@ -2636,25 +2734,28 @@ def gadf(y, method="Quantiles", maxk=15, pct=0.8):
     Parameters
     ----------
 
-    y      : array
-             (n, 1) values to be classified
-    method : {'Quantiles, 'Fisher_Jenks', 'Maximum_Breaks', 'Natrual_Breaks'}
-    maxk   : int
-             maximum value of k to evaluate
-    pct    : float
-             The percentage of GADF to exceed
+    y : array
+        (n, 1) values to be classified
+    method : str
+        {'Quantiles, 'Fisher_Jenks', 'Maximum_Breaks', 'Natrual_Breaks'}.
+    maxk : int
+        maximum value of k to evaluate
+    pct : float
+        The percentage of GADF to exceed
 
     Returns
     -------
+
     k : int
         number of classes
     cl : object
-         instance of the classifier at k
+        instance of the classifier at k
     gadf : float
-           goodness of absolute deviation fit
+        goodness of absolute deviation fit
 
     Examples
     --------
+
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
     >>> qgadf = mc.classifiers.gadf(cal)
@@ -2688,7 +2789,9 @@ def gadf(y, method="Quantiles", maxk=15, pct=0.8):
 
     See Also
     --------
+
     KClassifiers
+
     """
 
     y = np.array(y)
@@ -2707,21 +2810,24 @@ class KClassifiers(object):
 
     Parameters
     ----------
-    y      : array
-             (n,1), values to be classified
-    pct    : float
-             The percentage of GADF to exceed
+
+    y : array
+        (n,1), values to be classified
+    pct : float
+        The percentage of GADF to exceed
 
     Attributes
     ----------
-    best   :  object
-              instance of the optimal MapClassifier
+
+    best : object
+        instance of the optimal MapClassifier
     results : dictionary
-              keys are classifier names, values are the MapClassifier
-              instances with the best pct for each classifer
+        keys are classifier names, values are the MapClassifier
+        instances with the best pct for each classifer
 
     Examples
     --------
+
     >>> import mapclassify as mc
     >>> cal = mc.load_example()
     >>> ks = mc.classifiers.KClassifiers(cal)
@@ -2734,10 +2840,12 @@ class KClassifiers(object):
 
     Notes
     -----
+
     This can be used to suggest a classification scheme.
 
     See Also
     --------
+
     gadf
 
     """
