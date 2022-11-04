@@ -25,8 +25,8 @@ Classifiers
     mapclassify.MaxP
     mapclassify.MaximumBreaks
     mapclassify.NaturalBreaks
-    mapclassify.Quantiles
     mapclassify.Percentiles
+    mapclassify.Quantiles
     mapclassify.StdMean
     mapclassify.UserDefined
 
@@ -37,5 +37,6 @@ Utilities
    :toctree: generated/
 
     mapclassify.KClassifiers
-    mapclassify.gadf
+    mapclassify.Pooled
     mapclassify.classify
+    mapclassify.gadf

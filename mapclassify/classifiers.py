@@ -97,8 +97,8 @@ def _format_intervals(mc, fmt="{:.0f}"):
         max_width : int
             Length of largest interval string.
         lower_open : bool
-            True: lower bound of first interval is open
-            False: lower bound of first interval is closed
+            True: lower bound of first interval is open.
+            False: lower bound of first interval is closed.
 
     Notes
     -----
@@ -140,7 +140,7 @@ def _get_mpl_labels(mc, fmt="{:.1f}"):
     -------
 
     intervals : list
-        :math:`k` strings for class intervals
+        :math:`k` strings for class intervals.
 
     """
     edges, max_width, lower_open = _format_intervals(mc, fmt)
@@ -166,7 +166,7 @@ def _get_table(mc, fmt="{:.2f}"):
     ----------
 
     mc: MapClassifier
-    fmt: str
+    fmt: str (default '{:.2f}')
         specification of formatting for legend.
 
     Returns
@@ -214,7 +214,7 @@ def quantile(y, k=4):
 
     y : numpy.array
         :math:`(n,1)`, values to classify.
-    k : int
+    k : int (default 4)
         Number of quantiles.
 
     Returns
@@ -226,24 +226,27 @@ def quantile(y, k=4):
     Examples
     --------
 
-    >>> import numpy as np
-    >>> import mapclassify as mc
-    >>> x = np.arange(1000)
-    >>> mc.classifiers.quantile(x)
+    >>> import numpy
+    >>> import mapclassify
+    >>> x = numpy.arange(1000)
+
+    >>> mapclassify.classifiers.quantile(x)
     array([249.75, 499.5 , 749.25, 999.  ])
-    >>> mc.classifiers.quantile(x, k=3)
+
+    >>> mapclassify.classifiers.quantile(x, k=3)
     array([333., 666., 999.])
 
     Note that if there are enough ties that the quantile values repeat, we
     collapse to pseudo quantiles in which case the number of classes will be
-    less than :math:`k`.
+    less than ``k``.
 
     >>> x = [1.0] * 100
     >>> x.extend([3.0] * 40)
     >>> len(x)
     140
-    >>> y = np.array(x)
-    >>> mc.classifiers.quantile(y)
+
+    >>> y = numpy.array(x)
+    >>> mapclassify.classifiers.quantile(y)
     array([1., 3.])
 
     """
@@ -266,7 +269,7 @@ def quantile(y, k=4):
 
 def binC(y, bins):
     """
-    Bin categorical/qualitative data
+    Bin categorical/qualitative data.
 
     Parameters
     ----------
@@ -280,15 +283,15 @@ def binC(y, bins):
     ------
 
     b : numpy.array
-        :math:`(n,q)` bin membership, values between ``0`` and :math:`k-1`.
+        :math:`(n,q)` bin membership, values between ``0`` and ``k-1``.
 
     Examples
     --------
 
-    >>> import numpy as np
-    >>> import mapclassify as mc
-    >>> np.random.seed(1)
-    >>> x = np.random.randint(2, 8, (10, 3))
+    >>> import numpy
+    >>> import mapclassify
+    >>> numpy.random.seed(1)
+    >>> x = numpy.random.randint(2, 8, (10, 3))
     >>> bins = list(range(2, 8))
     >>> x
     array([[7, 5, 6],
@@ -301,7 +304,8 @@ def binC(y, bins):
            [4, 6, 7],
            [4, 6, 3],
            [3, 2, 7]])
-    >>> y = mc.classifiers.binC(x, bins)
+
+    >>> y = mapclassify.classifiers.binC(x, bins)
     >>> y
     array([[5, 3, 4],
            [0, 1, 3],
@@ -336,7 +340,7 @@ def binC(y, bins):
 
 def bin(y, bins):
     """
-    bin interval/ratio data
+    Bin interval/ratio data.
 
     Parameters
     ----------
@@ -350,17 +354,17 @@ def bin(y, bins):
     -------
 
     b : numpy.array
-        :math:`(n,q)`, values of values between ``0`` and :math:`k-1`.
+        :math:`(n,q)`, values of values between ``0`` and ``k-1``.
 
     Examples
     --------
 
-    >>> import numpy as np
-    >>> import mapclassify as mc
-    >>> np.random.seed(1)
-    >>> x = np.random.randint(2, 20, (10, 3))
+    >>> import numpy
+    >>> import mapclassify
+    >>> numpy.random.seed(1)
+    >>> x = numpy.random.randint(2, 20, (10, 3))
     >>> bins = [10, 15, 20]
-    >>> b = mc.classifiers.bin(x, bins)
+    >>> b = mapclassify.classifiers.bin(x, bins)
     >>> x
     array([[ 7, 13, 14],
            [10, 11, 13],
@@ -372,6 +376,7 @@ def bin(y, bins):
            [19,  2, 15],
            [11, 11,  9],
            [ 3,  2, 19]])
+
     >>> b
     array([[0, 1, 1],
            [0, 1, 1],
@@ -404,40 +409,40 @@ def bin(y, bins):
 
 def bin1d(x, bins):
     """
-    Place values of a 1-d array into bins and determine counts of values in
-    each bin
+    Place values of a 1-d array into bins and determine
+    counts of values in each bin.
 
     Parameters
     ----------
 
-    x : array
-        (n, 1), values to bin
-    bins : array
-        (k,1), upper bounds of each bin (monotonic)
+    x : numpy.array
+        :math:`(n, 1)`, values to bin.
+    bins : numpy.array
+        :math:`(k,1)`, upper bounds of each bin (monotonic).
 
     Returns
     -------
 
-    binIds : array
-        1-d array of integer bin Ids
-
+    binIds : numpy.array
+        1-d array of integer bin IDs.
     counts : int
-        number of elements of x falling in each bin
+        Number of elements of ``x`` falling in each bin.
 
     Examples
     --------
 
-    >>> import numpy as np
-    >>> import mapclassify as mc
-    >>> x = np.arange(100, dtype = 'float')
+    >>> import numpy
+    >>> import mapclassify
+    >>> x = numpy.arange(100, dtype = "float")
     >>> bins = [25, 74, 100]
-    >>> binIds, counts = mc.classifiers.bin1d(x, bins)
+    >>> binIds, counts = mapclassify.classifiers.bin1d(x, bins)
     >>> binIds
     array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
            0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
            1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2])
+
     >>> list(counts)
     [26, 49, 25]
 
@@ -467,17 +472,17 @@ def load_example():
 
 def _kmeans(y, k=5, n_init=10):
     """
-    Helper function to do k-means in one dimension
+    Helper function to do k-means in one dimension.
 
     Parameters
     ----------
 
-    y : array
-        (n,1), values to classify
-    k : int
-        number of classes to form
-    n_init : int, default: 10
-        number of initial  solutions. Best of initial results is returned.
+    y : numpy.array
+        :math:`(n,1)`, values to classify.
+    k : int, (default 5)
+        Number of classes to form.
+    n_init : int, (default 10)
+        Number of initial  solutions. Best of initial results is returned.
 
     """
 
@@ -505,18 +510,16 @@ def _kmeans(y, k=5, n_init=10):
 
 def natural_breaks(values, k=5, init=10):
     """
-    natural breaks helper function
-
-    Jenks natural breaks is kmeans in one dimension
+    Natural breaks helper function. Jenks natural breaks is k-means in one dimension.
 
     Parameters
     ----------
 
-    values : array
-        (n, 1) values to bin
-    k : int
-        Number of classes
-    init: int, default:10
+    values : numpy.array
+        :math:`(n, 1)` values to bin.
+    k : int, (default 5)
+        Number of classes.
+    init: int, (default 10)
         Number of different solutions to obtain using different centroids.
         Best solution is returned.
 

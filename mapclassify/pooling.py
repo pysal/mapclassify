@@ -34,21 +34,21 @@ class Pooled(object):
     ----------
 
     Y : numpy.array
-        math:`(n, m)` values to classify, with :math:`m>1`.
+        :math:`(n, m)`, values to classify, with :math:`m>1`.
     classifier : str
-        Name of mapclassify.classifier to apply.
+        Name of ``mapclassify.classifier`` to apply.
     **kwargs : dict
         Additional keyword arguments for classifier.
 
     Attributes
     ----------
 
-    global_classifier : MapClassifier
+    global_classifier : mapclassify.classifiers.MapClassifier
         Instance of the pooled classifier defined as the classifier
         applied to the union of the columns.
     col_classifier : list
-        Elements are MapClassifier instances with the pooled classifier
-        applied to the associated column of math:`Y`.
+        Elements are ``MapClassifier`` instances with the pooled classifier
+        applied to the associated column of ``Y``.
 
     Examples
     --------
@@ -88,7 +88,7 @@ class Pooled(object):
         method = classifier.lower()
         if method not in dispatcher:
             warnings.warn(
-                f"`method`('{method}') is not a valid classifier. " "Setting to `None`."
+                f"`method`('{method}') is not a valid classifier. Setting to `None`."
             )
             return None
         global_classifier = dispatcher[method](y, **kwargs)

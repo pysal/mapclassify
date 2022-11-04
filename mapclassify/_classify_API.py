@@ -130,21 +130,33 @@ def classify(
     >>> import geopandas
     >>> from mapclassify import classify
 
-    Load Example Data
+    Load example data.
 
-    >>> link_to_data = libpysal.examples.get_path('columbus.shp')
+    >>> link_to_data = libpysal.examples.get_path("columbus.shp")
     >>> gdf = geopandas.read_file(link_to_data)
     >>> x = gdf['HOVAL'].values
 
-    Classify values by quantiles
+    Classify values by quantiles.
 
-    >>> quantiles = classify(x, 'quantiles')
+    >>> quantiles = classify(x, "quantiles")
 
-    Classify values by box_plot and set hinge to 2
+    Classify values by box_plot and set hinge to ``2``.
 
-    >>> box_plot = classify(x, 'box_plot', hinge=2)
+    >>> box_plot = classify(x, "box_plot", hinge=2)
+    >>> box_plot
+    BoxPlot
+    <BLANKLINE>
+       Interval      Count
+    ----------------------
+    ( -inf, -9.50] |     0
+    (-9.50, 25.70] |    13
+    (25.70, 33.50] |    12
+    (33.50, 43.30] |    12
+    (43.30, 78.50] |     9
+    (78.50, 96.40] |     3
 
-    """
+    """  # noqa
+
     # reformat
     scheme_lower = scheme.lower()
     scheme = scheme_lower.replace("_", "")

@@ -194,7 +194,7 @@ def greedy(
 
     Attempts to color a GeoDataFrame using as few colors as possible, where no
     neighbours can have same color as the feature itself. Offers various strategies
-    ported from QGIS or implemented within networkX for greedy graph coloring.
+    ported from QGIS or implemented within NetworkX for greedy graph coloring.
 
     ``greedy`` will return ``pandas.Series`` representing assigned color codes.
 
@@ -208,7 +208,7 @@ def greedy(
         QGIS Topological coloring. It is aiming for a visual balance, defined by the
         balance parameter.
 
-        Other options are those supported by networkx.greedy_color:
+        Other options are those supported by ``networkx.greedy_color``:
 
         * ``'largest_first'``
         * ``'random_sequential'``
@@ -221,8 +221,7 @@ def greedy(
         * ``'DSATUR'`` (alias for the previous strategy)
 
         For details see
-        https://networkx.github.io/documentation/stable/reference/algorithms/
-        generated/networkx.algorithms.coloring.greedy_color.html
+        https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.coloring.greedy_color.html
 
     balance : str (default 'count')
         If strategy is ``'balanced'``, determine the method of color balancing.
@@ -247,7 +246,7 @@ def greedy(
     sw : 'queen', 'rook' or libpysal.weights.W (default 'queen')
         If min_distance is None, one can pass ``'libpysal.weights.W'``
         object denoting neighbors or let greedy to generate one based on
-        `'queen'`` or ``'rook'`` contiguity.
+        ``'queen'`` or ``'rook'`` contiguity.
 
     min_distance : float
         Set minimal distance between colors.
@@ -260,17 +259,23 @@ def greedy(
         Silence libpysal warnings when creating spatial weights.
 
     interchange : bool (defaul False)
-        Use the color interchange algorithm (applicable for networkx strategies)
+        Use the color interchange algorithm (applicable for NetworkX strategies)
 
         For details see
         https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.coloring.greedy_color.html
 
+    Returns
+    -------
+
+    color : pandas.Series
+        ``pandas.Series`` representing assinged color codes.
+
     Examples
     --------
 
-    >>> import geopandas as gpd
+    >>> import geopandas
     >>> from mapclassify import greedy
-    >>> world = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))
+    >>> world = geopandas.read_file(geopandas.datasets.get_path("naturalearth_lowres"))
     >>> africa = world.loc[world.continent == "Africa"].copy()
     >>> africa = africa.to_crs("ESRI:102022").reset_index(drop=True)
 
@@ -328,12 +333,6 @@ def greedy(
     3    3
     4    1
     Name: smallest_last, dtype: int64
-
-    Returns
-    -------
-
-    color : pd.Series
-        pandas.Series representing assinged color codes
 
     """  # noqa
 
