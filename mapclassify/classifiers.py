@@ -184,7 +184,7 @@ def _get_table(mc, fmt="{:.2f}"):
     interval_width = max(interval_width, len("interval"))
     header = "{:^{width}}".format("Interval", width=interval_width)
     header += "   " + "{:>{width}}".format("Count", width=count_width)
-    title = "{:<{width}}".format(mc.name, width=len(header))
+    title = mc.name
     header += "\n" + "-" * len(header)
     table = [title, "", header]
     for i, interval in enumerate(intervals):
@@ -631,12 +631,9 @@ class MapClassifier(object):
     * :class:`mapclassify.classifiers.StdMean`
     * :class:`mapclassify.classifiers.UserDefined`
 
-    Utilities:
-
     In addition to the classifiers, there are several utility functions that
     can be used to evaluate the properties of a specific classifier,
-    or for automatic selection of a classifier and
-    number of classes.
+    or for automatic selection of a classifier and number of classes.
 
     * :func:`mapclassify.classifiers.gadf`
     * :class:`mapclassify.classifiers.K_classifiers`
@@ -673,14 +670,15 @@ class MapClassifier(object):
     def _update(self, data, *args, **kwargs):
         """
         The only thing that *should* happen in this function is
+
         1. input sanitization for pandas
         2. classification/reclassification.
 
-        Using their __init__ methods, all classifiers can re-classify given
+        Using their ``__init__`` methods, all classifiers can re-classify given
         different input parameters or additional data.
 
-        If you've got a cleverer updating equation than the intial estimation
-        equation, remove the call to self.__init__ below and replace it with
+        If you've got a cleverer updating equation other than the intial estimation
+        equation, remove the call to ``self.__init__`` below and replace it with
         the updating function.
         """
         if data is not None:
@@ -697,39 +695,34 @@ class MapClassifier(object):
         classifications, given the configuration options specified by this
         function.
 
-        Note that this like a *partial application* of the relevant class
-        constructor. `make` creates a function that returns classifications; it
+        Note that this implements a *partial application* of the relevant class
+        constructor. ``make`` creates a function that returns classifications; it
         does not actually do the classification.
 
         If you want to classify data directly, use the appropriate class
-        constructor, like Quantiles, Max_Breaks, etc.
+        constructor, like ``Quantiles``, ``Max_Breaks``, etc.
 
         If you *have* a classifier object, but want to find which bins new data
-        falls into, use find_bin.
+        falls into, use ``find_bin``.
 
         Parameters
         ----------
 
-        *args           : required positional arguments
-                          all positional arguments required by the classifier,
-                          excluding the input data.
-        rolling         : bool
-                          a boolean configuring the outputted classifier to use
-                          a rolling classifier rather than a new classifier for
-                          each input. If rolling, this adds the current data to
-                          all of the previous data in the classifier, and
-                          rebalances the bins, like a running median
-                          computation.
-        return_object   : bool
-                          a boolean configuring the outputted classifier to
-                          return the classifier object or not
-        return_bins     : bool
-                          a boolean configuring the outputted classifier to
-                          return the bins/breaks or not
-        return_counts   : bool
-                          a boolean configuring the outputted classifier to
-                          return the histogram of objects falling into each bin
-                          or not
+        *args : required positional arguments
+            All positional arguments required by the classifier,
+            **excluding** the input data.
+        rolling : bool
+            A boolean configuring the outputted classifier to use
+            a rolling classifier rather than a new classifier for
+            each input. If ``rolling``, this adds the current data to
+            all of the previous data in the classifier, and
+            rebalances the bins, like a running median computation.
+        return_object : bool
+            Return the classifier object (or not).
+        return_bins : bool
+            Return the bins/breaks (or not).
+        return_counts : bool
+            Return the histogram of objects falling into each bin (or not).
 
         Returns
         -------
@@ -747,21 +740,27 @@ class MapClassifier(object):
         Examples
         --------
 
-        >>> import libpysal as ps
-        >>> import mapclassify as mc
-        >>> import geopandas as gpd
-        >>> df = gpd.read_file(ps.examples.get_path('columbus.dbf'))
-        >>> classifier = mc.Quantiles.make(k=9)
-        >>> cl = df[['HOVAL', 'CRIME', 'INC']].apply(classifier)
+        >>> import libpysal
+        >>> import mapclassify
+        >>> import geopandas
+        >>> import numpy
+        >>> import pandas
+        >>> df = geopandas.read_file(libpysal.examples.get_path("columbus.dbf"))
+        >>> classifier = mapclassify.Quantiles.make(k=9)
+        >>> cl = df[["HOVAL", "CRIME", "INC"]].apply(classifier)
         >>> cl["HOVAL"].values[:10]
         array([8, 7, 2, 4, 1, 3, 8, 5, 7, 8])
         >>> cl["CRIME"].values[:10]
         array([0, 1, 3, 4, 6, 2, 0, 5, 3, 4])
         >>> cl["INC"].values[:10]
         array([7, 8, 5, 0, 3, 5, 0, 3, 6, 4])
-        >>> import pandas as pd; from numpy import linspace as lsp
-        >>> data = [lsp(3,8,num=10), lsp(10, 0, num=10), lsp(-5, 15, num=10)]
-        >>> data = pd.DataFrame(data).T
+
+        >>> data = [
+        ...     numpy.linspace(3,8,num=10),
+        ...     numpy.linspace(10, 0, num=10),
+        ...     numpy.linspace(-5, 15, num=10)
+        ... ]
+        >>> data = pandas.DataFrame(data).T
         >>> data
                   0          1          2
         0  3.000000  10.000000  -5.000000
@@ -774,7 +773,8 @@ class MapClassifier(object):
         7  6.888889   2.222222  10.555556
         8  7.444444   1.111111  12.777778
         9  8.000000   0.000000  15.000000
-        >>> data.apply(mc.Quantiles.make(rolling=True))
+
+        >>> data.apply(mapclassify.Quantiles.make(rolling=True))
            0  1  2
         0  0  4  0
         1  0  4  0
@@ -786,12 +786,14 @@ class MapClassifier(object):
         7  3  0  4
         8  4  0  4
         9  4  0  4
-        >>> dbf = ps.io.open(ps.examples.get_path('baltim.dbf'))
-        >>> data = dbf.by_col_array('PRICE', 'LOTSZ', 'SQFT')
+
+        >>> dbf = libpysal.io.open(libpysal.examples.get_path("baltim.dbf"))
+        >>> data = dbf.by_col_array("PRICE", "LOTSZ", "SQFT")
         >>> my_bins = [1, 10, 20, 40, 80]
-        >>> cl = [mc.UserDefined.make(bins=my_bins)(a) for a in data.T]
+        >>> cl = [mapclassify.UserDefined.make(bins=my_bins)(a) for a in data.T]
         >>> len(cl)
         3
+
         >>> cl[0][:10]
         array([4, 5, 5, 5, 4, 4, 5, 4, 4, 5])
 
@@ -935,6 +937,7 @@ class MapClassifier(object):
             gadf = 1 - self.adcm / adam
         return gadf
 
+    """
     def _table_string(self, width=12, decimal=3):
         labels, largest = self.get_legend_classes(table=True)
         h1 = "Lower"
@@ -972,6 +975,7 @@ class MapClassifier(object):
         table.insert(1, " ")
         table = "\n".join(table)
         return table
+    """
 
     def find_bin(self, x):
         """
