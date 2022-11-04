@@ -58,7 +58,7 @@ jobs:
         run: pytest mapclassify --cov mapclassify -v -n auto --doctest-modules --cov-config .coveragerc --cov-report xml --color yes --cov-append --cov-report term-missing
 
       - name: codecov (${{ matrix.os }}, ${{ matrix.env }})
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml
