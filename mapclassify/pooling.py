@@ -1,3 +1,5 @@
+import warnings
+
 import numpy
 
 from .classifiers import (
@@ -85,7 +87,9 @@ class Pooled(object):
         ymin = y.min()
         method = classifier.lower()
         if method not in dispatcher:
-            print(f"{method} not a valid classifier.")
+            warnings.warn(
+                f"`method`('{method}') is not a valid classifier. " "Setting to `None`."
+            )
             return None
         global_classifier = dispatcher[method](y, **kwargs)
         # self.k = global_classifier.k

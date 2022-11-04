@@ -7,9 +7,7 @@ Copyright (C) 2019 Martin Fleischmann, 2017 Nyall Dawson
 
 import operator
 
-__all__ = [
-    "greedy",
-]
+__all__ = ["greedy"]
 
 
 def _balanced(features, sw, balance="count", min_colors=4):
@@ -26,19 +24,22 @@ def _balanced(features, sw, balance="count", min_colors=4):
 
     Parameters
     ----------
-    features : GeoDataFrame
-        GeoDataFrame
+
+    features : geopandas.GeoDataFrame
+        GeoDataFrame.
     sw : libpysal.weights.W
-        spatial weights object denoting adjacency of features
+        Spatial weights object denoting adjacency of features.
     balance : str
-        the method of color balancing
+        The method of color balancing.
     min_colors : int
-        the minimal number of colors to be used
+        The minimal number of colors to be used.
 
     Returns
     -------
+
     feature_colors : dict
-        dictionary with assigned color codes
+        Dictionary with assigned color codes.
+
     """
     feature_colors = {}
     # start with minimum number of colors in pool
@@ -131,25 +132,27 @@ def _geos_sw(features, tolerance=0, silence_warnings=False, resolution=5):
     """
     Generate libpysal spatial weights object based on intersections of features.
 
-    Intersecting features are denoted as neighbours. If tolerance > 0, all features
-    within the set tolerance are denoted as neighbours.
-
+    Intersecting features are denoted as neighbours. If ``tolerance > 0``,
+    all features within the set tolerance are denoted as neighbours.
 
     Parameters
     ----------
-    features : GeoDataFrame
-        GeoDataFrame
+
+    features : geopandas.GeoDataFrame
+        GeoDataFrame.
     tolerance : float (default 0)
-        minimal distance between colors
+        Minimal distance between colors.
     silence_warnings : bool (default True)
-        silence lilbpysal warnings (if min_distance is set)
+        Silence lilbpysal warnings (if ``min_distance`` is set).
     resolution : int (default 5)
-        resolution of buffer if tolerance > 0
+        Resolution of buffer if ``tolerance > 0``.
 
     Returns
     -------
+
     W : libpysal.weights.W
-        spatial weights object
+        Spatial weights object.
+
     """
     try:
         from libpysal.weights import W
@@ -193,10 +196,11 @@ def greedy(
     neighbours can have same color as the feature itself. Offers various strategies
     ported from QGIS or implemented within networkX for greedy graph coloring.
 
-    ``greedy`` will return pandas.Series representing assinged color codes.
+    ``greedy`` will return ``pandas.Series`` representing assigned color codes.
 
     Parameters
     ----------
+
     gdf : GeoDataFrame
         GeoDataFrame
     strategy : str (default 'balanced')
@@ -259,8 +263,7 @@ def greedy(
         Use the color interchange algorithm (applicable for networkx strategies)
 
         For details see
-        https://networkx.github.io/documentation/stable/reference/algorithms/
-        generated/networkx.algorithms.coloring.greedy_color.html
+        https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.coloring.greedy_color.html
 
     Examples
     --------
@@ -328,9 +331,12 @@ def greedy(
 
     Returns
     -------
+
     color : pd.Series
         pandas.Series representing assinged color codes
-    """
+
+    """  # noqa
+
     if strategy != "balanced":
         try:
             import networkx as nx
@@ -369,7 +375,7 @@ def greedy(
         )
 
     else:
-        raise ValueError("{} is not a valid strategy.".format(strategy))
+        raise ValueError(f"{strategy} is not a valid strategy.")
 
     color = pd.Series(color).sort_index()
     color.index = gdf.index

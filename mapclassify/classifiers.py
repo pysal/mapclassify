@@ -78,25 +78,24 @@ except ImportError:
 
 def _format_intervals(mc, fmt="{:.0f}"):
     """
-    Helper methods to format legend intervals
+    Helper methods to format legend intervals.
 
 
     Parameters
     ----------
 
     mc: MapClassifier
-
     fmt: str
-         specification of formatting for legend
+        Specification of formatting for legend.
 
     Returns
     -------
 
     tuple:
         edges : list
-            k strings for class intervals
+            :math:`k` strings for class intervals.
         max_width : int
-            length of largest interval string
+            Length of largest interval string.
         lower_open : bool
             True: lower bound of first interval is open
             False: lower bound of first interval is closed
@@ -128,21 +127,21 @@ def _format_intervals(mc, fmt="{:.0f}"):
 
 def _get_mpl_labels(mc, fmt="{:.1f}"):
     """
-    Helper method to format legend intervals for matplotlib (and geopandas)
+    Helper method to format legend intervals for matplotlib (and geopandas).
 
     Parameters
     ----------
 
-    mc: MapClassifier
-
-    fmt: str
-        specification of formatting for legend
+    mc : MapClassifier
+    fmt : str
+        Specification of formatting for legend.
 
     Returns
     -------
 
-    intervals: list
-        k strings for class intervals
+    intervals : list
+        :math:`k` strings for class intervals
+
     """
     edges, max_width, lower_open = _format_intervals(mc, fmt)
     k = len(edges) - 1
@@ -161,21 +160,20 @@ def _get_mpl_labels(mc, fmt="{:.1f}"):
 
 def _get_table(mc, fmt="{:.2f}"):
     """
-    Helper function to generate tabular classification report
+    Helper function to generate tabular classification report.
 
     Parameters
     ----------
 
     mc: MapClassifier
-
     fmt: str
-        specification of formatting for legend
+        specification of formatting for legend.
 
     Returns
     -------
 
     table : str
-        formatted table of classification results
+        Formatted table of classification results.
 
     """
     intervals = _get_mpl_labels(mc, fmt)
@@ -196,9 +194,7 @@ def _get_table(mc, fmt="{:.2f}"):
 
 
 def head_tail_breaks(values, cuts):
-    """
-    head tail breaks helper function
-    """
+    """Head tail breaks helper function."""
     values = np.array(values)
     mean = np.mean(values)
     if len(cuts) > 0 and cuts[-1] == mean:  # this fixes floating point from GH#117
@@ -211,21 +207,21 @@ def head_tail_breaks(values, cuts):
 
 def quantile(y, k=4):
     """
-    Calculates the quantiles for an array
+    Calculates the quantiles for an array.
 
     Parameters
     ----------
 
-    y : array
-        (n,1), values to classify
+    y : numpy.array
+        :math:`(n,1)`, values to classify.
     k : int
-        number of quantiles
+        Number of quantiles.
 
     Returns
     -------
 
-    q : array
-        (n,1), quantile values
+    q : numpy.array
+        :math:`(n,1)`, quantile values.
 
     Examples
     --------
@@ -240,7 +236,7 @@ def quantile(y, k=4):
 
     Note that if there are enough ties that the quantile values repeat, we
     collapse to pseudo quantiles in which case the number of classes will be
-    less than k
+    less than :math:`k`.
 
     >>> x = [1.0] * 100
     >>> x.extend([3.0] * 40)
@@ -275,16 +271,16 @@ def binC(y, bins):
     Parameters
     ----------
 
-    y : array
-        (n,q), categorical values
-    bins : array
-        (k,1),  unique values associated with each bin
+    y : numpy.array
+        :math:`(n,q)`, categorical values.
+    bins : numpy.array
+        :math:`(k,1)`, unique values associated with each bin.
 
     Return
     ------
 
-    b : array
-        (n,q), bin membership, values between 0 and k-1
+    b : numpy.array
+        :math:`(n,q)` bin membership, values between ``0`` and :math:`k-1`.
 
     Examples
     --------
@@ -345,16 +341,16 @@ def bin(y, bins):
     Parameters
     ----------
 
-    y : array
-        (n,q), values to bin
-    bins : array
-        (k,1), upper bounds of each bin (monotonic)
+    y : numpy.array
+        :math:`(n,q)`, values to bin.
+    bins : numpy.array
+        :math:`(k,1)`, upper bounds of each bin (monotonic).
 
     Returns
     -------
 
-    b : array
-        (n,q), values of values between 0 and k-1
+    b : numpy.array
+        :math:`(n,q)`, values of values between ``0`` and :math:`k-1`.
 
     Examples
     --------
@@ -738,8 +734,8 @@ class MapClassifier(object):
         A function that consumes data and returns their bins (and object,
         bins/breaks, or counts, if requested).
 
-        Note
-        ----
+        Notes
+        -----
 
         This is most useful when you want to run a classifier many times
         with a given configuration, such as when classifying many columns of an
@@ -1364,31 +1360,31 @@ class Percentiles(MapClassifier):
 
 class BoxPlot(MapClassifier):
     """
-    BoxPlot Map Classification
+    BoxPlot Map Classification.
 
     Parameters
     ----------
 
-    y     : array
-            attribute to classify
+    y : numpy.array
+        Attribute to classify
     hinge : float
-            multiplier for IQR
+        Multiplier for :math:`IQR`.
 
     Attributes
     ----------
 
-    yb : array
-        (n,1), bin ids for observations
+    yb : numpy.array
+        :math:`(n,1)`, bin ids for observations.
     bins : array
-          (n,1), the upper bounds of each class  (monotonic)
+        :math:`(n,1)`, the upper bounds of each class  (monotonic).
     k : int
-        the number of classes
-    counts : array
-             (k,1), the number of observations falling in each class
-    low_outlier_ids : array
-        indices of observations that are low outliers
-    high_outlier_ids : array
-        indices of observations that are high outliers
+        The number of classes.
+    counts : numpy.array
+        :math:`(k,1)`, the number of observations falling in each class.
+    low_outlier_ids : numpy.array
+        Indices of observations that are low outliers.
+    high_outlier_ids : numpy.array
+        Indices of observations that are high outliers.
 
     Notes
     -----
@@ -1402,10 +1398,10 @@ class BoxPlot(MapClassifier):
         bins[4] = q[2]+hinge*IQR
         bins[5] = inf  (see Notes)
 
-    where q is an array of the first three quartiles of y and
-    IQR=q[2]-q[0]
+    where :math:`q` is an array of the first three quartiles of :math:`y` and
+    :math:`IQR=q[2]-q[0]`.
 
-    If q[2]+hinge*IQR > max(y) there will only be 5 classes and no high
+    If :math:`q[2]+hinge*IQR > max(y)` there will only be 5 classes and no high
     outliers, otherwise, there will be 6 classes and at least one high
     outlier.
 
