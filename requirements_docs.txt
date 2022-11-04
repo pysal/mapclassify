@@ -1,5 +1,6 @@
+nbshpinx
+numpydoc
 sphinx>=1.4.3
 sphinx-gallery
 sphinxcontrib-bibtex
 sphinx_bootstrap_theme
-numpydoc

@@ -48,6 +48,7 @@ extensions = [  #'sphinx_gallery.gen_gallery',
     "nbsphinx",
 ]
 
+bibtex_bibfiles = ["_static/references.bib"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -79,7 +80,7 @@ release = mapclassify.__version__  # should replace it with your PACKAGE_NAME
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -116,7 +117,7 @@ html_favicon = "_static/images/pysal_favicon.ico"
 #
 html_theme_options = {
     # Navigation bar title. (Default: ``project`` value)
-    "navbar_title": "mapclassify",  # string of your project name, for example, 'giddy'
+    "navbar_title": project,  # string of your project name, for example, 'giddy'
     # Render the next and previous page links in navbar. (Default: true)
     "navbar_sidebarrel": False,
     # Render the current pages TOC in the navbar. (Default: true)
@@ -175,7 +176,7 @@ html_static_path = ["_static"]
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "mapclassify" + "doc"
+htmlhelp_basename = project + "doc"
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -201,8 +202,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "mapclassify.tex",
-        "mapclassify Documentation",
+        f"{project}.tex",
+        f"{project} Documentation",
         "pysal developers",
         "manual",
     ),
@@ -213,7 +214,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "mapclassify", "mapclassify Documentation", [author], 1)]
+man_pages = [(master_doc, project, f"{project} Documentation", [author], 1)]
 
 
 # -- Options for Texinfo output -------------------------------------------
@@ -224,8 +225,8 @@ man_pages = [(master_doc, "mapclassify", "mapclassify Documentation", [author], 
 texinfo_documents = [
     (
         master_doc,
-        "mapclassify",
-        "mapclassify Documentation",
+        project,
+        f"{project} Documentation",
         author,
         "PySAL Developers",
         "map classification schemes.",
@@ -240,19 +241,70 @@ texinfo_documents = [
 
 # Generate the API documentation when building
 autosummary_generate = True
+
+# avoid showing members twice
 numpydoc_show_class_members = False
 numpydoc_use_plots = True
+class_members_toctree = True
+numpydoc_show_inherited_class_members = True
+numpydoc_xref_param_type = True
+
+# automatically document class members
+autodoc_default_options = {"members": True, "undoc-members": True}
 
 # display the source code for Plot directive
 plot_include_source = True
 
-# automatically document class members
-autodoc_default_options = {"members": True}
-
 
 def setup(app):
-    app.add_stylesheet("pysal-styles.css")
+    app.add_css_file("pysal-styles.css")
 
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {"https://docs.python.org/3.6/": None}
+intersphinx_mapping = {
+    "geopandas": ("https://geopandas.org/en/latest/", None),
+    "libpysal": ("https://pysal.org/libpysal/", None),
+    "matplotlib": ("https://matplotlib.org/stable/", None),
+    "networkx": ("https://networkx.org/documentation/stable/", None),
+    "numpy": ("https://numpy.org/doc/stable/", None),
+    "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
+    "python": ("https://docs.python.org/3.11/", None),
+    "scipy": ("https://docs.scipy.org/doc/scipy/", None),
+}
+
+
+# This is processed by Jinja2 and inserted before each notebook
+nbsphinx_prolog = r"""
+{% set docname = env.doc2path(env.docname, base=None) %}
+.. only:: html
+    .. role:: raw-html(raw)
+        :format: html
+    .. nbinfo::
+        This page was generated from `{{ docname }}`__.
+        Interactive online version:
+        :raw-html:`<a href="https://mybinder.org/v2/gh/pysal/mapclassify/main?filepath={{ docname }}"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" style="vertical-align:text-bottom"></a>`
+    __ https://github.com/pysal/mapclassify/blob/main/{{ docname }}
+.. raw:: latex
+    \nbsphinxstartnotebook{\scriptsize\noindent\strut
+    \textcolor{gray}{The following section was generated from
+    \sphinxcode{\sphinxupquote{\strut {{ docname | escape_latex }}}} \dotfill}}
+"""
+
+# This is processed by Jinja2 and inserted after each notebook
+nbsphinx_epilog = r"""
+.. raw:: latex
+    \nbsphinxstopnotebook{\scriptsize\noindent\strut
+    \textcolor{gray}{\dotfill\ \sphinxcode{\sphinxupquote{\strut
+    {{ env.doc2path(env.docname, base='doc') | escape_latex }}}} ends here.}}
+"""
+
+# List of arguments to be passed to the kernel that executes the notebooks:
+nbsphinx_execute_arguments = [
+    "--InlineBackend.figure_formats={'svg', 'pdf'}",
+    "--InlineBackend.rc={'figure.dpi': 96}",
+]
+
+
+mathjax3_config = {
+    "TeX": {"equationNumbers": {"autoNumber": "AMS", "useLabelIds": True}},
+}
