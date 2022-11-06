@@ -29,9 +29,9 @@ def _balanced(features, sw, balance="count", min_colors=4):
         GeoDataFrame.
     sw : libpysal.weights.W
         Spatial weights object denoting adjacency of features.
-    balance : str
+    balance : str (default 'count')
         The method of color balancing.
-    min_colors : int
+    min_colors : int (default 4)
         The minimal number of colors to be used.
 
     Returns
@@ -204,11 +204,10 @@ def greedy(
     gdf : GeoDataFrame
         GeoDataFrame
     strategy : str (default 'balanced')
-        Determine coloring strategy. Options are ``'balanced'`` for algorithm based on
-        QGIS Topological coloring. It is aiming for a visual balance, defined by the
-        balance parameter.
-
-        Other options are those supported by ``networkx.greedy_color``:
+        Determine coloring strategy. Options are ``'balanced'`` for
+        algorithm based on QGIS Topological coloring. It is aiming
+        for a visual balance, defined by the balance parameter. Other
+        options are those supported by ``networkx.greedy_color``:
 
         * ``'largest_first'``
         * ``'random_sequential'``
@@ -220,8 +219,7 @@ def greedy(
         * ``'saturation_largest_first'``
         * ``'DSATUR'`` (alias for the previous strategy)
 
-        For details see
-        https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.coloring.greedy_color.html
+        For details see https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.coloring.greedy_color.html
 
     balance : str (default 'count')
         If strategy is ``'balanced'``, determine the method of color balancing.
@@ -229,40 +227,30 @@ def greedy(
         * ``'count'`` attempts to balance the number of features per each color.
         * ``'area'`` attempts to balance the area covered by each color.
         * ``'centroid'`` attempts to balance the distance between colors based
-            on the distance between centroids.
+          on the distance between centroids.
         * ``'distance'`` attempts to balance the distance between colors based
-            on the distance between geometries. Slower than ``'centroid'``,
-            but more precise.
+          on the distance between geometries. Slower than ``'centroid'``,
+          but more precise.
 
-        ``'centroid'`` and ``'distance'`` are significantly slower than other
-        especially for larger GeoDataFrames.
-
-        Apart from ``'count'``, all require CRS to be projected (not in degrees)
-        to ensure metric values are correct.
-
+        Both ``'centroid'`` and ``'distance'`` are significantly slower than other
+        especially for larger GeoDataFrames. Apart from ``'count'``, all require
+        CRS to be projected (not in degrees) to ensure metric values are correct.
     min_colors: int (default 4)
         If strategy is ``'balanced'``, define the minimal number of colors to be used.
-
     sw : 'queen', 'rook' or libpysal.weights.W (default 'queen')
         If min_distance is None, one can pass ``'libpysal.weights.W'``
-        object denoting neighbors or let greedy to generate one based on
+        object denoting neighbors or let greedy generate one based on
         ``'queen'`` or ``'rook'`` contiguity.
-
-    min_distance : float
-        Set minimal distance between colors.
-
-        If min_distance is not None, slower algorithm for generating
-        spatial weghts is used based on intersection between geometries.
-        ``'min_distance'`` is then used as a tolerance of intersection.
-
+    min_distance : float (default None)
+        Set minimal distance between colors. If ``min_distance`` is not ``None``,
+        slower algorithm for generating spatial weghts is used based on
+        intersection between geometries. ``'min_distance'`` is then used as a
+        tolerance of intersection.
     silence_warnings : bool (default True)
         Silence libpysal warnings when creating spatial weights.
-
-    interchange : bool (defaul False)
-        Use the color interchange algorithm (applicable for NetworkX strategies)
-
-        For details see
-        https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.coloring.greedy_color.html
+    interchange : bool (default False)
+        Use the color interchange algorithm (applicable for NetworkX strategies).
+        For details see https://networkx.github.io/documentation/stable/reference/algorithms/generated/networkx.algorithms.coloring.greedy_color.html
 
     Returns
     -------
@@ -273,8 +261,8 @@ def greedy(
     Examples
     --------
 
-    >>> import geopandas
     >>> from mapclassify import greedy
+    >>> import geopandas
     >>> world = geopandas.read_file(geopandas.datasets.get_path("naturalearth_lowres"))
     >>> africa = world.loc[world.continent == "Africa"].copy()
     >>> africa = africa.to_crs("ESRI:102022").reset_index(drop=True)

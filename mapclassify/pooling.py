@@ -53,8 +53,8 @@ class Pooled(object):
     Examples
     --------
 
-    >>> import numpy
     >>> import mapclassify
+    >>> import numpy
     >>> n = 20
     >>> data = numpy.array([numpy.arange(n)+i*n for i in range(1,4)]).T
     >>> res = mapclassify.Pooled(data)
