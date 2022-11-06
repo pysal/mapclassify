@@ -136,7 +136,8 @@ def classify(
     # check if scheme is a valid scheme
     if scheme not in _classifiers:
         raise ValueError(
-            "Invalid scheme. Scheme must be in the" " set: %r" % _classifiers.keys()
+            f"Invalid scheme: '{scheme}'\n"
+            f"Scheme must be in the set: {_classifiers.keys()}"
         )
 
     elif scheme == "boxplot":

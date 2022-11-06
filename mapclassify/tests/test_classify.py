@@ -1,3 +1,4 @@
+import pytest
 from geopandas import gpd
 from libpysal import examples
 
@@ -83,3 +84,7 @@ def test_classify():
     a = classify(x, "user_defined", bins=[20, max(x)])
     b = mapclassify.UserDefined(x, bins=[20, max(x)])
     _assertions(a, b)
+
+    classifier = "George_Costanza"
+    with pytest.raises(ValueError, match="Invalid scheme: 'georgecostanza'"):
+        classify(x, classifier)
