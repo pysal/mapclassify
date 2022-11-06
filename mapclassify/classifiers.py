@@ -911,44 +911,6 @@ class MapClassifier(object):
             gadf = 1 - self.adcm / adam
         return gadf
 
-    def _table_string(self, width=12, decimal=3):
-        labels, largest = self.get_legend_classes(table=True)
-        h1 = "Lower"
-        h1 = h1.center(largest)
-        h2 = " "
-        h2 = h2.center(10)
-        h3 = "Upper"
-        h3 = h3.center(largest + 1)
-
-        largest = "%d" % max(self.counts)
-        largest = len(largest) + 15
-        h4 = "Count"
-
-        h4 = h4.rjust(largest)
-        table = []
-        header = h1 + h2 + h3 + h4
-        table.append(header)
-        table.append("=" * len(header))
-
-        for i, label in enumerate(labels):
-            left, right = label.split()
-            if i == 0:
-                left = " " * largest
-                left += "   x[i] <= "
-            else:
-                left += " < x[i] <= "
-            row = left + right
-            cnt = "%d" % self.counts[i]
-            cnt = cnt.rjust(largest)
-            row += cnt
-            table.append(row)
-        name = self.name
-        top = name.center(len(row))
-        table.insert(0, top)
-        table.insert(1, " ")
-        table = "\n".join(table)
-        return table
-
     def find_bin(self, x):
         """
         Sort input or inputs according to the current bin estimate
