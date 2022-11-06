@@ -75,7 +75,7 @@ class Pooled(object):
     def __init__(self, Y, classifier="Quantiles", **kwargs):
         method = classifier.lower()
         valid_methods = list(dispatcher.keys())
-        if method not in dispatcher:
+        if method not in valid_methods:
             raise ValueError(
                 f"'{classifier}' not a valid classifier. "
                 f"Currently supported classifiers: {valid_methods}"
