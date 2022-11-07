@@ -1,8 +1,12 @@
+import sys
+
 import geopandas
 import libpysal
 import pytest
 
 from ..greedy import greedy
+
+PY39 = sys.version_info.major == 3 and sys.version_info.minor == 9
 
 world = geopandas.read_file(geopandas.datasets.get_path("naturalearth_lowres"))
 sw = libpysal.weights.Queen.from_dataframe(
@@ -94,7 +98,9 @@ class TestGreedyParams:
         colors = greedy(world, strategy="smallest_last", min_distance=pysal_geos)
         assert len(colors) == len(world)
         assert set(colors) == set([0, 1, 2, 3])
-        assert colors.value_counts().to_list() == [71, 52, 39, 15]
+        # skip pn Python 3.9 due to networkx/networkx#3993
+        if not PY39:
+            assert colors.value_counts().to_list() == [71, 52, 39, 15]
 
     def test_independent_set(self, pysal_geos):
         colors = greedy(world, strategy="independent_set", min_distance=pysal_geos)
