@@ -392,7 +392,7 @@ class TestEqualInterval(unittest.TestCase):
         )
 
         with pytest.raises(
-            ValueError, match="Not enough unique values in array to form k classes."
+            ValueError, match="Not enough unique values in array to form 5 classes."
         ):
             EqualInterval(np.array([1, 1, 1, 1]))
 
@@ -487,7 +487,7 @@ class TestMaximumBreaks(unittest.TestCase):
         np.testing.assert_array_almost_equal(mb.counts, np.array([50, 2, 4, 1, 1]))
 
         with pytest.raises(
-            ValueError, match="Not enough unique values in array to form k classes."
+            ValueError, match="Not enough unique values in array to form 5 classes."
         ):
             MaximumBreaks(np.array([1, 1, 1, 1]))
 
@@ -568,7 +568,7 @@ class TestJenksCaspallForced(unittest.TestCase):
         np.testing.assert_array_almost_equal(jcf.counts, np.array([12, 12, 13, 9, 12]))
 
         with pytest.raises(
-            ValueError, match="Not enough unique values in array to form k classes."
+            ValueError, match="Not enough unique values in array to form 5 classes."
         ):
             JenksCaspallForced(np.array([1, 1, 1, 1]))
 
@@ -610,7 +610,7 @@ class TestMaxP(unittest.TestCase):
         np.testing.assert_array_almost_equal(mp.counts, np.array([18, 16, 3, 1, 20]))
 
         with pytest.raises(
-            ValueError, match="Not enough unique values in array to form k classes."
+            ValueError, match="Not enough unique values in array to form 5 classes."
         ):
             MaxP(np.array([1, 1, 1, 1]))
 
@@ -658,6 +658,11 @@ class TestPooled(unittest.TestCase):
         np.testing.assert_array_almost_equal(
             res.col_classifiers[0].bins, np.array([-9.5, 34.75, 49.5, 64.25, 108.5])
         )
+
+    def test_pooled_bad_classifier(self):
+        classifier = "Larry David"
+        with pytest.raises(ValueError, match=f"'{classifier}' not a valid classifier."):
+            Pooled(self.data, classifier=classifier, k=4)
 
 
 if __name__ == "__main__":

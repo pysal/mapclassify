@@ -73,15 +73,20 @@ class Pooled(object):
     """
 
     def __init__(self, Y, classifier="Quantiles", **kwargs):
+        method = classifier.lower()
+        valid_methods = list(dispatcher.keys())
+        if method not in valid_methods:
+            raise ValueError(
+                f"'{classifier}' not a valid classifier. "
+                f"Currently supported classifiers: {valid_methods}"
+            )
+
         self.__dict__.update(kwargs)
         Y = np.asarray(Y)
         n, cols = Y.shape
         y = np.reshape(Y, (-1, 1), order="f")
         ymin = y.min()
-        method = classifier.lower()
-        if method not in dispatcher:
-            print(f"{method} not a valid classifier.")
-            return None
+
         global_classifier = dispatcher[method](y, **kwargs)
         # self.k = global_classifier.k
         col_classifiers = []
