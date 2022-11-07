@@ -182,7 +182,7 @@ def _get_table(mc, fmt="{:.2f}"):
     count_width = max(count_width, len("count"))
     interval_width = max(interval_width, len("interval"))
     header = "{:^{width}}".format("Interval", width=interval_width)
-    header += "   " + "{:>{width}}".format("Count", width=count_width)
+    header += " " * 3 + "{:>{width}}".format("Count", width=count_width)
     title = "{:<{width}}".format(mc.name, width=len(header))
     header += "\n" + "-" * len(header)
     table = [title, "", header]
