@@ -33,7 +33,7 @@ class Pooled(object):
 
     Y : numpy.array
         :math:`(n, m)`, values to classify, with :math:`m>1`.
-    classifier : str
+    classifier : str (default 'Quantiles')
         Name of ``mapclassify.classifier`` to apply.
     **kwargs : dict
         Additional keyword arguments for classifier.

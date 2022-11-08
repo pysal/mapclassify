@@ -63,34 +63,29 @@ def classify(
         :math:`(n,1)`, values to classify.
     scheme : str
         ``pysal.mapclassify`` classification scheme.
-    k : int, optional
-        The number of classes. Default is ``5``.
-    pct  : numpy.array, optional
+    k : int (default 5)
+        The number of classes.
+    pct  : numpy.array (default [1, 10, 50, 90, 99, 100])
         Percentiles used for classification with ``percentiles``.
-        Default is ``[1,10,50,90,99,100]``.
-    pct_sampled : float, optional
+    pct_sampled : float default (0.10)
         The percentage of n that should form the sample
         (``JenksCaspallSampled``, ``FisherJenksSampled``)
         If ``pct`` is specified such that ``n*pct > 1000``, then ``pct=1000``.
-    truncate : bool, optional
+    truncate : bool (default True)
         Truncate ``pct_sampled`` in cases where ``pct * n > 1000``.
-        Default is ``True``.
-    hinge : float, optional
-        Multiplier for IQR when ``BoxPlot`` classifier used.
-        Default is ``1.5``.
-    multiples : numpy.array, optional
+    hinge : float (default 1.5)
+        Multiplier for *IQR* when ``BoxPlot`` classifier used.
+    multiples : numpy.array (default [-2,-1,1,2])
         The multiples of the standard deviation to add/subtract from
         the sample mean to define the bins using ``std_mean``.
-        Default is ``[-2,-1,1,2]``.
-    mindiff : float, optional
+    mindiff : float (default is 0)
         The minimum difference between class breaks
-        if using ``maximum_breaks`` classifier. Default is ``0``.
-    initial : int
-        Number of initial solutions to generate or number of runs
-        when using ``natural_breaks`` or ``max_p_classifier``.
-        Default is ``100``. Setting initial to ``0`` will result
-        in the quickest calculation of bins.
-    bins : numpy.array, optional
+        if using ``maximum_breaks`` classifier.
+    initial : int (default 100)
+        Number of initial solutions to generate or number of runs when using
+        ``natural_breaks`` or ``max_p_classifier``. Setting initial to ``0``
+        will result in the quickest calculation of bins.
+    bins : numpy.array (default None)
         :math:`(k,1)`, upper bounds of classes (have to be monotically
         increasing) if using ``user_defined`` classifier.
         Default is ``None``. For example: ``[20, max(y)]``.

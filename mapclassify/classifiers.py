@@ -1357,7 +1357,7 @@ class BoxPlot(MapClassifier):
     y : numpy.array
         Attribute to classify
     hinge : float (default 1.5)
-        Multiplier for :math:`IQR`.
+        Multiplier for *IQR*.
 
     Attributes
     ----------
