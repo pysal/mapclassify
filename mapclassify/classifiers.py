@@ -3,7 +3,7 @@ A module of classification schemes for choropleth mapping.
 """
 import copy
 import functools
-from warnings import warn as Warn
+import warnings
 
 import numpy as np
 import scipy.stats as stats
@@ -253,10 +253,11 @@ def quantile(y, k=4):
     q = np.unique(q)
     k_q = len(q)
     if k_q < k:
-        Warn(
-            "Warning: Not enough unique values in array to form k classes", UserWarning
+        warnings.warn(
+            "Not enough unique values in array to form k classes. "
+            f"Setting k to {k_q}.",
+            UserWarning,
         )
-        Warn("Warning: setting k to %d" % k_q, UserWarning)
     return q
 
 
@@ -321,8 +322,7 @@ def binC(y, bins):
     vals = set(y.flatten())
     for val in vals:
         if val not in bins:
-            Warn("value not in bin: {}".format(val), UserWarning)
-            Warn("bins: {}".format(bins), UserWarning)
+            warnings.warn(f"\nValue not in bin: {val}\nBins: {bins}", UserWarning)
 
     return b
 
@@ -513,10 +513,11 @@ def natural_breaks(values, k=5, init=10):
     uv = np.unique(values)
     uvk = len(uv)
     if uvk < k:
-        Warn(
-            "Warning: Not enough unique values in array to form k classes", UserWarning
+        warnings.warn(
+            "Not enough unique values in array to form k classes. "
+            f"Setting k to {uvk}.",
+            UserWarning,
         )
-        Warn("Warning: setting k to %d" % uvk, UserWarning)
         k = uvk
     kres = _kmeans(values, k, n_init=init)
     sids = kres[-1]  # centroids
@@ -905,49 +906,11 @@ class MapClassifier(object):
         Goodness of absolute deviation of fit
         """
         adam = (np.abs(self.y - np.median(self.y))).sum()
-        if adam == 0:   # array is invariant
+        if adam == 0:  # array is invariant
             gadf = 1
         else:
             gadf = 1 - self.adcm / adam
         return gadf
-
-    def _table_string(self, width=12, decimal=3):
-        labels, largest = self.get_legend_classes(table=True)
-        h1 = "Lower"
-        h1 = h1.center(largest)
-        h2 = " "
-        h2 = h2.center(10)
-        h3 = "Upper"
-        h3 = h3.center(largest + 1)
-
-        largest = "%d" % max(self.counts)
-        largest = len(largest) + 15
-        h4 = "Count"
-
-        h4 = h4.rjust(largest)
-        table = []
-        header = h1 + h2 + h3 + h4
-        table.append(header)
-        table.append("=" * len(header))
-
-        for i, label in enumerate(labels):
-            left, right = label.split()
-            if i == 0:
-                left = " " * largest
-                left += "   x[i] <= "
-            else:
-                left += " < x[i] <= "
-            row = left + right
-            cnt = "%d" % self.counts[i]
-            cnt = cnt.rjust(largest)
-            row += cnt
-            table.append(row)
-        name = self.name
-        top = name.center(len(row))
-        table.insert(0, top)
-        table.insert(1, " ")
-        table = "\n".join(table)
-        return table
 
     def find_bin(self, x):
         """
@@ -1217,7 +1180,10 @@ class EqualInterval(MapClassifier):
 
         """
         if min(y) == max(y):
-            raise ValueError("Not enough unique values in array to form k classes.")
+            raise ValueError(
+                f"Not enough unique values in array to form {k} classes. "
+                "All values in `y` are equal."
+            )
         self.k = k
         MapClassifier.__init__(self, y)
         self.name = "EqualInterval"
@@ -1617,7 +1583,10 @@ class MaximumBreaks(MapClassifier):
 
     def __init__(self, y, k=5, mindiff=0):
         if min(y) == max(y):
-            raise ValueError("Not enough unique values in array to form k classes.")
+            raise ValueError(
+                f"Not enough unique values in array to form {k} classes. "
+                "All values in `y` are equal."
+            )
         self.k = k
         self.mindiff = mindiff
         MapClassifier.__init__(self, y)
@@ -1633,7 +1602,9 @@ class MaximumBreaks(MapClassifier):
 
         ud = np.unique(diffs)
         if len(ud) < k1:
-            print("Insufficient number of unique diffs. Breaks are random.")
+            warnings.warn(
+                "Insufficient number of unique diffs. Breaks are random.", UserWarning
+            )
         mp = []
         for c in range(1, k):
             idx = idxs[-c]
@@ -1736,9 +1707,11 @@ class NaturalBreaks(MapClassifier):
         uv = np.unique(values)
         uvk = len(uv)
         if uvk < k:
-            ms = "Warning: Not enough unique values in array to form k classes"
-            Warn(ms, UserWarning)
-            Warn("Warning: setting k to %d" % uvk, UserWarning)
+            warnings.warn(
+                "Not enough unique values in array to form k classes. "
+                f"Setting k to {uvk}.",
+                UserWarning,
+            )
             k = uvk
             uv.sort()
             # we set the bins equal to the sorted unique values and ramp k
@@ -1815,11 +1788,15 @@ class FisherJenks(MapClassifier):
 
     def __init__(self, y, k=K):
         if not HAS_NUMBA:
-            Warn("Numba not installed. Using slow pure python version.", UserWarning)
+            warnings.warn(
+                "Numba not installed. Using slow pure python version.", UserWarning
+            )
 
         nu = len(np.unique(y))
         if nu < k:
-            raise ValueError("Fewer unique values than specified classes.")
+            raise ValueError(
+                f"Fewer unique values ({nu}) than specified classes ({k})."
+            )
         self.k = k
         MapClassifier.__init__(self, y)
         self.name = "FisherJenks"
@@ -2145,7 +2122,10 @@ class JenksCaspallForced(MapClassifier):
 
     def __init__(self, y, k=K):
         if min(y) == max(y):
-            raise ValueError("Not enough unique values in array to form k classes.")
+            raise ValueError(
+                f"Not enough unique values in array to form {k} classes. "
+                "All values in `y` are equal."
+            )
         self.k = k
         MapClassifier.__init__(self, y)
         self.name = "JenksCaspallForced"
@@ -2440,7 +2420,10 @@ class MaxP(MapClassifier):
 
     def __init__(self, y, k=K, initial=1000, seed1=0, seed2=1):
         if min(y) == max(y):
-            raise ValueError("Not enough unique values in array to form k classes.")
+            raise ValueError(
+                f"Not enough unique values in array to form {k} classes. "
+                "All values in `y` are equal."
+            )
         self.k = k
         self.initial = initial
         self.seed1 = seed1

@@ -19,3 +19,10 @@ dependencies:
   - zstd
   - networkx
   - libpysal
+  # docs
+  - nbsphinx
+  - numpydoc
+  - sphinx
+  - sphinx-gallery
+  - sphinxcontrib-bibtex
+  - sphinx_bootstrap_theme

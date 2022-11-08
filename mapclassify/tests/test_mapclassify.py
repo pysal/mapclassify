@@ -1,5 +1,4 @@
 import types
-import unittest
 
 import numpy as np
 import pytest
@@ -11,7 +10,7 @@ from ..pooling import Pooled
 RTOL = 0.0001
 
 
-class TestQuantile(unittest.TestCase):
+class TestQuantile:
     def test_quantile(self):
         y = np.arange(1000)
         expected = np.array([333.0, 666.0, 999.0])
@@ -27,11 +26,11 @@ class TestQuantile(unittest.TestCase):
         y = np.random.random(1000)
         for k in range(5, 10):
             np.testing.assert_almost_equal(k, len(quantile(y, k)))
-            self.assertEqual(k, len(quantile(y, k)))
+            assert k == len(quantile(y, k))
 
 
-class TestUpdate(unittest.TestCase):
-    def setUp(self):
+class TestUpdate:
+    def setup_method(self):
         np.random.seed(4414)
         self.data = np.random.normal(0, 10, size=10)
         self.new_data = np.random.normal(0, 10, size=4)
@@ -62,8 +61,8 @@ class TestUpdate(unittest.TestCase):
         np.testing.assert_allclose(known_new_yb, new_yb, rtol=RTOL)
 
 
-class TestFindBin(unittest.TestCase):
-    def setUp(self):
+class TestFindBin:
+    def setup_method(self):
         self.V = load_example()
 
     def test_find_bin(self):
@@ -76,8 +75,8 @@ class TestFindBin(unittest.TestCase):
         np.testing.assert_array_equal(known, mc2.find_bin(toclass))
 
 
-class TestMake(unittest.TestCase):
-    def setUp(self):
+class TestMake:
+    def setup_method(self):
         self.data = [
             np.linspace(-5, 5, num=5),
             np.linspace(-10, 10, num=5),
@@ -87,13 +86,13 @@ class TestMake(unittest.TestCase):
         self.q5r = Quantiles.make(k=5, rolling=True)
 
     def test_make(self):
-        self.assertIsInstance(self.ei, types.FunctionType)
-        self.assertIsInstance(self.q5r, types.FunctionType)
+        assert isinstance(self.ei, types.FunctionType)
+        assert isinstance(self.q5r, types.FunctionType)
 
         assert hasattr(self.ei, "_options")
-        self.assertEqual(self.ei._options, dict())
+        assert self.ei._options == dict()
         assert hasattr(self.q5r, "_options")
-        self.assertEqual(self.q5r._options, {"k": 5, "rolling": True})
+        assert self.q5r._options == {"k": 5, "rolling": True}
 
     def test_apply(self):
         ei_classes = [self.ei(d) for d in self.data]
@@ -104,11 +103,11 @@ class TestMake(unittest.TestCase):
         known = [[0, 1, 2, 3, 4], [0, 0, 2, 3, 4], [0, 0, 2, 4, 4]]
         accreted_data = set(self.q5r.__defaults__[0].y)
         all_data = set(np.asarray(self.data).flatten())
-        self.assertEqual(accreted_data, all_data)
+        assert accreted_data == all_data
         np.testing.assert_allclose(known, q5r_classes)
 
 
-class TestBinC(unittest.TestCase):
+class TestBinC:
     def test_bin_c(self):
         bins = list(range(2, 8))
         y = np.array(
@@ -143,7 +142,7 @@ class TestBinC(unittest.TestCase):
         np.testing.assert_array_equal(expected, binC(y, bins))
 
 
-class TestBin(unittest.TestCase):
+class TestBin:
     def test_bin(self):
         y = np.array(
             [
@@ -178,7 +177,7 @@ class TestBin(unittest.TestCase):
         np.testing.assert_array_equal(expected, bin(y, bins))
 
 
-class TestBin1d(unittest.TestCase):
+class TestBin1d:
     def test_bin1d(self):
         y = np.arange(100, dtype="float")
         bins = [25, 74, 100]
@@ -292,36 +291,36 @@ class TestBin1d(unittest.TestCase):
         np.testing.assert_array_equal(counts, bin1d(y, bins)[1])
 
 
-class TestNaturalBreaks(unittest.TestCase):
-    def setUp(self):
+class TestNaturalBreaks:
+    def setup_method(self):
         self.V = load_example()
 
     def test_natural_breaks(self):
-        # self.assertEqual(expected, natural_breaks(values, k, itmax))
+        # assert expected, natural_breaks(values, k, itmax))
         assert True  # TODO: implement your test here
 
     def test_NaturalBreaks(self):
         nb = NaturalBreaks(self.V, 5)
-        self.assertEqual(nb.k, 5)
-        self.assertEqual(len(nb.counts), 5)
+        assert nb.k == 5
+        assert len(nb.counts) == 5
         np.testing.assert_array_almost_equal(nb.counts, np.array([49, 3, 4, 1, 1]))
 
     def test_NaturalBreaks_stability(self):
         for i in range(10):
             nb = NaturalBreaks(self.V, 5)
-            self.assertEqual(nb.k, 5)
-            self.assertEqual(len(nb.counts), 5)
+            assert nb.k == 5
+            assert len(nb.counts) == 5
 
     def test_NaturalBreaks_randomData(self):
         for i in range(10):
             V = np.random.random(50) * (i + 1)
             nb = NaturalBreaks(V, 5)
-            self.assertEqual(nb.k, 5)
-            self.assertEqual(len(nb.counts), 5)
+            assert nb.k == 5
+            assert len(nb.counts) == 5
 
 
-class TestHeadTailBreaks(unittest.TestCase):
-    def setUp(self):
+class TestHeadTailBreaks:
+    def setup_method(self):
         x = list(range(1, 1000))
         y = []
         for i in x:
@@ -330,58 +329,58 @@ class TestHeadTailBreaks(unittest.TestCase):
 
     def test_HeadTailBreaks(self):
         htb = HeadTailBreaks(self.V)
-        self.assertEqual(htb.k, 4)
-        self.assertEqual(len(htb.counts), 4)
+        assert htb.k == 4
+        assert len(htb.counts) == 4
         np.testing.assert_array_almost_equal(htb.counts, np.array([975, 21, 2, 1]))
 
     def test_HeadTailBreaks_doublemax(self):
         V = np.append(self.V, self.V.max())
         htb = HeadTailBreaks(V)
-        self.assertEqual(htb.k, 4)
-        self.assertEqual(len(htb.counts), 4)
+        assert htb.k == 4
+        assert len(htb.counts) == 4
         np.testing.assert_array_almost_equal(htb.counts, np.array([980, 17, 1, 2]))
 
     def test_HeadTailBreaks_float(self):
         V = np.array([1 + 2**-52, 1, 1])
         htb = HeadTailBreaks(V)
-        self.assertEqual(htb.k, 2)
-        self.assertEqual(len(htb.counts), 2)
+        assert htb.k == 2
+        assert len(htb.counts) == 2
         np.testing.assert_array_almost_equal(htb.counts, np.array([2, 1]))
 
 
-class TestMapClassifier(unittest.TestCase):
+class TestMapClassifier:
     def test_Map_Classifier(self):
         # map__classifier = Map_Classifier(y)
         assert True  # TODO: implement your test here
 
     def test___repr__(self):
         # map__classifier = Map_Classifier(y)
-        # self.assertEqual(expected, map__classifier.__repr__())
+        # assert expected, map__classifier.__repr__())
         assert True  # TODO: implement your test here
 
     def test___str__(self):
         # map__classifier = Map_Classifier(y)
-        # self.assertEqual(expected, map__classifier.__str__())
+        # assert expected, map__classifier.__str__())
         assert True  # TODO: implement your test here
 
     def test_get_adcm(self):
         # map__classifier = Map_Classifier(y)
-        # self.assertEqual(expected, map__classifier.get_adcm())
+        # assert expected, map__classifier.get_adcm())
         assert True  # TODO: implement your test here
 
     def test_get_gadf(self):
         # map__classifier = Map_Classifier(y)
-        # self.assertEqual(expected, map__classifier.get_gadf())
+        # assert expected, map__classifier.get_gadf())
         assert True  # TODO: implement your test here
 
     def test_get_tss(self):
         # map__classifier = Map_Classifier(y)
-        # self.assertEqual(expected, map__classifier.get_tss())
+        # assert expected, map__classifier.get_tss())
         assert True  # TODO: implement your test here
 
 
-class TestEqualInterval(unittest.TestCase):
-    def setUp(self):
+class TestEqualInterval:
+    def setup_method(self):
         self.V = load_example()
 
     def test_EqualInterval(self):
@@ -392,13 +391,13 @@ class TestEqualInterval(unittest.TestCase):
         )
 
         with pytest.raises(
-            ValueError, match="Not enough unique values in array to form k classes."
+            ValueError, match="Not enough unique values in array to form 5 classes."
         ):
             EqualInterval(np.array([1, 1, 1, 1]))
 
 
-class TestPercentiles(unittest.TestCase):
-    def setUp(self):
+class TestPercentiles:
+    def setup_method(self):
         self.V = load_example()
 
     def test_Percentiles(self):
@@ -419,8 +418,8 @@ class TestPercentiles(unittest.TestCase):
         np.testing.assert_array_almost_equal(pc.counts, np.array([1, 5, 23, 23, 5, 1]))
 
 
-class TestBoxPlot(unittest.TestCase):
-    def setUp(self):
+class TestBoxPlot:
+    def setup_method(self):
         self.V = load_example()
 
     def test_BoxPlot(self):
@@ -438,8 +437,8 @@ class TestBoxPlot(unittest.TestCase):
         np.testing.assert_array_almost_equal(bp.bins, bins)
 
 
-class TestQuantiles(unittest.TestCase):
-    def setUp(self):
+class TestQuantiles:
+    def setup_method(self):
         self.V = load_example()
 
     def test_Quantiles(self):
@@ -459,8 +458,8 @@ class TestQuantiles(unittest.TestCase):
         np.testing.assert_array_almost_equal(q.counts, np.array([12, 11, 12, 11, 12]))
 
 
-class TestStdMean(unittest.TestCase):
-    def setUp(self):
+class TestStdMean:
+    def setup_method(self):
         self.V = load_example()
 
     def test_StdMean(self):
@@ -474,39 +473,39 @@ class TestStdMean(unittest.TestCase):
         np.testing.assert_array_almost_equal(s.counts, np.array([0, 0, 56, 1, 1]))
 
 
-class TestMaximumBreaks(unittest.TestCase):
-    def setUp(self):
+class TestMaximumBreaks:
+    def setup_method(self):
         self.V = load_example()
 
     def test_MaximumBreaks(self):
         mb = MaximumBreaks(self.V, k=5)
-        self.assertEqual(mb.k, 5)
+        assert mb.k == 5
         np.testing.assert_array_almost_equal(
             mb.bins, np.array([146.005, 228.49, 546.675, 2417.15, 4111.45])
         )
         np.testing.assert_array_almost_equal(mb.counts, np.array([50, 2, 4, 1, 1]))
 
         with pytest.raises(
-            ValueError, match="Not enough unique values in array to form k classes."
+            ValueError, match="Not enough unique values in array to form 5 classes."
         ):
             MaximumBreaks(np.array([1, 1, 1, 1]))
 
 
-class TestFisherJenks(unittest.TestCase):
-    def setUp(self):
+class TestFisherJenks:
+    def setup_method(self):
         self.V = load_example()
 
     def test_FisherJenks(self):
         fj = FisherJenks(self.V)
-        self.assertEqual(fj.adcm, 799.24000000000001)
+        assert fj.adcm == 799.24000000000001
         np.testing.assert_array_almost_equal(
             fj.bins, np.array([75.29, 192.05, 370.5, 722.85, 4111.45])
         )
         np.testing.assert_array_almost_equal(fj.counts, np.array([49, 3, 4, 1, 1]))
 
 
-class TestJenksCaspall(unittest.TestCase):
-    def setUp(self):
+class TestJenksCaspall:
+    def setup_method(self):
         self.V = load_example()
 
     def test_JenksCaspall(self):
@@ -527,8 +526,8 @@ class TestJenksCaspall(unittest.TestCase):
         )
 
 
-class TestJenksCaspallSampled(unittest.TestCase):
-    def setUp(self):
+class TestJenksCaspallSampled:
+    def setup_method(self):
         self.V = load_example()
 
     def test_JenksCaspallSampled(self):
@@ -546,8 +545,8 @@ class TestJenksCaspallSampled(unittest.TestCase):
         )
 
 
-class TestJenksCaspallForced(unittest.TestCase):
-    def setUp(self):
+class TestJenksCaspallForced:
+    def setup_method(self):
         self.V = load_example()
 
     def test_JenksCaspallForced(self):
@@ -568,13 +567,13 @@ class TestJenksCaspallForced(unittest.TestCase):
         np.testing.assert_array_almost_equal(jcf.counts, np.array([12, 12, 13, 9, 12]))
 
         with pytest.raises(
-            ValueError, match="Not enough unique values in array to form k classes."
+            ValueError, match="Not enough unique values in array to form 5 classes."
         ):
             JenksCaspallForced(np.array([1, 1, 1, 1]))
 
 
-class TestUserDefined(unittest.TestCase):
-    def setUp(self):
+class TestUserDefined:
+    def setup_method(self):
         self.V = load_example()
 
     def test_UserDefined(self):
@@ -596,8 +595,8 @@ class TestUserDefined(unittest.TestCase):
         np.testing.assert_array_almost_equal(ud.counts, np.array([0, 3, 0, 0]))
 
 
-class TestMaxP(unittest.TestCase):
-    def setUp(self):
+class TestMaxP:
+    def setup_method(self):
         self.V = load_example()
 
     def test_MaxP(self):
@@ -610,41 +609,41 @@ class TestMaxP(unittest.TestCase):
         np.testing.assert_array_almost_equal(mp.counts, np.array([18, 16, 3, 1, 20]))
 
         with pytest.raises(
-            ValueError, match="Not enough unique values in array to form k classes."
+            ValueError, match="Not enough unique values in array to form 5 classes."
         ):
             MaxP(np.array([1, 1, 1, 1]))
 
 
-class TestGadf(unittest.TestCase):
-    def setUp(self):
+class TestGadf:
+    def setup_method(self):
         self.V = load_example()
 
     def test_gadf(self):
         qgadf = gadf(self.V)
-        self.assertEqual(qgadf[0], 15)
-        self.assertEqual(qgadf[-1], 0.37402575909092828)
+        assert qgadf[0] == 15
+        assert qgadf[-1] == 0.37402575909092828
 
 
-class TestKClassifiers(unittest.TestCase):
-    def setUp(self):
+class TestKClassifiers:
+    def setup_method(self):
         self.V = load_example()
 
     def test_K_classifiers(self):
         np.random.seed(100)
         ks = KClassifiers(self.V)
-        self.assertEqual(ks.best.name, "FisherJenks")
-        self.assertEqual(ks.best.gadf, 0.84810327199081048)
-        self.assertEqual(ks.best.k, 4)
+        assert ks.best.name == "FisherJenks"
+        assert ks.best.gadf == 0.84810327199081048
+        assert ks.best.k == 4
 
 
-class TestPooled(unittest.TestCase):
-    def setUp(self):
+class TestPooled:
+    def setup_method(self):
         n = 20
         self.data = np.array([np.arange(n) + i * n for i in range(1, 4)]).T
 
     def test_pooled(self):
         res = Pooled(self.data, k=4)
-        self.assertEqual(res.k, 4)
+        assert res.k == 4
         np.testing.assert_array_almost_equal(
             res.col_classifiers[0].counts, np.array([15, 5, 0, 0])
         )
@@ -659,6 +658,7 @@ class TestPooled(unittest.TestCase):
             res.col_classifiers[0].bins, np.array([-9.5, 34.75, 49.5, 64.25, 108.5])
         )
 
-
-if __name__ == "__main__":
-    unittest.main()
+    def test_pooled_bad_classifier(self):
+        classifier = "Larry David"
+        with pytest.raises(ValueError, match=f"'{classifier}' not a valid classifier."):
+            Pooled(self.data, classifier=classifier, k=4)

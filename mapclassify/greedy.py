@@ -369,7 +369,7 @@ def greedy(
         )
 
     else:
-        raise ValueError("{} is not a valid strategy.".format(strategy))
+        raise ValueError(f"'{strategy}' is not a valid strategy.")
 
     color = pd.Series(color).sort_index()
     color.index = gdf.index

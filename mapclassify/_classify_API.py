@@ -127,6 +127,17 @@ def classify(
     Classify values by box_plot and set hinge to 2
 
     >>> box_plot = classify(x, 'box_plot', hinge=2)
+    >>> box_plot
+    BoxPlot
+    <BLANKLINE>
+       Interval      Count
+    ----------------------
+    ( -inf, -9.50] |     0
+    (-9.50, 25.70] |    13
+    (25.70, 33.50] |    12
+    (33.50, 43.30] |    12
+    (43.30, 78.50] |     9
+    (78.50, 96.40] |     3
 
     """
     # reformat
@@ -136,7 +147,8 @@ def classify(
     # check if scheme is a valid scheme
     if scheme not in _classifiers:
         raise ValueError(
-            "Invalid scheme. Scheme must be in the" " set: %r" % _classifiers.keys()
+            f"Invalid scheme: '{scheme}'\n"
+            f"Scheme must be in the set: {_classifiers.keys()}"
         )
 
     elif scheme == "boxplot":
