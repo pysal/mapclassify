@@ -19,7 +19,6 @@ jobs:
       - uses: pre-commit/action@v3.0.0
   testing:
     needs: linting
-  testing:
     name: (${{ matrix.os }}, ${{ matrix.environment-file }})
     runs-on: ${{ matrix.os }}
     defaults:
