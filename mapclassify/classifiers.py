@@ -181,13 +181,13 @@ def _get_table(mc, fmt="{:.2f}"):
     count_width = max([len(count) for count in counts])
     count_width = max(count_width, len("count"))
     interval_width = max(interval_width, len("interval"))
-    header = "{:^{width}}".format("Interval", width=interval_width)
-    header += " " * 3 + "{:>{width}}".format("Count", width=count_width)
-    title = "{:<{width}}".format(mc.name, width=len(header))
+    header = f"{'Interval' : ^{interval_width}}"
+    header += " " * 3 + f"{'Count' : >{count_width}}"
+    title = mc.name
     header += "\n" + "-" * len(header)
     table = [title, "", header]
     for i, interval in enumerate(intervals):
-        row = interval + " | " + "{:>{width}}".format(counts[i], width=count_width)
+        row = f"{interval} | {counts[i] : >{count_width}}"
         table.append(row)
     return "\n".join(table)
 
