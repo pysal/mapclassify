@@ -85,7 +85,7 @@ def _format_intervals(mc, fmt="{:.0f}"):
     ----------
 
     mc: MapClassifier
-    fmt: str
+    fmt: str (default '{:.0f}')
         Specification of formatting for legend.
 
     Returns
@@ -133,7 +133,7 @@ def _get_mpl_labels(mc, fmt="{:.1f}"):
     ----------
 
     mc : MapClassifier
-    fmt : str
+    fmt : str (default '{:.1f}')
         Specification of formatting for legend.
 
     Returns
@@ -893,11 +893,7 @@ class MapClassifier(object):
         return self.find_bin(*args)
 
     def get_tss(self):
-        """
-        Total sum of squares around class means
-
-        Returns sum of squares over all class means
-        """
+        """Returns sum of squares over all class means."""
         tss = 0
         for class_def in self.classes:
             if len(class_def) > 0:
@@ -917,7 +913,7 @@ class MapClassifier(object):
         Calculates the absolute deviations of each observation about its class
         median as a measure of fit for the classification method.
 
-        Returns sum of *ADCM* over all classes
+        Returns sum of *ADCM* over all classes.
         """
         adcm = 0
         for class_def in self.classes:
@@ -929,9 +925,7 @@ class MapClassifier(object):
         return adcm
 
     def get_gadf(self):
-        """
-        Goodness of absolute deviation of fit
-        """
+        """Goodness of absolute deviation of fit."""
         adam = (np.abs(self.y - np.median(self.y))).sum()
         if adam == 0:  # array is invariant
             gadf = 1
@@ -983,7 +977,7 @@ class MapClassifier(object):
         Parameters
         ----------
 
-        fmt : str
+        fmt : str (default '{:.2f}')
             Formatting specification.
 
         Returns
