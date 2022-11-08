@@ -1,5 +1,3 @@
-import warnings
-
 import numpy
 
 from .classifiers import (
@@ -80,17 +78,19 @@ class Pooled(object):
     """
 
     def __init__(self, Y, classifier="Quantiles", **kwargs):
+        method = classifier.lower()
+        valid_methods = list(dispatcher.keys())
+        if method not in valid_methods:
+            raise ValueError(
+                f"'{classifier}' not a valid classifier. "
+                f"Currently supported classifiers: {valid_methods}"
+            )
+
         self.__dict__.update(kwargs)
         Y = numpy.asarray(Y)
         n, cols = Y.shape
         y = numpy.reshape(Y, (-1, 1), order="f")
         ymin = y.min()
-        method = classifier.lower()
-        if method not in dispatcher:
-            warnings.warn(
-                f"`method`('{method}') is not a valid classifier. Setting to `None`."
-            )
-            return None
         global_classifier = dispatcher[method](y, **kwargs)
         # self.k = global_classifier.k
         col_classifiers = []

@@ -1,5 +1,6 @@
-from geopandas import gpd
-from libpysal import examples
+import geopandas
+import libpysal
+import pytest
 
 import mapclassify
 
@@ -13,8 +14,8 @@ def _assertions(a, b):
 
 class TestClassify:
     def setup_method(self):
-        link_to_data = examples.get_path("columbus.shp")
-        gdf = gpd.read_file(link_to_data)
+        link_to_data = libpysal.examples.get_path("columbus.shp")
+        gdf = geopandas.read_file(link_to_data)
         self.x = gdf["HOVAL"].values
 
     def test_box_plot(self):
@@ -88,3 +89,8 @@ class TestClassify:
         a = mapclassify.classify(self.x, "user_defined", bins=[20, max(self.x)])
         b = mapclassify.UserDefined(self.x, bins=[20, max(self.x)])
         _assertions(a, b)
+
+    def test_bad_classifier(self):
+        classifier = "George_Costanza"
+        with pytest.raises(ValueError, match="Invalid scheme: 'georgecostanza'"):
+            mapclassify.classify(self.x, classifier)

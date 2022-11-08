@@ -164,7 +164,7 @@ def classify(
     # check if scheme is a valid scheme
     if scheme not in _classifiers:
         raise ValueError(
-            f"Invalid scheme: {scheme}\n"
+            f"Invalid scheme: '{scheme}'\n"
             f"Scheme must be in the set: {_classifiers.keys()}"
         )
 

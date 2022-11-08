@@ -1238,7 +1238,10 @@ class EqualInterval(MapClassifier):
 
         """
         if min(y) == max(y):
-            raise ValueError("Not enough unique values in array to form k classes.")
+            raise ValueError(
+                f"Not enough unique values in array to form {k} classes. "
+                "All values in `y` are equal."
+            )
         self.k = k
         MapClassifier.__init__(self, y)
         self.name = "EqualInterval"
@@ -1675,7 +1678,10 @@ class MaximumBreaks(MapClassifier):
 
     def __init__(self, y, k=5, mindiff=0):
         if min(y) == max(y):
-            raise ValueError("Not enough unique values in array to form k classes.")
+            raise ValueError(
+                f"Not enough unique values in array to form {k} classes. "
+                "All values in `y` are equal."
+            )
         self.k = k
         self.mindiff = mindiff
         MapClassifier.__init__(self, y)
@@ -1895,7 +1901,9 @@ class FisherJenks(MapClassifier):
 
         nu = len(np.unique(y))
         if nu < k:
-            raise ValueError("Fewer unique values than specified classes.")
+            raise ValueError(
+                f"Fewer unique values ({nu}) than specified classes ({k})."
+            )
         self.k = k
         MapClassifier.__init__(self, y)
         self.name = "FisherJenks"
@@ -2245,7 +2253,10 @@ class JenksCaspallForced(MapClassifier):
 
     def __init__(self, y, k=K):
         if min(y) == max(y):
-            raise ValueError("Not enough unique values in array to form k classes.")
+            raise ValueError(
+                f"Not enough unique values in array to form {k} classes. "
+                "All values in `y` are equal."
+            )
         self.k = k
         MapClassifier.__init__(self, y)
         self.name = "JenksCaspallForced"
@@ -2546,7 +2557,10 @@ class MaxP(MapClassifier):
 
     def __init__(self, y, k=K, initial=1000, seed1=0, seed2=1):
         if min(y) == max(y):
-            raise ValueError("Not enough unique values in array to form k classes.")
+            raise ValueError(
+                f"Not enough unique values in array to form {k} classes. "
+                "All values in `y` are equal."
+            )
         self.k = k
         self.initial = initial
         self.seed1 = seed1
