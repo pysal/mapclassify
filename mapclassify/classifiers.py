@@ -1814,7 +1814,7 @@ class NaturalBreaks(MapClassifier):
         Parameters
         ----------
 
-         y : numpy.array (default None)
+        y : numpy.array (default None)
             :math:`(n,1)`, array of data to classify.
         inplace : bool (default False)
             Whether to conduct the update in place or to return a
@@ -1906,7 +1906,7 @@ class FisherJenksSampled(MapClassifier):
     k : int (default 5)
         The number of classes required.
     pct : float (default 0.10)
-        The percentage of :math:`n` that should form the sample
+        The percentage of :math:`n` that should form the sample.
         If ``pct`` is specified such that :math:`n*pct > 1000`, then
         :math:`pct = 1000./n`, unless truncate is ``False``.
     truncate : bool (default True)
@@ -1992,10 +1992,10 @@ class JenksCaspall(MapClassifier):
     Parameters
     ----------
 
-    y : array
-        (n,1), values to classify
-    k : int
-        number of classes required
+    y : numpy.array
+        :math:`(n,1)`, values to classify.
+    k : int (default 5)
+        The number of classes required.
 
     Attributes
     ----------
@@ -2067,13 +2067,14 @@ class JenksCaspallSampled(MapClassifier):
     Parameters
     ----------
 
-    y       : array
-              (n,1), values to classify
-    k       : int
-              number of classes required
-    pct     : float
-              The percentage of n that should form the sample
-              If pct is specified such that n*pct > 1000, then pct = 1000./n
+    y : numpy.array
+        :math:`(n,1)`, values to classify.
+    k : int (default 5)
+        The number of classes required.
+    pct : float (default 0.10)
+        The percentage of :math:`n` that should form the sample.
+        If ``pct`` is specified such that :math:`n*pct > 1000`, then
+        :math:`pct = 1000./n`.
 
     Attributes
     ----------
@@ -2185,10 +2186,10 @@ class JenksCaspallForced(MapClassifier):
     Parameters
     ----------
 
-    y : array
-        (n,1), values to classify
-    k : int
-        number of classes required
+    y : numpy.array
+        :math:`(n,1)`, values to classify.
+    k : int (default 5)
+        The number of classes required.
 
     Attributes
     ----------
