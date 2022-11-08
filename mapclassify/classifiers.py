@@ -992,7 +992,7 @@ class MapClassifier(object):
     def plot(
         self,
         gdf,
-        border_color="lightgrey",
+        border_color="lightgray",
         border_width=0.10,
         title=None,
         legend=False,
@@ -1011,30 +1011,22 @@ class MapClassifier(object):
 
         gdf : geopandas.GeoDataFrame
             Contains the geometry column for the choropleth map.
-        border_color  : str (default 'lightgrey')
+        border_color  : str (default 'lightgray')
             Matplotlib color string to use for polygon border.
-
-        border_width  : float, optional
-                        width of polygon boarder.
-                        (Default: 0.10)
-        title         : string, optional
-                        Title of map
-                        (Default: None)
-        cmap          : string, optional
-                        matplotlib color string for color map to fill polygons
-                        (Default: YlGn)
-        axis_on       : boolean, optional
-                        Show coordinate axes (default True)
-                        (Default: True)
-        legend_kwds   : dict, optional
-                        options for ax.legend()
-                        (Default: {"loc": "lower right", 'fmt':FMT})
-        file_name     : string, optional
-                        Name of file to save figure to.
-                        (Default: None)
-        dpi           : int, optional
-                        Dots per inch for saved figure
-                        (Default: 600)
+        border_width : float (default 0.10)
+            Width of polygon border.
+        title : str (default None)
+            Title of map.
+        cmap : str (default 'YlGnBu')
+            Matplotlib color string for color map to fill polygons.
+        axis_on : bool (default True)
+            Show coordinate axes.
+        legend_kwds : dict (default {'loc': 'lower right', 'fmt':FMT})
+            Options for ``ax.legend()``.
+        file_name : str (default None)
+            Name of file to save figure to.
+        dpi : int (default 600)
+            Dots per inch for saved figure.
         ax : matplotlib.Axis (default None)
             Axis on which to plot the choropleth.
             Default is ``None``, which plots on the current figure.
@@ -1044,7 +1036,6 @@ class MapClassifier(object):
 
         f, ax : tuple
             Matplotlib figure and axis on which the plot is made.
-
 
         Examples
         --------
@@ -1103,20 +1094,20 @@ class HeadTailBreaks(MapClassifier):
     Parameters
     ----------
 
-    y       : array
-              (n,1), values to classify
+    y : numpy.array
+        :math:`(n,1)`, values to classify.
 
     Attributes
     ----------
 
-    yb      : array
-              (n,1), bin ids for observations,
-    bins    : array
-              (k,1), the upper bounds of each class
-    k       : int
-              the number of classes
-    counts  : array
-              (k,1), the number of observations falling in each class
+    yb : numpy.array
+        :math:`(n,1)`, bin IDs for observations.
+    bins : numpy.array
+        :math:`(k,1)`, the upper bounds of each class.
+    k : int
+        The number of classes.
+    counts : numpy.array
+        :math:`(k,1)`, the number of observations falling in each class.
 
     Examples
     --------
@@ -1173,30 +1164,30 @@ class HeadTailBreaks(MapClassifier):
 
 class EqualInterval(MapClassifier):
     """
-    Equal Interval Classification
+    Equal Interval Classification.
 
     Parameters
     ----------
 
-    y : array
-        (n,1), values to classify
-    k : int
-        number of classes required
+    y : numpy.array
+        :math:`(n,1)`, values to classify.
+    k : int (default 5)
+        The number of classes required.
 
     Attributes
     ----------
 
-    yb      : array
-              (n,1), bin ids for observations,
-              each value is the id of the class the observation belongs to
-              yb[i] = j  for j>=1  if bins[j-1] < y[i] <= bins[j], yb[i] = 0
-              otherwise
-    bins    : array
-              (k,1), the upper bounds of each class
-    k       : int
-              the number of classes
-    counts  : array
-              (k,1), the number of observations falling in each class
+    yb : numpy.array
+        :math:`(n,1)`, bin IDs for observations. Each value is the ID of the class
+        the observation belongs to
+        :math:`yb[i] = j` for :math:`j>=1` if :math:`bins[j-1] < y[i] <= bins[j]`,
+        otherwise :math:`yb[i] = 0`.
+    bins : numpy.array
+        :math:`(k,1)`, the upper bounds of each class.
+    k : int
+        The number of classes.
+    counts : numpy.array
+        :math:`(k,1)`, the number of observations falling in each class.
 
     Examples
     --------
@@ -1262,23 +1253,22 @@ class Percentiles(MapClassifier):
     Parameters
     ----------
 
-    y    : array
-           attribute to classify
-    pct  : array
-           percentiles default=[1,10,50,90,99,100]
+    y : numpy.array
+        Attribute to classify.
+    pct : numpy.array (default [1, 10, 50, 90, 99, 100])
+        Percentiles.
 
     Attributes
     ----------
 
-    yb     : array
-             bin ids for observations (numpy array n x 1)
-    bins   : array
-             the upper bounds of each class (numpy array k x 1)
-    k      : int
-             the number of classes
-    counts : int
-             the number of observations falling in each class
-             (numpy array k x 1)
+    yb : numpy.array
+        :math:`(n,1)`, bin IDs for observations.
+    bins : numpy.array
+        :math:`(k,1)`, the upper bounds of each class.
+    k : int
+        The number of classes.
+    counts : numpy.array
+        :math:`(k,1)`, the number of observations falling in each class.
 
     Examples
     --------
@@ -1486,25 +1476,25 @@ class Quantiles(MapClassifier):
     Parameters
     ----------
 
-    y : array
-        (n,1), values to classify
-    k : int
-        number of classes required
+    y : numpy.array
+        :math:`(n,1)`, values to classify.
+    k : int (default 5)
+        The number of classes required.
 
     Attributes
     ----------
 
-    yb      : array
-              (n,1), bin ids for observations,
-              each value is the id of the class the observation belongs to
-              yb[i] = j  for j>=1  if bins[j-1] < y[i] <= bins[j], yb[i] = 0
-              otherwise
-    bins    : array
-              (k,1), the upper bounds of each class
-    k       : int
-              the number of classes
-    counts  : array
-              (k,1), the number of observations falling in each class
+    yb : numpy.array
+        :math:`(n,1)`, bin IDs for observations. Each value is the ID of the class
+        the observation belongs to
+        :math:`yb[i] = j` for :math:`j>=1` if :math:`bins[j-1] < y[i] <= bins[j]`,
+        otherwise :math:`yb[i] = 0`.
+    bins : numpy.array
+        :math:`(k,1)`, the upper bounds of each class.
+    k : int
+        The number of classes.
+    counts : numpy.array
+        :math:`(k,1)`, the number of observations falling in each class.
 
     Examples
     --------
@@ -1533,28 +1523,28 @@ class Quantiles(MapClassifier):
 
 class StdMean(MapClassifier):
     """
-    Standard Deviation and Mean Map Classification
+    Standard Deviation and Mean Map Classification.
 
     Parameters
     ----------
 
-    y         : array
-                (n,1), values to classify
-    multiples : array
-                the multiples of the standard deviation to add/subtract from
-                the sample mean to define the bins, default=[-2,-1,1,2]
+    y : numpy.array
+        :math:`(n,1)`, values to classify.
+    multiples : numpy.array (default [-2, -1, 1, 2])
+        The multiples of the standard deviation to add/subtract from
+        the sample mean to define the bins
 
     Attributes
     ----------
 
-    yb      : array
-              (n,1), bin ids for observations,
-    bins    : array
-              (k,1), the upper bounds of each class
-    k       : int
-              the number of classes
-    counts  : array
-              (k,1), the number of observations falling in each class
+    yb : numpy.array
+        :math:`(n,1)`, bin IDs for observations.
+    bins : numpy.array
+        :math:`(k,1)`, the upper bounds of each class.
+    k : int
+        The number of classes.
+    counts : numpy.array
+        :math:`(k,1)`, the number of observations falling in each class.
 
     Examples
     --------
@@ -1626,32 +1616,30 @@ class StdMean(MapClassifier):
 
 class MaximumBreaks(MapClassifier):
     """
-    Maximum Breaks Map Classification
+    Maximum Breaks Map Classification.
 
     Parameters
     ----------
 
-    y  : array
-         (n, 1), values to classify
+    y : numpy.array
+        :math:`(n,1)`, values to classify.
+    k : int (default 5)
+        The number of classes required.
 
-    k  : int
-         number of classes required
-
-    mindiff : float
-              The minimum difference between class breaks
+    mindiff : float (default 0)
+        The minimum difference between class breaks.
 
     Attributes
     ----------
 
-    yb : array
-         (n, 1), bin ids for observations
-    bins : array
-           (k, 1), the upper bounds of each class
-    k    : int
-           the number of classes
-    counts : array
-             (k, 1), the number of observations falling in each class (numpy
-             array k x 1)
+    yb : numpy.array
+        :math:`(n,1)`, bin IDs for observations.
+    bins : numpy.array
+        :math:`(k,1)`, the upper bounds of each class.
+    k : int
+        The number of classes.
+    counts : numpy.array
+        :math:`(k,1)`, the number of observations falling in each class.
 
     Examples
     --------
@@ -1732,31 +1720,30 @@ class MaximumBreaks(MapClassifier):
 
 class NaturalBreaks(MapClassifier):
     """
-    Natural Breaks Map Classification
+    Natural Breaks Map Classification.
 
     Parameters
     ----------
 
-    y       : array
-              (n,1), values to classify
-    k       : int
-              number of classes required
-
-    initial : int, default: 10
-              Number of initial solutions generated with different centroids.
-              Best of initial results is returned.
+    y : numpy.array
+        :math:`(n,1)`, values to classify.
+    k : int (default 5)
+        The number of classes required.
+    initial : int (default 10)
+        The number of initial solutions generated with different centroids.
+        The best of initial results are returned.
 
     Attributes
     ----------
 
-    yb      : array
-              (n,1), bin ids for observations,
-    bins    : array
-              (k,1), the upper bounds of each class
-    k       : int
-              the number of classes
-    counts  : array
-              (k,1), the number of observations falling in each class
+    yb : numpy.array
+        :math:`(n,1)`, bin IDs for observations.
+    bins : numpy.array
+        :math:`(k,1)`, the upper bounds of each class.
+    k : int
+        The number of classes.
+    counts : numpy.array
+        :math:`(k,1)`, the number of observations falling in each class.
 
     Examples
     --------
@@ -1848,27 +1835,27 @@ class NaturalBreaks(MapClassifier):
 
 class FisherJenks(MapClassifier):
     """
-    Fisher Jenks optimal classifier - mean based
+    Fisher Jenks optimal classifier - mean based.
 
     Parameters
     ----------
 
-    y : array
-        (n,1), values to classify
-    k : int, optional
-        number of classes, defatuls to 5
+    y : numpy.array
+        :math:`(n,1)`, values to classify.
+    k : int (default 5)
+        The number of classes required.
 
     Attributes
     ----------
 
-    yb      : array
-              (n,1), bin ids for observations
-    bins    : array
-              (k,1), the upper bounds of each class
-    k       : int
-              the number of classes
-    counts  : array
-              (k,1), the number of observations falling in each class
+    yb : numpy.array
+        :math:`(n,1)`, bin IDs for observations.
+    bins : numpy.array
+        :math:`(k,1)`, the upper bounds of each class.
+    k : int
+        The number of classes.
+    counts : numpy.array
+        :math:`(k,1)`, the number of observations falling in each class.
 
     Examples
     --------
@@ -1909,33 +1896,33 @@ class FisherJenks(MapClassifier):
 
 class FisherJenksSampled(MapClassifier):
     """
-    Fisher Jenks optimal classifier - mean based using random sample
+    Fisher Jenks optimal classifier - mean based using random sample.
 
     Parameters
     ----------
 
-    y      : array
-             (n,1), values to classify
-    k      : int
-             number of classes required
-    pct    : float
-             The percentage of n that should form the sample
-             If pct is specified such that n*pct > 1000, then
-             pct = 1000./n, unless truncate is False
-    truncate : boolean
-               truncate pct in cases where pct * n > 1000., (Default True)
+    y : numpy.array
+        :math:`(n,1)`, values to classify.
+    k : int (default 5)
+        The number of classes required.
+    pct : float (default 0.10)
+        The percentage of :math:`n` that should form the sample
+        If ``pct`` is specified such that :math:`n*pct > 1000`, then
+        :math:`pct = 1000./n`, unless truncate is ``False``.
+    truncate : bool (default True)
+        Truncate ``pct`` in cases where :math:`pct * n > 1000.`.
 
     Attributes
     ----------
 
-    yb      : array
-              (n,1), bin ids for observations
-    bins    : array
-              (k,1), the upper bounds of each class
-    k       : int
-              the number of classes
-    counts  : array
-              (k,1), the number of observations falling in each class
+    yb : numpy.array
+        :math:`(n,1)`, bin IDs for observations.
+    bins : numpy.array
+        :math:`(k,1)`, the upper bounds of each class.
+    k : int
+        The number of classes.
+    counts : numpy.array
+        :math:`(k,1)`, the number of observations falling in each class.
 
     Notes
     -----
@@ -2000,7 +1987,7 @@ class FisherJenksSampled(MapClassifier):
 
 class JenksCaspall(MapClassifier):
     """
-    Jenks Caspall  Map Classification
+    Jenks Caspall Map Classification.
 
     Parameters
     ----------
@@ -2013,15 +2000,14 @@ class JenksCaspall(MapClassifier):
     Attributes
     ----------
 
-    yb      : array
-              (n,1), bin ids for observations,
-    bins    : array
-              (k,1), the upper bounds of each class
-    k       : int
-              the number of classes
-    counts  : array
-              (k,1), the number of observations falling in each class
-
+    yb : numpy.array
+        :math:`(n,1)`, bin IDs for observations.
+    bins : numpy.array
+        :math:`(k,1)`, the upper bounds of each class.
+    k : int
+        The number of classes.
+    counts : numpy.array
+        :math:`(k,1)`, the number of observations falling in each class.
 
     Examples
     --------
@@ -2076,7 +2062,7 @@ class JenksCaspall(MapClassifier):
 
 class JenksCaspallSampled(MapClassifier):
     """
-    Jenks Caspall Map Classification using a random sample
+    Jenks Caspall Map Classification using a random sample.
 
     Parameters
     ----------
@@ -2092,15 +2078,14 @@ class JenksCaspallSampled(MapClassifier):
     Attributes
     ----------
 
-    yb      : array
-              (n,1), bin ids for observations,
-    bins    : array
-              (k,1), the upper bounds of each class
-    k       : int
-              the number of classes
-    counts  : array
-              (k,1), the number of observations falling in each class
-
+    yb : numpy.array
+        :math:`(n,1)`, bin IDs for observations.
+    bins : numpy.array
+        :math:`(k,1)`, the upper bounds of each class.
+    k : int
+        The number of classes.
+    counts : numpy.array
+        :math:`(k,1)`, the number of observations falling in each class.
 
     Examples
     --------
@@ -2195,7 +2180,7 @@ class JenksCaspallSampled(MapClassifier):
 
 class JenksCaspallForced(MapClassifier):
     """
-    Jenks Caspall  Map Classification with forced movements
+    Jenks Caspall  Map Classification with forced movements.
 
     Parameters
     ----------
@@ -2208,15 +2193,14 @@ class JenksCaspallForced(MapClassifier):
     Attributes
     ----------
 
-    yb      : array
-              (n,1), bin ids for observations
-    bins    : array
-              (k,1), the upper bounds of each class
-    k       : int
-              the number of classes
-    counts  : array
-              (k,1), the number of observations falling in each class
-
+    yb : numpy.array
+        :math:`(n,1)`, bin IDs for observations.
+    bins : numpy.array
+        :math:`(k,1)`, the upper bounds of each class.
+    k : int
+        The number of classes.
+    counts : numpy.array
+        :math:`(k,1)`, the number of observations falling in each class.
 
     Examples
     --------
@@ -2457,7 +2441,7 @@ class UserDefined(MapClassifier):
     def plot(
         self,
         gdf,
-        border_color="lightgrey",
+        border_color="lightgray",
         border_width=0.10,
         title=None,
         legend=False,
