@@ -137,7 +137,7 @@ def classify(
 
     Classify values by box_plot and set hinge to ``2``.
 
-    >>> box_plot = classify(x, "box_plot", hinge=2)
+    >>> box_plot = classify(x, 'box_plot', hinge=2)
     >>> box_plot
     BoxPlot
     <BLANKLINE>
@@ -150,7 +150,7 @@ def classify(
     (43.30, 78.50] |     9
     (78.50, 96.40] |     3
 
-    """  # noqa
+    """
 
     # reformat
     scheme_lower = scheme.lower()
