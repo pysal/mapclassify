@@ -106,7 +106,7 @@ def _format_intervals(mc, fmt="{:.0f}"):
     For some classifiers, it is possible that the upper bound of the first
     interval is less than the minimum value of the attribute that is being
     classified. In these cases ``lower_open=True`` and the lower bound of the
-    interval is set to ``np.NINF```.
+    interval is set to ``numpy.NINF```.
 
     """
 
@@ -223,11 +223,17 @@ def quantile(y, k=4):
     q : numpy.array
         :math:`(n,1)`, quantile values.
 
+    Notes
+    -----
+
+    If there are enough ties that the quantile values repeat, we collapse to
+    pseudo quantiles in which case the number of classes will be less than ``k``.
+
     Examples
     --------
 
-    >>> import numpy
     >>> import mapclassify
+    >>> import numpy
     >>> x = numpy.arange(1000)
 
     >>> mapclassify.classifiers.quantile(x)
@@ -235,19 +241,6 @@ def quantile(y, k=4):
 
     >>> mapclassify.classifiers.quantile(x, k=3)
     array([333., 666., 999.])
-
-    Note that if there are enough ties that the quantile values repeat, we
-    collapse to pseudo quantiles in which case the number of classes will be
-    less than ``k``.
-
-    >>> x = [1.0] * 100
-    >>> x.extend([3.0] * 40)
-    >>> len(x)
-    140
-
-    >>> y = numpy.array(x)
-    >>> mapclassify.classifiers.quantile(y)
-    array([1., 3.])
 
     """
 
@@ -260,7 +253,7 @@ def quantile(y, k=4):
     k_q = len(q)
     if k_q < k:
         warnings.warn(
-            "Not enough unique values in array to form k classes. "
+            f"Not enough unique values in array to form {k} classes. "
             f"Setting k to {k_q}.",
             UserWarning,
         )
@@ -529,7 +522,7 @@ def natural_breaks(values, k=5, init=10):
     uvk = len(uv)
     if uvk < k:
         warnings.warn(
-            "Not enough unique values in array to form k classes. "
+            f"Not enough unique values in array to form {k} classes. "
             f"Setting k to {uvk}.",
             UserWarning,
         )
@@ -1126,8 +1119,8 @@ class HeadTailBreaks(MapClassifier):
     >>> htb.bins
     array([ 125.92810345,  811.26      , 4111.45      ])
 
-    >>> np.random.seed(123456)
-    >>> x = np.random.lognormal(3, 1, 1000)
+    >>> numpy.random.seed(123456)
+    >>> x = numpy.random.lognormal(3, 1, 1000)
     >>> htb = mapclassify.HeadTailBreaks(x)
     >>> htb.bins
     array([ 32.26204423,  72.50205622, 128.07150107, 190.2899093 ,
@@ -1382,6 +1375,7 @@ class BoxPlot(MapClassifier):
     --------
 
     >>> import mapclassify
+    >>> import numpy
     >>> cal = mapclassify.load_example()
     >>> bp = mapclassify.BoxPlot(cal)
     >>> bp.bins
@@ -1398,7 +1392,7 @@ class BoxPlot(MapClassifier):
     array([ 329.92,  181.27,  370.5 ,  722.85,  192.05,  110.74, 4111.45,
             317.11,  264.93])
 
-    >>> bx = mapclassify.BoxPlot(np.arange(100))
+    >>> bx = mapclassify.BoxPlot(numpy.arange(100))
     >>> bx.bins
     array([-49.5 ,  24.75,  49.5 ,  74.25, 148.5 ])
 
@@ -1756,24 +1750,11 @@ class NaturalBreaks(MapClassifier):
     >>> nb.k
     5
 
-    >>> list(nb.counts)
-    [49, 3, 4, 1, 1]
+    >>> nb.counts
+    array([49,  3,  4,  1,  1])
 
     >>> nb.bins
     array([  75.29,  192.05,  370.5 ,  722.85, 4111.45])
-
-    >>> x = np.array([1] * 50)
-    >>> x[-1] = 20
-    >>> nb = mapclassify.NaturalBreaks(x, k=5)
-
-    Warning: Not enough unique values in array to form k classes
-    Warning: setting k to 2
-
-    >>> nb.bins
-    array([ 1, 20])
-
-    >>> list(nb.counts)
-    [49, 1]
 
     """
 
@@ -1792,7 +1773,7 @@ class NaturalBreaks(MapClassifier):
         uvk = len(uv)
         if uvk < k:
             warnings.warn(
-                "Not enough unique values in array to form k classes. "
+                f"Not enough unique values in array to form {k} classes. "
                 f"Setting k to {uvk}.",
                 UserWarning,
             )
