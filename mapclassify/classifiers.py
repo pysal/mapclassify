@@ -1750,8 +1750,8 @@ class NaturalBreaks(MapClassifier):
     >>> nb.k
     5
 
-    >>> nb.counts
-    array([49,  3,  4,  1,  1])
+    >>> list(nb.counts)
+    [49, 3, 4, 1, 1])
 
     >>> nb.bins
     array([  75.29,  192.05,  370.5 ,  722.85, 4111.45])
