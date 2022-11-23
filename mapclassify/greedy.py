@@ -128,57 +128,6 @@ def _balanced(features, sw, balance="count", min_colors=4):
     return feature_colors
 
 
-def _geos_sw(features, tolerance=0, silence_warnings=False, resolution=5):
-    """
-    Generate libpysal spatial weights object based on intersections of features.
-
-    Intersecting features are denoted as neighbours. If ``tolerance > 0``,
-    all features within the set tolerance are denoted as neighbours.
-
-    Parameters
-    ----------
-
-    features : geopandas.GeoDataFrame
-        GeoDataFrame.
-    tolerance : float (default 0)
-        Minimal distance between colors.
-    silence_warnings : bool (default True)
-        Silence lilbpysal warnings (if ``min_distance`` is set).
-    resolution : int (default 5)
-        Resolution of buffer if ``tolerance > 0``.
-
-    Returns
-    -------
-
-    W : libpysal.weights.W
-        Spatial weights object.
-
-    """
-    try:
-        from libpysal.weights import W
-    except ImportError:
-        raise ImportError("The 'libpysal' package is required.")
-
-    neighbors = {}
-
-    if tolerance > 0:
-        features = features.copy()
-        features["geometry"] = features.geometry.buffer(tolerance / 2, resolution)
-
-    sindex = features.sindex
-
-    for i, (ix, g) in enumerate(features.geometry.items()):
-
-        possible_matches_index = list(sindex.intersection(g.bounds))
-        possible_matches_index.remove(i)
-        possible_matches = features.iloc[possible_matches_index]
-        precise_matches = possible_matches.loc[possible_matches.intersects(g)]
-
-        neighbors[ix] = list(precise_matches.index)
-
-    return W(neighbors, silence_warnings=silence_warnings)
-
-
 def greedy(
     gdf,
     strategy="balanced",
@@ -305,7 +254,7 @@ def greedy(
     >>> africa["min_distance"] = greedy(africa, min_distance=1000000)
     >>> africa["min_distance"].head()
     0    1
-    1    8
+    1    9
     2    0
     3    7
     4    4
@@ -338,14 +287,18 @@ def greedy(
     except ImportError:
         raise ImportError("The 'pandas' package is required.")
     try:
-        from libpysal.weights import Queen, Rook, W
+        from libpysal.weights import Queen, Rook, W, fuzzy_contiguity
     except ImportError:
         raise ImportError("The 'libpysal' package is required.")
 
     if min_distance is not None:
-        # TODO: use libpysal's fuzzy_contiguity instead of
-        # ``_geos_sw`` once pysal/libpysal#280 is released
-        sw = _geos_sw(gdf, tolerance=min_distance, silence_warnings=silence_warnings)
+        sw = fuzzy_contiguity(
+            gdf,
+            tolerance=0.0,
+            buffering=True,
+            buffer=min_distance / 2.0,
+            silence_warnings=silence_warnings,
+        )
 
     if not isinstance(sw, W):
         if sw == "queen":
