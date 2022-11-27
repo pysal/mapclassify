@@ -2653,34 +2653,6 @@ class MaxP(MapClassifier):
         else:
             return True
 
-    '''
-    def update(self, y=None, inplace=False, **kwargs):
-        """
-        Add data or change classification parameters.
-
-        Parameters
-        ----------
-
-         y : numpy.array (default None)
-            :math:`(n,1)`, array of data to classify.
-        inplace : bool (default False)
-            Whether to conduct the update in place or to return a
-            copy estimated from the additional specifications.
-        **kwargs : dict
-            Additional parameters that are passed to the ``__init__`` function
-            of the class. For documentation, check the class constructor.
-
-        """
-
-        kwargs.update({"initial": kwargs.pop("initial", self.initial)})
-        if inplace:
-            self._update(y, bins, **kwargs)
-        else:
-            new = copy.deepcopy(self)
-            new._update(y, bins, **kwargs)
-            return new
-    '''
-
 
 def _fit(y, classes):
     """Calculate the total sum of squares for a
