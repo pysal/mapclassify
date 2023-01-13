@@ -12,7 +12,7 @@ mapclassify is an open-source python library for Choropleth map classification. 
         <div class="col-sm-1 col-xs-hidden">
         </div>
         <div class="col-md-3 col-xs-12">
-            <a href="http://nbviewer.jupyter.org/github/pysal/mapclassify/blob/master/notebooks/03_choropleth.ipynb" class="thumbnail">
+            <a href="http://nbviewer.jupyter.org/github/pysal/mapclassify/blob/main/notebooks/03_choropleth.ipynb" class="thumbnail">
                 <img src="_static/images/equalinterval.png" class="img-responsive center-block">
                 <div class="caption text-center">
                 <h5>Equal Interval</h5>
@@ -22,7 +22,7 @@ mapclassify is an open-source python library for Choropleth map classification. 
         <div class="col-sm-1 col-xs-hidden">
         </div>
         <div class="col-sm-3 col-xs-12">
-            <a href="http://nbviewer.jupyter.org/github/pysal/mapclassify/blob/master/notebooks/03_choropleth.ipynb" class="thumbnail">
+            <a href="http://nbviewer.jupyter.org/github/pysal/mapclassify/blob/main/notebooks/03_choropleth.ipynb" class="thumbnail">
                 <img src="_static/images/quantiles.png" class="img-responsive center-block">
                 <div class="caption text-center">
                 <h5>Quantiles</h5>
@@ -32,7 +32,7 @@ mapclassify is an open-source python library for Choropleth map classification. 
         <div class="col-sm-1 col-xs-hidden">
         </div>
         <div class="col-sm-3 col-xs-12">
-            <a href="http://nbviewer.jupyter.org/github/pysal/mapclassify/blob/master/notebooks/03_choropleth.ipynb" class="thumbnail">
+            <a href="http://nbviewer.jupyter.org/github/pysal/mapclassify/blob/main/notebooks/03_choropleth.ipynb" class="thumbnail">
                 <img src="_static/images/fisherjenks.png"
                 class="img-responsive center-block">
                 <div class="caption text-center">
