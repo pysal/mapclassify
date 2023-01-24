@@ -50,6 +50,7 @@ def classify(
     mindiff=0,
     initial=100,
     bins=None,
+    lowest=None,
 ):
     """
 
@@ -188,7 +189,7 @@ def classify(
         classifier = _classifiers[scheme](y, k, initial)
 
     elif scheme == "userdefined":
-        classifier = _classifiers[scheme](y, bins)
+        classifier = _classifiers[scheme](y, bins, lowest)
 
     elif scheme in [
         "equalinterval",
