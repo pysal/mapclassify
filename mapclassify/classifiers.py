@@ -1147,7 +1147,6 @@ class HeadTailBreaks(MapClassifier):
         self.name = "HeadTailBreaks"
 
     def _set_bins(self):
-
         x = self.y.copy()
         bins = []
         bins = head_tail_breaks(x, bins)
@@ -1765,7 +1764,6 @@ class NaturalBreaks(MapClassifier):
         self.name = "NaturalBreaks"
 
     def _set_bins(self):
-
         x = self.y.copy()
         k = self.k
         values = np.array(x)
