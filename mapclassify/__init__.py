@@ -18,6 +18,7 @@ from .classifiers import (
     Quantiles,
     StdMean,
     UserDefined,
+    UniqueValue,
     gadf,
     load_example,
 )

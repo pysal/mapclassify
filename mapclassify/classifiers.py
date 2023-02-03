@@ -7,7 +7,12 @@ import warnings
 
 import numpy as np
 import scipy.stats as stats
+import pandas as pd
 from sklearn.cluster import KMeans as KMEANS
+import distinctipy
+import matplotlib.patches as mpatches
+import matplotlib.pyplot as plt
+
 
 __author__ = "Sergio J. Rey"
 
@@ -28,6 +33,7 @@ __all__ = [
     "Quantiles",
     "Percentiles",
     "StdMean",
+    "UniqueValue",
     "UserDefined",
     "gadf",
     "KClassifiers",
@@ -49,6 +55,7 @@ CLASSIFIERS = (
     "Quantiles",
     "Percentiles",
     "StdMean",
+    "UniqueValue",
     "UserDefined",
 )
 
@@ -203,6 +210,11 @@ def head_tail_breaks(values, cuts):
     if len(set(values)) > 1:
         return head_tail_breaks(values[values > mean], cuts)
     return cuts
+
+def unique_value(values):
+    labels, counts = np.unique(values, return_counts=True)
+    return labels, counts
+    
 
 
 def quantile(y, k=4):
@@ -1079,7 +1091,46 @@ class MapClassifier(object):
             plt.savefig(file_name, dpi=dpi)
         return f, ax
 
+class UniqueValue:
 
+    def __init__(self, gdf, column):
+        self.name = "UniqueValue"
+        self.y = gdf[column] 
+        bins, counts = unique_value(self.y)
+        self.yb = self.y
+        self.counts = counts
+        self.classes = bins
+        self.colors = distinctipy.get_colors(len(counts))
+        self.gdf = gdf
+
+    def plot(self, figsize=(16,9), fontsize=17, legend=True):
+        c = np.array(self.colors)
+        _colors = c[np.searchsorted(self.classes, self.yb)]
+        self.gdf.plot(color=_colors, figsize=figsize)
+        patch_list = []
+        df = pd.DataFrame(data={'label': self.classes,
+                                'count': self.counts,
+                                'color': self.colors})
+        if legend:
+            w = len(str(df['count'].max()))
+            legend_dict = {}
+            for index, row in df.iterrows():   
+                entry = f'{row["label"]:>{w}} {row["count"]}'
+                legend_dict[entry] = row['color']
+                data_key = mpatches.Patch(color=row['color'], label=entry)
+                patch_list.append(data_key)
+
+            plt.legend(handles=patch_list, bbox_to_anchor=(1.7, 1),loc='upper right',
+                    fontsize=fontsize);
+        plt.axis('off');
+
+        
+        
+
+        
+
+
+    
 class HeadTailBreaks(MapClassifier):
     """
     Head/tail Breaks Map Classification for Heavy-tailed Distributions.
