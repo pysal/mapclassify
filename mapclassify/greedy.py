@@ -67,7 +67,7 @@ def _balanced(features, sw, balance="count", min_colors=4):
         features.geometry = features.geometry.centroid
         balance = "distance"
 
-    for (feature_id, n) in sorted_by_count:
+    for feature_id, n in sorted_by_count:
         # first work out which already assigned colors are adjacent to this feature
         adjacent_colors = set()
         for neighbour in sw.neighbors[feature_id]:
@@ -112,7 +112,6 @@ def _balanced(features, sw, balance="count", min_colors=4):
                 # calculate the min distance from this feature to the nearest
                 # feature with each assigned color
                 for other_feature_id, c in other_features.items():
-
                     distance = distances.loc[other_feature_id]
                     if distance < min_distances[c]:
                         min_distances[c] = distance
