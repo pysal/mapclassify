@@ -69,7 +69,6 @@ class TestFindBin:
         self.V = load_example()
 
     def test_find_bin(self):
-
         toclass = [0, 1, 3, 5, 50, 70, 101, 202, 390, 505, 800, 5000, 5001]
         mc = FisherJenks(self.V, k=5)
         known = [0, 0, 0, 0, 0, 0, 1, 2, 3, 3, 4, 4, 4]
