@@ -211,10 +211,11 @@ def head_tail_breaks(values, cuts):
         return head_tail_breaks(values[values > mean], cuts)
     return cuts
 
+
 def unique_value(values):
+    """Unique value classifier."""
     labels, counts = np.unique(values, return_counts=True)
     return labels, counts
-    
 
 
 def quantile(y, k=4):
@@ -1091,19 +1092,73 @@ class MapClassifier(object):
             plt.savefig(file_name, dpi=dpi)
         return f, ax
 
+
 class UniqueValue:
 
     def __init__(self, gdf, column):
+        """Unique value classifier.
+
+        A unique value classifier is appropriate for a categorical
+        variable that has a discrete set of unique values. For
+        example, a map of US counties where the variable State takes
+        on the same value for counties belonging to the same state.
+
+        This classifier creates k unique colors associated with the k
+        unique values of the column specified.
+
+
+        Parameters
+        ----------
+        gdf : Geopandas GeoDataFrame
+
+        column : str
+                 Column of data frame with unique values to classify.
+        """
+
         self.name = "UniqueValue"
-        self.y = gdf[column] 
+        self.y = gdf[column]
         bins, counts = unique_value(self.y)
         self.yb = self.y
         self.counts = counts
         self.classes = bins
         self.colors = distinctipy.get_colors(len(counts))
+        self.column = column
         self.gdf = gdf
 
-    def plot(self, figsize=(16,9), fontsize=17, legend=True):
+    def plot(self, figsize=(16, 9), fontsize=17, legend=True,
+             sort_by_counts=False,
+             ascending=True,
+             bbox_to_anchor=(1.7, 1),
+             loc='upper right',
+             axis_off=True,
+             title=None,
+             title_fontsize='medium'):
+        """
+        Parameters
+        ----------
+        figsize : tuple
+                  Size of figure, width and hight in inches.
+        fontsize : int
+                   Size of fonts for legend entries.
+        legend : bool, default True
+                 Show legend.
+        sort_by_counts: bool, default False
+                        Sort legend entries by counts.
+        ascending : bool, default True
+                    Use ascending sort.
+        bbox_to_anchor : tuple
+                         Lower left corner of legend box.
+        loc : str
+              matplotlib legend location
+        axis_off : bool, default True
+                   Omit axis.
+        title  : str
+                 Legend title.
+
+        title_fontsize : {'xx-small', 'x-small, 'small', 'medium', 'large',
+                         x-large', xx-large'}
+                         The font size of the legend's title.
+        """
         c = np.array(self.colors)
         _colors = c[np.searchsorted(self.classes, self.yb)]
         self.gdf.plot(color=_colors, figsize=figsize)
@@ -1111,26 +1166,29 @@ class UniqueValue:
         df = pd.DataFrame(data={'label': self.classes,
                                 'count': self.counts,
                                 'color': self.colors})
+        sort_col = 'label'
+        if sort_by_counts:
+            sort_col = 'count'
         if legend:
             w = len(str(df['count'].max()))
             legend_dict = {}
-            for index, row in df.iterrows():   
-                entry = f'{row["label"]:>{w}} {row["count"]}'
+            for index, row in df.sort_values(by=sort_col,
+                                             ascending=ascending).iterrows():
+                entry = f'{row["label"]:>{w}} ({row["count"]})'
                 legend_dict[entry] = row['color']
                 data_key = mpatches.Patch(color=row['color'], label=entry)
                 patch_list.append(data_key)
 
-            plt.legend(handles=patch_list, bbox_to_anchor=(1.7, 1),loc='upper right',
-                    fontsize=fontsize);
-        plt.axis('off');
+            plt.legend(handles=patch_list,
+                       bbox_to_anchor=bbox_to_anchor,
+                       loc=loc,
+                       fontsize=fontsize,
+                       title=title,
+                       title_fontsize=title_fontsize)
+        if axis_off:
+            plt.axis('off')
 
-        
-        
 
-        
-
-
-    
 class HeadTailBreaks(MapClassifier):
     """
     Head/tail Breaks Map Classification for Heavy-tailed Distributions.
