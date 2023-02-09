@@ -5,14 +5,13 @@ import copy
 import functools
 import warnings
 
-import numpy as np
-import scipy.stats as stats
-import pandas as pd
-from sklearn.cluster import KMeans as KMEANS
 import distinctipy
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
-
+import numpy as np
+import pandas as pd
+import scipy.stats as stats
+from sklearn.cluster import KMeans as KMEANS
 
 __author__ = "Sergio J. Rey"
 
@@ -1094,7 +1093,6 @@ class MapClassifier(object):
 
 
 class UniqueValue:
-
     def __init__(self, gdf, column):
         """Unique value classifier.
 
@@ -1125,14 +1123,19 @@ class UniqueValue:
         self.column = column
         self.gdf = gdf
 
-    def plot(self, figsize=(16, 9), fontsize=17, legend=True,
-             sort_by_counts=False,
-             ascending=True,
-             bbox_to_anchor=(1.7, 1),
-             loc='upper right',
-             axis_off=True,
-             title=None,
-             title_fontsize='medium'):
+    def plot(
+        self,
+        figsize=(16, 9),
+        fontsize=17,
+        legend=True,
+        sort_by_counts=False,
+        ascending=True,
+        bbox_to_anchor=(1.7, 1),
+        loc="upper right",
+        axis_off=True,
+        title=None,
+        title_fontsize="medium",
+    ):
         """
         Parameters
         ----------
@@ -1163,30 +1166,33 @@ class UniqueValue:
         _colors = c[np.searchsorted(self.classes, self.yb)]
         self.gdf.plot(color=_colors, figsize=figsize)
         patch_list = []
-        df = pd.DataFrame(data={'label': self.classes,
-                                'count': self.counts,
-                                'color': self.colors})
-        sort_col = 'label'
+        df = pd.DataFrame(
+            data={"label": self.classes, "count": self.counts, "color": self.colors}
+        )
+        sort_col = "label"
         if sort_by_counts:
-            sort_col = 'count'
+            sort_col = "count"
         if legend:
-            w = len(str(df['count'].max()))
+            w = len(str(df["count"].max()))
             legend_dict = {}
-            for index, row in df.sort_values(by=sort_col,
-                                             ascending=ascending).iterrows():
+            for index, row in df.sort_values(
+                by=sort_col, ascending=ascending
+            ).iterrows():
                 entry = f'{row["label"]:>{w}} ({row["count"]})'
-                legend_dict[entry] = row['color']
-                data_key = mpatches.Patch(color=row['color'], label=entry)
+                legend_dict[entry] = row["color"]
+                data_key = mpatches.Patch(color=row["color"], label=entry)
                 patch_list.append(data_key)
 
-            plt.legend(handles=patch_list,
-                       bbox_to_anchor=bbox_to_anchor,
-                       loc=loc,
-                       fontsize=fontsize,
-                       title=title,
-                       title_fontsize=title_fontsize)
+            plt.legend(
+                handles=patch_list,
+                bbox_to_anchor=bbox_to_anchor,
+                loc=loc,
+                fontsize=fontsize,
+                title=title,
+                title_fontsize=title_fontsize,
+            )
         if axis_off:
-            plt.axis('off')
+            plt.axis("off")
 
 
 class HeadTailBreaks(MapClassifier):
