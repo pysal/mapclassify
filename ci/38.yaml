@@ -19,3 +19,4 @@ dependencies:
   - zstd
   - networkx
   - libpysal
+  - distinctipy
