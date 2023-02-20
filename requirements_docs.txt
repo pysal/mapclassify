@@ -1,4 +1,4 @@
-nbshpinx
+nbsphinx
 numpydoc
 sphinx>=1.4.3
 sphinx-gallery
