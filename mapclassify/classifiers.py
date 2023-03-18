@@ -1499,6 +1499,8 @@ class StdMean(MapClassifier):
     multiples : array
                 the multiples of the standard deviation to add/subtract from
                 the sample mean to define the bins, default=[-2,-1,1,2]
+    anchor    : bool, default=False
+                Anchor upper bound of one class to the sample mean
 
     Attributes
     ----------
@@ -1534,8 +1536,9 @@ class StdMean(MapClassifier):
 
     """
 
-    def __init__(self, y, multiples=[-2, -1, 1, 2]):
+    def __init__(self, y, multiples=[-2, -1, 1, 2], anchor=False):
         self.multiples = multiples
+        self.anchor = anchor
         MapClassifier.__init__(self, y)
         self.name = "StdMean"
 
@@ -1543,6 +1546,10 @@ class StdMean(MapClassifier):
         y = self.y
         s = y.std(ddof=1)
         m = y.mean()
+        if self.anchor:
+            min_z = int((y.min() - m)/s)
+            max_z = int((y.max() - m)/s) + 1
+            self.multiples = list(range(min_z, max_z))
         cuts = [m + s * w for w in self.multiples]
         y_max = y.max()
         if cuts[-1] < y_max:
