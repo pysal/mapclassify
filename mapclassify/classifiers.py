@@ -1594,8 +1594,8 @@ class StdMean(MapClassifier):
         s = y.std(ddof=1)
         m = y.mean()
         if self.anchor:
-            min_z = int((y.min() - m)/s)
-            max_z = int((y.max() - m)/s) + 1
+            min_z = int((y.min() - m) / s)
+            max_z = int((y.max() - m) / s) + 1
             self.multiples = list(range(min_z, max_z))
         cuts = [m + s * w for w in self.multiples]
         y_max = y.max()

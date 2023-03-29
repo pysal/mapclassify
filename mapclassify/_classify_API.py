@@ -178,7 +178,7 @@ def classify(
 
     elif scheme == "stdmean":
         classifier = _classifiers[scheme](y, multiples, anchor)
-        
+
     elif scheme == "jenkscaspallsampled":
         classifier = _classifiers[scheme](y, k, pct_sampled)
 

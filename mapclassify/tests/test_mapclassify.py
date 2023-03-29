@@ -622,18 +622,27 @@ class TestUserDefined:
         numpy.testing.assert_array_almost_equal(ud.bins, numpy.array([10, 20, 30, 40]))
         numpy.testing.assert_array_almost_equal(ud.counts, numpy.array([0, 3, 0, 0]))
 
+
 class TestStdMean(unittest.TestCase):
     def setUp(self):
         self.V = load_example()
 
     def test_StdMeanAnchor(self):
         sm = StdMean(self.V, anchor=True)
-        bins = np.array([125.92810345, 672.57333208,
-                         1219.21856072, 1765.86378936,
-                         2312.50901799, 2859.15424663,
-                         3405.79947527, 3952.4447039 ,
-                         4111.45 ])
-        counts = np.array([50,  6,  1,  0,  0,  0,  0,  0,  1])
+        bins = np.array(
+            [
+                125.92810345,
+                672.57333208,
+                1219.21856072,
+                1765.86378936,
+                2312.50901799,
+                2859.15424663,
+                3405.79947527,
+                3952.4447039,
+                4111.45,
+            ]
+        )
+        counts = np.array([50, 6, 1, 0, 0, 0, 0, 0, 1])
         np.testing.assert_array_almost_equal(sm.bins, bins)
         np.testing.assert_array_almost_equal(sm.counts, counts)
 
