@@ -50,6 +50,7 @@ def classify(
     mindiff=0,
     initial=100,
     bins=None,
+    anchor=False,
 ):
     """
 
@@ -148,7 +149,7 @@ def classify(
     elif scheme == "percentiles":
         classifier = _classifiers[scheme](y, pct)
     elif scheme == "stdmean":
-        classifier = _classifiers[scheme](y, multiples)
+        classifier = _classifiers[scheme](y, multiples, anchor)
     elif scheme == "jenkscaspallsampled":
         classifier = _classifiers[scheme](y, k, pct_sampled)
     elif scheme == "maximumbreaks":

@@ -1514,6 +1514,15 @@ class StdMean(MapClassifier):
     counts  : array
               (k,1), the number of observations falling in each class
 
+    Notes
+    -----
+
+    If anchor is True, the closed upper bound of the first class is set to
+    min(y)+std(y), while the open lower bound of the last class is set to
+    max(y)-std(y). k is ignored if anchor is True, and is determined
+    by the number of standar deviations required to span the range of
+    y. multiples is also ignored if anchor is True.
+
     Examples
     --------
     >>> import mapclassify as mc
@@ -1533,7 +1542,15 @@ class StdMean(MapClassifier):
             4111.45      ])
     >>> list(st3.counts)
     [0, 0, 57, 0, 1]
-
+    >>> stda = mc.StdMean(y, anchor=True)
+    >>> stda.k
+    9
+    >>> stda.bins
+    array([ 125.92810345,  672.57333208, 1219.21856072, 1765.86378936,
+       2312.50901799, 2859.15424663, 3405.79947527, 3952.4447039 ,
+       4111.45      ])
+    >>> cal.mean(), cal.std(), cal.min(), cal.max()
+    (125.92810344827588, 546.6452286365233, 0.13, 4111.45)
     """
 
     def __init__(self, y, multiples=[-2, -1, 1, 2], anchor=False):
