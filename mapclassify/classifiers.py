@@ -1572,7 +1572,7 @@ class StdMean(MapClassifier):
 
     >>> list(st3.counts)
     [0, 0, 57, 0, 1]
-    >>> stda = mapclassify.StdMean(y, anchor=True)
+    >>> stda = mapclassify.StdMean(cal, anchor=True)
     >>> stda.k
     9
     >>> stda.bins
