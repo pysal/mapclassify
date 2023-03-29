@@ -767,7 +767,7 @@ class MapClassifier(object):
         6  6.333333   3.333333   8.333333
         7  6.888889   2.222222  10.555556
         8  7.444444   1.111111  12.777778
-        9  8.0https://geodacenter.github.io/workbook/3a_mapping/lab3a.html#standard-deviation-map00000   0.000000  15.000000
+        9  8.000000   0.000000  15.000000
 
         >>> data.apply(mapclassify.Quantiles.make(rolling=True))
            0  1  2
