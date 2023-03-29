@@ -623,7 +623,7 @@ class TestUserDefined:
         numpy.testing.assert_array_almost_equal(ud.counts, numpy.array([0, 3, 0, 0]))
 
 
-class TestStdMean(unittest.TestCase):
+class TestStdMeanAnchor(unittest.TestCase):
     def setUp(self):
         self.V = load_example()
 
