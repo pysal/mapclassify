@@ -1,0 +1,28 @@
+name: test
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  # required
+  - scipy
+  - beautifulsoup4
+  - scikit-learn
+  # testing
+  - pytest
+  - pytest-cov
+  - pytest-xdist
+  - codecov
+  - matplotlib
+  # optional
+  - geopandas
+  - palettable
+  - zstd
+  - networkx
+  - libpysal
+  # docs
+  - nbsphinx
+  - numpydoc
+  - sphinx
+  - sphinx-gallery
+  - sphinxcontrib-bibtex
+  - sphinx_bootstrap_theme

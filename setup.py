@@ -1,6 +1,5 @@
 import os
 import sys
-from distutils.command.build_py import build_py
 from io import open
 from os.path import join as pjoin
 from os.path import relpath
@@ -73,7 +72,7 @@ def setup_package():
     setup(
         name=package,
         version=versioneer.get_version(),
-        cmdclass=versioneer.get_cmdclass({"build_py": build_py}),
+        cmdclass=versioneer.get_cmdclass(),
         description="Classification Schemes for Choropleth Maps.",
         long_description=long_description,
         long_description_content_type="text/markdown",
@@ -95,6 +94,7 @@ def setup_package():
             "Programming Language :: Python :: 3.8",
             "Programming Language :: Python :: 3.9",
             "Programming Language :: Python :: 3.10",
+            "Programming Language :: Python :: 3.11",
         ],
         license="3-Clause BSD",
         packages=find_packages(),
