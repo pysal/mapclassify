@@ -623,13 +623,13 @@ class TestUserDefined:
         numpy.testing.assert_array_almost_equal(ud.counts, numpy.array([0, 3, 0, 0]))
 
 
-class TestStdMeanAnchor(unittest.TestCase):
-    def setUp(self):
+class TestStdMeanAnchor:
+    def setup_method(self):
         self.V = load_example()
 
     def test_StdMeanAnchor(self):
         sm = StdMean(self.V, anchor=True)
-        bins = np.array(
+        bins = numpy.array(
             [
                 125.92810345,
                 672.57333208,
@@ -642,9 +642,9 @@ class TestStdMeanAnchor(unittest.TestCase):
                 4111.45,
             ]
         )
-        counts = np.array([50, 6, 1, 0, 0, 0, 0, 0, 1])
-        np.testing.assert_array_almost_equal(sm.bins, bins)
-        np.testing.assert_array_almost_equal(sm.counts, counts)
+        counts = numpy.array([50, 6, 1, 0, 0, 0, 0, 0, 1])
+        numpy.testing.assert_array_almost_equal(sm.bins, bins)
+        numpy.testing.assert_array_almost_equal(sm.counts, counts)
 
 
 class TestMaxP:

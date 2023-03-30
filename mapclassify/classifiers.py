@@ -1543,11 +1543,12 @@ class StdMean(MapClassifier):
     Notes
     -----
 
-    If anchor is True, the closed upper bound of the first class is set to
-    min(y)+std(y), while the open lower bound of the last class is set to
-    max(y)-std(y). k is ignored if anchor is True, and is determined
-    by the number of standar deviations required to span the range of
-    y. multiples is also ignored if anchor is True.
+    If anchor is True, one of the intervals will its closed upper bound equal to
+    the mean of y. Intermediate intervals will have widths equal to the standard
+    deviation of y. The first interval will be closed on the minimum value of
+    y, and the last interval will be closed on the maximum of y. The first and
+    last intervals may have widths different from the intermediate intervals.
+
 
     Examples
     --------
