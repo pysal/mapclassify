@@ -1520,13 +1520,14 @@ class StdMean(MapClassifier):
 
     Parameters
     ----------
-    y         : array
-                (n,1), values to classify
-    multiples : array
-                the multiples of the standard deviation to add/subtract from
-                the sample mean to define the bins, default=[-2,-1,1,2]
-    anchor    : bool, default=False
-                Anchor upper bound of one class to the sample mean
+    y : numpy.array
+        :math:`(n,1)`, values to classify
+    multiples : numpy.array (default [-2, -1, 1, 2])
+        The multiples of the standard deviation to add/subtract from
+        the sample mean to define the bins.
+    anchor : bool (default False)
+        Anchor upper bound of one class to the sample mean.
+
 
     Attributes
     ----------
