@@ -622,6 +622,14 @@ class TestUserDefined:
         numpy.testing.assert_array_almost_equal(ud.bins, numpy.array([10, 20, 30, 40]))
         numpy.testing.assert_array_almost_equal(ud.counts, numpy.array([0, 3, 0, 0]))
 
+    def test_UserDefined_lowest(self):
+        bins = [20, max(self.V)]
+        ud = UserDefined(self.V, bins, lowest=-1.0)
+        numpy.testing.assert_array_almost_equal(ud.bins, numpy.array([20.0, 4111.45]))
+        numpy.testing.assert_array_almost_equal(ud.counts, numpy.array([37, 21]))
+        classes = ["[  -1.00,   20.00]", "(  20.00, 4111.45]"]
+        assert ud.get_legend_classes() == classes
+
 
 class TestMaxP:
     def setup_method(self):
