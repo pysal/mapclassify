@@ -322,6 +322,39 @@ array([5, 1, 2, 3, 2, 1, 5, 1, 3, 3, 1, 2, 2, 1, 2, 2, 2, 1, 5, 2, 4, 1, 2,
 
 ```
 
+### Binning new data
+
+```python
+>>> bp = mapclassify.BoxPlot(y)
+>>> bp
+BoxPlot
+
+     Interval        Count
+--------------------------
+(   -inf,  -52.88] |     0
+( -52.88,    2.57] |    15
+(   2.57,    9.36] |    14
+(   9.36,   39.53] |    14
+(  39.53,   94.97] |     6
+(  94.97, 4111.45] |     9
+>>> bp.find_bin([0, 7, 3000, 48])
+array([1, 2, 5, 4])
+
+```
+Note that `find_bin` does not recalibrate the classifier:
+```python
+>>> bp
+BoxPlot
+
+     Interval        Count
+--------------------------
+(   -inf,  -52.88] |     0
+( -52.88,    2.57] |    15
+(   2.57,    9.36] |    14
+(   9.36,   39.53] |    14
+(  39.53,   94.97] |     6
+(  94.97, 4111.45] |     9
+```
 ### Apply
 
 ```python
