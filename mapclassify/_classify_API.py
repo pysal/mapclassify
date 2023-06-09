@@ -50,6 +50,7 @@ def classify(
     mindiff=0,
     initial=100,
     bins=None,
+    lowest=None,
     anchor=False,
 ):
     """
@@ -94,6 +95,9 @@ def classify(
         Scalar minimum value of lowest class. Default is to set the minimum
         to ``-inf`` if  ``y.min()`` > first upper bound (which will override
         the default), otherwise minimum is set to ``y.min()``.
+    anchor : bool (default False)
+            Anchor upper bound of one class to the sample mean.
+
 
 
     Returns
