@@ -631,6 +631,30 @@ class TestUserDefined:
         assert ud.get_legend_classes() == classes
 
 
+class TestStdMeanAnchor:
+    def setup_method(self):
+        self.V = load_example()
+
+    def test_StdMeanAnchor(self):
+        sm = StdMean(self.V, anchor=True)
+        bins = numpy.array(
+            [
+                125.92810345,
+                672.57333208,
+                1219.21856072,
+                1765.86378936,
+                2312.50901799,
+                2859.15424663,
+                3405.79947527,
+                3952.4447039,
+                4111.45,
+            ]
+        )
+        counts = numpy.array([50, 6, 1, 0, 0, 0, 0, 0, 1])
+        numpy.testing.assert_array_almost_equal(sm.bins, bins)
+        numpy.testing.assert_array_almost_equal(sm.counts, counts)
+
+
 class TestMaxP:
     def setup_method(self):
         self.V = load_example()

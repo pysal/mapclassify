@@ -1520,12 +1520,14 @@ class StdMean(MapClassifier):
 
     Parameters
     ----------
-
     y : numpy.array
-        :math:`(n,1)`, values to classify.
+        :math:`(n,1)`, values to classify
     multiples : numpy.array (default [-2, -1, 1, 2])
         The multiples of the standard deviation to add/subtract from
-        the sample mean to define the bins
+        the sample mean to define the bins.
+    anchor : bool (default False)
+        Anchor upper bound of one class to the sample mean.
+
 
     Attributes
     ----------
@@ -1538,6 +1540,17 @@ class StdMean(MapClassifier):
         The number of classes.
     counts : numpy.array
         :math:`(k,1)`, the number of observations falling in each class.
+
+    Notes
+    -----
+
+    If anchor is True, one of the intervals will have its closed upper bound
+    equal to the mean of y. Intermediate intervals will have widths equal to
+    the standard deviation of y. The first interval will be closed on the
+    minimum value of y, and the last interval will be closed on the maximum of
+    y. The first and last intervals may have widths different from the
+    intermediate intervals.
+
 
     Examples
     --------
@@ -1562,11 +1575,20 @@ class StdMean(MapClassifier):
 
     >>> list(st3.counts)
     [0, 0, 57, 0, 1]
-
+    >>> stda = mapclassify.StdMean(cal, anchor=True)
+    >>> stda.k
+    9
+    >>> stda.bins
+    array([ 125.92810345,  672.57333208, 1219.21856072, 1765.86378936,
+           2312.50901799, 2859.15424663, 3405.79947527, 3952.4447039 ,
+           4111.45      ])
+    >>> cal.mean(), cal.std(), cal.min(), cal.max()
+    (125.92810344827588, 546.6452286365233, 0.13, 4111.45)
     """
 
-    def __init__(self, y, multiples=[-2, -1, 1, 2]):
+    def __init__(self, y, multiples=[-2, -1, 1, 2], anchor=False):
         self.multiples = multiples
+        self.anchor = anchor
         MapClassifier.__init__(self, y)
         self.name = "StdMean"
 
@@ -1574,6 +1596,10 @@ class StdMean(MapClassifier):
         y = self.y
         s = y.std(ddof=1)
         m = y.mean()
+        if self.anchor:
+            min_z = int((y.min() - m) / s)
+            max_z = int((y.max() - m) / s) + 1
+            self.multiples = list(range(min_z, max_z))
         cuts = [m + s * w for w in self.multiples]
         y_max = y.max()
         if cuts[-1] < y_max:

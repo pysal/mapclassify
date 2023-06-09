@@ -51,6 +51,7 @@ def classify(
     initial=100,
     bins=None,
     lowest=None,
+    anchor=False,
 ):
     """
 
@@ -94,6 +95,9 @@ def classify(
         Scalar minimum value of lowest class. Default is to set the minimum
         to ``-inf`` if  ``y.min()`` > first upper bound (which will override
         the default), otherwise minimum is set to ``y.min()``.
+    anchor : bool (default False)
+            Anchor upper bound of one class to the sample mean.
+
 
 
     Returns
@@ -182,7 +186,7 @@ def classify(
         classifier = _classifiers[scheme](y, pct)
 
     elif scheme == "stdmean":
-        classifier = _classifiers[scheme](y, multiples)
+        classifier = _classifiers[scheme](y, multiples, anchor)
 
     elif scheme == "jenkscaspallsampled":
         classifier = _classifiers[scheme](y, k, pct_sampled)

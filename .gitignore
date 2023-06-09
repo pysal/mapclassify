@@ -11,3 +11,4 @@ mapclassify/tests/.ropeproject/
 .DS_Store
 .vscode/settings.json
 __pycache__
+/notebooks/.ipynb_checkpoints/
