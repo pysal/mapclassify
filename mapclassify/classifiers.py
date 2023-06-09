@@ -1543,7 +1543,7 @@ class StdMean(MapClassifier):
     Notes
     -----
 
-    If anchor is True, one of the intervals will its closed upper bound equal to
+    If anchor is True, one of the intervals will have its closed upper bound equal to
     the mean of y. Intermediate intervals will have widths equal to the standard
     deviation of y. The first interval will be closed on the minimum value of
     y, and the last interval will be closed on the maximum of y. The first and
