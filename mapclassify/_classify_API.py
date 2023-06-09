@@ -90,6 +90,11 @@ def classify(
         :math:`(k,1)`, upper bounds of classes (have to be monotically
         increasing) if using ``user_defined`` classifier.
         Default is ``None``. For example: ``[20, max(y)]``.
+    lowest : float (default None)
+        Scalar minimum value of lowest class. Default is to set the minimum
+        to ``-inf`` if  ``y.min()`` > first upper bound (which will override
+        the default), otherwise minimum is set to ``y.min()``.
+
 
     Returns
     -------
@@ -189,7 +194,7 @@ def classify(
         classifier = _classifiers[scheme](y, k, initial)
 
     elif scheme == "userdefined":
-        classifier = _classifiers[scheme](y, bins)
+        classifier = _classifiers[scheme](y, bins, lowest)
 
     elif scheme in [
         "equalinterval",
