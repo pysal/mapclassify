@@ -358,6 +358,17 @@ class TestHeadTailBreaks:
         numpy.testing.assert_array_almost_equal(htb.counts, numpy.array([2, 1]))
 
 
+class TestPrettyBreaks:
+    def setup_method(self):
+        self.V = load_example()
+
+    def test_pretty(self):
+        res = PrettyBreaks(self.V)
+        assert res.k == 5
+        numpy.testing.assert_array_equal(res.counts, [57, 0, 0, 0, 1])
+        numpy.testing.assert_array_equal(res.bins, list(range(1000, 6000, 1000)))
+
+
 class TestMapClassifier:
     def test_Map_Classifier(self):
         # map__classifier = Map_Classifier(y)

@@ -11,6 +11,7 @@ from .classifiers import (
     MaxP,
     NaturalBreaks,
     Percentiles,
+    PrettyBreaks,
     Quantiles,
     StdMean,
     UserDefined,
@@ -33,6 +34,7 @@ _classifiers = {
     "naturalbreaks": NaturalBreaks,
     "quantiles": Quantiles,
     "percentiles": Percentiles,
+    "pretty": PrettyBreaks,
     "stdmean": StdMean,
     "userdefined": UserDefined,
 }
@@ -206,6 +208,7 @@ def classify(
         "jenkscaspall",
         "jenkscaspallforced",
         "quantiles",
+        "pretty",
     ]:
         classifier = _classifiers[scheme](y, k)
 

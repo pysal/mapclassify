@@ -27,6 +27,7 @@ __all__ = [
     "NaturalBreaks",
     "Quantiles",
     "Percentiles",
+    "PrettyBreaks",
     "StdMean",
     "UserDefined",
     "gadf",
@@ -48,6 +49,7 @@ CLASSIFIERS = (
     "NaturalBreaks",
     "Quantiles",
     "Percentiles",
+    "PrettyBreaks",
     "StdMean",
     "UserDefined",
 )
@@ -453,38 +455,41 @@ def bin1d(x, bins):
     counts = np.bincount(binIds, minlength=len(bins))
     return (binIds, counts)
 
+
 def _pretty_number(x, rounded=True):
     exp = np.floor(np.log10(x))
-    f  = x / 10**exp
+    f = x / 10**exp
     if rounded:
         if f < 1.5:
-            nf = 1.
-        elif f < 3.:
-            nf = 2.
-        elif f < 7.:
-            nf = 5.
+            nf = 1.0
+        elif f < 3.0:
+            nf = 2.0
+        elif f < 7.0:
+            nf = 5.0
         else:
-            nf = 10.
+            nf = 10.0
     else:
-        if f <= 1.:
-            nf = 1.
-        elif f <= 2.:
-            nf = 2.
-        elif f <= 5.:
-            nf = 5.
+        if f <= 1.0:
+            nf = 1.0
+        elif f <= 2.0:
+            nf = 2.0
+        elif f <= 5.0:
+            nf = 5.0
         else:
-            nf = 10.
+            nf = 10.0
 
-    return nf * 10.**exp
+    return nf * 10.0**exp
+
 
 def _pretty(y, k=5):
     low = y.min()
     high = y.max()
     rg = _pretty_number(high - low, False)
-    d = _pretty_number(rg / (k-1), True)
+    d = _pretty_number(rg / (k - 1), True)
     miny = np.floor(low / d) * d
     maxy = np.ceil(high / d) * d
-    return np.arange(miny, maxy+0.5*d, d)
+    return np.arange(miny, maxy + 0.5 * d, d)
+
 
 def load_example():
     """
@@ -1354,12 +1359,15 @@ class Percentiles(MapClassifier):
             new._update(y, **kwargs)
             return new
 
-class Pretty(MapClassifier):
+
+class PrettyBreaks(MapClassifier):
     def __init__(self, y, k=5):
         """
         Pretty breakpoints
 
-        Computes breaks that are equally spaced round values which cover the range of values in `y`. The breaks are chose so that they are 1, 2, or 5 times a power of 10.
+        Computes breaks that are equally spaced round values which
+        cover the range of values in `y`. The breaks are chose so that
+        they are 1, 2, or 5 times a power of 10.
 
 
         Parameters
@@ -1368,16 +1376,23 @@ class Pretty(MapClassifier):
             attribute to classify
         k : int
             The number of desired classes
+
+
+        Notes
+        -----
+        The number of classes may be different from the specified `k`,
+        as the rounding of the upper bounds takes precedent.
+
+        The lower bound of the first interval will be equal to the
+        minimum of the data.
         """
         self.k = k
         MapClassifier.__init__(self, y)
         self.name = "Pretty"
 
-
     def _set_bins(self):
         bins = _pretty(self.y, self.k)
         self.bins = bins[1:]
-
 
 
 class BoxPlot(MapClassifier):
