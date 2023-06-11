@@ -1366,7 +1366,7 @@ class PrettyBreaks(MapClassifier):
         Pretty breakpoints
 
         Computes breaks that are equally spaced round values which
-        cover the range of values in `y`. The breaks are chose so that
+        cover the range of values in `y`. The breaks are chosen so that
         they are 1, 2, or 5 times a power of 10.
 
 
