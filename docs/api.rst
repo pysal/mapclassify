@@ -26,6 +26,7 @@ Classifiers
     mapclassify.MaximumBreaks
     mapclassify.NaturalBreaks
     mapclassify.Percentiles
+    mapclassify.PrettyBreaks
     mapclassify.Quantiles
     mapclassify.StdMean
     mapclassify.UserDefined
