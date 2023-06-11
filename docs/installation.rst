@@ -3,7 +3,7 @@
 Installation
 ============
 
-mapclassify supports python `3.8`_, `3.9`_, and `3.10`_. Please make sure that you are
+mapclassify supports python `3.8`_, `3.9`_, `3.10`_, and `3.11`_. Please make sure that you are
 operating in a python 3 environment.
 
 Installing released version
@@ -41,9 +41,10 @@ your fork. By making changes
 to your local clone and submitting a pull request to `pysal/mapclassify`_, you can
 contribute to mapclassify development.
 
-.. _3.6: https://docs.python.org/3.8/
-.. _3.7: https://docs.python.org/3.9/
-.. _3.8: https://docs.python.org/3.10/
+.. _3.8: https://docs.python.org/3.8/
+.. _3.9: https://docs.python.org/3.9/
+.. _3.10: https://docs.python.org/3.10/
+.. _3.11: https://docs.python.org/3.11/
 .. _conda: https://docs.conda.io/en/latest/
 .. _conda-forge: https://anaconda.org/conda-forge/mapclassify
 .. _Python Package Index: https://pypi.org/project/mapclassify/
