@@ -11,6 +11,7 @@ from .classifiers import (
     MaxP,
     NaturalBreaks,
     Percentiles,
+    PrettyBreaks,
     Quantiles,
     StdMean,
     UserDefined,
@@ -33,6 +34,7 @@ _classifiers = {
     "naturalbreaks": NaturalBreaks,
     "quantiles": Quantiles,
     "percentiles": Percentiles,
+    "prettybreaks": PrettyBreaks,
     "stdmean": StdMean,
     "userdefined": UserDefined,
 }
@@ -113,20 +115,21 @@ def classify(
     Supported classifiers include:
 
     * ``quantiles``
-    * ``box_plot``
-    * ``equal_interval``
-    * ``fisher_jenks``
-    * ``fisher_jenks_sampled``
-    * ``headtail_breaks``
-    * ``jenks_caspall``
-    * ``jenks_caspall_sampled``
-    * ``jenks_caspall_forced``
-    * ``max_p``
-    * ``maximum_breaks``
-    * ``natural_breaks``
+    * ``boxplot``
+    * ``equalinterval``
+    * ``fisherjenks``
+    * ``fisherjenkssampled``
+    * ``headtailbreaks``
+    * ``jenkscaspall``
+    * ``jenkscaspallsampled``
+    * ``jenks_caspallforced``
+    * ``maxp``
+    * ``maximumbreaks``
+    * ``naturalbreaks``
     * ``percentiles``
-    * ``std_mean``
-    * ``user_defined``
+    * ``prettybreaks``
+    * ``stdmean``
+    * ``userdefined``
 
     Examples
     --------
@@ -206,6 +209,7 @@ def classify(
         "jenkscaspall",
         "jenkscaspallforced",
         "quantiles",
+        "prettybreaks",
     ]:
         classifier = _classifiers[scheme](y, k)
 

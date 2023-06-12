@@ -55,6 +55,10 @@ class TestClassify:
         b = mapclassify.Percentiles(self.x, pct=[25, 50, 75, 100])
         _assertions(a, b)
 
+        a = mapclassify.classify(self.x, "prettybreaks")
+        b = mapclassify.PrettyBreaks(self.x)
+        _assertions(a, b)
+
     def test_jenks_caspall(self):
         a = mapclassify.classify(self.x, "JenksCaspall", k=3)
         b = mapclassify.JenksCaspall(self.x, k=3)

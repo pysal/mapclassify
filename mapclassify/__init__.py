@@ -15,6 +15,7 @@ from .classifiers import (
     MaxP,
     NaturalBreaks,
     Percentiles,
+    PrettyBreaks,
     Quantiles,
     StdMean,
     UserDefined,
