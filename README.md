@@ -242,6 +242,22 @@ Percentiles
 (  22.86, 4111.45] |    20
 ```
 
+### PrettyBreaks
+```python
+>>> np.random.seed(123456)
+>>> x = np.random.randint(0, 10000, (100,1))
+>>> mapclassify.PrettyBreaks(x)
+Pretty
+
+      Interval         Count
+----------------------------
+[  300.00,  2000.00] |    23
+( 2000.00,  4000.00] |    15
+( 4000.00,  6000.00] |    18
+( 6000.00,  8000.00] |    24
+( 8000.00, 10000.00] |    20
+ ```
+
 ### StdMean
 
 ```python

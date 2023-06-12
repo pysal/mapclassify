@@ -55,8 +55,7 @@ class TestClassify:
         b = mapclassify.Percentiles(self.x, pct=[25, 50, 75, 100])
         _assertions(a, b)
 
-    def test_pretty(self):
-        a = mapclassify.classify(self.x, "pretty")
+        a = mapclassify.classify(self.x, "prettybreaks")
         b = mapclassify.PrettyBreaks(self.x)
         _assertions(a, b)
 
