@@ -18,6 +18,7 @@ from .classifiers import (
     PrettyBreaks,
     Quantiles,
     StdMean,
+    UniqueValue,
     UserDefined,
     gadf,
     load_example,

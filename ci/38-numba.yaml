@@ -7,6 +7,7 @@ dependencies:
   - scipy
   - beautifulsoup4
   - scikit-learn
+  - distinctipy
   # testing
   - pytest
   - pytest-cov
