@@ -118,7 +118,7 @@ def _format_intervals(mc, fmt="{:.0f}"):
             lowest = mc.lowest
     lower_open = False
     if lowest > mc.bins[0]:
-        lowest = np.NINF
+        lowest = -np.INF
         lower_open = True
     edges = [lowest]
     edges.extend(mc.bins)
