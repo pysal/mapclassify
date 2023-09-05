@@ -36,6 +36,7 @@ jobs:
             ci/310.yaml,
             ci/310-numba.yaml,
             ci/311.yaml,
+            ci/311-dev.yaml,
           ]
         include:
           - environment-file: ci/311.yaml
@@ -51,19 +52,19 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v3
-      
+
       - name: setup micromamba
         uses: mamba-org/provision-with-micromamba@main
         with:
           environment-file: ${{ matrix.environment-file }}
           micromamba-version: 'latest'
-      
+
       - name: environment info
         shell: bash -l {0}
         run: |
           micromamba info
           micromamba list
-      
+
       - name: spatial versions
         shell: bash -l {0}
         run: |
