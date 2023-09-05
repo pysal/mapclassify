@@ -1456,7 +1456,7 @@ class BoxPlot(MapClassifier):
     >>> bp.counts.tolist()
     [0, 15, 14, 14, 6, 9]
 
-    >>> list(bp.high_outlier_ids)
+    >>> bp.high_outlier_ids.tolist()
     [0, 6, 18, 29, 33, 36, 37, 40, 42]
 
     >>> cal[bp.high_outlier_ids].values
@@ -1654,7 +1654,7 @@ class StdMean(MapClassifier):
     array([ 125.92810345,  672.57333208, 1219.21856072, 1765.86378936,
            2312.50901799, 2859.15424663, 3405.79947527, 3952.4447039 ,
            4111.45      ])
-    >>> cal.mean(), cal.std(), cal.min(), cal.max()
+    >>> float(cal.mean()), float(cal.std()), float(cal.min()), float(cal.max())
     (125.92810344827588, 546.6452286365233, 0.13, 4111.45)
     """
 
@@ -1940,7 +1940,7 @@ class FisherJenks(MapClassifier):
     >>> import mapclassify
     >>> cal = mapclassify.load_example()
     >>> fj = mapclassify.FisherJenks(cal)
-    >>> fj.adcm
+    >>> float(fj.adcm)
     799.24
 
     >>> list(fj.bins)
@@ -2095,7 +2095,7 @@ class JenksCaspall(MapClassifier):
     >>> jc.bins
     array([1.81000e+00, 7.60000e+00, 2.98200e+01, 1.81270e+02, 4.11145e+03])
 
-    >>> c.counts.tolist()
+    >>> jc.counts.tolist()
     [14, 13, 14, 10, 7]
 
     """
@@ -2444,7 +2444,7 @@ class UserDefined(MapClassifier):
     [20, 4111.45]
 
     >>> ud = mapclassify.UserDefined(cal, bins)
-    >>> list(ud.bins)
+    >>> ud.bins.tolist()
     [20.0, 4111.45]
 
     >>> ud.counts.tolist()
@@ -2452,7 +2452,7 @@ class UserDefined(MapClassifier):
 
     >>> bins = [20, 30]
     >>> ud = mapclassify.UserDefined(cal, bins)
-    >>> list(ud.bins)
+    >>> ud.bins.tolist()
     [20.0, 30.0, 4111.45]
 
     >>> ud.counts.tolist()
@@ -2816,7 +2816,7 @@ def gadf(y, method="Quantiles", maxk=15, pct=0.8):
     >>> qgadf[0]
     15
 
-    >>> qgadf[-1]
+    >>> float(qgadf[-1])
     0.3740257590909283
 
     Quantiles fail to exceed 0.80 before 15 classes. If we lower the bar to
@@ -2892,7 +2892,7 @@ class KClassifiers(object):
     >>> ks.best.k
     4
 
-    >>> ks.best.gadf
+    >>> float(ks.best.gadf)
     0.8481032719908105
 
     Notes
