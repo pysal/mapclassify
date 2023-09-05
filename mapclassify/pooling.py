@@ -1,8 +1,15 @@
 import numpy
 
-from .classifiers import (BoxPlot, EqualInterval, FisherJenks,
-                          FisherJenksSampled, MaximumBreaks, Quantiles,
-                          StdMean, UserDefined)
+from .classifiers import (
+    BoxPlot,
+    EqualInterval,
+    FisherJenks,
+    FisherJenksSampled,
+    MaximumBreaks,
+    Quantiles,
+    StdMean,
+    UserDefined,
+)
 
 __all__ = ["Pooled"]
 
