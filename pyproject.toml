@@ -39,7 +39,7 @@ classifiers = [
 ]
 requires-python = ">=3.9"
 dependencies = [
-    "networkx>=2.3"
+    "networkx>=2.3",
     "numpy>=1.3",
     "pandas>=1.0",
     "scikit-learn>=1.0",
@@ -75,7 +75,7 @@ tests = [
     "pytest-cov",
     "pytest-xdist",
 ]
-all = "numba[speedups, dev, docs, tests]"
+all = ["numba[speedups,dev,docs,tests]"]
 
 [tool.setuptools.packages.find]
 include = [
@@ -91,26 +91,26 @@ extend-exclude = '''
 )
 #'''
 
-#[tool.ruff]
-#line-length = 88
-#select = ["E", "F", "W", "I", "UP", "N", "B", "A", "C4", "SIM", "ARG"]
-#target-version = "py38"
-#ignore = [
-#    "B006",
-#    "B008",
-#    "B009",
-#    "B010",
-#    "C408",
-#    "E731",
-#    "F401",
-#    "F403",
-#    "F405",
-#    "N803",
-#    "N806",
-#    "N999",
-#    "UP007"
-#]
-#exclude = ["mapclassify/tests/*", "docs/*"]
+[tool.ruff]
+line-length = 88
+select = ["E", "F", "W", "I", "UP", "N", "B", "A", "C4", "SIM", "ARG"]
+target-version = "py38"
+ignore = [
+    "B006",
+    "B008",
+    "B009",
+    "B010",
+    "C408",
+    "E731",
+    "F401",
+    "F403",
+    "F405",
+    "N803",
+    "N806",
+    "N999",
+    "UP007"
+]
+exclude = ["mapclassify/tests/*", "docs/*"]
 
 [tool.coverage.run]
 source = ["./mapclassify"]
