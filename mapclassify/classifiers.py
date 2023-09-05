@@ -1943,7 +1943,7 @@ class FisherJenks(MapClassifier):
     >>> float(fj.adcm)
     799.24
 
-    >>> list(fj.bins)
+    >>> fj.bins.tolist()
     [75.29, 192.05, 370.5, 722.85, 4111.45]
 
     >>> fj.counts.tolist()
@@ -2826,7 +2826,7 @@ def gadf(y, method="Quantiles", maxk=15, pct=0.8):
     >>> qgadf2[0]
     5
 
-    >>> qgadf2[-1]
+    >>> float(qgadf2[-1])
     0.21710231966462412
 
     Notes
