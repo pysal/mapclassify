@@ -1,9 +1,0 @@
-pytest
-pytest-cov
-pytest-xdist
-codecov
-geopandas
-libpysal
-networkx
-palettable
-

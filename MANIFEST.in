@@ -1,3 +1,0 @@
-include LICENSE.txt CHANGELOG.md MANIFEST.in requirements_tests.txt requirements_speedups.txt requirements.txt requirements_docs.txt
-include mapclassify/_version.py
-include versioneer.py
