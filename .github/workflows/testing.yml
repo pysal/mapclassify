@@ -11,14 +11,7 @@ on:
     - cron: "59 21 * * *"
 
 jobs:
-  linting:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-      - uses: pre-commit/action@v3.0.0
   testing:
-    needs: linting
     name: (${{ matrix.os }}, ${{ matrix.environment-file }})
     runs-on: ${{ matrix.os }}
     defaults:
@@ -36,6 +29,7 @@ jobs:
             ci/310.yaml,
             ci/310-numba.yaml,
             ci/311.yaml,
+            ci/311-dev.yaml,
           ]
         include:
           - environment-file: ci/311.yaml
@@ -50,22 +44,20 @@ jobs:
 
     steps:
       - name: checkout repo
-        uses: actions/checkout@v3
-      
+        uses: actions/checkout@v4
+
       - name: setup micromamba
-        uses: mamba-org/provision-with-micromamba@main
+        uses: mamba-org/setup-micromamba@v1
         with:
           environment-file: ${{ matrix.environment-file }}
           micromamba-version: 'latest'
-      
+
       - name: environment info
-        shell: bash -l {0}
         run: |
           micromamba info
           micromamba list
-      
+
       - name: spatial versions
-        shell: bash -l {0}
         run: |
           python -c "import geopandas; geopandas.show_versions();"
 

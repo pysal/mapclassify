@@ -438,7 +438,7 @@ def bin1d(x, bins):
            1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2])
 
-    >>> list(counts)
+    >>> counts.tolist()
     [26, 49, 25]
 
     """
@@ -1150,7 +1150,7 @@ class HeadTailBreaks(MapClassifier):
     >>> htb.k
     3
 
-    >>> list(htb.counts)
+    >>> htb.counts.tolist()
     [50, 7, 1]
 
     >>> htb.bins
@@ -1163,7 +1163,7 @@ class HeadTailBreaks(MapClassifier):
     array([ 32.26204423,  72.50205622, 128.07150107, 190.2899093 ,
            264.82847377, 457.88157946, 576.76046949])
 
-    >>> list(htb.counts)
+    >>> htb.counts.tolist()
     [695, 209, 62, 22, 10, 1, 1]
 
     Notes
@@ -1227,7 +1227,7 @@ class EqualInterval(MapClassifier):
     >>> ei.k
     5
 
-    >>> list(ei.counts)
+    >>> ei.counts.tolist()
     [57, 0, 0, 0, 1]
 
     >>> ei.bins
@@ -1309,14 +1309,14 @@ class Percentiles(MapClassifier):
     array([1.357000e-01, 5.530000e-01, 9.365000e+00, 2.139140e+02,
            2.179948e+03, 4.111450e+03])
 
-    >>> list(p.counts)
+    >>> p.counts.tolist()
     [1, 5, 23, 23, 5, 1]
 
     >>> p2 = mapclassify.Percentiles(cal, pct = [50, 100])
     >>> p2.bins
     array([   9.365, 4111.45 ])
 
-    >>> list(p2.counts)
+    >>> p2.counts.tolist()
     [29, 29]
     >>> p2.k
     2
@@ -1453,10 +1453,10 @@ class BoxPlot(MapClassifier):
     array([-5.287625e+01,  2.567500e+00,  9.365000e+00,  3.953000e+01,
             9.497375e+01,  4.111450e+03])
 
-    >>> list(bp.counts)
+    >>> bp.counts.tolist()
     [0, 15, 14, 14, 6, 9]
 
-    >>> list(bp.high_outlier_ids)
+    >>> bp.high_outlier_ids.tolist()
     [0, 6, 18, 29, 33, 36, 37, 40, 42]
 
     >>> cal[bp.high_outlier_ids].values
@@ -1570,7 +1570,7 @@ class Quantiles(MapClassifier):
     >>> q.bins
     array([1.46400e+00, 5.79800e+00, 1.32780e+01, 5.46160e+01, 4.11145e+03])
 
-    >>> list(q.counts)
+    >>> q.counts.tolist()
     [12, 11, 12, 11, 12]
 
     """
@@ -1637,7 +1637,7 @@ class StdMean(MapClassifier):
     array([-967.36235382, -420.71712519,  672.57333208, 1219.21856072,
            4111.45      ])
 
-    >>> list(st.counts)
+    >>> st.counts.tolist()
     [0, 0, 56, 1, 1]
 
     >>> st3 = mapclassify.StdMean(cal, multiples = [-3, -1.5, 1.5, 3])
@@ -1645,7 +1645,7 @@ class StdMean(MapClassifier):
     array([-1514.00758246,  -694.03973951,   945.8959464 ,  1765.86378936,
             4111.45      ])
 
-    >>> list(st3.counts)
+    >>> st3.counts.tolist()
     [0, 0, 57, 0, 1]
     >>> stda = mapclassify.StdMean(cal, anchor=True)
     >>> stda.k
@@ -1654,7 +1654,7 @@ class StdMean(MapClassifier):
     array([ 125.92810345,  672.57333208, 1219.21856072, 1765.86378936,
            2312.50901799, 2859.15424663, 3405.79947527, 3952.4447039 ,
            4111.45      ])
-    >>> cal.mean(), cal.std(), cal.min(), cal.max()
+    >>> float(cal.mean()), float(cal.std()), float(cal.min()), float(cal.max())
     (125.92810344827588, 546.6452286365233, 0.13, 4111.45)
     """
 
@@ -1744,7 +1744,7 @@ class MaximumBreaks(MapClassifier):
     >>> mb.bins
     array([ 146.005,  228.49 ,  546.675, 2417.15 , 4111.45 ])
 
-    >>> list(mb.counts)
+    >>> mb.counts.tolist()
     [50, 2, 4, 1, 1]
 
     """
@@ -1847,7 +1847,7 @@ class NaturalBreaks(MapClassifier):
     >>> nb.k
     5
 
-    >>> list(nb.counts)
+    >>> nb.counts.tolist()
     [49, 3, 4, 1, 1]
 
     >>> nb.bins
@@ -1940,13 +1940,13 @@ class FisherJenks(MapClassifier):
     >>> import mapclassify
     >>> cal = mapclassify.load_example()
     >>> fj = mapclassify.FisherJenks(cal)
-    >>> fj.adcm
+    >>> float(fj.adcm)
     799.24
 
-    >>> list(fj.bins)
+    >>> fj.bins.tolist()
     [75.29, 192.05, 370.5, 722.85, 4111.45]
 
-    >>> list(fj.counts)
+    >>> fj.counts.tolist()
     [49, 3, 4, 1, 1]
 
     """
@@ -2095,7 +2095,7 @@ class JenksCaspall(MapClassifier):
     >>> jc.bins
     array([1.81000e+00, 7.60000e+00, 2.98200e+01, 1.81270e+02, 4.11145e+03])
 
-    >>> list(jc.counts)
+    >>> jc.counts.tolist()
     [14, 13, 14, 10, 7]
 
     """
@@ -2181,10 +2181,10 @@ class JenksCaspallSampled(MapClassifier):
     >>> jcs.bins
     array([0.19978245, 0.40793025, 0.59253555, 0.78241472, 0.99997795])
 
-    >>> list(jc.counts)
+    >>> jc.counts.tolist()
     [20286, 19951, 20310, 19708, 19745]
 
-    >>> list(jcs.counts)
+    >>> jcs.counts.tolist()
     [20147, 20633, 18591, 18857, 21772]
 
     # not for testing since we get different times on different hardware
@@ -2292,7 +2292,7 @@ class JenksCaspallForced(MapClassifier):
     >>> jcf.bins
     array([1.34000e+00, 5.90000e+00, 1.67000e+01, 5.06500e+01, 4.11145e+03])
 
-    >>> list(jcf.counts)
+    >>> jcf.counts.tolist()
     [12, 12, 13, 9, 12]
 
     >>> jcf4 = mapclassify.JenksCaspallForced(cal, k=4)
@@ -2302,7 +2302,7 @@ class JenksCaspallForced(MapClassifier):
     >>> jcf4.bins
     array([2.51000e+00, 8.70000e+00, 3.66800e+01, 4.11145e+03])
 
-    >>> list(jcf4.counts)
+    >>> jcf4.counts.tolist()
     [15, 14, 14, 15]
 
     """
@@ -2444,18 +2444,18 @@ class UserDefined(MapClassifier):
     [20, 4111.45]
 
     >>> ud = mapclassify.UserDefined(cal, bins)
-    >>> list(ud.bins)
+    >>> ud.bins.tolist()
     [20.0, 4111.45]
 
-    >>> list(ud.counts)
+    >>> ud.counts.tolist()
     [37, 21]
 
     >>> bins = [20, 30]
     >>> ud = mapclassify.UserDefined(cal, bins)
-    >>> list(ud.bins)
+    >>> ud.bins.tolist()
     [20.0, 30.0, 4111.45]
 
-    >>> list(ud.counts)
+    >>> ud.counts.tolist()
     [37, 4, 17]
 
     Notes
@@ -2606,7 +2606,7 @@ class MaxP(MapClassifier):
     >>> mp.bins
     array([3.16000e+00, 1.26300e+01, 1.67000e+01, 2.04700e+01, 4.11145e+03])
 
-    >>> list(mp.counts)
+    >>> mp.counts.tolist()
     [18, 16, 3, 1, 20]
 
     """
@@ -2816,7 +2816,7 @@ def gadf(y, method="Quantiles", maxk=15, pct=0.8):
     >>> qgadf[0]
     15
 
-    >>> qgadf[-1]
+    >>> float(qgadf[-1])
     0.3740257590909283
 
     Quantiles fail to exceed 0.80 before 15 classes. If we lower the bar to
@@ -2826,7 +2826,7 @@ def gadf(y, method="Quantiles", maxk=15, pct=0.8):
     >>> qgadf2[0]
     5
 
-    >>> qgadf2[-1]
+    >>> float(qgadf2[-1])
     0.21710231966462412
 
     Notes
@@ -2892,7 +2892,7 @@ class KClassifiers(object):
     >>> ks.best.k
     4
 
-    >>> ks.best.gadf
+    >>> float(ks.best.gadf)
     0.8481032719908105
 
     Notes

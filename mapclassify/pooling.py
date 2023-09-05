@@ -57,16 +57,16 @@ class Pooled(object):
     >>> data = numpy.array([numpy.arange(n)+i*n for i in range(1,4)]).T
     >>> res = mapclassify.Pooled(data)
 
-    >>> list(res.col_classifiers[0].counts)
+    >>> res.col_classifiers[0].counts.tolist()
     [12, 8, 0, 0, 0]
 
-    >>> list(res.col_classifiers[1].counts)
+    >>> res.col_classifiers[1].counts.tolist()
     [0, 4, 12, 4, 0]
 
-    >>> list(res.col_classifiers[2].counts)
+    >>> res.col_classifiers[2].counts.tolist()
     [0, 0, 0, 8, 12]
 
-    >>> list(res.global_classifier.counts)
+    >>> res.global_classifier.counts.tolist()
     [12, 12, 12, 12, 12]
 
     >>> res.global_classifier.bins == res.col_classifiers[0].bins
