@@ -27,6 +27,7 @@ jobs:
             ci/310.yaml,
             ci/310-numba.yaml,
             ci/311.yaml,
+            ci/311-numba.yaml,
             ci/311-dev.yaml,
           ]
         include:
