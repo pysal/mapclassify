@@ -9,7 +9,6 @@ dependencies:
   - pytest-xdist
   - codecov
   # optional
-  - fiona
   - pyproj
   - palettable
   - zstd
@@ -22,5 +21,6 @@ dependencies:
       - networkx
       - matplotlib
       - shapely
+      - fiona
       - git+https://github.com/pysal/libpysal.git@main
       - git+https://github.com/geopandas/geopandas.git@main
