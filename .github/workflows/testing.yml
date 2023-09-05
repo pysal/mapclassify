@@ -22,6 +22,7 @@ jobs:
         os: ["ubuntu-latest"]
         environment-file:
           [
+            ci/39-min.yaml,
             ci/39.yaml,
             ci/39-numba.yaml,
             ci/310.yaml,
