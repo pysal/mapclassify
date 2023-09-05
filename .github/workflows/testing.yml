@@ -11,14 +11,7 @@ on:
     - cron: "59 21 * * *"
 
 jobs:
-  linting:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
-      - uses: pre-commit/action@v3.0.0
   testing:
-    needs: linting
     name: (${{ matrix.os }}, ${{ matrix.environment-file }})
     runs-on: ${{ matrix.os }}
     defaults:
