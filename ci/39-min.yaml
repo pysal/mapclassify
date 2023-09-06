@@ -4,15 +4,16 @@ channels:
 dependencies:
   - python=3.9
   # required
-  - beautifulsoup4
-  - networkx=2.3
-  - numpy=1.3
-  - pandas=1.0
+  - networkx=2.7
+  - numpy=1.23
+  - pandas=1.4
   - scikit-learn=1.0
-  - scipy=1.9
+  - scipy=1.8
   # testing
+  - geopandas
+  - libpysal
   - pytest
   - pytest-cov
   - pytest-xdist
   - codecov
-  - matplotlib
+  - matplotlib=3.5

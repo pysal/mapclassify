@@ -4,16 +4,19 @@ channels:
   - conda-forge
 dependencies:
   - python=3.11
-  - pip
   - geopandas
+  - git
   - ipywidgets
-  - libpysal
-  - matplotlib
   - jupyter
   - jupyterlab
+  - libpysal
+  - matplotlib
   - nbconvert
   - networkx
+  - numba
   - palettable
+  - pip
+  - scikit-learn
   - seaborn
   - pip:
     - git+https://github.com/pysal/mapclassify.git@main

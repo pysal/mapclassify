@@ -4,19 +4,18 @@ channels:
 dependencies:
   - python=3.9
   # required
-  - scipy
-  - beautifulsoup4
+  - networkx
+  - numpy
+  - pandas
   - scikit-learn
+  - scipy
   # testing
+  - geopandas
+  - libpysal
   - pytest
   - pytest-cov
   - pytest-xdist
   - codecov
   - matplotlib
   # optional
-  - geopandas
-  - palettable
-  - zstd
-  - networkx
-  - libpysal
   - numba

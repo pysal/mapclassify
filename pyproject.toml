@@ -39,11 +39,11 @@ classifiers = [
 ]
 requires-python = ">=3.9"
 dependencies = [
-    "networkx>=2.3",
-    "numpy>=1.3",
-    "pandas>=1.0",
+    "networkx>=2.7",
+    "numpy>=1.23",
+    "pandas>=1.4,!=1.5.0",
     "scikit-learn>=1.0",
-    "scipy>=1.9",
+    "scipy>=1.8",
 ]
 
 [project.urls]
@@ -70,7 +70,7 @@ docs = [
 tests = [
     "geopandas",
     "libpysal",
-    "palettable",
+    "matplotlib",
     "pytest",
     "pytest-cov",
     "pytest-xdist",
