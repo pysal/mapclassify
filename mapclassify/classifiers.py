@@ -331,7 +331,7 @@ def binC(y, bins):  # noqa N802
     for val in vals:
         if val not in bins:
             warnings.warn(
-                f"\nValue not in bin: {val}\nBins: {bins}", UserWarning, stacklevel=1
+                f"\nValue not in bin: {val}\nBins: {bins}", UserWarning, stacklevel=2
             )
 
     return b
