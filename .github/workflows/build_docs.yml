@@ -37,7 +37,7 @@
            environment-file: ${{ matrix.environment-file }}
            micromamba-version: 'latest'
        
-       - name: Install packages
+       - name: Install package
          run: pip install .
        
        - name: Make Docs
