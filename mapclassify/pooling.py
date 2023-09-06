@@ -25,7 +25,7 @@ dispatcher = {
 }
 
 
-class Pooled(object):
+class Pooled:
     """Applying global binning across columns.
 
     Parameters
