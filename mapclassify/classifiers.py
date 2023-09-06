@@ -257,7 +257,7 @@ def quantile(y, k=4):
             f"Not enough unique values in array to form {k} classes. "
             f"Setting k to {k_q}.",
             UserWarning,
-            stacklevel=1,
+            stacklevel=2,
         )
     return q
 
