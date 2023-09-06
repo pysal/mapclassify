@@ -49,12 +49,10 @@ def _balanced(features, sw, balance="count", min_colors=4):
     neighbour_count = sw.cardinalities
 
     # sort features by neighbour count - handle those with more neighbours first
-    sorted_by_count = [
-        feature_id
-        for feature_id in sorted(
-            neighbour_count.items(), key=operator.itemgetter(1), reverse=True
-        )
-    ]
+    sorted_by_count = sorted(
+        neighbour_count.items(), key=operator.itemgetter(1), reverse=True
+    )
+
     # counts for each color already assigned
     color_counts = {}
     color_areas = {}
@@ -67,7 +65,7 @@ def _balanced(features, sw, balance="count", min_colors=4):
         features.geometry = features.geometry.centroid
         balance = "distance"
 
-    for feature_id, n in sorted_by_count:
+    for feature_id, _ in sorted_by_count:
         # first work out which already assigned colors are adjacent to this feature
         adjacent_colors = set()
         for neighbour in sw.neighbors[feature_id]:
@@ -281,16 +279,16 @@ def greedy(
             STRATEGIES = nx.algorithms.coloring.greedy_coloring.STRATEGIES.keys()
 
         except ImportError:
-            raise ImportError("The 'networkx' package is required.")
+            raise ImportError("The 'networkx' package is required.") from None
 
     try:
         import pandas as pd
     except ImportError:
-        raise ImportError("The 'pandas' package is required.")
+        raise ImportError("The 'pandas' package is required.") from None
     try:
         from libpysal.weights import Queen, Rook, W, fuzzy_contiguity
     except ImportError:
-        raise ImportError("The 'libpysal' package is required.")
+        raise ImportError("The 'libpysal' package is required.") from None
 
     if min_distance is not None:
         sw = fuzzy_contiguity(
