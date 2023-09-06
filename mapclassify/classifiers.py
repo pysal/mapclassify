@@ -7,7 +7,7 @@ import warnings
 
 import numpy as np
 import scipy.stats as stats
-from sklearn.cluster import KMeans as KMEANS
+from sklearn.cluster import KMeans
 
 __author__ = "Sergio J. Rey"
 
@@ -67,7 +67,7 @@ try:
 except ImportError:
     HAS_NUMBA = False
 
-    def njit(type, cache):
+    def njit(_type, cache):  # noqa ARG001
         def decorator_njit(func):
             @functools.wraps(func)
             def wrapper_decorator(*args, **kwargs):
@@ -108,14 +108,13 @@ def _format_intervals(mc, fmt="{:.0f}"):
     For some classifiers, it is possible that the upper bound of the first
     interval is less than the minimum value of the attribute that is being
     classified. In these cases ``lower_open=True`` and the lower bound of the
-    interval is set to ``numpy.NINF```.
+    interval is set to ``numpy.NINF``.
 
     """
 
     lowest = mc.y.min()
-    if hasattr(mc, "lowest"):
-        if mc.lowest is not None:
-            lowest = mc.lowest
+    if hasattr(mc, "lowest") and mc.lowest is not None:
+        lowest = mc.lowest
     lower_open = False
     if lowest > mc.bins[0]:
         lowest = -np.inf
@@ -258,11 +257,12 @@ def quantile(y, k=4):
             f"Not enough unique values in array to form {k} classes. "
             f"Setting k to {k_q}.",
             UserWarning,
+            stacklevel=2,
         )
     return q
 
 
-def binC(y, bins):
+def binC(y, bins):  # noqa N802
     """
     Bin categorical/qualitative data.
 
@@ -315,25 +315,29 @@ def binC(y, bins):
 
     """
 
+    # TODO: consider renaming ``binC`` to ``bin_c`` to resolve N802 (gh#185)
+
     if np.ndim(y) == 1:
         k = 1
         n = np.shape(y)[0]
     else:
         n, k = np.shape(y)
     b = np.zeros((n, k), dtype="int")
-    for i, bin in enumerate(bins):
-        b[np.nonzero(y == bin)] = i
+    for i, _bin in enumerate(bins):
+        b[np.nonzero(y == _bin)] = i
 
     # check for non-binned items and warn if needed
     vals = set(y.flatten())
     for val in vals:
         if val not in bins:
-            warnings.warn(f"\nValue not in bin: {val}\nBins: {bins}", UserWarning)
+            warnings.warn(
+                f"\nValue not in bin: {val}\nBins: {bins}", UserWarning, stacklevel=2
+            )
 
     return b
 
 
-def bin(y, bins):
+def bin(y, bins):  # noqa A001
     """
     Bin interval/ratio data.
 
@@ -385,6 +389,9 @@ def bin(y, bins):
            [0, 0, 2]])
 
     """
+
+    # TODO: consider renaming ``bin`` to ``bin_int`` to resolve A001 (gh#185)
+
     if np.ndim(y) == 1:
         k = 1
         n = np.shape(y)[0]
@@ -392,7 +399,7 @@ def bin(y, bins):
         n, k = np.shape(y)
     b = np.zeros((n, k), dtype="int")
     i = len(bins)
-    if type(bins) != list:
+    if not isinstance(bins, list):
         bins = bins.tolist()
     binsc = copy.copy(bins)
     while binsc:
@@ -450,8 +457,8 @@ def bin1d(x, bins):
     binIds = np.zeros(x.shape, dtype="int")
     while cuts:
         k -= 1
-        l, r = cuts.pop(-1)
-        binIds += (x > l) * (x <= r) * k
+        _l, r = cuts.pop(-1)
+        binIds += (x > _l) * (x <= r) * k
     counts = np.bincount(binIds, minlength=len(bins))
     return (binIds, counts)
 
@@ -516,9 +523,9 @@ def _kmeans(y, k=5, n_init=10):
 
     """
 
-    y = y * 1.0  # KMEANS needs float or double dtype
+    y = y * 1.0  # sklearn.cluster.KMeans needs float or double dtype
     y.shape = (-1, 1)
-    result = KMEANS(n_clusters=k, init="k-means++", n_init=n_init).fit(y)
+    result = KMeans(n_clusters=k, init="k-means++", n_init=n_init).fit(y)
     class_ids = result.labels_
     centroids = result.cluster_centers_
     binning = []
@@ -562,6 +569,7 @@ def natural_breaks(values, k=5, init=10):
             f"Not enough unique values in array to form {k} classes. "
             f"Setting k to {uvk}.",
             UserWarning,
+            stacklevel=2,
         )
         k = uvk
     kres = _kmeans(values, k, n_init=init)
@@ -623,13 +631,13 @@ def _fisher_jenks_means(values, classes=5):
     kclass[0] = values[0]
     for countNum in range(classes, 1, -1):
         pivot = mat1[k, countNum]
-        id = int(pivot - 2)
-        kclass[countNum - 1] = values[id]
+        _id = int(pivot - 2)
+        kclass[countNum - 1] = values[_id]
         k = int(pivot - 1)
     return np.delete(kclass, 0)
 
 
-class MapClassifier(object):
+class MapClassifier:
     r"""
     Abstract class for all map classifications :cite:`Slocum_2009`
 
@@ -909,7 +917,7 @@ class MapClassifier(object):
         fmt = self.fmt
         return _get_table(self, fmt=fmt)
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args):
         """
         This will allow the classifier to be called like it's a function.
 
@@ -957,10 +965,8 @@ class MapClassifier(object):
     def get_gadf(self):
         """Goodness of absolute deviation of fit."""
         adam = (np.abs(self.y - np.median(self.y))).sum()
-        if adam == 0:  # array is invariant
-            gadf = 1
-        else:
-            gadf = 1 - self.adcm / adam
+        # return 1 if array is invariant
+        gadf = 1 if adam == 0 else 1 - self.adcm / adam
         return gadf
 
     def find_bin(self, x):
@@ -1091,7 +1097,7 @@ class MapClassifier(object):
                 "Mapclassify.plot depends on matplotlib.pyplot, and this was"
                 "not able to be imported. \nInstall matplotlib to"
                 "plot spatial classifier."
-            )
+            ) from None
         if ax is None:
             f = plt.figure()
             ax = plt.gca()
@@ -1771,7 +1777,9 @@ class MaximumBreaks(MapClassifier):
         ud = np.unique(diffs)
         if len(ud) < k1:
             warnings.warn(
-                "Insufficient number of unique diffs. Breaks are random.", UserWarning
+                "Insufficient number of unique diffs. Breaks are random.",
+                UserWarning,
+                stacklevel=3,
             )
         mp = []
         for c in range(1, k):
@@ -1872,6 +1880,7 @@ class NaturalBreaks(MapClassifier):
                 f"Not enough unique values in array to form {k} classes. "
                 f"Setting k to {uvk}.",
                 UserWarning,
+                stacklevel=3,
             )
             k = uvk
             uv.sort()
@@ -1954,7 +1963,9 @@ class FisherJenks(MapClassifier):
     def __init__(self, y, k=K):
         if not HAS_NUMBA:
             warnings.warn(
-                "Numba not installed. Using slow pure python version.", UserWarning
+                "Numba not installed. Using slow pure python version.",
+                UserWarning,
+                stacklevel=3,
             )
 
         nu = len(np.unique(y))
@@ -2537,7 +2548,7 @@ class UserDefined(MapClassifier):
                 "Mapclassify.plot depends on matplotlib.pyplot, and this was"
                 "not able to be imported. \nInstall matplotlib to"
                 "plot spatial classifier."
-            )
+            ) from None
         if ax is None:
             f = plt.figure()
             ax = plt.gca()
@@ -2690,11 +2701,11 @@ class MaxP(MapClassifier):
             rseeds = np.random.permutation(list(range(k))).tolist()
             total_moves = 0
             while rseeds:
-                id = rseeds.pop()
+                _id = rseeds.pop()
                 growing = True
                 total_moves = 0
                 while growing:
-                    target = classes[id]
+                    target = classes[_id]
                     left = target[0] - 1
                     right = target[-1] + 1
                     n_moves = 0
@@ -2705,7 +2716,7 @@ class MaxP(MapClassifier):
                             if self._swap(left_class, target, a):
                                 target.insert(0, a)
                                 left_class.remove(a)
-                                a2c[a] = id
+                                a2c[a] = _id
                                 n_moves += 1
                     if right in a2c:
                         right_class = classes[a2c[right]]
@@ -2715,7 +2726,7 @@ class MaxP(MapClassifier):
                                 target.append(a)
                                 right_class.remove(a)
                                 n_moves += 1
-                                a2c[a] = id
+                                a2c[a] = _id
                     if not n_moves:
                         growing = False
                 total_moves += n_moves
@@ -2744,10 +2755,8 @@ class MaxP(MapClassifier):
         ss1 = self._ss(class1c)
         ss2 = self._ss(class2c)
         tss2 = ss1 + ss2
-        if tss1 < tss2:
-            return False
-        else:
-            return True
+
+        return False if tss1 < tss2 else True  # noqa SIM211
 
 
 def _fit(y, classes):
@@ -2859,7 +2868,7 @@ def gadf(y, method="Quantiles", maxk=15, pct=0.8):
     return (k, cl, gadf)
 
 
-class KClassifiers(object):
+class KClassifiers:
     """
     Evaluate all :math:`k`-classifers and pick optimal based on :math:`k` and *GADF*.
 
