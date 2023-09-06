@@ -8,7 +8,9 @@ from ..greedy import greedy
 
 PY39 = sys.version_info.major == 3 and sys.version_info.minor == 9
 
-world = geopandas.read_file(geopandas.datasets.get_path("naturalearth_lowres"))
+world = geopandas.read_file(
+    "https://naciscdn.org/naturalearth/110m/cultural/ne_110m_admin_0_countries.zip"
+)
 sw = libpysal.weights.Queen.from_dataframe(
     world, ids=world.index.to_list(), silence_warnings=True
 )
@@ -36,7 +38,7 @@ class TestGreedy:
         assert colors.value_counts().to_list() == [36, 36, 35, 35, 35]
 
     def test_min_distance(self):
-        europe = world.loc[world.continent == "Europe"].to_crs(epsg=3035)
+        europe = world.loc[world.CONTINENT == "Europe"].to_crs(epsg=3035)
         colors = greedy(europe, min_distance=500000)
         assert len(colors) == len(europe)
         assert set(colors) == set(range(13))
