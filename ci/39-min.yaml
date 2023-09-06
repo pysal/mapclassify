@@ -2,13 +2,13 @@ name: test
 channels:
   - conda-forge
 dependencies:
-  - python=3.10
+  - python=3.9
   # required
-  - networkx
-  - numpy
-  - pandas
-  - scikit-learn
-  - scipy
+  - networkx=2.7
+  - numpy=1.23
+  - pandas=1.4
+  - scikit-learn=1.0
+  - scipy=1.8
   # testing
   - geopandas
   - libpysal
@@ -16,6 +16,4 @@ dependencies:
   - pytest-cov
   - pytest-xdist
   - codecov
-  - matplotlib
-  # optional
-  - numba
+  - matplotlib=3.5

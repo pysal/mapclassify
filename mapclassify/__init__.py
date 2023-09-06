@@ -1,4 +1,6 @@
-from . import _version
+import contextlib
+from importlib.metadata import PackageNotFoundError, version
+
 from ._classify_API import classify
 from .classifiers import (
     CLASSIFIERS,
@@ -25,4 +27,5 @@ from .classifiers import (
 from .greedy import greedy
 from .pooling import Pooled
 
-__version__ = _version.get_versions()["version"]
+with contextlib.suppress(PackageNotFoundError):
+    __version__ = version("mapclassify")

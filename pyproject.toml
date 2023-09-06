@@ -1,0 +1,127 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+
+[project]
+name = "mapclassify"
+dynamic = ["version"]
+maintainers = [
+    {name = "Serge Rey", email = "sjsrey@gmail.com"},
+    {name = "Wei Kang", email = "weikang9009@gmail.com"},
+]
+license = {text = "BSD 3-Clause"}
+description = "Classification Schemes for Choropleth Maps."
+keywords = ["spatial statistics", "geovisualizaiton"]
+readme = {text = """\
+`mapclassify` implements a family of classification schemes for choropleth maps.
+Its focus is on the determination of the number of classes, and the assignment
+of observations to those classes. It is intended for use with upstream mapping
+and geovisualization packages (see `geopandas`_ and `geoplot`_)
+that handle the rendering of the maps.
+
+For further theoretical background see "`Choropleth Mapping`_" in Rey, S.J., D. Arribas-Bel, and L.J. Wolf (2020) "Geographic Data Science with PySAL and the PyData Stack”.
+
+.. _geopandas: https://geopandas.org/mapping.html
+.. _geoplot: https://residentmario.github.io/geoplot/user_guide/Customizing_Plots.html
+.. _Choropleth Mapping: https://geographicdata.science/book/notebooks/05_choropleth.html
+""", content-type = "text/x-rst"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: GIS",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "networkx>=2.7",
+    "numpy>=1.23",
+    "pandas>=1.4,!=1.5.0",
+    "scikit-learn>=1.0",
+    "scipy>=1.8",
+]
+
+[project.urls]
+Home = "https://pysal.org/mapclassify/"
+Repository = "https://github.com/pysal/mapclassify"
+
+[project.optional-dependencies]
+speedups = [
+    "numba>=0.54",
+]
+dev = [
+    "black",
+    "ruff",
+    "pre-commit",
+]
+docs = [
+    "nbsphinx",
+    "numpydoc",
+    "sphinx>=1.4.3",
+    "sphinx-gallery",
+    "sphinxcontrib-bibtex",
+    "sphinx_bootstrap_theme",
+]
+tests = [
+    "geopandas",
+    "libpysal",
+    "matplotlib",
+    "pytest",
+    "pytest-cov",
+    "pytest-xdist",
+]
+all = ["numba[speedups,dev,docs,tests]"]
+
+[tool.setuptools.packages.find]
+include = [
+    "mapclassify",
+    "mapclassify.*",
+]
+
+[tool.black]
+line-length = 88
+extend-exclude = '''
+(
+  docs/conf.py
+)
+#'''
+
+[tool.ruff]
+line-length = 88
+select = ["E", "F", "W", "I", "UP", "N", "B", "A", "C4", "SIM", "ARG"]
+target-version = "py39"
+ignore = [
+    "B006",
+    "B008",
+    "B009",
+    "B010",
+    "C408",
+    "E731",
+    "F401",
+    "F403",
+    "F405",
+    "N803",
+    "N806",
+    "N999",
+    "UP007"
+]
+exclude = ["mapclassify/tests/*", "docs/*"]
+
+[tool.coverage.run]
+source = ["./mapclassify"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "if self.debug:",
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "except ModuleNotFoundError:",
+    "except ImportError",
+]
+ignore_errors = true
+omit = ["mapclassify/tests/*", "docs/conf.py"]

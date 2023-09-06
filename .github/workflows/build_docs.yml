@@ -32,10 +32,13 @@
          uses: actions/checkout@v4
        
        - name: Setup micromamba
-         uses: mamba-org/provision-with-micromamba@main
+         uses: mamba-org/setup-micromamba@v1
          with:
            environment-file: ${{ matrix.environment-file }}
            micromamba-version: 'latest'
+       
+       - name: Install package
+         run: pip install .
        
        - name: Make Docs
          run: cd docs; make html
