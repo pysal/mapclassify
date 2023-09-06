@@ -212,8 +212,8 @@ def greedy(
     >>> from mapclassify import greedy
     >>> import geopandas
     >>> world = geopandas.read_file(
-            "https://naciscdn.org/naturalearth/110m/cultural/ne_110m_admin_0_countries.zip"
-        )
+    >>>     "https://naciscdn.org/naturalearth/110m/cultural/ne_110m_admin_0_countries.zip"
+    >>> )
     >>> africa = world.loc[world.CONTINENT == "Africa"].copy()
     >>> africa = africa.to_crs("ESRI:102022").reset_index(drop=True)
 
