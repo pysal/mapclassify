@@ -569,7 +569,7 @@ def natural_breaks(values, k=5, init=10):
             f"Not enough unique values in array to form {k} classes. "
             f"Setting k to {uvk}.",
             UserWarning,
-            stacklevel=1,
+            stacklevel=2,
         )
         k = uvk
     kres = _kmeans(values, k, n_init=init)
