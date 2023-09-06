@@ -8,7 +8,9 @@ from ..greedy import greedy
 
 PY39 = sys.version_info.major == 3 and sys.version_info.minor == 9
 
-world = geopandas.read_file("https://naciscdn.org/naturalearth/110m/cultural/ne_110m_admin_0_countries.zip")
+world = geopandas.read_file(
+    "https://naciscdn.org/naturalearth/110m/cultural/ne_110m_admin_0_countries.zip"
+)
 sw = libpysal.weights.Queen.from_dataframe(
     world, ids=world.index.to_list(), silence_warnings=True
 )
