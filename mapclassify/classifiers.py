@@ -67,7 +67,7 @@ try:
 except ImportError:
     HAS_NUMBA = False
 
-    def njit(_type, cache):  # noqa ARG001
+    def njit(_type):  # noqa ARG001
         def decorator_njit(func):
             @functools.wraps(func)
             def wrapper_decorator(*args, **kwargs):
