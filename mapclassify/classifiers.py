@@ -67,7 +67,7 @@ try:
 except ImportError:
     HAS_NUMBA = False
 
-    def njit(_type, cache):  # noqa ARG001
+    def njit(_type):  # noqa ARG001
         def decorator_njit(func):
             @functools.wraps(func)
             def wrapper_decorator(*args, **kwargs):
@@ -580,7 +580,7 @@ def natural_breaks(values, k=5, init=10):
     return (sids, class_ids, fit, cuts)
 
 
-@njit("f8[:](f8[:], u2)", cache=True)
+@njit("f8[:](f8[:], u2)")
 def _fisher_jenks_means(values, classes=5):
     """
     Jenks Optimal (Natural Breaks) algorithm implemented in Python.
