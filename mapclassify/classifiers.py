@@ -580,7 +580,7 @@ def natural_breaks(values, k=5, init=10):
     return (sids, class_ids, fit, cuts)
 
 
-@njit("f8[:](f8[:], u2)", cache=True)
+@njit("f8[:](f8[:], u2)")
 def _fisher_jenks_means(values, classes=5):
     """
     Jenks Optimal (Natural Breaks) algorithm implemented in Python.
