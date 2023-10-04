@@ -1,0 +1,270 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Legends in mapclassify\n",
+    "\n",
+    "`mapclassify` allows for user defined formatting of legends"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T18:03:55.559087Z",
+     "start_time": "2022-11-04T18:03:53.594867Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'2.4.2+78.gc62d2d7.dirty'"
+      ]
+     },
+     "execution_count": 1,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import mapclassify\n",
+    "\n",
+    "mapclassify.__version__"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T18:03:56.030661Z",
+     "start_time": "2022-11-04T18:03:55.564369Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "cal = mapclassify.load_example()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T18:03:56.041172Z",
+     "start_time": "2022-11-04T18:03:56.034966Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Quantiles\n",
+       "\n",
+       "     Interval        Count\n",
+       "--------------------------\n",
+       "[   0.13,    1.16] |    10\n",
+       "(   1.16,    3.38] |    10\n",
+       "(   3.38,    9.36] |     9\n",
+       "(   9.36,   24.32] |    10\n",
+       "(  24.32,   70.78] |     9\n",
+       "(  70.78, 4111.45] |    10"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "q6 = mapclassify.Quantiles(cal, k=6)\n",
+    "q6"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The default is to use two decimal places for this dataset.\n",
+    "\n",
+    "If the user desires a list of strings with these values, the `get_legend_classes` method can be called\n",
+    "which will return the strings with the default format:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T18:03:56.047765Z",
+     "start_time": "2022-11-04T18:03:56.042764Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['[   0.13,    1.16]',\n",
+       " '(   1.16,    3.38]',\n",
+       " '(   3.38,    9.36]',\n",
+       " '(   9.36,   24.32]',\n",
+       " '(  24.32,   70.78]',\n",
+       " '(  70.78, 4111.45]']"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "q6.get_legend_classes()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To set the legends to integers, an option can be passed into the method:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T18:03:56.055615Z",
+     "start_time": "2022-11-04T18:03:56.050635Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['[   0,    1]',\n",
+       " '(   1,    3]',\n",
+       " '(   3,    9]',\n",
+       " '(   9,   24]',\n",
+       " '(  24,   71]',\n",
+       " '(  71, 4111]']"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "q6.get_legend_classes(fmt=\"{:.0f}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Note that this does not change the original object:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T18:03:56.064112Z",
+     "start_time": "2022-11-04T18:03:56.058884Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Quantiles\n",
+       "\n",
+       "     Interval        Count\n",
+       "--------------------------\n",
+       "[   0.13,    1.16] |    10\n",
+       "(   1.16,    3.38] |    10\n",
+       "(   3.38,    9.36] |     9\n",
+       "(   9.36,   24.32] |    10\n",
+       "(  24.32,   70.78] |     9\n",
+       "(  70.78, 4111.45] |    10"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "q6"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The format can be changed on the object by calling the `set_fmt` method:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T18:03:56.073242Z",
+     "start_time": "2022-11-04T18:03:56.067329Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Quantiles\n",
+       "\n",
+       "  Interval     Count\n",
+       "--------------------\n",
+       "[   0,    1] |    10\n",
+       "(   1,    3] |    10\n",
+       "(   3,    9] |     9\n",
+       "(   9,   24] |    10\n",
+       "(  24,   71] |     9\n",
+       "(  71, 4111] |    10"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "q6.set_fmt(fmt=\"{:.0f}\")\n",
+    "q6"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python [conda env:py310_mapclassify]",
+   "language": "python",
+   "name": "conda-env-py310_mapclassify-py"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.6"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

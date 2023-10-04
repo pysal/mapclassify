@@ -1,0 +1,1346 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Pooled Classification\n",
+    "\n",
+    "A common workflow with longitudinal spatial data is to apply the same classification scheme to an attribute over different time periods. More specifically, one would like to keep the class breaks the same over each period and examine how the mass of the distribution changes over these classes in the different periods.\n",
+    "\n",
+    "The `Pooled` classifier supports this workflow."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:41.941529Z",
+     "start_time": "2022-11-05T19:18:40.603589Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'2.4.2+78.gc62d2d7.dirty'"
+      ]
+     },
+     "execution_count": 1,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import mapclassify\n",
+    "import numpy\n",
+    "\n",
+    "mapclassify.__version__"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Sample Data\n",
+    "We construct a synthetic dataset composed of 20 cross-sectional units at three time points. Here the mean of the series is increasing over time."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:41.949728Z",
+     "start_time": "2022-11-05T19:18:41.945010Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(20, 3)"
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "n = 20\n",
+    "data = numpy.array([numpy.arange(n) + i * n for i in range(1, 4)]).T\n",
+    "data.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:41.955945Z",
+     "start_time": "2022-11-05T19:18:41.951635Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[20, 40, 60],\n",
+       "       [21, 41, 61],\n",
+       "       [22, 42, 62],\n",
+       "       [23, 43, 63],\n",
+       "       [24, 44, 64],\n",
+       "       [25, 45, 65],\n",
+       "       [26, 46, 66],\n",
+       "       [27, 47, 67],\n",
+       "       [28, 48, 68],\n",
+       "       [29, 49, 69],\n",
+       "       [30, 50, 70],\n",
+       "       [31, 51, 71],\n",
+       "       [32, 52, 72],\n",
+       "       [33, 53, 73],\n",
+       "       [34, 54, 74],\n",
+       "       [35, 55, 75],\n",
+       "       [36, 56, 76],\n",
+       "       [37, 57, 77],\n",
+       "       [38, 58, 78],\n",
+       "       [39, 59, 79]])"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Default: Quintiles\n",
+    "The default is to apply a [vec](https://en.wikipedia.org/wiki/Vectorization_(mathematics)) operator to the data matrix and treat the observations as a single collection. Here the quantiles of the pooled data are obtained."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:41.965023Z",
+     "start_time": "2022-11-05T19:18:41.957991Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Pooled Classifier\n",
+       "\n",
+       "Pooled Quantiles\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[20.00, 31.80] |    12\n",
+       "(31.80, 43.60] |     8\n",
+       "(43.60, 55.40] |     0\n",
+       "(55.40, 67.20] |     0\n",
+       "(67.20, 79.00] |     0\n",
+       "\n",
+       "Pooled Quantiles\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[20.00, 31.80] |     0\n",
+       "(31.80, 43.60] |     4\n",
+       "(43.60, 55.40] |    12\n",
+       "(55.40, 67.20] |     4\n",
+       "(67.20, 79.00] |     0\n",
+       "\n",
+       "Pooled Quantiles\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[20.00, 31.80] |     0\n",
+       "(31.80, 43.60] |     0\n",
+       "(43.60, 55.40] |     0\n",
+       "(55.40, 67.20] |     8\n",
+       "(67.20, 79.00] |    12"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "res = mapclassify.Pooled(data)\n",
+    "res"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Note that the class definitions are constant across the periods."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:41.971895Z",
+     "start_time": "2022-11-05T19:18:41.967042Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "res = mapclassify.Pooled(data, k=4)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:41.978331Z",
+     "start_time": "2022-11-05T19:18:41.974160Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([15,  5,  0,  0])"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "res.col_classifiers[0].counts"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:41.984738Z",
+     "start_time": "2022-11-05T19:18:41.980393Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([ 0,  0,  5, 15])"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "res.col_classifiers[-1].counts"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:41.990334Z",
+     "start_time": "2022-11-05T19:18:41.986702Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([15, 15, 15, 15])"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "res.global_classifier.counts"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.001119Z",
+     "start_time": "2022-11-05T19:18:41.997311Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Pooled Classifier\n",
+       "\n",
+       "Pooled Quantiles\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[20.00, 34.75] |    15\n",
+       "(34.75, 49.50] |     5\n",
+       "(49.50, 64.25] |     0\n",
+       "(64.25, 79.00] |     0\n",
+       "\n",
+       "Pooled Quantiles\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[20.00, 34.75] |     0\n",
+       "(34.75, 49.50] |    10\n",
+       "(49.50, 64.25] |    10\n",
+       "(64.25, 79.00] |     0\n",
+       "\n",
+       "Pooled Quantiles\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[20.00, 34.75] |     0\n",
+       "(34.75, 49.50] |     0\n",
+       "(49.50, 64.25] |     5\n",
+       "(64.25, 79.00] |    15"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "res"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Extract the pooled classification objects for each column."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.007476Z",
+     "start_time": "2022-11-05T19:18:42.003714Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Pooled Quantiles\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[20.00, 34.75] |    15\n",
+       "(34.75, 49.50] |     5\n",
+       "(49.50, 64.25] |     0\n",
+       "(64.25, 79.00] |     0"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "c0, c1, c2 = res.col_classifiers\n",
+    "c0"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Compare to the unrestricted classifier for the first column..."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.016243Z",
+     "start_time": "2022-11-05T19:18:42.010510Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Quantiles\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[20.00, 24.75] |     5\n",
+       "(24.75, 29.50] |     5\n",
+       "(29.50, 34.25] |     5\n",
+       "(34.25, 39.00] |     5"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mapclassify.Quantiles(c0.y, k=4)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "... and the last column comparisions."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.024230Z",
+     "start_time": "2022-11-05T19:18:42.018980Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Pooled Quantiles\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[20.00, 34.75] |     0\n",
+       "(34.75, 49.50] |     0\n",
+       "(49.50, 64.25] |     5\n",
+       "(64.25, 79.00] |    15"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "c2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.034362Z",
+     "start_time": "2022-11-05T19:18:42.027227Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Quantiles\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[60.00, 64.75] |     5\n",
+       "(64.75, 69.50] |     5\n",
+       "(69.50, 74.25] |     5\n",
+       "(74.25, 79.00] |     5"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mapclassify.Quantiles(c2.y, k=4)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Non-default classifier: BoxPlot"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.046090Z",
+     "start_time": "2022-11-05T19:18:42.037414Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Pooled Classifier\n",
+       "\n",
+       "Pooled BoxPlot\n",
+       "\n",
+       "    Interval       Count\n",
+       "------------------------\n",
+       "(  -inf,  -9.50] |     0\n",
+       "( -9.50,  34.75] |    15\n",
+       "( 34.75,  49.50] |     5\n",
+       "( 49.50,  64.25] |     0\n",
+       "( 64.25, 108.50] |     0\n",
+       "\n",
+       "Pooled BoxPlot\n",
+       "\n",
+       "    Interval       Count\n",
+       "------------------------\n",
+       "(  -inf,  -9.50] |     0\n",
+       "( -9.50,  34.75] |     0\n",
+       "( 34.75,  49.50] |    10\n",
+       "( 49.50,  64.25] |    10\n",
+       "( 64.25, 108.50] |     0\n",
+       "\n",
+       "Pooled BoxPlot\n",
+       "\n",
+       "    Interval       Count\n",
+       "------------------------\n",
+       "(  -inf,  -9.50] |     0\n",
+       "( -9.50,  34.75] |     0\n",
+       "( 34.75,  49.50] |     0\n",
+       "( 49.50,  64.25] |     5\n",
+       "( 64.25, 108.50] |    15"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "res = mapclassify.Pooled(data, classifier=\"BoxPlot\", hinge=1.5)\n",
+    "res"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.054064Z",
+     "start_time": "2022-11-05T19:18:42.048325Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([ -9.5 ,  34.75,  49.5 ,  64.25, 108.5 ])"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "res.col_classifiers[0].bins"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.060428Z",
+     "start_time": "2022-11-05T19:18:42.056889Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "c0, c1, c2 = res.col_classifiers"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.067574Z",
+     "start_time": "2022-11-05T19:18:42.062869Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2])"
+      ]
+     },
+     "execution_count": 17,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "c0.yb"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.076215Z",
+     "start_time": "2022-11-05T19:18:42.070735Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "c00 = mapclassify.BoxPlot(c0.y, hinge=3)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.085022Z",
+     "start_time": "2022-11-05T19:18:42.078938Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4])"
+      ]
+     },
+     "execution_count": 19,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "c00.yb"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.093521Z",
+     "start_time": "2022-11-05T19:18:42.088235Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "BoxPlot\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "( -inf, -3.75] |     0\n",
+       "(-3.75, 24.75] |     5\n",
+       "(24.75, 29.50] |     5\n",
+       "(29.50, 34.25] |     5\n",
+       "(34.25, 62.75] |     5"
+      ]
+     },
+     "execution_count": 20,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "c00"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.100363Z",
+     "start_time": "2022-11-05T19:18:42.095608Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Pooled BoxPlot\n",
+       "\n",
+       "    Interval       Count\n",
+       "------------------------\n",
+       "(  -inf,  -9.50] |     0\n",
+       "( -9.50,  34.75] |    15\n",
+       "( 34.75,  49.50] |     5\n",
+       "( 49.50,  64.25] |     0\n",
+       "( 64.25, 108.50] |     0"
+      ]
+     },
+     "execution_count": 21,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "c0"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Non-default classifier: FisherJenks"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.111872Z",
+     "start_time": "2022-11-05T19:18:42.103537Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Pooled Classifier\n",
+       "\n",
+       "Pooled FisherJenks\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[20.00, 31.00] |    12\n",
+       "(31.00, 43.00] |     8\n",
+       "(43.00, 55.00] |     0\n",
+       "(55.00, 67.00] |     0\n",
+       "(67.00, 79.00] |     0\n",
+       "\n",
+       "Pooled FisherJenks\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[20.00, 31.00] |     0\n",
+       "(31.00, 43.00] |     4\n",
+       "(43.00, 55.00] |    12\n",
+       "(55.00, 67.00] |     4\n",
+       "(67.00, 79.00] |     0\n",
+       "\n",
+       "Pooled FisherJenks\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[20.00, 31.00] |     0\n",
+       "(31.00, 43.00] |     0\n",
+       "(43.00, 55.00] |     0\n",
+       "(55.00, 67.00] |     8\n",
+       "(67.00, 79.00] |    12"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "res = mapclassify.Pooled(data, classifier=\"FisherJenks\", k=5)\n",
+    "res"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.119626Z",
+     "start_time": "2022-11-05T19:18:42.113905Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "FisherJenks\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[20.00, 23.00] |     4\n",
+       "(23.00, 27.00] |     4\n",
+       "(27.00, 31.00] |     4\n",
+       "(31.00, 35.00] |     4\n",
+       "(35.00, 39.00] |     4"
+      ]
+     },
+     "execution_count": 23,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "c0, c1, c2 = res.col_classifiers\n",
+    "mapclassify.FisherJenks(c0.y, k=5)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Non-default classifier: MaximumBreaks\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.127177Z",
+     "start_time": "2022-11-05T19:18:42.121621Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[20, 40, 60],\n",
+       "       [10, 10, 10],\n",
+       "       [22, 42, 62],\n",
+       "       [23, 43, 63],\n",
+       "       [24, 44, 64],\n",
+       "       [25, 45, 65],\n",
+       "       [26, 46, 66],\n",
+       "       [27, 47, 67],\n",
+       "       [28, 48, 68],\n",
+       "       [29, 49, 10],\n",
+       "       [30, 50, 70],\n",
+       "       [31, 51, 71],\n",
+       "       [32, 52, 72],\n",
+       "       [33, 53, 73],\n",
+       "       [34, 54, 74],\n",
+       "       [35, 55, 75],\n",
+       "       [36, 56, 76],\n",
+       "       [37, 57, 77],\n",
+       "       [38, 58, 78],\n",
+       "       [39, 59, 79]])"
+      ]
+     },
+     "execution_count": 24,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data[1, 0] = 10\n",
+    "data[1, 1] = 10\n",
+    "data[1, 2] = 10\n",
+    "data[9, 2] = 10\n",
+    "data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.136098Z",
+     "start_time": "2022-11-05T19:18:42.128885Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Pooled Classifier\n",
+       "\n",
+       "Pooled MaximumBreaks\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[10.00, 15.00] |     1\n",
+       "(15.00, 21.00] |     1\n",
+       "(21.00, 41.00] |    18\n",
+       "(41.00, 61.00] |     0\n",
+       "(61.00, 79.00] |     0\n",
+       "\n",
+       "Pooled MaximumBreaks\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[10.00, 15.00] |     1\n",
+       "(15.00, 21.00] |     0\n",
+       "(21.00, 41.00] |     1\n",
+       "(41.00, 61.00] |    18\n",
+       "(61.00, 79.00] |     0\n",
+       "\n",
+       "Pooled MaximumBreaks\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[10.00, 15.00] |     2\n",
+       "(15.00, 21.00] |     0\n",
+       "(21.00, 41.00] |     0\n",
+       "(41.00, 61.00] |     1\n",
+       "(61.00, 79.00] |    17"
+      ]
+     },
+     "execution_count": 25,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "res = mapclassify.Pooled(data, classifier=\"MaximumBreaks\", k=5)\n",
+    "res"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.143133Z",
+     "start_time": "2022-11-05T19:18:42.138961Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Pooled MaximumBreaks\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[10.00, 15.00] |     1\n",
+       "(15.00, 21.00] |     1\n",
+       "(21.00, 41.00] |    18\n",
+       "(41.00, 61.00] |     0\n",
+       "(61.00, 79.00] |     0"
+      ]
+     },
+     "execution_count": 26,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "c0, c1, c2 = res.col_classifiers\n",
+    "c0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.149335Z",
+     "start_time": "2022-11-05T19:18:42.144915Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([20, 10, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,\n",
+       "       37, 38, 39])"
+      ]
+     },
+     "execution_count": 27,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "c0.y"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.154525Z",
+     "start_time": "2022-11-05T19:18:42.151983Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import warnings"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.163717Z",
+     "start_time": "2022-11-05T19:18:42.156794Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Insufficient number of unique diffs. Breaks are random.\n"
+     ]
+    }
+   ],
+   "source": [
+    "with warnings.catch_warnings():\n",
+    "    warnings.filterwarnings(\"error\")\n",
+    "    try:\n",
+    "        mapclassify.MaximumBreaks(c0.y, k=5)\n",
+    "    except UserWarning as e:\n",
+    "        print(e)\n",
+    "        with warnings.catch_warnings():\n",
+    "            warnings.filterwarnings(\"ignore\")\n",
+    "            mapclassify.MaximumBreaks(c0.y, k=5)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.174401Z",
+     "start_time": "2022-11-05T19:18:42.166025Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Pooled Classifier\n",
+       "\n",
+       "Pooled UserDefined\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[10.00, 62.80] |    20\n",
+       "(62.80, 66.60] |     0\n",
+       "(66.60, 71.40] |     0\n",
+       "(71.40, 75.20] |     0\n",
+       "(75.20, 79.00] |     0\n",
+       "\n",
+       "Pooled UserDefined\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[10.00, 62.80] |    20\n",
+       "(62.80, 66.60] |     0\n",
+       "(66.60, 71.40] |     0\n",
+       "(71.40, 75.20] |     0\n",
+       "(75.20, 79.00] |     0\n",
+       "\n",
+       "Pooled UserDefined\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[10.00, 62.80] |     4\n",
+       "(62.80, 66.60] |     4\n",
+       "(66.60, 71.40] |     4\n",
+       "(71.40, 75.20] |     4\n",
+       "(75.20, 79.00] |     4"
+      ]
+     },
+     "execution_count": 30,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "res = mapclassify.Pooled(\n",
+    "    data, classifier=\"UserDefined\", bins=mapclassify.Quantiles(data[:, -1]).bins\n",
+    ")\n",
+    "res"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.181788Z",
+     "start_time": "2022-11-05T19:18:42.176573Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Quantiles\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[10.00, 62.80] |     4\n",
+       "(62.80, 66.60] |     4\n",
+       "(66.60, 71.40] |     4\n",
+       "(71.40, 75.20] |     4\n",
+       "(75.20, 79.00] |     4"
+      ]
+     },
+     "execution_count": 31,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mapclassify.Quantiles(data[:, -1])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.188254Z",
+     "start_time": "2022-11-05T19:18:42.183388Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([60, 10, 62, 63, 64, 65, 66, 67, 68, 10, 70, 71, 72, 73, 74, 75, 76,\n",
+       "       77, 78, 79])"
+      ]
+     },
+     "execution_count": 32,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data[:, -1]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Pinning the pooling\n",
+    "\n",
+    "Another option is to specify a specific subperiod as the definition for the classes in the pooling.\n",
+    "\n",
+    "### Pinning to the last period\n",
+    "\n",
+    "As an example, we can use the quintles from the third period to defined the pooled classifier:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.198019Z",
+     "start_time": "2022-11-05T19:18:42.190998Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Pooled Classifier\n",
+       "\n",
+       "Pooled UserDefined\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[10.00, 62.80] |    20\n",
+       "(62.80, 66.60] |     0\n",
+       "(66.60, 71.40] |     0\n",
+       "(71.40, 75.20] |     0\n",
+       "(75.20, 79.00] |     0\n",
+       "\n",
+       "Pooled UserDefined\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[10.00, 62.80] |    20\n",
+       "(62.80, 66.60] |     0\n",
+       "(66.60, 71.40] |     0\n",
+       "(71.40, 75.20] |     0\n",
+       "(75.20, 79.00] |     0\n",
+       "\n",
+       "Pooled UserDefined\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[10.00, 62.80] |     4\n",
+       "(62.80, 66.60] |     4\n",
+       "(66.60, 71.40] |     4\n",
+       "(71.40, 75.20] |     4\n",
+       "(75.20, 79.00] |     4"
+      ]
+     },
+     "execution_count": 33,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "pinned = mapclassify.Pooled(\n",
+    "    data, classifier=\"UserDefined\", bins=mapclassify.Quantiles(data[:, -1]).bins\n",
+    ")\n",
+    "pinned"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.206186Z",
+     "start_time": "2022-11-05T19:18:42.200535Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "UserDefined\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[10.00, 62.80] |    44\n",
+       "(62.80, 66.60] |     4\n",
+       "(66.60, 71.40] |     4\n",
+       "(71.40, 75.20] |     4\n",
+       "(75.20, 79.00] |     4"
+      ]
+     },
+     "execution_count": 34,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "pinned.global_classifier"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Pinning to the first period"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.215909Z",
+     "start_time": "2022-11-05T19:18:42.207832Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Pooled Classifier\n",
+       "\n",
+       "Pooled UserDefined\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[10.00, 23.80] |     4\n",
+       "(23.80, 27.60] |     4\n",
+       "(27.60, 31.40] |     4\n",
+       "(31.40, 35.20] |     4\n",
+       "(35.20, 39.00] |     4\n",
+       "(39.00, 79.00] |     0\n",
+       "\n",
+       "Pooled UserDefined\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[10.00, 23.80] |     1\n",
+       "(23.80, 27.60] |     0\n",
+       "(27.60, 31.40] |     0\n",
+       "(31.40, 35.20] |     0\n",
+       "(35.20, 39.00] |     0\n",
+       "(39.00, 79.00] |    19\n",
+       "\n",
+       "Pooled UserDefined\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[10.00, 23.80] |     2\n",
+       "(23.80, 27.60] |     0\n",
+       "(27.60, 31.40] |     0\n",
+       "(31.40, 35.20] |     0\n",
+       "(35.20, 39.00] |     0\n",
+       "(39.00, 79.00] |    18"
+      ]
+     },
+     "execution_count": 35,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "pinned = mapclassify.Pooled(\n",
+    "    data, classifier=\"UserDefined\", bins=mapclassify.Quantiles(data[:, 0]).bins\n",
+    ")\n",
+    "pinned"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Note that the quintiles for the first period, by definition, contain all the values from that period, they do not bound the larger values in subsequent periods. Following the [mapclassify policy](https://github.com/pysal/mapclassify/blob/a7770fb98bf945dad3c62ccf2c0f8b53abb1774a/mapclassify/classifiers.py#L589), an additional class is added to contain all values in the pooled series."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python [conda env:py310_mapclassify]",
+   "language": "python",
+   "name": "conda-env-py310_mapclassify-py"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.6"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
