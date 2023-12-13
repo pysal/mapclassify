@@ -1,3 +1,21 @@
+# mapclassif-Iron:  _fisher_jenks_means for IronPython, and other environments without numpy.
+
+*Warning!* Installing the main branch of this fork normally with pip, will not produce a working library.
+An ImportError will be raised on import.  Unless your Python finds numpy, pandas and SciKitlearn, in which 
+case you are most likely running CPython or Jupyter anyway, and therefore you have no need of this fork and
+should use mapclassify instead.
+
+This project is included as a dependency in another project (sDNA_GH) by static linking the code 
+(copy and pasting) from a branch that has everything that won't work without 
+numpy, pandas and SciKitlearn etc. removed.
+
+Only the function, _fisher_jenks_means has been adapted (back to something similar to 
+Daniel J Lewis's original snippet).  
+
+No other functionality from mapclassify has been changed, and none has been added.
+
+Parent project's README.md:
+
 # mapclassify: Classification Schemes for Choropleth Maps
 
 [![Continuous Integration](https://github.com/pysal/mapclassify/actions/workflows/testing.yml/badge.svg)](https://github.com/pysal/mapclassify/actions/workflows/testing.yml)
