@@ -71,21 +71,14 @@ FMT = "{:.2f}"
 class MockNumpy(object):
     
     def __init__(self, int_type = None, float_type = None):
-        if int_type is None or float_type is None:
-            try:
-                if sys.implementation.name != 'ironpython':
-                    raise ImportError
-                import System
-            except ImportError:
-                class System:
-                    Int16 = int
-                    Single = float
-        
-        self.int32 = int_type or System.Int16
-        self.float32 = float_type or System.Single
+
+        self.int32 = int_type or int
+        self.float32 = float_type or float
+
+        self.inf = self.float32('inf')
     
     @classmethod
-    def zeros(self, dims, dtype = System.Int16):
+    def zeros(self, dims, dtype = int):
 
         if len(dims) == 1:
             zero = dtype(0)
@@ -93,10 +86,7 @@ class MockNumpy(object):
             
         return [cls.zeros(dims[1:], dtype) for __ in range(dims[0])] 
         
-    int32 = System.Int16
-    float32 = System.Single
-    inf = System.Single('inf')
-    
+
     @staticmethod
     def delete(arr, index):
         return arr[:index] + arr[index+1:]
