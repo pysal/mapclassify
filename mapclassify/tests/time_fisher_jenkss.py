@@ -1,6 +1,8 @@
 import random
 import timeit
 import functools
+import warnings
+
 
 try:
     import matplotlib.pyplot as plt
@@ -15,14 +17,17 @@ import numpy as np
 
 try:
     import numba
-    raise Exception(
-        f"""This test is to compare execution times of two alternatives 
+
+    warnings.warn(
+       f"""This test is to compare execution times of two alternatives 
         to the Numba-optimised function (both of which we already 
         know are far slower).  
         
         Please run {__file__} again in a venv, 
-        in which Numba is not installed. """
-        )
+        in which Numba is not installed. """,
+        UserWarning,
+        stacklevel=3,
+        ) 
 except ImportError:
     pass
 
