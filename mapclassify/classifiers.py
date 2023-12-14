@@ -5,11 +5,9 @@ import copy
 import functools
 import warnings
 
-import numpy as np  
+import numpy as np
 import scipy.stats as stats
 from sklearn.cluster import KMeans
-
-
 
 __author__ = "Sergio J. Rey"
 
