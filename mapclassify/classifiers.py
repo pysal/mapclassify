@@ -698,7 +698,6 @@ def _fisher_jenks_means_without_numpy(
     if np is None:
         np = MockNumpy()
 
-    values.sort()
     n_data = len(values)
     mat1 = np.zeros((n_data + 1, classes + 1), dtype=np.int32)
     mat2 = np.zeros((n_data + 1, classes + 1), dtype=np.float32)
@@ -740,6 +739,7 @@ def _fisher_jenks_means_without_numpy(
         kclass[countNum - 1] = values[_id]
         k = int(pivot - 1)
     return np.delete(kclass, 0)
+
 
 
 
@@ -2069,12 +2069,12 @@ class FisherJenks(MapClassifier):
 
     def __init__(self, y, k=K):
         if not HAS_NUMBA:
+            self._set_bins = self._set_bins_without_numpy 
             warnings.warn(
                 "Numba not installed. Using a less slow, pure python version.",
                 UserWarning,
                 stacklevel=3,
             )
-            self._set_bins = self._set_bins_without_numpy 
 
          
         
@@ -2095,7 +2095,7 @@ class FisherJenks(MapClassifier):
 
     def _set_bins_without_numpy(self):
         x = sorted(self.y)
-        self.bins = _fisher_jenks_means_without_numpy(x, classes=self.k)
+        self.bins = np.asarray(_fisher_jenks_means_without_numpy(x, classes=self.k))
 
 
 class FisherJenksSampled(MapClassifier):
@@ -2135,14 +2135,20 @@ class FisherJenksSampled(MapClassifier):
 
     """
 
+    ids = None
+
     def __init__(self, y, k=K, pct=0.10, truncate=True):
+        print(f'Got: {k=}, {pct=}, {truncate=}')
         self.k = k
         n = y.size
 
         if (pct * n > 1000) and truncate:
             pct = 1000.0 / n
+        # if FisherJenksSampled.ids is None:
+            # FisherJenksSampled.ids = np.random.randint(0, n, int(n * pct))
         ids = np.random.randint(0, n, int(n * pct))
         y = np.asarray(y)
+        # yr = y[FisherJenksSampled.ids]
         yr = y[ids]
         yr[-1] = max(y)  # make sure we have the upper bound
         yr[0] = min(y)  # make sure we have the min
