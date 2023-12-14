@@ -5,9 +5,9 @@ import copy
 import functools
 import warnings
 
+import numpy as np  
 import scipy.stats as stats
 from sklearn.cluster import KMeans
-import numpy as np  
 
 
 
@@ -113,7 +113,8 @@ except ImportError:
 
         return decorator_njit
 
-    # Numba requires Numpy    
+    # Numba requires Numpy.  This is still used when 
+    # Numpy is present, but Numba isn't.
     default_mock_numpy = MockNumpy()
 
 
@@ -665,8 +666,7 @@ def _fisher_jenks_means(values, classes=5):
 
     k = len(values)
 
-    # kclass = np.zeros(classes + 1, dtype=values.dtype)
-    kclass = np.zeros(classes + 1, dtype=int if isinstance(values[0], int) else float)
+    kclass = np.zeros(classes + 1, dtype=values.dtype)
     kclass[classes] = values[len(values) - 1]
     kclass[0] = values[0]
     for countNum in range(classes, 1, -1):
@@ -706,7 +706,6 @@ def _fisher_jenks_means_without_numpy(
     mat1 = np.zeros((n_data + 1, classes + 1), dtype=np.int32)
     mat2 = np.zeros((n_data + 1, classes + 1), dtype=np.float32)
     
-    # System.Array.Fill not suppported on Multi-dimensional arrays
     for j in range(1, classes + 1):
         mat1[1][j] = 1
         for i in range(2, n_data+1):
@@ -733,8 +732,6 @@ def _fisher_jenks_means_without_numpy(
         mat1[_l][1] = 1
         mat2[_l][1] = v
 
-#    for row in mat1:
-#        print(row)
     k = len(values)
 
     kclass = np.zeros((classes + 1,), dtype=type(values[0]))
