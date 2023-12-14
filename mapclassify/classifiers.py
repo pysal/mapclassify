@@ -84,7 +84,7 @@ class MockNumpy(object):
             zero = dtype(0)
             return [zero for __ in range(dims[0])]
             
-        return [cls.zeros(dims[1:], dtype) for __ in range(dims[0])] 
+        return [self.zeros(dims[1:], dtype) for __ in range(dims[0])] 
         
 
     @staticmethod
@@ -621,7 +621,7 @@ def natural_breaks(values, k=5, init=10):
 
 
 @njit("f8[:](f8[:], u2)")
-def _fisher_jenks_means_numpy(values, classes=5):
+def _fisher_jenks_means(values, classes=5):
     """
     Jenks Optimal (Natural Breaks) algorithm implemented in Python.
 
@@ -677,13 +677,13 @@ def _fisher_jenks_means_numpy(values, classes=5):
     return np.delete(kclass, 0)
 
 
-def _fisher_jenks_means_without_numpy(
+def _fjm_without_numpy(
     values,
     classes=5,
     np = default_mock_numpy
     ):
     """
-    As for _fisher_jenks_means_numpy above, to keep the code as far as possible
+    As for _fisher_jenks_means above, to keep the code as far as possible
     exactly the same, except with np passable in as a dependency, and with
     matrix[i, j] replaced with matrix[i][j] for speed.
 
@@ -748,10 +748,6 @@ def _fisher_jenks_means_without_numpy(
     return np.delete(kclass, 0)
 
 
-if HAS_NUMBA:
-    _fisher_jenks_means = _fisher_jenks_means_numpy
-else:
-    _fisher_jenks_means = _fisher_jenks_means_without_numpy
 
 
 class MapClassifier:
@@ -2077,19 +2073,18 @@ class FisherJenks(MapClassifier):
 
     """
 
-    def __init__(self, y, k=K, _fisher_jenks_means = None):
+    def __init__(self, y, k=K):
         if not HAS_NUMBA:
             warnings.warn(
                 "Numba not installed. Using slow pure python version.",
                 UserWarning,
                 stacklevel=3,
             )
-            _fisher_jenks_means = _fisher_jenks_means or _fisher_jenks_means_without_numpy
-        else:
-            
-            _fisher_jenks_means = _fisher_jenks_means or _fisher_jenks_means_numpy
+ 
 
-        self._fisher_jenks_means = _fisher_jenks_means
+        self._fjm = _fisher_jenks_means if HAS_NUMBA else _fjm_without_numpy
+
+         
         
         nu = len(np.unique(y))
         if nu < k:
@@ -2104,7 +2099,7 @@ class FisherJenks(MapClassifier):
 
     def _set_bins(self):
         x = np.sort(self.y).astype("f8")
-        self.bins = self._fisher_jenks_means(x, classes=self.k)
+        self.bins = self._fjm(x, classes=self.k)
 
 
 class FisherJenksSampled(MapClassifier):

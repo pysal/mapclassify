@@ -24,6 +24,7 @@ _classifiers = {
     "boxplot": BoxPlot,
     "equalinterval": EqualInterval,
     "fisherjenks": FisherJenks,
+    "fisherjenks_nonumpy": FisherJenks,
     "fisherjenkssampled": FisherJenksSampled,
     "headtailbreaks": HeadTailBreaks,
     "jenkscaspall": JenksCaspall,

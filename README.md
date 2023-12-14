@@ -1,7 +1,8 @@
 # mapclassif-Iron:  _fisher_jenks_means for IronPython, and other environments without numpy.
 
-This branch does not currently work, but is intended to very soon work with, and provide PRs for mapclassify, and the 
-resulting installation should work when installed by directing pip to this github repository branch
+This branch does not currently work, but is intended to very soon work with, when installed by 
+directing pip to this github repository branch.  This branch is primarily for convenient
+PRs for mapclassify.  
 
 Only the function, _fisher_jenks_means has been adapted (back to something similar to 
 Daniel J Lewis's original snippet).  
