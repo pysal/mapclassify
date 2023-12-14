@@ -40,6 +40,14 @@ def test_fisher_jenks_means(N, HAS_NUMBA):
         func = mapclassify.classifiers._fisher_jenks_means(np.sort(data).astype("f8"), classes=k)
     else:
         func = mapclassify.classifiers._fisher_jenks_means_without_numpy(sorted(data), classes=k)
+
+
+    # data = np.sort([random.uniform(1.0, 1000.0) for __ in range(N)]).astype("f8")
+
+    # if HAS_NUMBA:
+    #     func = mapclassify.classifiers._fisher_jenks_means(data, classes=k)
+    # else:
+    #     func = mapclassify.classifiers._fisher_jenks_means_without_numpy(data, classes=k)
    
 
 
@@ -109,10 +117,10 @@ compare_times(
                    ]
     )
 
-compare_times(
-    test_mapclassify_classify_fisherjenks,
-    title="Run times for end user, of the proposed code vs the original (inc MapClassifier overhead)",
-    descriptions = ["without Numpy, much less slow, pure python code",
-                    'with Numpy, existing "slow pure python" code',
-                   ],
-    )
+# compare_times(
+#     test_mapclassify_classify_fisherjenks,
+#     title="Run times for end user, of the proposed code vs the original (inc MapClassifier overhead)",
+#     descriptions = ["without Numpy, much less slow, pure python code",
+#                     'with Numpy, existing "slow pure python" code',
+#                    ],
+#     )

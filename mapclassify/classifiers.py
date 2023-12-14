@@ -111,10 +111,6 @@ except ImportError:
 
         return decorator_njit
 
-    # Numba requires Numpy.  This is still used when 
-    # Numpy is present, but Numba isn't.
-    default_mock_numpy = MockNumpy()
-
 
 def _format_intervals(mc, fmt="{:.0f}"):
     """
@@ -678,7 +674,7 @@ def _fisher_jenks_means(values, classes=5):
 def _fisher_jenks_means_without_numpy(
     values,
     classes=5,
-    np = default_mock_numpy
+    np = None
     ):
     """
     As for _fisher_jenks_means above, to keep the code as far as possible
@@ -699,6 +695,9 @@ def _fisher_jenks_means_without_numpy(
 
 
     """
+    if np is None:
+        np = MockNumpy()
+
     values.sort()
     n_data = len(values)
     mat1 = np.zeros((n_data + 1, classes + 1), dtype=np.int32)
