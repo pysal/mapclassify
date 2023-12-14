@@ -110,7 +110,6 @@ try:
 except ImportError:
     HAS_NUMPY = False
 
-    default_mock_numpy = MockNumpy()
 
 
 
@@ -131,6 +130,9 @@ except ImportError:
             return wrapper_decorator
 
         return decorator_njit
+
+    # Numba requires Numpy    
+    default_mock_numpy = MockNumpy()
 
 
 def _format_intervals(mc, fmt="{:.0f}"):
@@ -763,7 +765,7 @@ def _fisher_jenks_means_without_numpy(
     return np.delete(kclass, 0)
 
 
-if HAS_NUMPY:
+if HAS_NUMBA:
     _fisher_jenks_means = _fisher_jenks_means_numpy
 else:
     _fisher_jenks_means = _fisher_jenks_means_without_numpy
