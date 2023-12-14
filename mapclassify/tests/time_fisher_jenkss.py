@@ -2,9 +2,16 @@ import random
 import timeit
 import functools
 
-import matplotlib.pyplot as plt
+try:
+    import matplotlib.pyplot as plt
+    HAS_MATPLOTLIB = True
+except ImportError:
+    HAS_MATPLOTLIB = False
 
 import mapclassify
+import mapclassify.classifiers
+
+import numpy as np
 
 try:
     import numba
@@ -19,49 +26,93 @@ try:
 except ImportError:
     pass
 
+
 number_tests = 1
+k = 8
 
 
    
-def test_fisher_jenks(N):
+def test_fisher_jenks_means(N, HAS_NUMBA):
 
-    data = [random.randint(1, 1000) for __ in range(N)]
+    data = [random.uniform(1.0, 1000.0) for __ in range(N)]
 
-    mapclassify.classify(y = data, scheme = 'fisherjenks', k=8)
-
-descriptions = ["without Numpy, proposed less slow Pure Python code",
-                'with Numpy, existing "slow pure python" code',
-               ]
-
-data_sizes = [100, 300, 900, 1400, 2100, 3800, 10000]
+    if HAS_NUMBA:
+        func = mapclassify.classifiers._fisher_jenks_means(np.sort(data).astype("f8"), classes=k)
+    else:
+        func = mapclassify.classifiers._fjm_without_numpy(sorted(data), classes=k)
+   
 
 
-fig, ax = plt.subplots(figsize=(5, 2.7), layout='constrained')
+def test_mapclassify_classify_fisherjenks(N, HAS_NUMBA):
+
+    data = [random.uniform(1.0, 1000.0) for __ in range(N)]
+
+
+    # This hack avoids changing the interface of the 
+    # FisherJenks class, just for this timing code.
+    mapclassify.classifiers.HAS_NUMBA = HAS_NUMBA
+
+
+    mapclassify.classify(y = data, scheme = 'fisherjenks', k=k)
+
+
+    
+
+
+
+data_sizes = [100, 300, 1000, 2800, 8000]
 
 
 
 
-for HAS_NUMBA, description in zip([False, True], descriptions):
+def compare_times(test_runner, descriptions, title):
 
-    times = []
 
-    for N in data_sizes:
-        
-        # This hack avoids changing the FisherJenks 
-        # interface, just for this profiling code.
-        mapclassify.classifiers.HAS_NUMBA = HAS_NUMBA
+    print(f'{title}\n')
 
-        t = timeit.timeit(functools.partial(test_fisher_jenks, N=N), number=number_tests)
+    if HAS_MATPLOTLIB:
+        fig, ax = plt.subplots(figsize=(8.5, 5), layout='constrained')
 
-        print(f'Time: {t} seconds, data points: {N} {description}, {number_tests=}')
 
-        times.append(t)
 
-    ax.plot(data_sizes, times, label=description)
 
-ax.set_xlabel('Size of data classified')  # Add an x-label to the axes.
-ax.set_ylabel('Run time')  # Add a y-label to the axes.
-ax.set_title('Comparison of Fisher Jenks implementations. ')  # Add a title to the axes.
-ax.legend()  # Add a legend.
+    for HAS_NUMBA, description in zip([False, True], descriptions):
 
-plt.show()
+        times = []
+
+        for N in data_sizes:
+            
+            t = timeit.timeit(functools.partial(test_runner, N=N, HAS_NUMBA = HAS_NUMBA), number=number_tests)
+
+            print(f'Time: {t:.3f} seconds, data points: {N} {description}, {number_tests=}')
+
+            times.append(t)
+
+
+        if HAS_MATPLOTLIB:
+            ax.plot(data_sizes, times, 'o-', label=description)
+
+
+    if HAS_MATPLOTLIB:
+        ax.set_xlabel('Number of random data points classified')  
+        ax.set_ylabel('Run time (seconds)')  
+        ax.set_title(title)  
+        ax.legend() 
+
+        plt.show()
+
+compare_times(
+    test_fisher_jenks_means,
+    title="Run times of the proposed function vs the original (excluding MapClassifier overhead)",
+    descriptions = [" _fjm_without_numpy",
+                    " _fisher_jenks_means",
+                   ]
+    )
+
+compare_times(
+    test_mapclassify_classify_fisherjenks,
+    title="Run times for end user, of the proposed code vs the original (inc MapClassifier overhead)",
+    descriptions = ["without Numpy, much less slow, pure python code",
+                    'with Numpy, existing "slow pure python" code',
+                   ],
+    )

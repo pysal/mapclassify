@@ -666,7 +666,8 @@ def _fisher_jenks_means(values, classes=5):
 
     k = len(values)
 
-    kclass = np.zeros(classes + 1, dtype=values.dtype)
+    # kclass = np.zeros(classes + 1, dtype=values.dtype)
+    kclass = np.zeros(classes + 1, dtype=int if isinstance(values[0], int) else float)
     kclass[classes] = values[len(values) - 1]
     kclass[0] = values[0]
     for countNum in range(classes, 1, -1):
@@ -2076,13 +2077,11 @@ class FisherJenks(MapClassifier):
     def __init__(self, y, k=K):
         if not HAS_NUMBA:
             warnings.warn(
-                "Numba not installed. Using slow pure python version.",
+                "Numba not installed. Using the new, less slow, pure python version.",
                 UserWarning,
                 stacklevel=3,
             )
- 
-
-        self._fjm = _fisher_jenks_means if HAS_NUMBA else _fjm_without_numpy
+            self._set_bins = self._set_bins_without_numpy 
 
          
         
@@ -2099,7 +2098,11 @@ class FisherJenks(MapClassifier):
 
     def _set_bins(self):
         x = np.sort(self.y).astype("f8")
-        self.bins = self._fjm(x, classes=self.k)
+        self.bins = _fisher_jenks_means(x, classes=self.k)
+
+    def _set_bins_without_numpy(self):
+        x = sorted(self.y)
+        self.bins = _fjm_without_numpy(x, classes=self.k)
 
 
 class FisherJenksSampled(MapClassifier):
