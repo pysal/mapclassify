@@ -678,7 +678,7 @@ def _fisher_jenks_means(values, classes=5):
     return np.delete(kclass, 0)
 
 
-def _fjm_without_numpy(
+def _fisher_jenks_means_without_numpy(
     values,
     classes=5,
     np = default_mock_numpy
@@ -2040,7 +2040,7 @@ class FisherJenks(MapClassifier):
     Parameters
     ----------
 
-    y : numpy.array
+    y : collections.abc.Iterable[numbers.Real]
         :math:`(n,1)`, values to classify.
     k : int (default 5)
         The number of classes required.
@@ -2050,7 +2050,7 @@ class FisherJenks(MapClassifier):
 
     yb : numpy.array
         :math:`(n,1)`, bin IDs for observations.
-    bins : numpy.array
+    bins : collections.abc.Sequence[numbers.Real]
         :math:`(k,1)`, the upper bounds of each class.
     k : int
         The number of classes.
@@ -2077,7 +2077,7 @@ class FisherJenks(MapClassifier):
     def __init__(self, y, k=K):
         if not HAS_NUMBA:
             warnings.warn(
-                "Numba not installed. Using the new, less slow, pure python version.",
+                "Numba not installed. Using a less slow, pure python version.",
                 UserWarning,
                 stacklevel=3,
             )
@@ -2102,7 +2102,7 @@ class FisherJenks(MapClassifier):
 
     def _set_bins_without_numpy(self):
         x = sorted(self.y)
-        self.bins = _fjm_without_numpy(x, classes=self.k)
+        self.bins = _fisher_jenks_means_without_numpy(x, classes=self.k)
 
 
 class FisherJenksSampled(MapClassifier):

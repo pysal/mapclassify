@@ -39,7 +39,7 @@ def test_fisher_jenks_means(N, HAS_NUMBA):
     if HAS_NUMBA:
         func = mapclassify.classifiers._fisher_jenks_means(np.sort(data).astype("f8"), classes=k)
     else:
-        func = mapclassify.classifiers._fjm_without_numpy(sorted(data), classes=k)
+        func = mapclassify.classifiers._fisher_jenks_means_without_numpy(sorted(data), classes=k)
    
 
 
