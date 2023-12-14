@@ -1,7 +1,6 @@
 """
 A module of classification schemes for choropleth mapping.
 """
-import sys
 import copy
 import functools
 import warnings
