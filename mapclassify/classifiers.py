@@ -8,7 +8,7 @@ import warnings
 
 import scipy.stats as stats
 from sklearn.cluster import KMeans
-
+import numpy as np  
 
 
 
@@ -92,13 +92,6 @@ class MockNumpy(object):
         return arr[:index] + arr[index+1:]
 
 
-try:
-    if sys.implementation.name != 'cpython':
-        raise ImportError
-    import numpy as np  
-    HAS_NUMPY = True
-except ImportError:
-    HAS_NUMPY = False
 
 
 
@@ -2084,14 +2077,20 @@ class FisherJenks(MapClassifier):
 
     """
 
-    def __init__(self, y, k=K):
+    def __init__(self, y, k=K, _fisher_jenks_means = None):
         if not HAS_NUMBA:
             warnings.warn(
                 "Numba not installed. Using slow pure python version.",
                 UserWarning,
                 stacklevel=3,
             )
+            _fisher_jenks_means = _fisher_jenks_means or _fisher_jenks_means_without_numpy
+        else:
+            
+            _fisher_jenks_means = _fisher_jenks_means or _fisher_jenks_means_numpy
 
+        self._fisher_jenks_means = _fisher_jenks_means
+        
         nu = len(np.unique(y))
         if nu < k:
             raise ValueError(
@@ -2101,9 +2100,11 @@ class FisherJenks(MapClassifier):
         MapClassifier.__init__(self, y)
         self.name = "FisherJenks"
 
+
+
     def _set_bins(self):
         x = np.sort(self.y).astype("f8")
-        self.bins = _fisher_jenks_means(x, classes=self.k)
+        self.bins = self._fisher_jenks_means(x, classes=self.k)
 
 
 class FisherJenksSampled(MapClassifier):
