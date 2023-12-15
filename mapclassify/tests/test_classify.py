@@ -34,9 +34,11 @@ class TestClassify:
         _assertions(a, b)
 
     # mapclassify\classifiers.py:FisherJenksSampled.__init__
-    # 2028  ids = np.random.randint(0, n, int(n * pct)) 
-    @pytest.mark.xfail(reason="Stochastic. Passing a.s. requires random samples "
-                              "to be the same in both instances. ")
+    # 2028  ids = np.random.randint(0, n, int(n * pct))
+    @pytest.mark.xfail(
+        reason="Stochastic. Passing a.s. requires random samples "
+        "to be the same in both instances. "
+    )
     def test_fisher_jenks_sampled(self):
         a = mapclassify.classify(
             self.x, "FisherJenksSampled", k=3, pct_sampled=0.5, truncate=False
@@ -73,19 +75,22 @@ class TestClassify:
         b = mapclassify.JenksCaspallForced(self.x, k=3)
         _assertions(a, b)
 
-
     # mapclassify\classifiers.py:JenksCaspallSampled.__init__
-    # 2224  ids = np.random.randint(0, n, int(n * pct)) 
-    @pytest.mark.xfail(reason="Stochastic. Passing a.s. requires random samples "
-                              "to be the same in both instances. ")
+    # 2224  ids = np.random.randint(0, n, int(n * pct))
+    @pytest.mark.xfail(
+        reason="Stochastic. Passing a.s. requires random samples "
+        "to be the same in both instances. "
+    )
     def test_jenks_caspall_sampled(self):
         a = mapclassify.classify(self.x, "JenksCaspallSampled", pct_sampled=0.5)
         b = mapclassify.JenksCaspallSampled(self.x, pct=0.5)
         _assertions(a, b)
 
     # KMeans iterates starting from a randomly generated centroids
-    @pytest.mark.xfail(reason="Stochastic. Passing a.s. requires random centroids "
-                              "to be the same in both instances. ")
+    @pytest.mark.xfail(
+        reason="Stochastic. Passing a.s. requires random centroids "
+        "to be the same in both instances. "
+    )
     def test_natural_breaks(self):
         a = mapclassify.classify(self.x, "natural_breaks")
         b = mapclassify.NaturalBreaks(self.x)
@@ -94,8 +99,10 @@ class TestClassify:
     # mapclassify\classifiers.py:MaxP._set_bins
     # 2656  rseeds = np.random.permutation(list(range(k))).tolist()
     # 2701  rseeds = np.random.permutation(list(range(k))).tolist()
-    @pytest.mark.xfail(reason="Stochastic. Passing a.s. requires random selections "
-                              "to be the same in both instances. ")
+    @pytest.mark.xfail(
+        reason="Stochastic. Passing a.s. requires random selections "
+        "to be the same in both instances. "
+    )
     def test_max_p_classifier(self):
         a = mapclassify.classify(self.x, "max_p", k=3, initial=50)
         b = mapclassify.MaxP(self.x, k=3, initial=50)
