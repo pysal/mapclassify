@@ -61,37 +61,23 @@ SEEDRANGE = 1000000  # range for drawing random ints from for Natural Breaks
 FMT = "{:.2f}"
 
 
-
-
-
-
-class MockNumpy(object):
-    
-    def __init__(self, int_type = None, float_type = None):
-
+class MockNumpy:
+    def __init__(self, int_type=None, float_type=None):
         self.int32 = int_type or int
         self.float32 = float_type or float
 
-        self.inf = self.float32('inf')
-    
-    @classmethod
-    def zeros(self, dims, dtype = int):
+        self.inf = self.float32("inf")
 
+    def zeros(self, dims, dtype=int):
         if len(dims) == 1:
             zero = dtype(0)
             return [zero for __ in range(dims[0])]
-            
-        return [self.zeros(dims[1:], dtype) for __ in range(dims[0])] 
-        
+
+        return [self.zeros(dims[1:], dtype) for __ in range(dims[0])]
 
     @staticmethod
     def delete(arr, index):
-        return arr[:index] + arr[index+1:]
-
-
-
-
-
+        return arr[:index] + arr[index + 1 :]
 
 
 try:
@@ -671,11 +657,7 @@ def _fisher_jenks_means(values, classes=5):
     return np.delete(kclass, 0)
 
 
-def _fisher_jenks_means_without_numpy(
-    values,
-    classes=5,
-    np = None
-    ):
+def _fisher_jenks_means_without_numpy(values, classes=5, np=None):
     """
     As for _fisher_jenks_means above, to keep the code as far as possible
     exactly the same, except with np passable in as a dependency, and with
@@ -701,10 +683,10 @@ def _fisher_jenks_means_without_numpy(
     n_data = len(values)
     mat1 = np.zeros((n_data + 1, classes + 1), dtype=np.int32)
     mat2 = np.zeros((n_data + 1, classes + 1), dtype=np.float32)
-    
+
     for j in range(1, classes + 1):
         mat1[1][j] = 1
-        for i in range(2, n_data+1):
+        for i in range(2, n_data + 1):
             mat2[i][j] = np.inf
     v = 0
     for _l in range(2, len(values) + 1):
@@ -739,9 +721,6 @@ def _fisher_jenks_means_without_numpy(
         kclass[countNum - 1] = values[_id]
         k = int(pivot - 1)
     return np.delete(kclass, 0)
-
-
-
 
 
 class MapClassifier:
@@ -2069,15 +2048,13 @@ class FisherJenks(MapClassifier):
 
     def __init__(self, y, k=K):
         if not HAS_NUMBA:
-            self._set_bins = self._set_bins_without_numpy 
+            self._set_bins = self._set_bins_without_numpy
             warnings.warn(
                 "Numba not installed. Using a less slow, pure python version.",
                 UserWarning,
                 stacklevel=3,
             )
 
-         
-        
         nu = len(np.unique(y))
         if nu < k:
             raise ValueError(
@@ -2086,8 +2063,6 @@ class FisherJenks(MapClassifier):
         self.k = k
         MapClassifier.__init__(self, y)
         self.name = "FisherJenks"
-
-
 
     def _set_bins(self):
         x = np.sort(self.y).astype("f8")
@@ -2138,14 +2113,14 @@ class FisherJenksSampled(MapClassifier):
     ids = None
 
     def __init__(self, y, k=K, pct=0.10, truncate=True):
-        print(f'Got: {k=}, {pct=}, {truncate=}')
+        print(f"Got: {k=}, {pct=}, {truncate=}")
         self.k = k
         n = y.size
 
         if (pct * n > 1000) and truncate:
             pct = 1000.0 / n
         # if FisherJenksSampled.ids is None:
-            # FisherJenksSampled.ids = np.random.randint(0, n, int(n * pct))
+        # FisherJenksSampled.ids = np.random.randint(0, n, int(n * pct))
         ids = np.random.randint(0, n, int(n * pct))
         y = np.asarray(y)
         # yr = y[FisherJenksSampled.ids]
