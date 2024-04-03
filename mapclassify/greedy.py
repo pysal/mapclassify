@@ -301,9 +301,13 @@ def greedy(
 
     if not isinstance(sw, W):
         if sw == "queen":
-            sw = Queen.from_dataframe(gdf, silence_warnings=silence_warnings)
+            sw = Queen.from_dataframe(
+                gdf, silence_warnings=silence_warnings, use_index=False
+            )
         elif sw == "rook":
-            sw = Rook.from_dataframe(gdf, silence_warnings=silence_warnings)
+            sw = Rook.from_dataframe(
+                gdf, silence_warnings=silence_warnings, use_index=False
+            )
 
     if strategy == "balanced":
         color = pd.Series(_balanced(gdf, sw, balance=balance, min_colors=min_colors))
