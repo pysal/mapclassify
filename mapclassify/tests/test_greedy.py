@@ -15,11 +15,13 @@ sw = libpysal.weights.Queen.from_dataframe(
     world, ids=world.index.to_list(), silence_warnings=True
 )
 
+
 def _check_correctess(colors):
     assert len(colors) == len(world)
     for i, neighbors in sw.neighbors.items():
         if len(neighbors) > 1:
             assert (colors[neighbors] != colors[i]).all()
+
 
 @pytest.mark.filterwarnings("ignore:Geometry is in a geographic CRS.")
 class TestGreedy:
