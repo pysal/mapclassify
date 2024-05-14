@@ -1,7 +1,7 @@
 import contextlib
 from importlib.metadata import PackageNotFoundError, version
 
-from ._classify_API import classify
+from ._classify_API import classify, classify_to_rgba
 from .classifiers import (
     CLASSIFIERS,
     BoxPlot,

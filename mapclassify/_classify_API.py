@@ -1,3 +1,7 @@
+import pandas as pd
+from matplotlib import cm
+from matplotlib.colors import Normalize
+
 from .classifiers import (
     BoxPlot,
     EqualInterval,
@@ -214,3 +218,60 @@ def classify(
         classifier = _classifiers[scheme](y, k)
 
     return classifier
+
+
+def classify_to_rgba(
+    values, classifier="quantiles", k=6, cmap="viridis", nan_color=[255, 255, 255, 255]
+):
+    """Convert array of values into RGBA colors using a colormap and classifier.
+
+    Parameters
+    ----------
+    values : list-like
+        array of input values
+    classifier : str, optional
+        string description of a mapclassify classifier, by default "quantiles"
+    k : int, optional
+        number of classes to form, by default 6
+    cmap : str, optional
+        name of matplotlib colormap to use, by default "viridis"
+    nan_color : list, optional
+        RGBA color to fill NaN values, by default [255, 255, 255, 255]
+
+    Returns
+    -------
+    numpy.array
+        array of lists with each list containing four values that define a color using
+        RGBA specification.
+    """
+    if not pd.api.types.is_list_like(nan_color) and not len(nan_color) == 4:
+        raise ValueError("`nan_color` must be list-like of 4 values: (R,G,B,A)")
+
+    # only operate on non-NaN values
+    v = pd.Series(values)
+    legit_indices = v[~v.isna()].index.values
+
+    # transform (non-NaN) values into class bins
+    bins = classify(v.dropna().values, scheme=classifier, k=k).yb
+
+    # create a normalizer using the data's range (not strictly 1-k...)
+    norm = Normalize(min(bins), max(bins))
+
+    # map values to colors
+    n_cmap = cm.ScalarMappable(norm=norm, cmap=cmap)
+
+    # create array of RGB values (lists of 4) of length n
+    vals = [n_cmap.to_rgba(i, alpha=None) for i in bins]
+
+    # convert decimals to whole numbers
+    rgbas = []
+    for val in vals:
+        # convert each value in the array of lists
+        rgbas.append([round(i * 255, 0) for i in val])
+
+    # replace non-nan values with colors
+    colors = pd.Series(rgbas, index=legit_indices)
+    v.update(colors)
+    v = v.fillna(f"{nan_color}").apply(list)
+
+    return v.values
