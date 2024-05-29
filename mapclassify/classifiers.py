@@ -535,7 +535,6 @@ def _jenks_caspall(y, k):
     cuts.shape = (len(cuts),)
     return cuts, it
 
-    
 
 def _kmeans(y, k=5, n_init=10):
     """
@@ -2067,7 +2066,8 @@ class FisherJenksSampled(MapClassifier):
             pct = 1000.0 / n
         ids = np.random.randint(0, n, int(n * pct))
         y = np.asarray(y)
-        yr = y[ids]
+        mask = ~np.isnan(y)
+        yr = y[mask][ids]
         yr[-1] = max(y)  # make sure we have the upper bound
         yr[0] = min(y)  # make sure we have the min
         self.original_y = y
@@ -2075,8 +2075,15 @@ class FisherJenksSampled(MapClassifier):
         self._truncated = truncate
         self.yr = yr
         self.yr_n = yr.size
-        MapClassifier.__init__(self, yr)
-        self.yb, self.counts = bin1d(y, self.bins)
+        #MapClassifier.__init__(self, yr)
+        bins = _fisher_jenks_means(yr, k)
+
+
+        yb, self.counts = bin1d(y[mask], bins)
+        self.yb = np.zeros(y.shape, np.uint8)
+        self.yb[mask] = yb
+        self.yb[~mask] = -1
+        self.bins = bins
         self.name = "FisherJenksSampled"
         self.y = y
         self._summary()  # have to recalculate summary stats
@@ -2084,6 +2091,9 @@ class FisherJenksSampled(MapClassifier):
     def _set_bins(self):
         fj = FisherJenks(self.y, self.k)
         self.bins = fj.bins
+
+    def _summary(self):
+        pass
 
     def update(self, y=None, inplace=False, **kwargs):
         """
