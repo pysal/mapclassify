@@ -1123,6 +1123,52 @@ class MapClassifier:
             plt.savefig(file_name, dpi=dpi)
         return f, ax
 
+    def plot_histogram(
+        self, hist_kwargs=None, hist_color="dodgerblue", linecolor="black", ax=None
+    ):
+        """Plot histogram of `y` with bin values superimposed
+
+        Parameters
+        ----------
+        hist_kwargs : dict, optional
+            additional keyword arguments passed to pandas.Series.histogram, by default None
+        hist_color : str, optional
+            hue to color bars of the histogram, by default "dodgerblue"
+        linecolor : str, optional
+            color of the lines demarcating each class bin, by default "black"
+        ax : matplotlib.Axes, optional
+            axes object to plot onto, by default None
+
+        Returns
+        -------
+        matplotlib.Axes
+            an Axes object with histogram and class bins
+
+        Raises
+        ------
+        ImportError
+            depends on pandas and seaborn and rasies if not packages not present
+        """
+        try:
+            import pandas as pd
+            import seaborn as sns
+        except ImportError as e:
+            raise ImportError from e(
+                "You must have pandas ans seaborn available to use this function"
+            )
+        if hist_kwargs is None:
+            hist_kwargs = dict()
+        if  'color' not in hist_kwargs:
+            hist_kwargs['color'] = hist_color
+        series = pd.Series(self.y)
+        ax = series.plot(kind="hist", ax=ax, **hist_kwargs)
+
+        lim = ax.get_ylim()[1]
+        for i in self.bins:
+            ax.vlines(i, 0, lim, color=linecolor)
+        sns.despine()
+        return ax
+
 
 class HeadTailBreaks(MapClassifier):
     """
