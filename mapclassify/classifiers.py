@@ -1124,20 +1124,21 @@ class MapClassifier:
         return f, ax
 
     def plot_histogram(
-        self, hist_kwargs=None, hist_color="dodgerblue", linecolor="black", ax=None
+        self, hist_color="dodgerblue", linecolor="black", ax=None, hist_kwargs=None
     ):
         """Plot histogram of `y` with bin values superimposed
 
         Parameters
         ----------
-        hist_kwargs : dict, optional
-            additional keyword arguments passed to pandas.Series.histogram, by default None
         hist_color : str, optional
             hue to color bars of the histogram, by default "dodgerblue"
         linecolor : str, optional
             color of the lines demarcating each class bin, by default "black"
         ax : matplotlib.Axes, optional
             axes object to plot onto, by default None
+        hist_kwargs : dict, optional
+            additional keyword arguments passed to pandas.Series.histogram, by default
+            None
 
         Returns
         -------
