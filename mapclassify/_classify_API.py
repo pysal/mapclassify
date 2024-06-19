@@ -221,7 +221,12 @@ def classify(
 
 
 def classify_to_rgba(
-    values, classifier="quantiles", k=6, cmap="viridis", nan_color=[255, 255, 255, 255]
+    values,
+    classifier="quantiles",
+    k=6,
+    cmap="viridis",
+    alpha=1,
+    nan_color=[255, 255, 255, 255],
 ):
     """Convert array of values into RGBA colors using a colormap and classifier.
 
@@ -235,6 +240,8 @@ def classify_to_rgba(
         number of classes to form, by default 6
     cmap : str, optional
         name of matplotlib colormap to use, by default "viridis"
+    alpha : float
+        alpha parameter that defines transparency. Should be in the range [0,1]
     nan_color : list, optional
         RGBA color to fill NaN values, by default [255, 255, 255, 255]
 
@@ -244,6 +251,8 @@ def classify_to_rgba(
         array of lists with each list containing four values that define a color using
         RGBA specification.
     """
+    if not (alpha <= 1) and (alpha >= 0):
+        raise ValueError("alpha must be in the range [0,1]")
     if not pd.api.types.is_list_like(nan_color) and not len(nan_color) == 4:
         raise ValueError("`nan_color` must be list-like of 4 values: (R,G,B,A)")
 
@@ -261,13 +270,13 @@ def classify_to_rgba(
     n_cmap = cm.ScalarMappable(norm=norm, cmap=cmap)
 
     # create array of RGB values (lists of 4) of length n
-    vals = [n_cmap.to_rgba(i, alpha=None) for i in bins]
+    vals = [n_cmap.to_rgba(i, alpha=alpha) for i in bins]
 
     # convert decimals to whole numbers
     rgbas = []
     for val in vals:
         # convert each value in the array of lists
-        rgbas.append([round(i * 255, 0) for i in val])
+        rgbas.append([i * 255 for i in val])
 
     # replace non-nan values with colors
     colors = pd.Series(rgbas, index=legit_indices)
