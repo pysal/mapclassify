@@ -1185,8 +1185,9 @@ class MapClassifier:
                 import seaborn as sns
                 sns.despine(ax=ax)
             except ImportError as e:
-                raise ImportError from e(
-                    "The seaborn package is required to use the despine option"
+                warnings.warn(
+                    "The seaborn package is required to use the despine option",
+                    stacklevel=2,
                 )
         return ax
 
