@@ -1124,18 +1124,27 @@ class MapClassifier:
         return f, ax
 
     def plot_histogram(
-        self, hist_color="dodgerblue", linecolor="black", ax=None, hist_kwargs=None
+        self,
+        hist_color="dodgerblue",
+        linecolor="black",
+        ax=None,
+        despine=True,
+        hist_kwargs=None,
     ):
         """Plot histogram of `y` with bin values superimposed
 
         Parameters
         ----------
         hist_color : str, optional
-            hue to color bars of the histogram, by default "dodgerblue"
+            hue to color bars of the histogram, by default "dodgerblue". This option
+            overrides the 'color' entry in `hist_kwargs` if specified.
         linecolor : str, optional
             color of the lines demarcating each class bin, by default "black"
         ax : matplotlib.Axes, optional
             axes object to plot onto, by default None
+        despine : bool, optional
+            If True, to use seaborn's despine function to remove top and right axes,
+            default is True
         hist_kwargs : dict, optional
             additional keyword arguments passed to pandas.Series.histogram, by default
             None
@@ -1148,26 +1157,37 @@ class MapClassifier:
         Raises
         ------
         ImportError
-            depends on pandas and seaborn and rasies if not packages not present
+            depends on pandas (and seaborn if despine=True) and rasies if not packages
+            not present
         """
         try:
             import pandas as pd
-            import seaborn as sns
         except ImportError as e:
             raise ImportError from e(
-                "You must have pandas ans seaborn available to use this function"
+                "You must have pandas available to use this function"
             )
         if hist_kwargs is None:
             hist_kwargs = dict()
-        if  'color' not in hist_kwargs:
-            hist_kwargs['color'] = hist_color
+        # override color in case specified explicitly and inside the dict
+        if "color" not in hist_kwargs:
+            hist_kwargs["color"] = hist_color
+        # plot `y` as a histogram
         series = pd.Series(self.y)
         ax = series.plot(kind="hist", ax=ax, **hist_kwargs)
-
+        # get the top of the ax so we know how high to raise each class bar
         lim = ax.get_ylim()[1]
+        # plot upper limit of each bin
         for i in self.bins:
             ax.vlines(i, 0, lim, color=linecolor)
-        sns.despine()
+        # despine if specified
+        if despine:
+            try:
+                import seaborn as sns
+                sns.despine(ax=ax)
+            except ImportError as e:
+                raise ImportError from e(
+                    "The seaborn package is required to use the despine option"
+                )
         return ax
 
 
