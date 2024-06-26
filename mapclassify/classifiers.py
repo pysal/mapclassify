@@ -1164,6 +1164,7 @@ class MapClassifier:
         """
         try:
             import matplotlib.pyplot as plt
+
             if ax is None:
                 _, ax = plt.subplots()
         except ImportError as e:
@@ -1184,8 +1185,8 @@ class MapClassifier:
             ax.vlines(i, 0, lim, color=linecolor, linewidth=linewidth)
         # despine if specified
         if despine:
-            ax.spines['right'].set_visible(False)
-            ax.spines['top'].set_visible(False)
+            ax.spines["right"].set_visible(False)
+            ax.spines["top"].set_visible(False)
         return ax
 
 

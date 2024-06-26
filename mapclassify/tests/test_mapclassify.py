@@ -737,11 +737,12 @@ class TestPooled:
         with pytest.raises(ValueError, match=message):
             Pooled(self.data, classifier=classifier, k=4)
 
+
 class TestPlots:
     def setup_method(self):
         n = 20
         self.data = numpy.array([numpy.arange(n) + i * n for i in range(1, 4)]).T
-    
+
     @pytest.mark.mpl_image_compare
     def test_histogram_plot(self):
         ax = Quantiles(self.data).plot_histogram()
@@ -754,5 +755,7 @@ class TestPlots:
 
     @pytest.mark.mpl_image_compare
     def test_histogram_plot_linewidth(self):
-        ax = Quantiles(self.data).plot_histogram(linewidth=3, linecolor='red', color='yellow')
+        ax = Quantiles(self.data).plot_histogram(
+            linewidth=3, linecolor="red", color="yellow"
+        )
         return ax.get_figure()
