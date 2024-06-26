@@ -1157,14 +1157,15 @@ class MapClassifier:
         Raises
         ------
         ImportError
-            depends on pandas (and seaborn if despine=True) and rasies if not packages
-            not present
+            depends matplotlib and rasies if not installed
         """
         try:
-            import pandas as pd
+            import matplotlib.pyplot as plt
+            if ax is None:
+                _, ax = plt.subplots()
         except ImportError as e:
             raise ImportError from e(
-                "You must have pandas available to use this function"
+                "You must have matplotlib available to use this function"
             )
         if hist_kwargs is None:
             hist_kwargs = dict()
@@ -1172,8 +1173,7 @@ class MapClassifier:
         if "color" not in hist_kwargs:
             hist_kwargs["color"] = hist_color
         # plot `y` as a histogram
-        series = pd.Series(self.y)
-        ax = series.plot(kind="hist", ax=ax, **hist_kwargs)
+        ax.hist(self.y, **hist_kwargs)
         # get the top of the ax so we know how high to raise each class bar
         lim = ax.get_ylim()[1]
         # plot upper limit of each bin
@@ -1181,14 +1181,8 @@ class MapClassifier:
             ax.vlines(i, 0, lim, color=linecolor)
         # despine if specified
         if despine:
-            try:
-                import seaborn as sns
-                sns.despine(ax=ax)
-            except ImportError as e:
-                warnings.warn(
-                    "The seaborn package is required to use the despine option",
-                    stacklevel=2,
-                )
+            ax.spines['right'].set_visible(False)
+            ax.spines['top'].set_visible(False)
         return ax
 
 
