@@ -1,0 +1,22 @@
+name: test
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  # required
+  - networkx
+  - numpy
+  - pandas
+  - scikit-learn
+  - scipy
+  # testing
+  - geopandas
+  - libpysal
+  - pytest
+  - pytest-cov
+  - pytest-xdist
+  - pytest-doctestplus
+  - codecov
+  - matplotlib
+  # optional
+  - numba
