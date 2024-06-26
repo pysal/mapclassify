@@ -1146,7 +1146,7 @@ class MapClassifier:
             If True, to use seaborn's despine function to remove top and right axes,
             default is True
         kwargs : dict, optional
-            additional keyword arguments passed to pandas.Series.histogram, by default
+            additional keyword arguments passed to matplotlib.axes.Axes.hist, by default
             None
 
         Returns
