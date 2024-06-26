@@ -1137,8 +1137,7 @@ class MapClassifier:
         Parameters
         ----------
         color : str, optional
-            hue to color bars of the histogram, by default "dodgerblue". This option
-            overrides the 'color' entry in `hist_kwargs` if specified.
+            hue to color bars of the histogram, by default "dodgerblue".
         linecolor : str, optional
             color of the lines demarcating each class bin, by default "black"
         linewidth : int, optional
@@ -1171,11 +1170,6 @@ class MapClassifier:
             raise ImportError from e(
                 "You must have matplotlib available to use this function"
             )
-        if kwargs is None:
-            kwargs = dict()
-        # override color in case specified explicitly and inside the dict
-        if "color" not in kwargs:
-            kwargs["color"] = color
         # plot `y` as a histogram
         ax.hist(self.y, **kwargs)
         # get the top of the ax so we know how high to raise each class bar
