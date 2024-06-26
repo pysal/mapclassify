@@ -63,7 +63,7 @@ jobs:
 
       - name: Run pytest
         run: |
-          pytest mapclassify -r a -v -n auto --cov mapclassify --cov-config .coveragerc --cov-report xml --color yes --cov-append --cov-report term-missing
+          pytest mapclassify -r a -v -n auto --cov mapclassify --cov-report xml --color yes --cov-append --cov-report term-missing
 
       - name: run docstring tests
         if: contains(matrix.environment-file, '311-numba') && contains(matrix.os, 'ubuntu')
@@ -73,7 +73,7 @@ jobs:
           -r a \
           -n auto \
           --color yes \
-          --cov mapclassify --cov-config .coveragerc --cov-report xml --cov-append \
+          --cov mapclassify --cov-report xml --cov-append \
           --doctest-only mapclassify
 
       - name: codecov (${{ matrix.os }}, ${{ matrix.environment-file }})
