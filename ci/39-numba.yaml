@@ -11,7 +11,7 @@ dependencies:
   - scipy
   # testing
   - geopandas
-  - libpysal
+  - libpysal>=4.9
   - pytest
   - pytest-cov
   - pytest-xdist
