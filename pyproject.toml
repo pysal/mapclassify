@@ -75,6 +75,7 @@ tests = [
     "pytest",
     "pytest-cov",
     "pytest-xdist",
+    "pytest-doctestplus",
 ]
 all = ["numba[speedups,dev,docs,tests]"]
 
