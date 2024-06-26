@@ -1171,7 +1171,7 @@ class MapClassifier:
                 "You must have matplotlib available to use this function"
             )
         # plot `y` as a histogram
-        ax.hist(self.y, **kwargs)
+        ax.hist(self.y, color=color, **kwargs)
         # get the top of the ax so we know how high to raise each class bar
         lim = ax.get_ylim()[1]
         # plot upper limit of each bin
