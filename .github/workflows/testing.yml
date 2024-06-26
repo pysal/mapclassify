@@ -73,6 +73,7 @@ jobs:
           -r a \
           -n auto \
           --color yes \
+          --cov mapclassify --cov-config .coveragerc --cov-report xml --cov-append \
           --doctest-only mapclassify
 
       - name: codecov (${{ matrix.os }}, ${{ matrix.environment-file }})
