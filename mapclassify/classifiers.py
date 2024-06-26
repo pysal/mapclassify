@@ -1127,6 +1127,7 @@ class MapClassifier:
         self,
         color="dodgerblue",
         linecolor="black",
+        linewidth=None,
         ax=None,
         despine=True,
         **kwargs,
@@ -1140,6 +1141,8 @@ class MapClassifier:
             overrides the 'color' entry in `hist_kwargs` if specified.
         linecolor : str, optional
             color of the lines demarcating each class bin, by default "black"
+        linewidth : int, optional
+            change the linewidth demarcating each class bin
         ax : matplotlib.Axes, optional
             axes object to plot onto, by default None
         despine : bool, optional
@@ -1178,7 +1181,7 @@ class MapClassifier:
         lim = ax.get_ylim()[1]
         # plot upper limit of each bin
         for i in self.bins:
-            ax.vlines(i, 0, lim, color=linecolor)
+            ax.vlines(i, 0, lim, color=linecolor, linewidth=linewidth)
         # despine if specified
         if despine:
             ax.spines['right'].set_visible(False)
