@@ -1125,17 +1125,17 @@ class MapClassifier:
 
     def plot_histogram(
         self,
-        hist_color="dodgerblue",
+        color="dodgerblue",
         linecolor="black",
         ax=None,
         despine=True,
-        hist_kwargs=None,
+        **kwargs,
     ):
         """Plot histogram of `y` with bin values superimposed
 
         Parameters
         ----------
-        hist_color : str, optional
+        color : str, optional
             hue to color bars of the histogram, by default "dodgerblue". This option
             overrides the 'color' entry in `hist_kwargs` if specified.
         linecolor : str, optional
@@ -1145,7 +1145,7 @@ class MapClassifier:
         despine : bool, optional
             If True, to use seaborn's despine function to remove top and right axes,
             default is True
-        hist_kwargs : dict, optional
+        kwargs : dict, optional
             additional keyword arguments passed to pandas.Series.histogram, by default
             None
 
@@ -1167,13 +1167,13 @@ class MapClassifier:
             raise ImportError from e(
                 "You must have matplotlib available to use this function"
             )
-        if hist_kwargs is None:
-            hist_kwargs = dict()
+        if kwargs is None:
+            kwargs = dict()
         # override color in case specified explicitly and inside the dict
-        if "color" not in hist_kwargs:
-            hist_kwargs["color"] = hist_color
+        if "color" not in kwargs:
+            kwargs["color"] = color
         # plot `y` as a histogram
-        ax.hist(self.y, **hist_kwargs)
+        ax.hist(self.y, **kwargs)
         # get the top of the ax so we know how high to raise each class bar
         lim = ax.get_ylim()[1]
         # plot upper limit of each bin
