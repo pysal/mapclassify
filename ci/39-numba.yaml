@@ -10,7 +10,7 @@ dependencies:
   - scikit-learn
   - scipy
   # testing
-  - geopandas
+  - geopandas<1
   - libpysal
   - pytest
   - pytest-cov
