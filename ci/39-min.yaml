@@ -10,7 +10,7 @@ dependencies:
   - scikit-learn=1.0
   - scipy=1.8
   # testing
-  - geopandas
+  - geopandas<1
   - libpysal
   - pytest
   - pytest-cov
