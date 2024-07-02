@@ -76,7 +76,8 @@ jobs:
           -n auto \
           --color yes \
           --cov mapclassify --cov-report xml --cov-append \
-          --doctest-only mapclassify
+          --doctest-only \
+          --mpl mapclassify
 
       - name: codecov (${{ matrix.os }}, ${{ matrix.environment-file }})
         uses: codecov/codecov-action@v4

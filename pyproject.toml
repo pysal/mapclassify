@@ -8,13 +8,13 @@ build-backend = "setuptools.build_meta"
 name = "mapclassify"
 dynamic = ["version"]
 maintainers = [
-    {name = "Serge Rey", email = "sjsrey@gmail.com"},
-    {name = "Wei Kang", email = "weikang9009@gmail.com"},
+    { name = "Serge Rey", email = "sjsrey@gmail.com" },
+    { name = "Wei Kang", email = "weikang9009@gmail.com" },
 ]
-license = {text = "BSD 3-Clause"}
+license = { text = "BSD 3-Clause" }
 description = "Classification Schemes for Choropleth Maps."
 keywords = ["spatial statistics", "geovisualization"]
-readme = {text = """\
+readme = { text = """\
 `mapclassify` implements a family of classification schemes for choropleth maps.
 Its focus is on the determination of the number of classes, and the assignment
 of observations to those classes. It is intended for use with upstream mapping
@@ -26,7 +26,7 @@ For further theoretical background see "`Choropleth Mapping`_" in Rey, S.J., D. 
 .. _geopandas: https://geopandas.org/mapping.html
 .. _geoplot: https://residentmario.github.io/geoplot/user_guide/Customizing_Plots.html
 .. _Choropleth Mapping: https://geographicdata.science/book/notebooks/05_choropleth.html
-""", content-type = "text/x-rst"}
+""", content-type = "text/x-rst" }
 classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
@@ -52,14 +52,8 @@ Home = "https://pysal.org/mapclassify/"
 Repository = "https://github.com/pysal/mapclassify"
 
 [project.optional-dependencies]
-speedups = [
-    "numba>=0.54",
-]
-dev = [
-    "black",
-    "ruff",
-    "pre-commit",
-]
+speedups = ["numba>=0.54"]
+dev = ["black", "ruff", "pre-commit"]
 docs = [
     "nbsphinx",
     "numpydoc",
@@ -76,14 +70,12 @@ tests = [
     "pytest-cov",
     "pytest-xdist",
     "pytest-doctestplus",
+    "pytest-mpl"
 ]
 all = ["numba[speedups,dev,docs,tests]"]
 
 [tool.setuptools.packages.find]
-include = [
-    "mapclassify",
-    "mapclassify.*",
-]
+include = ["mapclassify", "mapclassify.*"]
 
 [tool.black]
 line-length = 88
