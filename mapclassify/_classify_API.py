@@ -1,4 +1,3 @@
-
 from .classifiers import (
     BoxPlot,
     EqualInterval,
