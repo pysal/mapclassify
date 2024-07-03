@@ -1123,6 +1123,66 @@ class MapClassifier:
             plt.savefig(file_name, dpi=dpi)
         return f, ax
 
+    def plot_histogram(
+        self,
+        color="dodgerblue",
+        linecolor="black",
+        linewidth=None,
+        ax=None,
+        despine=True,
+        **kwargs,
+    ):
+        """Plot histogram of `y` with bin values superimposed
+
+        Parameters
+        ----------
+        color : str, optional
+            hue to color bars of the histogram, by default "dodgerblue".
+        linecolor : str, optional
+            color of the lines demarcating each class bin, by default "black"
+        linewidth : int, optional
+            change the linewidth demarcating each class bin
+        ax : matplotlib.Axes, optional
+            axes object to plot onto, by default None
+        despine : bool, optional
+            If True, to use seaborn's despine function to remove top and right axes,
+            default is True
+        kwargs : dict, optional
+            additional keyword arguments passed to matplotlib.axes.Axes.hist, by default
+            None
+
+        Returns
+        -------
+        matplotlib.Axes
+            an Axes object with histogram and class bins
+
+        Raises
+        ------
+        ImportError
+            depends matplotlib and rasies if not installed
+        """
+        try:
+            import matplotlib.pyplot as plt
+
+            if ax is None:
+                _, ax = plt.subplots()
+        except ImportError as e:
+            raise ImportError from e(
+                "You must have matplotlib available to use this function"
+            )
+        # plot `y` as a histogram
+        ax.hist(self.y, color=color, **kwargs)
+        # get the top of the ax so we know how high to raise each class bar
+        lim = ax.get_ylim()[1]
+        # plot upper limit of each bin
+        for i in self.bins:
+            ax.vlines(i, 0, lim, color=linecolor, linewidth=linewidth)
+        # despine if specified
+        if despine:
+            ax.spines["right"].set_visible(False)
+            ax.spines["top"].set_visible(False)
+        return ax
+
 
 class HeadTailBreaks(MapClassifier):
     """
