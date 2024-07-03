@@ -1,4 +1,4 @@
-from ._classify_API import classify
+from ._classify_API import classify as _classify
 
 
 def get_rgba(
@@ -23,6 +23,8 @@ def get_rgba(
         alpha parameter that defines transparency. Should be in the range [0,1]
     nan_color : list, optional
         RGBA color to fill NaN values, by default [255, 255, 255, 255]
+    kwargs : dict
+        additional keyword arguments are passed to `mapclassify.classify`
 
     Returns
     -------
@@ -46,7 +48,7 @@ def get_rgba(
     legit_indices = v[~v.isna()].index.values
 
     # transform (non-NaN) values into class bins
-    bins = classify(v.dropna().values, scheme=classifier, **kwargs).yb
+    bins = _classify(v.dropna().values, scheme=classifier, **kwargs).yb
 
     # create a normalizer using the data's range (not strictly 1-k...)
     norm = Normalize(min(bins), max(bins))
