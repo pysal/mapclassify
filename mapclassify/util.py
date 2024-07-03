@@ -7,7 +7,7 @@ def get_rgba(
     cmap="viridis",
     alpha=1,
     nan_color=[255, 255, 255, 255],
-    **kwargs
+    **kwargs,
 ):
     """Convert array of values into RGBA colors using a colormap and classifier.
 
