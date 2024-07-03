@@ -4,10 +4,10 @@ from ._classify_API import classify
 def get_rgba(
     values,
     classifier="quantiles",
-    k=6,
     cmap="viridis",
     alpha=1,
     nan_color=[255, 255, 255, 255],
+    **kwargs
 ):
     """Convert array of values into RGBA colors using a colormap and classifier.
 
@@ -17,8 +17,6 @@ def get_rgba(
         array of input values
     classifier : str, optional
         string description of a mapclassify classifier, by default "quantiles"
-    k : int, optional
-        number of classes to form, by default 6
     cmap : str, optional
         name of matplotlib colormap to use, by default "viridis"
     alpha : float
@@ -48,7 +46,7 @@ def get_rgba(
     legit_indices = v[~v.isna()].index.values
 
     # transform (non-NaN) values into class bins
-    bins = classify(v.dropna().values, scheme=classifier, k=k).yb
+    bins = classify(v.dropna().values, scheme=classifier, **kwargs).yb
 
     # create a normalizer using the data's range (not strictly 1-k...)
     norm = Normalize(min(bins), max(bins))
