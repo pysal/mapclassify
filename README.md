@@ -12,8 +12,7 @@
 Its focus is on the determination of the number of classes, and the assignment
 of observations to those classes. It is intended for use with upstream mapping
 and geovisualization packages (see
-[geopandas](https://geopandas.org/mapping.html) and
-[geoplot](https://residentmario.github.io/geoplot/user_guide/Customizing_Plots.html))
+[geopandas](https://geopandas.org/mapping.html))
 that handle the rendering of the maps.
 
 For further theoretical background see [Rey, S.J., D. Arribas-Bel, and L.J. Wolf (2020) "Geographic Data Science with PySAL and the PyData Stack”](https://geographicdata.science/book/notebooks/05_choropleth.html).
