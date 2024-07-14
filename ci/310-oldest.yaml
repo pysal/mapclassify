@@ -1,0 +1,19 @@
+name: test
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  # required
+  - networkx=2.7
+  - numpy=1.23
+  - pandas=1.4
+  - scikit-learn=1.0
+  - scipy=1.8
+  # testing
+  - geopandas<1
+  - libpysal
+  - pytest
+  - pytest-cov
+  - pytest-xdist
+  - codecov
+  - matplotlib=3.5

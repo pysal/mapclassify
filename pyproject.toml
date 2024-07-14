@@ -52,8 +52,14 @@ Home = "https://pysal.org/mapclassify/"
 Repository = "https://github.com/pysal/mapclassify"
 
 [project.optional-dependencies]
-speedups = ["numba>=0.54"]
-dev = ["black", "ruff", "pre-commit"]
+speedups = [
+    "numba>=0.54"
+]
+dev = [
+    "ruff",
+    "pre-commit",
+    "watermark",
+]
 docs = [
     "nbsphinx",
     "numpydoc",
@@ -77,18 +83,10 @@ all = ["numba[speedups,dev,docs,tests]"]
 [tool.setuptools.packages.find]
 include = ["mapclassify", "mapclassify.*"]
 
-[tool.black]
-line-length = 88
-extend-exclude = '''
-(
-  docs/conf.py
-)
-#'''
-
 [tool.ruff]
 line-length = 88
-select = ["E", "F", "W", "I", "UP", "N", "B", "A", "C4", "SIM", "ARG"]
-ignore = [
+lint.select = ["E", "F", "W", "I", "UP", "N", "B", "A", "C4", "SIM", "ARG"]
+lint.ignore = [
     "B006",
     "B008",
     "B009",

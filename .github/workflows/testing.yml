@@ -22,35 +22,38 @@ jobs:
         os: ["ubuntu-latest"]
         environment-file:
           [
-            ci/39-min.yaml,
-            ci/39.yaml,
-            ci/39-numba.yaml,
-            ci/310.yaml,
-            ci/310-numba.yaml,
-            ci/311.yaml,
-            ci/311-numba.yaml,
-            ci/312.yaml,
-            ci/312-numba.yaml,
+            ci/39-oldest.yaml,
+            ci/39-latest.yaml,
+            ci/39-numba-latest.yaml,
+            ci/310-oldest.yaml,
+            ci/310-latest.yaml,
+            ci/310-numba-latest.yaml,
+            ci/311-latest.yaml,
+            ci/311-numba-latest.yaml,
+            ci/312-latest.yaml,
+            ci/312-numba-latest.yaml,
             ci/312-dev.yaml,
           ]
         include:
-          - environment-file: ci/312.yaml
+          - environment-file: ci/312-latest.yaml
             os: macos-13 # Intel
-          - environment-file: ci/312-numba.yaml
+          - environment-file: ci/312-numba-latest.yaml
             os: macos-13 # Intel
-          - environment-file: ci/312.yaml
+          - environment-file: ci/312-latest.yaml
             os: macos-14 # Apple Silicon
-          - environment-file: ci/312-numba.yaml
+          - environment-file: ci/312-numba-latest.yaml
             os: macos-14 # Apple Silicon
-          - environment-file: ci/312.yaml
+          - environment-file: ci/312-latest.yaml
             os: windows-latest
-          - environment-file: ci/312-numba.yaml
+          - environment-file: ci/312-numba-latest.yaml
             os: windows-latest
       fail-fast: false
 
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
+        with:
+           fetch-depth: 0 # Fetch all history for all branches and tags.
 
       - name: setup micromamba
         uses: mamba-org/setup-micromamba@v1
@@ -69,17 +72,28 @@ jobs:
 
       - name: Run pytest
         run: |
-          pytest mapclassify -r a -v -n auto --cov mapclassify --cov-report xml --color yes --cov-append --cov-report term-missing
+          pytest \
+          mapclassify \
+          -r a \
+          -v \
+          -n auto \
+          --color yes \
+          --cov-append \
+          --cov mapclassify \
+          --cov-report xml  \
+          --cov-report term-missing
 
       - name: run docstring tests
-        if: contains(matrix.environment-file, '312-numba') && contains(matrix.os, 'ubuntu')
+        if: contains(matrix.environment-file, '312-numba-latest') && contains(matrix.os, 'ubuntu')
         run: |
           pytest \
           -v \
           -r a \
           -n auto \
           --color yes \
-          --cov mapclassify --cov-report xml --cov-append \
+          --cov-append \
+          --cov mapclassify \
+          --cov-report xml \
           --doctest-only \
           --mpl mapclassify
 
