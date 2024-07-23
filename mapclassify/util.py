@@ -44,8 +44,6 @@ def get_rgba(
         raise ValueError("alpha must be in the range [0,1]")
     if not pd.api.types.is_list_like(nan_color) and not len(nan_color) == 4:
         raise ValueError("`nan_color` must be list-like of 4 values: (R,G,B,A)")
-    if scheme in kwargs:
-        kwargs.pop("scheme")
 
     # only operate on non-NaN values
     v = pd.Series(values, dtype=object)
