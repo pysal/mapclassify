@@ -17,7 +17,7 @@ def get_rgba(
     ----------
     values : list-like
         array of input values
-    classifier : str, optional
+    scheme : str, optional
         string description of a mapclassify classifier, by default "quantiles"
     cmap : str, optional
         name of matplotlib colormap to use, by default "viridis"
