@@ -18,7 +18,7 @@ def get_rgba(
     values : list-like
         array of input values
     scheme : str, optional
-        string description of a mapclassify classifier, by default "quantiles"
+        string description of a mapclassify classifier, by default `"quantiles"`
     cmap : str, optional
         name of matplotlib colormap to use, by default "viridis"
     alpha : float
@@ -31,7 +31,7 @@ def get_rgba(
     Returns
     -------
     numpy.array
-        numpy array (n,4) of lists with each list containing four values that define a
+        numpy array :math:`(n,4)` with each row containing four values that define a
         color using RGBA specification.
     """
     try:
