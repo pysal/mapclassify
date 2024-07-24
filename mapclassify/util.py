@@ -43,13 +43,6 @@ def get_color_array(
         each row. If `as_hex` is True, the array is :math:`(n,1)` holding a hexcolor in
         each row.
 
-    Examples
-    ---------
-
-
-
-
-
     """
     try:
         import pandas as pd
