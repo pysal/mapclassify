@@ -67,7 +67,7 @@ def get_color_array(
     normalized_vals = norm(bins)
 
     # generate RBGA array and convert to series
-    rgbas = colormaps[cmap](normalized_vals, bytes=True)
+    rgbas = colormaps[cmap](normalized_vals, bytes=True, alpha=alpha)
     colors = pd.Series(list(rgbas), index=legit_indices).apply(np.array)
 
     # put colors in their correct places and fill empty with designated color
