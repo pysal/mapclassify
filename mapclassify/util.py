@@ -3,15 +3,19 @@ import numpy as np
 from ._classify_API import classify as _classify
 
 
-def get_rgba(
+def get_color_array(
     values,
     scheme="quantiles",
     cmap="viridis",
     alpha=1,
     nan_color=[255, 255, 255, 255],
+    as_hex=False,
     **kwargs,
 ):
-    """Convert array of values into RGBA colors using a colormap and classifier.
+    """Convert array of values into RGBA or hex colors using a colormap and classifier.
+    This function is useful for visualization libraries that require users to provide
+    an array of colors for each object (like pydeck or lonboard) but can also be used
+    to create a manual column of colors passed to matplotlib.
 
     Parameters
     ----------
@@ -25,19 +29,32 @@ def get_rgba(
         alpha parameter that defines transparency. Should be in the range [0,1]
     nan_color : list, optional
         RGBA color to fill NaN values, by default [255, 255, 255, 255]
+    as_hex: bool, optional
+        if True, return a (n,1)-dimensional array of hexcolors instead of a (n,4)
+        dimensional array of RGBA values.
     kwargs : dict
         additional keyword arguments are passed to `mapclassify.classify`
 
     Returns
     -------
     numpy.array
-        numpy array :math:`(n,4)` with each row containing four values that define a
-        color using RGBA specification.
+        numpy array (aligned with the input array) defining a color for each row. If
+        `as_hex` is False, the array is :math:`(n,4)` holding an array of RGBA values in
+        each row. If `as_hex` is True, the array is :math:`(n,1)` holding a hexcolor in
+        each row.
+
+    Examples
+    ---------
+
+
+
+
+
     """
     try:
         import pandas as pd
         from matplotlib import colormaps
-        from matplotlib.colors import Normalize
+        from matplotlib.colors import Normalize, to_hex
     except ImportError as e:
         raise ImportError("This function requires pandas and matplotlib") from e
     if not (alpha <= 1) and (alpha >= 0):
@@ -52,13 +69,20 @@ def get_rgba(
     # transform (non-NaN) values into class bins
     bins = _classify(legit_vals, scheme=scheme, **kwargs).yb
 
-    # create a normalizer using the data's range (not strictly 1-k...)
+    # normalize using the data's range (not strictly 1-k if classifier is degenerate)
     norm = Normalize(min(bins), max(bins))
     normalized_vals = norm(bins)
 
+    # generate RBGA array and convert to series
     rgbas = colormaps[cmap](normalized_vals, bytes=True)
     colors = pd.Series(list(rgbas), index=legit_indices).apply(np.array)
+
+    # put colors in their correct places and fill empty with designated color
     v.update(colors)
     v = v.fillna(f"{nan_color}").apply(np.array)
 
+    # convert to hexcolors if preferred
+    if as_hex:
+        colors = colors.apply(lambda x: to_hex(x / 255.0))
+        return colors.values
     return np.stack(v.values)
