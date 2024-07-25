@@ -41,3 +41,4 @@ Utilities
     mapclassify.Pooled
     mapclassify.classify
     mapclassify.gadf
+    mapclassify.util.get_color_array
