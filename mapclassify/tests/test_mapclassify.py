@@ -28,6 +28,13 @@ class TestQuantile:
             numpy.testing.assert_almost_equal(k, len(quantile(y, k)))
             assert k == len(quantile(y, k))
 
+    def test_quantile_nan(self):
+        numpy.random.seed(4414)
+        y = numpy.random.normal(0, 11, size=11)
+        y[10] = numpy.NaN
+        quants = Quantiles(y, k=3)
+        known_yb = numpy.array([0, 1, 0, 1, 0, 2, 0, 2, 1, 2, -1])
+        numpy.testing.assert_allclose(quants.yb, known_yb, rtol=RTOL)
 
 class TestUpdate:
     def setup_method(self):
@@ -525,6 +532,9 @@ class TestMaximumBreaks:
 class TestFisherJenks:
     def setup_method(self):
         self.V = load_example()
+        v = load_example().to_list()
+        v.append(numpy.NaN)
+        self.VNAN = numpy.array(v)
 
     def test_FisherJenks(self):
         fj = FisherJenks(self.V)
@@ -535,6 +545,17 @@ class TestFisherJenks:
         numpy.testing.assert_array_almost_equal(
             fj.counts, numpy.array([49, 3, 4, 1, 1])
         )
+
+    def test_FisherJenksNAN(self):
+        fj = FisherJenks(self.VNAN)
+        assert fj.adcm == 799.24000000000001
+        numpy.testing.assert_array_almost_equal(
+            fj.bins, numpy.array([75.29, 192.05, 370.5, 722.85, 4111.45])
+        )
+        numpy.testing.assert_array_almost_equal(
+            fj.counts, numpy.array([49, 3, 4, 1, 1])
+        )
+        numpy.testing.assert_equal(fj.yb[-1], -1)
 
 
 class TestJenksCaspall:
