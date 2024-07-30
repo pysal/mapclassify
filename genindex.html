@@ -1,101 +1,372 @@
-
-
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <title>Index &#8212; No Errors Test Project  documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index &#8212; mapclassify v2.8.0 Manual</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css?v=9afac83c" />
+    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pysal-styles.css?v=0c2123f2" />
+    <script src="_static/documentation_options.js?v=69ff2ef9"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="_static/pysal_favicon.ico"/>
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
 
   </head><body>
-  
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          mapclassify</a>
+        <span class="navbar-text navbar-version pull-left"><b>2.8.0</b></span>
+      </div>
 
-          <div class="body" role="main">
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
             
+                <li><a href="installation.html">Installation</a></li>
+                <li><a href="tutorial.html">Tutorial</a></li>
+                <li><a href="api.html">API</a></li>
+                <li><a href="references.html">References</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-released-version">Installing released version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-development-version">Installing development version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/01_maximum_breaks.html">Introduction to mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/02_legends.html">Legends in mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/03_choropleth.html">Choropleth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/04_pooled.html">Pooled Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/05_Greedy_coloring.html">Getting started with mapclassify.greedy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/06_api.html">Overview of the mapclassify API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/06_api.html#Original-API-(&lt;-2.4.0)">Original API (&lt; 2.4.0)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/06_api.html#Extended-API-(&gt;=-2.40)">Extended API (&gt;= 2.40)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#classifiers">Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
 
 <h1 id="index">Index</h1>
 
 <div class="genindex-jumpbox">
+ <a href="#_"><strong>_</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#J"><strong>J</strong></a>
+ | <a href="#K"><strong>K</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#U"><strong>U</strong></a>
  
 </div>
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.__init__">__init__() (mapclassify.BoxPlot method)</a>
+
+      <ul>
+        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.__init__">(mapclassify.EqualInterval method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.__init__">(mapclassify.FisherJenks method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.__init__">(mapclassify.FisherJenksSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.__init__">(mapclassify.HeadTailBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.__init__">(mapclassify.JenksCaspall method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.__init__">(mapclassify.JenksCaspallForced method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.__init__">(mapclassify.JenksCaspallSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.KClassifiers.html#mapclassify.KClassifiers.__init__">(mapclassify.KClassifiers method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.__init__">(mapclassify.MaximumBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.__init__">(mapclassify.MaxP method)</a>
+</li>
+        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.__init__">(mapclassify.NaturalBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.__init__">(mapclassify.Percentiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.Pooled.html#mapclassify.Pooled.__init__">(mapclassify.Pooled method)</a>
+</li>
+        <li><a href="generated/mapclassify.PrettyBreaks.html#mapclassify.PrettyBreaks.__init__">(mapclassify.PrettyBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.__init__">(mapclassify.Quantiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.__init__">(mapclassify.StdMean method)</a>
+</li>
+        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.__init__">(mapclassify.UserDefined method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot">BoxPlot (class in mapclassify)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.classify.html#mapclassify.classify">classify() (in module mapclassify)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval">EqualInterval (class in mapclassify)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks">FisherJenks (class in mapclassify)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled">FisherJenksSampled (class in mapclassify)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.gadf.html#mapclassify.gadf">gadf() (in module mapclassify)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.util.get_color_array.html#mapclassify.util.get_color_array">get_color_array() (in module mapclassify.util)</a>
+</li>
+      <li><a href="generated/mapclassify.greedy.html#mapclassify.greedy">greedy() (in module mapclassify)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks">HeadTailBreaks (class in mapclassify)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="J">J</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall">JenksCaspall (class in mapclassify)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced">JenksCaspallForced (class in mapclassify)</a>
+</li>
+      <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled">JenksCaspallSampled (class in mapclassify)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.KClassifiers.html#mapclassify.KClassifiers">KClassifiers (class in mapclassify)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks">MaximumBreaks (class in mapclassify)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP">MaxP (class in mapclassify)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks">NaturalBreaks (class in mapclassify)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles">Percentiles (class in mapclassify)</a>
+</li>
+      <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.plot">plot() (mapclassify.UserDefined method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.Pooled.html#mapclassify.Pooled">Pooled (class in mapclassify)</a>
+</li>
+      <li><a href="generated/mapclassify.PrettyBreaks.html#mapclassify.PrettyBreaks">PrettyBreaks (class in mapclassify)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles">Quantiles (class in mapclassify)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean">StdMean (class in mapclassify)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.update">update() (mapclassify.BoxPlot method)</a>
+
+      <ul>
+        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.update">(mapclassify.FisherJenksSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.update">(mapclassify.JenksCaspallSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.update">(mapclassify.MaximumBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.update">(mapclassify.NaturalBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.update">(mapclassify.Percentiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.update">(mapclassify.StdMean method)</a>
+</li>
+        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.update">(mapclassify.UserDefined method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined">UserDefined (class in mapclassify)</a>
+</li>
+  </ul></td>
+</tr></table>
 
 
-          </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">No Errors Test Project</a></h1>
 
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
     </div>
-</div>
-<script>$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2019, sphinx-action Test Suite.
       
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
       
-    </div>
-
-    
-
-    
+        <br/>
+        
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-, pysal developers.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.0.2.<br/>
+    </p>
+  </div>
+</footer>
   </body>
 </html>

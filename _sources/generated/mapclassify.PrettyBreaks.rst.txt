@@ -1,0 +1,40 @@
+﻿mapclassify.PrettyBreaks
+========================
+
+.. currentmodule:: mapclassify
+
+.. autoclass:: PrettyBreaks
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~PrettyBreaks.__init__
+      ~PrettyBreaks.find_bin
+      ~PrettyBreaks.get_adcm
+      ~PrettyBreaks.get_fmt
+      ~PrettyBreaks.get_gadf
+      ~PrettyBreaks.get_legend_classes
+      ~PrettyBreaks.get_tss
+      ~PrettyBreaks.make
+      ~PrettyBreaks.plot
+      ~PrettyBreaks.plot_histogram
+      ~PrettyBreaks.set_fmt
+      ~PrettyBreaks.table
+      ~PrettyBreaks.update
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PrettyBreaks.fmt
+   
+   

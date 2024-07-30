@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Overview of the mapclassify API &#8212; mapclassify v2.8.0 Manual</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=9afac83c" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pysal-styles.css?v=0c2123f2" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+    <script src="../_static/documentation_options.js?v=69ff2ef9"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"TeX": {"equationNumbers": {"autoNumber": "AMS", "useLabelIds": true}}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="icon" href="../_static/pysal_favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API reference" href="../api.html" />
+    <link rel="prev" title="Getting started with mapclassify.greedy" href="05_Greedy_coloring.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          mapclassify</a>
+        <span class="navbar-text navbar-version pull-left"><b>2.8.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../installation.html">Installation</a></li>
+                <li><a href="../tutorial.html">Tutorial</a></li>
+                <li><a href="../api.html">API</a></li>
+                <li><a href="../references.html">References</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-released-version">Installing released version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-development-version">Installing development version</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01_maximum_breaks.html">Introduction to mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_legends.html">Legends in mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_choropleth.html">Choropleth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_pooled.html">Pooled Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05_Greedy_coloring.html">Getting started with mapclassify.greedy</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Overview of the mapclassify API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Original-API-(&lt;-2.4.0)">Original API (&lt; 2.4.0)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Extended-API-(&gt;=-2.40)">Extended API (&gt;= 2.40)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#classifiers">Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Overview of the mapclassify API</a></li>
+<li><a class="reference internal" href="#Original-API-(&lt;-2.4.0)">Original API (&lt; 2.4.0)</a></li>
+<li><a class="reference internal" href="#Extended-API-(&gt;=-2.40)">Extended API (&gt;= 2.40)</a><ul>
+<li><a class="reference internal" href="#Robustness-of-the-scheme-argument">Robustness of the <code class="docutils literal notranslate"><span class="pre">scheme</span></code> argument</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="admonition note">
+<p>This page was generated from <a class="reference external" href="https://github.com/pysal/mapclassify/blob/main/notebooks/06_api.ipynb">notebooks/06_api.ipynb</a>.
+Interactive online version:
+<span class="raw-html"><a href="https://mybinder.org/v2/gh/pysal/mapclassify/main?filepath=notebooks/06_api.ipynb"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" style="vertical-align:text-bottom"></a></span></p>
+</div>
+<section id="Overview-of-the-mapclassify-API">
+<h1>Overview of the mapclassify API<a class="headerlink" href="#Overview-of-the-mapclassify-API" title="Link to this heading">¶</a></h1>
+<p>There are a number of ways to access the functionality in <code class="docutils literal notranslate"><span class="pre">mapclassify</span></code></p>
+<p>We first load the example dataset that we have seen earlier.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import geopandas
+import libpysal
+import mapclassify
+</pre></div>
+</div>
+</div>
+<p>Current <code class="docutils literal notranslate"><span class="pre">mapclassify</span></code> version.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mapclassify.__version__
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;2.4.2+107.gb97c316a.dirty&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>pth = libpysal.examples.get_path(&quot;columbus.shp&quot;)
+gdf = geopandas.read_file(pth)
+y = gdf.HOVAL
+gdf.head()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AREA</th>
+      <th>PERIMETER</th>
+      <th>COLUMBUS_</th>
+      <th>COLUMBUS_I</th>
+      <th>POLYID</th>
+      <th>NEIG</th>
+      <th>HOVAL</th>
+      <th>INC</th>
+      <th>CRIME</th>
+      <th>OPEN</th>
+      <th>...</th>
+      <th>DISCBD</th>
+      <th>X</th>
+      <th>Y</th>
+      <th>NSA</th>
+      <th>NSB</th>
+      <th>EW</th>
+      <th>CP</th>
+      <th>THOUS</th>
+      <th>NEIGNO</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.309441</td>
+      <td>2.440629</td>
+      <td>2</td>
+      <td>5</td>
+      <td>1</td>
+      <td>5</td>
+      <td>80.467003</td>
+      <td>19.531</td>
+      <td>15.725980</td>
+      <td>2.850747</td>
+      <td>...</td>
+      <td>5.03</td>
+      <td>38.799999</td>
+      <td>44.070000</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1000.0</td>
+      <td>1005.0</td>
+      <td>POLYGON ((8.62413 14.23698, 8.55970 14.74245, ...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.259329</td>
+      <td>2.236939</td>
+      <td>3</td>
+      <td>1</td>
+      <td>2</td>
+      <td>1</td>
+      <td>44.567001</td>
+      <td>21.232</td>
+      <td>18.801754</td>
+      <td>5.296720</td>
+      <td>...</td>
+      <td>4.27</td>
+      <td>35.619999</td>
+      <td>42.380001</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1000.0</td>
+      <td>1001.0</td>
+      <td>POLYGON ((8.25279 14.23694, 8.28276 14.22994, ...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.192468</td>
+      <td>2.187547</td>
+      <td>4</td>
+      <td>6</td>
+      <td>3</td>
+      <td>6</td>
+      <td>26.350000</td>
+      <td>15.956</td>
+      <td>30.626781</td>
+      <td>4.534649</td>
+      <td>...</td>
+      <td>3.89</td>
+      <td>39.820000</td>
+      <td>41.180000</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1000.0</td>
+      <td>1006.0</td>
+      <td>POLYGON ((8.65331 14.00809, 8.81814 14.00205, ...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.083841</td>
+      <td>1.427635</td>
+      <td>5</td>
+      <td>2</td>
+      <td>4</td>
+      <td>2</td>
+      <td>33.200001</td>
+      <td>4.477</td>
+      <td>32.387760</td>
+      <td>0.394427</td>
+      <td>...</td>
+      <td>3.70</td>
+      <td>36.500000</td>
+      <td>40.520000</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1000.0</td>
+      <td>1002.0</td>
+      <td>POLYGON ((8.45950 13.82035, 8.47341 13.83227, ...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.488888</td>
+      <td>2.997133</td>
+      <td>6</td>
+      <td>7</td>
+      <td>5</td>
+      <td>7</td>
+      <td>23.225000</td>
+      <td>11.252</td>
+      <td>50.731510</td>
+      <td>0.405664</td>
+      <td>...</td>
+      <td>2.83</td>
+      <td>40.009998</td>
+      <td>38.000000</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1000.0</td>
+      <td>1007.0</td>
+      <td>POLYGON ((8.68527 13.63952, 8.67758 13.72221, ...</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 21 columns</p>
+</div></div>
+</div>
+</section>
+<section id="Original-API-(&lt;-2.4.0)">
+<h1>Original API (&lt; 2.4.0)<a class="headerlink" href="#Original-API-(<-2.4.0)" title="Link to this heading">¶</a></h1>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>bp = mapclassify.BoxPlot(y)
+bp
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+BoxPlot
+
+   Interval      Count
+----------------------
+( -inf, -0.70] |     0
+(-0.70, 25.70] |    13
+(25.70, 33.50] |    12
+(33.50, 43.30] |    12
+(43.30, 69.70] |     7
+(69.70, 96.40] |     5
+</pre></div></div>
+</div>
+</section>
+<section id="Extended-API-(&gt;=-2.40)">
+<h1>Extended API (&gt;= 2.40)<a class="headerlink" href="#Extended-API-(>=-2.40)" title="Link to this heading">¶</a></h1>
+<p>Note the original API is still available so this extension keeps backwards compatibility.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>bp = mapclassify.classify(y, &quot;box_plot&quot;)
+bp
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+BoxPlot
+
+   Interval      Count
+----------------------
+( -inf, -0.70] |     0
+(-0.70, 25.70] |    13
+(25.70, 33.50] |    12
+(33.50, 43.30] |    12
+(43.30, 69.70] |     7
+(69.70, 96.40] |     5
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>type(bp)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+mapclassify.classifiers.BoxPlot
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>q5 = mapclassify.classify(y, &quot;quantiles&quot;, k=5)
+q5
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Quantiles
+
+   Interval      Count
+----------------------
+[17.90, 23.08] |    10
+(23.08, 30.48] |    10
+(30.48, 39.10] |     9
+(39.10, 45.83] |    10
+(45.83, 96.40] |    10
+</pre></div></div>
+</div>
+<section id="Robustness-of-the-scheme-argument">
+<h2>Robustness of the <code class="docutils literal notranslate"><span class="pre">scheme</span></code> argument<a class="headerlink" href="#Robustness-of-the-scheme-argument" title="Link to this heading">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mapclassify.classify(y, &quot;boxPlot&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+BoxPlot
+
+   Interval      Count
+----------------------
+( -inf, -0.70] |     0
+(-0.70, 25.70] |    13
+(25.70, 33.50] |    12
+(33.50, 43.30] |    12
+(43.30, 69.70] |     7
+(69.70, 96.40] |     5
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mapclassify.classify(y, &quot;Boxplot&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+BoxPlot
+
+   Interval      Count
+----------------------
+( -inf, -0.70] |     0
+(-0.70, 25.70] |    13
+(25.70, 33.50] |    12
+(33.50, 43.30] |    12
+(43.30, 69.70] |     7
+(69.70, 96.40] |     5
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mapclassify.classify(y, &quot;Box_plot&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+BoxPlot
+
+   Interval      Count
+----------------------
+( -inf, -0.70] |     0
+(-0.70, 25.70] |    13
+(25.70, 33.50] |    12
+(33.50, 43.30] |    12
+(43.30, 69.70] |     7
+(69.70, 96.40] |     5
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mapclassify.classify(y, &#39;Std_Mean&#39;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+StdMean
+
+   Interval      Count
+----------------------
+( -inf,  1.50] |     0
+( 1.50, 19.97] |     5
+(19.97, 56.90] |    37
+(56.90, 75.37] |     3
+(75.37, 96.40] |     4
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mapclassify.classify(y, &#39;Std_Mean&#39;, anchor=True)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+StdMean
+
+   Interval      Count
+----------------------
+[17.90, 19.97] |     5
+(19.97, 38.44] |    24
+(38.44, 56.90] |    13
+(56.90, 75.37] |     3
+(75.37, 93.83] |     3
+(93.83, 96.40] |     1
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>y.mean(), y.std(), y.min(), y.max()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(38.43622446938775, 18.466069465206047, 17.9, 96.400002)
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../_sources/notebooks/06_api.ipynb.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-, pysal developers.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.0.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

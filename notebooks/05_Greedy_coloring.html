@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Getting started with mapclassify.greedy &#8212; mapclassify v2.8.0 Manual</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=9afac83c" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pysal-styles.css?v=0c2123f2" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+    <script src="../_static/documentation_options.js?v=69ff2ef9"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"TeX": {"equationNumbers": {"autoNumber": "AMS", "useLabelIds": true}}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="icon" href="../_static/pysal_favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Overview of the mapclassify API" href="06_api.html" />
+    <link rel="prev" title="Pooled Classification" href="04_pooled.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          mapclassify</a>
+        <span class="navbar-text navbar-version pull-left"><b>2.8.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../installation.html">Installation</a></li>
+                <li><a href="../tutorial.html">Tutorial</a></li>
+                <li><a href="../api.html">API</a></li>
+                <li><a href="../references.html">References</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-released-version">Installing released version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-development-version">Installing development version</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01_maximum_breaks.html">Introduction to mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_legends.html">Legends in mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_choropleth.html">Choropleth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_pooled.html">Pooled Classification</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Getting started with mapclassify.greedy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_api.html">Overview of the mapclassify API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_api.html#Original-API-(&lt;-2.4.0)">Original API (&lt; 2.4.0)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_api.html#Extended-API-(&gt;=-2.40)">Extended API (&gt;= 2.40)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#classifiers">Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Getting started with mapclassify.greedy</a><ul>
+<li><a class="reference internal" href="#Default">Default</a></li>
+<li><a class="reference internal" href="#Strategies">Strategies</a><ul>
+<li><a class="reference internal" href="#Balanced">Balanced</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#NetworkX-strategies">NetworkX strategies</a></li>
+<li><a class="reference internal" href="#Defining-adjacency">Defining adjacency</a><ul>
+<li><a class="reference internal" href="#libpysal-adjacency">libpysal adjacency</a><ul>
+<li><a class="reference internal" href="#Rook">Rook</a></li>
+<li><a class="reference internal" href="#Queen">Queen</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Intersection-based-adjacency">Intersection-based adjacency</a></li>
+<li><a class="reference internal" href="#Reusing-spatial-weights">Reusing spatial weights</a></li>
+<li><a class="reference internal" href="#Performance">Performance</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Comparison-of-strategies">Comparison of strategies</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="admonition note">
+<p>This page was generated from <a class="reference external" href="https://github.com/pysal/mapclassify/blob/main/notebooks/05_Greedy_coloring.ipynb">notebooks/05_Greedy_coloring.ipynb</a>.
+Interactive online version:
+<span class="raw-html"><a href="https://mybinder.org/v2/gh/pysal/mapclassify/main?filepath=notebooks/05_Greedy_coloring.ipynb"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" style="vertical-align:text-bottom"></a></span></p>
+</div>
+<section id="Getting-started-with-mapclassify.greedy">
+<h1>Getting started with mapclassify.greedy<a class="headerlink" href="#Getting-started-with-mapclassify.greedy" title="Link to this heading">¶</a></h1>
+<p>Greedy or topological coloring (or sequential coloring) is a cartographic method of assigning colors to polygons (or other geometries, <code class="docutils literal notranslate"><span class="pre">mapclassify.greedy</span></code> supports all geometry types) in such a way, that no two adjacent polygons share the same color.</p>
+<p><code class="docutils literal notranslate"><span class="pre">greedy</span></code> is a small toolkit within <code class="docutils literal notranslate"><span class="pre">mapclassify</span></code> providing such a functionality on top of GeoPandas GeoDataFrames. <code class="docutils literal notranslate"><span class="pre">mapclassify.greedy()</span></code> is all we need.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from mapclassify import __version__, greedy
+
+__version__
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;2.6.0+5.g2788475.dirty&#39;
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import geopandas
+import seaborn
+
+seaborn.set()
+</pre></div>
+</div>
+</div>
+<p>Few of <code class="docutils literal notranslate"><span class="pre">greedy</span></code>’s methods of coloring require either measuring of areas or distances. To obtain proper values, our GeoDataFrame needs to be in a projected CRS. Let’s use Africa and reproject it to ‘ESRI:102022’:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>world = geopandas.read_file(&quot;https://naciscdn.org/naturalearth/110m/cultural/ne_110m_admin_0_countries.zip&quot;)
+africa = world.loc[world.CONTINENT == &quot;Africa&quot;]
+africa = africa.to_crs(&quot;ESRI:102022&quot;)
+ax = africa.plot(figsize=(8, 12), edgecolor=&quot;w&quot;)
+ax.set_axis_off()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_4_0.png" src="../_images/notebooks_05_Greedy_coloring_4_0.png" />
+</div>
+</div>
+<section id="Default">
+<h2>Default<a class="headerlink" href="#Default" title="Link to this heading">¶</a></h2>
+<p>The default usage of <code class="docutils literal notranslate"><span class="pre">greedy</span></code> is extremely simple. Greedy returns a Series with color codes, so we can assign it directly as a new column of our GeoDataFrame:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>africa[&quot;greedy_default&quot;] = greedy(africa)
+africa[&quot;greedy_default&quot;].head(5)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:306: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Queen.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1     1
+2     0
+11    0
+12    1
+13    4
+Name: greedy_default, dtype: int64
+</pre></div></div>
+</div>
+<p>Using resulting color codes as plotting categories gives us following the plot:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ax = africa.plot(
+    figsize=(8, 12),
+    column=&quot;greedy_default&quot;,
+    categorical=True,
+    cmap=&quot;Set3&quot;,
+    legend=True,
+    edgecolor=&quot;w&quot;,
+)
+ax.set_axis_off()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_8_0.png" src="../_images/notebooks_05_Greedy_coloring_8_0.png" />
+</div>
+</div>
+</section>
+<section id="Strategies">
+<h2>Strategies<a class="headerlink" href="#Strategies" title="Link to this heading">¶</a></h2>
+<section id="Balanced">
+<h3>Balanced<a class="headerlink" href="#Balanced" title="Link to this heading">¶</a></h3>
+<p>Greedy offers several strategies of coloring. The default strategy is <code class="docutils literal notranslate"><span class="pre">balanced</span></code> based on <code class="docutils literal notranslate"><span class="pre">count</span></code> attempting to balance the number of features per each color. Other balanced modes are <code class="docutils literal notranslate"><span class="pre">area</span></code> (balance the area covered by each color), <code class="docutils literal notranslate"><span class="pre">distance</span></code> and <code class="docutils literal notranslate"><span class="pre">centroid</span></code> (both attemtps to balance the distance between colors). Each of them attempt to balance the color assignment according to different conditions and hence can result in a different number of colors.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>africa = africa.reset_index(drop=True)
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>africa[&quot;greedy_area&quot;] = greedy(africa, strategy=&quot;balanced&quot;, balance=&quot;area&quot;)
+ax = africa.plot(
+    &quot;greedy_area&quot;,
+    categorical=True,
+    figsize=(8, 12),
+    cmap=&quot;Set3&quot;,
+    legend=True,
+    edgecolor=&quot;w&quot;,
+)
+ax.set_axis_off()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:306: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Queen.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_11_1.png" src="../_images/notebooks_05_Greedy_coloring_11_1.png" />
+</div>
+</div>
+<p>Different modes of balancing within the <code class="docutils literal notranslate"><span class="pre">balanced</span></code> strategy can be set using the <code class="docutils literal notranslate"><span class="pre">balance</span></code> keyword.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>africa[&quot;greedy_distance&quot;] = greedy(africa, strategy=&quot;balanced&quot;, balance=&quot;distance&quot;)
+ax = africa.plot(
+    &quot;greedy_distance&quot;,
+    categorical=True,
+    figsize=(8, 12),
+    cmap=&quot;Set3&quot;,
+    legend=True,
+    edgecolor=&quot;w&quot;,
+)
+ax.set_axis_off()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:306: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Queen.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_13_1.png" src="../_images/notebooks_05_Greedy_coloring_13_1.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="NetworkX-strategies">
+<h2>NetworkX strategies<a class="headerlink" href="#NetworkX-strategies" title="Link to this heading">¶</a></h2>
+<p>On top of four modes of balanced coloring strategy, <code class="docutils literal notranslate"><span class="pre">greedy</span></code> offers all <code class="docutils literal notranslate"><span class="pre">networkx.greedy_coloring()</span></code> strategies, like <code class="docutils literal notranslate"><span class="pre">largest_first</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>africa[&quot;greedy_largest_first&quot;] = greedy(africa, strategy=&quot;largest_first&quot;)
+ax = africa.plot(
+    &quot;greedy_largest_first&quot;,
+    categorical=True,
+    figsize=(8, 12),
+    cmap=&quot;Set3&quot;,
+    legend=True,
+    edgecolor=&quot;w&quot;,
+)
+ax.set_axis_off()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:306: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Queen.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_15_1.png" src="../_images/notebooks_05_Greedy_coloring_15_1.png" />
+</div>
+</div>
+<p>Another strategy provided by NetworkX is <code class="docutils literal notranslate"><span class="pre">smallest_last</span></code>. All strategies provide different results. Check <a class="reference internal" href="#Comparison-of-strategies"><span class="std std-ref">Comparison of strategies</span></a> below for details.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>africa[&quot;greedy_s&quot;] = greedy(africa, strategy=&quot;smallest_last&quot;)
+ax = africa.plot(
+    &quot;greedy_s&quot;,
+    categorical=True,
+    figsize=(8, 12),
+    cmap=&quot;Set3&quot;,
+    legend=True,
+    edgecolor=&quot;w&quot;,
+)
+ax.set_axis_off()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:306: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Queen.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_17_1.png" src="../_images/notebooks_05_Greedy_coloring_17_1.png" />
+</div>
+</div>
+<p>Greedy is variable in a way how to define adjacency and which coloring strategy to use. All options are described in this documentation together with comparison of their performance.</p>
+</section>
+<section id="Defining-adjacency">
+<h2>Defining adjacency<a class="headerlink" href="#Defining-adjacency" title="Link to this heading">¶</a></h2>
+<p>The key in toplogical coloring is the definition of adjacency, to understand which features are neighboring and could not share the same color. <code class="docutils literal notranslate"><span class="pre">mapclassify.greedy</span></code> comes with several methods of defining it. Binary spatial weights denoting adjacency are then stored as <code class="docutils literal notranslate"><span class="pre">libpysal</span></code> weights objects.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from shapely.geometry import Point
+</pre></div>
+</div>
+</div>
+<p>For illustration purposes, let’s generate a 10x10 mesh of square polygons:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def poly_lattice_gdf(dim, plot=False):
+    polys = []
+    for x in range(dim):
+        for y in range(dim):
+            polys.append(Point(x, y).buffer(0.5, cap_style=3))
+    _gdf = geopandas.GeoDataFrame(geometry=polys)
+    if plot:
+        ax = _gdf.plot(edgecolor=&quot;w&quot;)
+        ax.set_axis_off()
+    return _gdf
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>gdf = poly_lattice_gdf(10, plot=True)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_23_0.png" src="../_images/notebooks_05_Greedy_coloring_23_0.png" />
+</div>
+</div>
+<section id="libpysal-adjacency">
+<h3>libpysal adjacency<a class="headerlink" href="#libpysal-adjacency" title="Link to this heading">¶</a></h3>
+<p>The most performant way of generating spatial weights is using libpysal contiguity weights. As they are based on the shared nodes or edges, the dataset needs to be topologically correct. Neighboring polygons needs to share vertices and edges, otherwise their relationship will not be captured. There are two ways to define contiguity weights - <code class="docutils literal notranslate"><span class="pre">&quot;rook&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;queen&quot;</span></code>.</p>
+<section id="Rook">
+<h4>Rook<a class="headerlink" href="#Rook" title="Link to this heading">¶</a></h4>
+<p>Rook identifies two objects as neighboring only if they share at least on edge - line between two shared points. Use rook if you do not mind two polygons touching by their corners having the same color:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>gdf[&quot;rook&quot;] = greedy(gdf, sw=&quot;rook&quot;, min_colors=2)
+ax = gdf.plot(&quot;rook&quot;, edgecolor=&quot;w&quot;, categorical=True, cmap=&quot;Set3&quot;)
+ax.set_axis_off()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:308: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Rook.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_25_1.png" src="../_images/notebooks_05_Greedy_coloring_25_1.png" />
+</div>
+</div>
+</section>
+<section id="Queen">
+<h4>Queen<a class="headerlink" href="#Queen" title="Link to this heading">¶</a></h4>
+<p>The default option in <code class="docutils literal notranslate"><span class="pre">greedy</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;queen&quot;</span></code> adjacency. Queen adjaceny identifies two objects as neighboring if they share at least one point. It ensures that even polygons sharing only one corner will not share a color:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>gdf[&quot;queen&quot;] = greedy(gdf, sw=&quot;queen&quot;, min_colors=2)
+ax = gdf.plot(&quot;queen&quot;, edgecolor=&quot;w&quot;, categorical=True, cmap=&quot;Set3&quot;)
+ax.set_axis_off()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:306: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Queen.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_27_1.png" src="../_images/notebooks_05_Greedy_coloring_27_1.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="Intersection-based-adjacency">
+<h3>Intersection-based adjacency<a class="headerlink" href="#Intersection-based-adjacency" title="Link to this heading">¶</a></h3>
+<p>As noted above, if the topology of the dataset is not ideal, libpysal might not identify two visually neighboring features as neighbors. <code class="docutils literal notranslate"><span class="pre">greedy</span></code> can utilize an intersection-based algorithm using GEOS intersection to identify if two features intersects in any way. They do not have to share any points. Naturally, such an approach is significantly slower (<a class="reference internal" href="#Performance"><span class="std std-ref">details below</span></a>), but it can provide correct adjacency when libpysal fails.</p>
+<p>To make <code class="docutils literal notranslate"><span class="pre">greedy</span></code> use this algorithm, one just needs to define <code class="docutils literal notranslate"><span class="pre">min_distance</span></code>. If it is set to 0, it behaves similarly to <code class="docutils literal notranslate"><span class="pre">queen</span></code> contiguity, just capturing all intersections:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>gdf[&quot;geos&quot;] = greedy(gdf, min_distance=0, min_colors=2)
+ax = gdf.plot(&quot;geos&quot;, edgecolor=&quot;w&quot;, categorical=True, cmap=&quot;Set3&quot;)
+ax.set_axis_off()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_29_1.png" src="../_images/notebooks_05_Greedy_coloring_29_1.png" />
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">min_distance</span></code> also sets the minimal distance between colors. To do that, all features within such a distance are identified as neighbors, hence no two features within the set distance can share the same color:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>gdf[&quot;dist1&quot;] = greedy(gdf, min_distance=1, min_colors=2)
+ax = gdf.plot(&quot;dist1&quot;, edgecolor=&quot;w&quot;, categorical=True, cmap=&quot;Set3&quot;)
+ax.set_axis_off()
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_31_1.png" src="../_images/notebooks_05_Greedy_coloring_31_1.png" />
+</div>
+</div>
+</section>
+<section id="Reusing-spatial-weights">
+<h3>Reusing spatial weights<a class="headerlink" href="#Reusing-spatial-weights" title="Link to this heading">¶</a></h3>
+<p>Passing <code class="docutils literal notranslate"><span class="pre">libpysal.weights.W</span></code> object to <code class="docutils literal notranslate"><span class="pre">sw</span></code>, will skip generating spatial weights and use the passed object instead. That will improve the performance if one intends to repeat the coloring multiple times. In that case, weights should be denoted using the GeodataFrame’s index.</p>
+</section>
+<section id="Performance">
+<h3>Performance<a class="headerlink" href="#Performance" title="Link to this heading">¶</a></h3>
+<p>The difference in performance of libpysal and GEOS-based method is large, so it is recommended to use libpysal if possible. Details of comparison between all methods are below:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import numpy
+import pandas
+import time
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def run_greedy(_gdf, greedy_kws, min_colors=4, runs=5):
+    timer = []
+    for run in range(runs):
+        s = time.time()
+        colors = greedy(_gdf, min_colors=min_colors, **greedy_kws)
+        e = time.time() - s
+        timer.append(e)
+    _mean_time = round(numpy.mean(timer), 4)
+    return _mean_time, colors
+
+def printer(m, t, c):
+    print(f&quot;\t{m}:\t&quot;, t, &quot;s;\t&quot;, c + 1, &quot;colors&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>params = {
+    &quot;rook&quot;: dict(sw=&quot;rook&quot;),
+    &quot;queen&quot;: dict(sw=&quot;queen&quot;),
+    &quot;geos&quot;: dict(min_distance=0),
+    &quot;dist1&quot;: dict(min_distance=1)
+}
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>times = pandas.DataFrame(index=params.keys())
+steps = range(10, 110, 10)
+for step in steps:
+    print(step, &quot;----------------------------------------------&quot;)
+    gdf = poly_lattice_gdf(step, plot=False)
+    for method, kwargs in params.items():
+        mean_time, colors = run_greedy(gdf, kwargs, min_colors=2)
+        printer(method, mean_time, numpy.max(colors))
+        times.loc[method, step] = mean_time
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:308: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Rook.from_dataframe(gdf, silence_warnings=silence_warnings)
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:306: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Queen.from_dataframe(gdf, silence_warnings=silence_warnings)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:308: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Rook.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+10 ----------------------------------------------
+        rook:    0.0031 s;       2 colors
+        queen:   0.0028 s;       4 colors
+        geos:    0.0026 s;       4 colors
+        dist1:   0.0057 s;       10 colors
+20 ----------------------------------------------
+        rook:    0.0107 s;       2 colors
+        queen:   0.0099 s;       4 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:306: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Queen.from_dataframe(gdf, silence_warnings=silence_warnings)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:308: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Rook.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        geos:    0.0061 s;       4 colors
+        dist1:   0.0188 s;       10 colors
+30 ----------------------------------------------
+        rook:    0.0239 s;       2 colors
+        queen:   0.0224 s;       4 colors
+        geos:    0.0131 s;       4 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:306: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Queen.from_dataframe(gdf, silence_warnings=silence_warnings)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:308: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Rook.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        dist1:   0.069 s;        10 colors
+40 ----------------------------------------------
+        rook:    0.0462 s;       2 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:306: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Queen.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        queen:   0.0471 s;       4 colors
+        geos:    0.0261 s;       4 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:308: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Rook.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        dist1:   0.0846 s;       10 colors
+50 ----------------------------------------------
+        rook:    0.0698 s;       2 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:306: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Queen.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        queen:   0.0683 s;       4 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        geos:    0.048 s;        4 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:308: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Rook.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        dist1:   0.1344 s;       10 colors
+60 ----------------------------------------------
+        rook:    0.1067 s;       2 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:306: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Queen.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        queen:   0.1031 s;       4 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        geos:    0.0729 s;       4 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        dist1:   0.2205 s;       10 colors
+70 ----------------------------------------------
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:308: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Rook.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        rook:    0.1493 s;       2 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:306: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Queen.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        queen:   0.1396 s;       4 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        geos:    0.1082 s;       4 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        dist1:   0.3423 s;       10 colors
+80 ----------------------------------------------
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:308: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Rook.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        rook:    0.1976 s;       2 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:306: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Queen.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        queen:   0.1864 s;       4 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        geos:    0.1639 s;       4 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        dist1:   0.4713 s;       10 colors
+90 ----------------------------------------------
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:308: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Rook.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        rook:    0.27 s;         2 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:306: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Queen.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        queen:   0.2479 s;       4 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        geos:    0.2187 s;       4 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        dist1:   0.646 s;        10 colors
+100 ----------------------------------------------
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:308: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Rook.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        rook:    0.3191 s;       2 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/mapclassify/mapclassify/greedy.py:306: FutureWarning: `use_index` defaults to False but will default to True in future. Set True/False directly to control this behavior and silence this warning
+  sw = Queen.from_dataframe(gdf, silence_warnings=silence_warnings)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        queen:   0.2963 s;       4 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        geos:    0.3076 s;       4 colors
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+/Users/martin/Git/libpysal/libpysal/weights/util.py:1658: FutureWarning: The `query_bulk()` method is deprecated and will be removed in GeoPandas 1.0. You can use the `query()` method instead.
+  inp, res = gdf.sindex.query_bulk(gdf.geometry, predicate=predicate)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+        dist1:   0.8972 s;       10 colors
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>times
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>10</th>
+      <th>20</th>
+      <th>30</th>
+      <th>40</th>
+      <th>50</th>
+      <th>60</th>
+      <th>70</th>
+      <th>80</th>
+      <th>90</th>
+      <th>100</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>rook</th>
+      <td>0.0031</td>
+      <td>0.0107</td>
+      <td>0.0239</td>
+      <td>0.0462</td>
+      <td>0.0698</td>
+      <td>0.1067</td>
+      <td>0.1493</td>
+      <td>0.1976</td>
+      <td>0.2700</td>
+      <td>0.3191</td>
+    </tr>
+    <tr>
+      <th>queen</th>
+      <td>0.0028</td>
+      <td>0.0099</td>
+      <td>0.0224</td>
+      <td>0.0471</td>
+      <td>0.0683</td>
+      <td>0.1031</td>
+      <td>0.1396</td>
+      <td>0.1864</td>
+      <td>0.2479</td>
+      <td>0.2963</td>
+    </tr>
+    <tr>
+      <th>geos</th>
+      <td>0.0026</td>
+      <td>0.0061</td>
+      <td>0.0131</td>
+      <td>0.0261</td>
+      <td>0.0480</td>
+      <td>0.0729</td>
+      <td>0.1082</td>
+      <td>0.1639</td>
+      <td>0.2187</td>
+      <td>0.3076</td>
+    </tr>
+    <tr>
+      <th>dist1</th>
+      <td>0.0057</td>
+      <td>0.0188</td>
+      <td>0.0690</td>
+      <td>0.0846</td>
+      <td>0.1344</td>
+      <td>0.2205</td>
+      <td>0.3423</td>
+      <td>0.4713</td>
+      <td>0.6460</td>
+      <td>0.8972</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import matplotlib.pyplot as plt
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ax = times.T.plot()
+ax.set_ylabel(&quot;time (s)&quot;)
+ax.set_xlabel(&quot;# of polygons&quot;)
+locs, labels = plt.xticks()
+plt.xticks(ticks=locs, labels=(times.columns ** 2)[:7], rotation=&quot;vertical&quot;);
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_39_0.png" src="../_images/notebooks_05_Greedy_coloring_39_0.png" />
+</div>
+</div>
+<p>Plotting without the GEOS methods, the difference between <code class="docutils literal notranslate"><span class="pre">queen</span></code> and <code class="docutils literal notranslate"><span class="pre">rook</span></code> is minimal:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ax = times.loc[[&quot;rook&quot;, &quot;queen&quot;]].T.plot()
+ax.set_ylabel(&quot;time (s)&quot;)
+ax.set_xlabel(&quot;# of polygons&quot;)
+locs, labels = plt.xticks()
+plt.xticks(ticks=locs, labels=(times.columns ** 2)[:7], rotation=&quot;vertical&quot;);
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_41_0.png" src="../_images/notebooks_05_Greedy_coloring_41_0.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="Comparison-of-strategies">
+<h2>Comparison of strategies<a class="headerlink" href="#Comparison-of-strategies" title="Link to this heading">¶</a></h2>
+<p>Different coloring strategies lead to different results, but also have different performance. It all depends on the prefered goal.</p>
+<p>If one want visually balanced result, <code class="docutils literal notranslate"><span class="pre">'balanced'</span></code> strategy could be the right choice. It comes with four different modes of balancing - <code class="docutils literal notranslate"><span class="pre">'count'</span></code>, <code class="docutils literal notranslate"><span class="pre">'area'</span></code>, <code class="docutils literal notranslate"><span class="pre">'distance'</span></code>, and <code class="docutils literal notranslate"><span class="pre">'centroid'</span></code>. The first one attempts to balance the number of features per each color, the second balances the area covered by each color, and the two last are based on the distance between features (either represented by the geometry itself or its centroid, which is a bit faster).</p>
+<p>Other strategies might be helpful if one wants to minimize the number of colors as not all strategies use the same amount in the end. Or they just might look better on your map.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>strategies = [
+    &quot;balanced&quot;,
+    &quot;largest_first&quot;,
+    &quot;random_sequential&quot;,
+    &quot;smallest_last&quot;,
+    &quot;independent_set&quot;,
+    &quot;connected_sequential_bfs&quot;,
+    &quot;connected_sequential_dfs&quot;,
+    &quot;saturation_largest_first&quot;,
+]
+balanced_modes = [&quot;count&quot;, &quot;area&quot;, &quot;centroid&quot;, &quot;distance&quot;]
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import libpysal
+import warnings
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sw = libpysal.weights.Queen.from_dataframe(
+    world, ids=world.index.to_list(), silence_warnings=True
+)
+</pre></div>
+</div>
+</div>
+<p>Below is a comparison of performance and the result of each of the strategies supported by <code class="docutils literal notranslate"><span class="pre">greedy</span></code>.</p>
+<p>When using the <code class="docutils literal notranslate"><span class="pre">'balanced'</span></code> strategy with <code class="docutils literal notranslate"><span class="pre">'area'</span></code>, <code class="docutils literal notranslate"><span class="pre">'distance'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'centroid'</span></code> modes, keep in mind that your data needs to be in a projected CRS to obtain correct results. For the simplicity of this comparison, let’s pretend that dataset below is (even though it is not).</p>
+<p>Strategies used in <code class="docutils literal notranslate"><span class="pre">mapclassify.greedy</span></code> have two origins - <code class="docutils literal notranslate"><span class="pre">'balanced'</span></code> is ported from QGIS while the rest comes from NetworkX. The nippet below generates each option 20x and returns the mean time elapsed together with the number of colors used.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>times = {}
+with warnings.catch_warnings():
+    warnings.filterwarnings(
+        &quot;ignore&quot;, message=&quot;Geometry is in a geographic CRS.&quot;, category=UserWarning
+    )
+    for strategy in strategies:
+        if strategy == &quot;balanced&quot;:
+            for mode in balanced_modes:
+                stgy_mode = strategy + &quot;_&quot; + mode
+                print(stgy_mode)
+                kwargs = dict(strategy=strategy, balance=mode, sw=sw)
+                mean_time, colors = run_greedy(world, kwargs, runs=20)
+                printer(&quot;time&quot;, mean_time, numpy.max(colors))
+                world[stgy_mode], times[stgy_mode] = colors, mean_time
+        else:
+            print(strategy)
+            kwargs = dict(strategy=strategy, sw=sw)
+            mean_time, colors = run_greedy(world, kwargs, runs=20)
+            printer(&quot;time&quot;, mean_time, numpy.max(colors))
+            world[strategy], times[strategy] = colors, mean_time
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+balanced_count
+        time:    0.0005 s;       5 colors
+balanced_area
+        time:    0.0129 s;       5 colors
+balanced_centroid
+        time:    2.1403 s;       5 colors
+balanced_distance
+        time:    2.0867 s;       5 colors
+largest_first
+        time:    0.0056 s;       5 colors
+random_sequential
+        time:    0.0025 s;       5 colors
+smallest_last
+        time:    0.0047 s;       4 colors
+independent_set
+        time:    0.0652 s;       5 colors
+connected_sequential_bfs
+        time:    0.0043 s;       5 colors
+connected_sequential_dfs
+        time:    0.0045 s;       5 colors
+saturation_largest_first
+        time:    0.0405 s;       4 colors
+</pre></div></div>
+</div>
+<p>As you can see, <code class="docutils literal notranslate"><span class="pre">smallest_last</span></code> and <code class="docutils literal notranslate"><span class="pre">saturation_largest_first</span></code> were able, for this particular dataset, to generate greedy coloring using only 4 colors. If one wants to use a higher number than the minimal, the <code class="docutils literal notranslate"><span class="pre">'balanced'</span></code> strategy allows the setting of <code class="docutils literal notranslate"><span class="pre">min_colors</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>times = pandas.Series(times)
+ax = times.plot(kind=&quot;bar&quot;)
+ax.set_yscale(&quot;log&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_49_0.png" src="../_images/notebooks_05_Greedy_coloring_49_0.png" />
+</div>
+</div>
+<p>The plot above shows the performance of each strategy. Note that the vertical axis is using log scale.</p>
+<p>Below are all results plotted on the map.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt_kws = dict(categorical=True, figsize=(16, 12), cmap=&quot;Set3&quot;, legend=True)
+for strategy in times.index:
+    ax = world.plot(strategy, **plt_kws)
+    ax.set_axis_off()
+    ax.set_title(strategy)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_51_0.png" src="../_images/notebooks_05_Greedy_coloring_51_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_51_1.png" src="../_images/notebooks_05_Greedy_coloring_51_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_51_2.png" src="../_images/notebooks_05_Greedy_coloring_51_2.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_51_3.png" src="../_images/notebooks_05_Greedy_coloring_51_3.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_51_4.png" src="../_images/notebooks_05_Greedy_coloring_51_4.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_51_5.png" src="../_images/notebooks_05_Greedy_coloring_51_5.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_51_6.png" src="../_images/notebooks_05_Greedy_coloring_51_6.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_51_7.png" src="../_images/notebooks_05_Greedy_coloring_51_7.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_51_8.png" src="../_images/notebooks_05_Greedy_coloring_51_8.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_51_9.png" src="../_images/notebooks_05_Greedy_coloring_51_9.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_05_Greedy_coloring_51_10.png" src="../_images/notebooks_05_Greedy_coloring_51_10.png" />
+</div>
+</div>
+<hr class="docutils" />
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../_sources/notebooks/05_Greedy_coloring.ipynb.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-, pysal developers.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.0.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

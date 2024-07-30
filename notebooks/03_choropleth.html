@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Choropleth &#8212; mapclassify v2.8.0 Manual</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=9afac83c" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pysal-styles.css?v=0c2123f2" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+    <script src="../_static/documentation_options.js?v=69ff2ef9"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"TeX": {"equationNumbers": {"autoNumber": "AMS", "useLabelIds": true}}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="icon" href="../_static/pysal_favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Pooled Classification" href="04_pooled.html" />
+    <link rel="prev" title="Legends in mapclassify" href="02_legends.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          mapclassify</a>
+        <span class="navbar-text navbar-version pull-left"><b>2.8.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../installation.html">Installation</a></li>
+                <li><a href="../tutorial.html">Tutorial</a></li>
+                <li><a href="../api.html">API</a></li>
+                <li><a href="../references.html">References</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-released-version">Installing released version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-development-version">Installing development version</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01_maximum_breaks.html">Introduction to mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_legends.html">Legends in mapclassify</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Choropleth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_pooled.html">Pooled Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05_Greedy_coloring.html">Getting started with mapclassify.greedy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_api.html">Overview of the mapclassify API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_api.html#Original-API-(&lt;-2.4.0)">Original API (&lt; 2.4.0)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_api.html#Extended-API-(&gt;=-2.40)">Extended API (&gt;= 2.40)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#classifiers">Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Choropleth</a><ul>
+<li><a class="reference internal" href="#Interactive-Exploration-of-Choropleth-Classification">Interactive Exploration of Choropleth Classification</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="admonition note">
+<p>This page was generated from <a class="reference external" href="https://github.com/pysal/mapclassify/blob/main/notebooks/03_choropleth.ipynb">notebooks/03_choropleth.ipynb</a>.
+Interactive online version:
+<span class="raw-html"><a href="https://mybinder.org/v2/gh/pysal/mapclassify/main?filepath=notebooks/03_choropleth.ipynb"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" style="vertical-align:text-bottom"></a></span></p>
+</div>
+<section id="Choropleth">
+<h1>Choropleth<a class="headerlink" href="#Choropleth" title="Link to this heading">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">mapclassify</span></code> is intended to be used with visualization packages to handle the actual rendering of the choropleth maps defined on its classifiers. In this notebook, we explore some examples of how this is done. The notebook also includes an example that combines <code class="docutils literal notranslate"><span class="pre">mapclassify</span></code> with <a class="reference external" href="https://ipywidgets.readthedocs.io/en/latest/">ipywidgets</a> to allow for the interactive exploration of the choice of:</p>
+<ul class="simple">
+<li><p>classification method</p></li>
+<li><p>number of classes</p></li>
+<li><p>colormap</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import libpysal
+import geopandas
+import mapclassify
+import matplotlib.pyplot as plt
+
+mapclassify.__version__
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;2.4.2+78.gc62d2d7.dirty&#39;
+</pre></div></div>
+</div>
+<p>The example in this notebook uses data on sudden death infant syndrome for counties in North Carolina. It is a built-in dataset available through <code class="docutils literal notranslate"><span class="pre">libpysal</span></code>. We use <code class="docutils literal notranslate"><span class="pre">libpysal</span></code> to obtain the path to the shapefile and then use <code class="docutils literal notranslate"><span class="pre">geopandas</span></code> to create a geodataframe from the shapefile:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>libpysal.examples.explain(&quot;sids2&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+sids2
+=====
+
+North Carolina county SIDS death counts and rates
+-------------------------------------------------
+
+* sids2.dbf: attribute data. (k=18)
+* sids2.html: metadata.
+* sids2.shp: Polygon shapefile. (n=100)
+* sids2.shx: spatial index.
+* sids2.gal: spatial weights in GAL format.
+
+Source: Cressie, Noel (1993). Statistics for Spatial Data. New York, Wiley, pp. 386-389. Rates computed.
+Updated URL: https://geodacenter.github.io/data-and-lab/sids2/
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>pth = libpysal.examples.get_path(&quot;sids2.shp&quot;)
+gdf = geopandas.read_file(pth)
+gdf.head()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AREA</th>
+      <th>PERIMETER</th>
+      <th>CNTY_</th>
+      <th>CNTY_ID</th>
+      <th>NAME</th>
+      <th>FIPS</th>
+      <th>FIPSNO</th>
+      <th>CRESS_ID</th>
+      <th>BIR74</th>
+      <th>SID74</th>
+      <th>NWBIR74</th>
+      <th>BIR79</th>
+      <th>SID79</th>
+      <th>NWBIR79</th>
+      <th>SIDR74</th>
+      <th>SIDR79</th>
+      <th>NWR74</th>
+      <th>NWR79</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.114</td>
+      <td>1.442</td>
+      <td>1825</td>
+      <td>1825</td>
+      <td>Ashe</td>
+      <td>37009</td>
+      <td>37009</td>
+      <td>5</td>
+      <td>1091.0</td>
+      <td>1.0</td>
+      <td>10.0</td>
+      <td>1364.0</td>
+      <td>0.0</td>
+      <td>19.0</td>
+      <td>0.916590</td>
+      <td>0.000000</td>
+      <td>9.165903</td>
+      <td>13.929619</td>
+      <td>POLYGON ((-81.47276 36.23436, -81.54084 36.272...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.061</td>
+      <td>1.231</td>
+      <td>1827</td>
+      <td>1827</td>
+      <td>Alleghany</td>
+      <td>37005</td>
+      <td>37005</td>
+      <td>3</td>
+      <td>487.0</td>
+      <td>0.0</td>
+      <td>10.0</td>
+      <td>542.0</td>
+      <td>3.0</td>
+      <td>12.0</td>
+      <td>0.000000</td>
+      <td>5.535055</td>
+      <td>20.533881</td>
+      <td>22.140221</td>
+      <td>POLYGON ((-81.23989 36.36536, -81.24069 36.379...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.143</td>
+      <td>1.630</td>
+      <td>1828</td>
+      <td>1828</td>
+      <td>Surry</td>
+      <td>37171</td>
+      <td>37171</td>
+      <td>86</td>
+      <td>3188.0</td>
+      <td>5.0</td>
+      <td>208.0</td>
+      <td>3616.0</td>
+      <td>6.0</td>
+      <td>260.0</td>
+      <td>1.568381</td>
+      <td>1.659292</td>
+      <td>65.244668</td>
+      <td>71.902655</td>
+      <td>POLYGON ((-80.45634 36.24256, -80.47639 36.254...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.070</td>
+      <td>2.968</td>
+      <td>1831</td>
+      <td>1831</td>
+      <td>Currituck</td>
+      <td>37053</td>
+      <td>37053</td>
+      <td>27</td>
+      <td>508.0</td>
+      <td>1.0</td>
+      <td>123.0</td>
+      <td>830.0</td>
+      <td>2.0</td>
+      <td>145.0</td>
+      <td>1.968504</td>
+      <td>2.409639</td>
+      <td>242.125984</td>
+      <td>174.698795</td>
+      <td>MULTIPOLYGON (((-76.00897 36.31960, -76.01735 ...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.153</td>
+      <td>2.206</td>
+      <td>1832</td>
+      <td>1832</td>
+      <td>Northampton</td>
+      <td>37131</td>
+      <td>37131</td>
+      <td>66</td>
+      <td>1421.0</td>
+      <td>9.0</td>
+      <td>1066.0</td>
+      <td>1606.0</td>
+      <td>3.0</td>
+      <td>1197.0</td>
+      <td>6.333568</td>
+      <td>1.867995</td>
+      <td>750.175932</td>
+      <td>745.330012</td>
+      <td>POLYGON ((-77.21767 36.24098, -77.23461 36.214...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Once created, the geodataframe has a <code class="docutils literal notranslate"><span class="pre">plot</span></code> method that can be called to create our first choropleth map. We will specify the column to classify and plot as <code class="docutils literal notranslate"><span class="pre">SIDR79</span></code>: SIDS death rate per 1,000 births (1979-84). The classification scheme is set to <code class="docutils literal notranslate"><span class="pre">Quantiles</span></code>, and the number of classes set to <code class="docutils literal notranslate"><span class="pre">k=10</span></code> (declies):</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ax = gdf.plot(column=&quot;SIDR79&quot;, scheme=&quot;Quantiles&quot;, k=10, figsize=(16, 9))
+ax.set_axis_off()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_03_choropleth_6_0.png" class="no-scaled-link" src="../_images/notebooks_03_choropleth_6_0.png" style="width: 1260px; height: 398px;" />
+</div>
+</div>
+<p>We can peak under the hood a bit and recreate the classification object that was used in the previous choropleth:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>q10 = mapclassify.Quantiles(gdf.SIDR79, k=10)
+q10
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Quantiles
+
+  Interval     Count
+--------------------
+[0.00, 0.56] |    10
+(0.56, 1.15] |    10
+(1.15, 1.40] |    10
+(1.40, 1.79] |    10
+(1.79, 2.08] |    10
+(2.08, 2.18] |    10
+(2.18, 2.38] |    10
+(2.38, 2.81] |    10
+(2.81, 3.40] |    10
+(3.40, 6.11] |    10
+</pre></div></div>
+</div>
+<p>For quick, exploratory work, the classifier object has its own <code class="docutils literal notranslate"><span class="pre">plot</span></code> method that takes a geodataframe as an argument:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>q10.plot(gdf);
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_03_choropleth_10_0.png" class="no-scaled-link" src="../_images/notebooks_03_choropleth_10_0.png" style="width: 543px; height: 195px;" />
+</div>
+</div>
+<p>Back to working directly with the dataframe, we can toggle on the <code class="docutils literal notranslate"><span class="pre">legend</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ax = gdf.assign(cl=q10.yb).plot(
+    figsize=(16, 9),
+    column=&quot;cl&quot;,
+    categorical=True,
+    k=10,
+    cmap=&quot;OrRd&quot;,
+    linewidth=0.1,
+    edgecolor=&quot;white&quot;,
+    legend=True,
+)
+ax.set_axis_off()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_03_choropleth_12_0.png" class="no-scaled-link" src="../_images/notebooks_03_choropleth_12_0.png" style="width: 1260px; height: 398px;" />
+</div>
+</div>
+<p>Here we see the 10 classes, but without more specific information on the legend, the user has to know that 0 is the first decile and 9 the 10th. We also do not know the values that define these classes.</p>
+<p>We can rectify this as follows:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>q10.get_legend_classes()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;[0.00, 0.56]&#39;,
+ &#39;(0.56, 1.15]&#39;,
+ &#39;(1.15, 1.40]&#39;,
+ &#39;(1.40, 1.79]&#39;,
+ &#39;(1.79, 2.08]&#39;,
+ &#39;(2.08, 2.18]&#39;,
+ &#39;(2.18, 2.38]&#39;,
+ &#39;(2.38, 2.81]&#39;,
+ &#39;(2.81, 3.40]&#39;,
+ &#39;(3.40, 6.11]&#39;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mapping = dict([(i, s) for i, s in enumerate(q10.get_legend_classes())])
+mapping
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{0: &#39;[0.00, 0.56]&#39;,
+ 1: &#39;(0.56, 1.15]&#39;,
+ 2: &#39;(1.15, 1.40]&#39;,
+ 3: &#39;(1.40, 1.79]&#39;,
+ 4: &#39;(1.79, 2.08]&#39;,
+ 5: &#39;(2.08, 2.18]&#39;,
+ 6: &#39;(2.18, 2.38]&#39;,
+ 7: &#39;(2.38, 2.81]&#39;,
+ 8: &#39;(2.81, 3.40]&#39;,
+ 9: &#39;(3.40, 6.11]&#39;}
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def replace_legend_items(legend, mapping):
+    for txt in legend.texts:
+        for k, v in mapping.items():
+            if txt.get_text() == str(k):
+                txt.set_text(v)
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ax = gdf.assign(cl=q10.yb).plot(
+    figsize=(16, 9),
+    column=&quot;cl&quot;,
+    categorical=True,
+    k=10,
+    cmap=&quot;OrRd&quot;,
+    linewidth=0.1,
+    edgecolor=&quot;white&quot;,
+    legend=True,
+    legend_kwds={&quot;loc&quot;: &quot;lower right&quot;},
+)
+ax.set_axis_off()
+replace_legend_items(ax.get_legend(), mapping)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_03_choropleth_17_0.png" class="no-scaled-link" src="../_images/notebooks_03_choropleth_17_0.png" style="width: 1260px; height: 398px;" />
+</div>
+</div>
+<section id="Interactive-Exploration-of-Choropleth-Classification">
+<h2>Interactive Exploration of Choropleth Classification<a class="headerlink" href="#Interactive-Exploration-of-Choropleth-Classification" title="Link to this heading">¶</a></h2>
+<p>Next, we develop a small application that relies on <code class="docutils literal notranslate"><span class="pre">mapclassify</span></code> together with <a class="reference external" href="https://jiffyclub.github.io/palettable/">palettable</a> and <a class="reference external" href="https://ipywidgets.readthedocs.io/en/latest/">ipywidgets</a> to explore the choice of:</p>
+<ul class="simple">
+<li><p>classification method</p></li>
+<li><p>number of classes</p></li>
+<li><p>colormap</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from ipywidgets import (
+    interact,
+    Button,
+    Dropdown,
+    FloatSlider,
+    HBox,
+    IntSlider,
+    Label,
+    Output,
+    RadioButtons,
+    Tab,
+    VBox,
+)
+
+from palettable import colorbrewer
+</pre></div>
+</div>
+</div>
+<p>Declare that our application shall have 3 options for color scheme…</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>data_type = RadioButtons(options=[&quot;Sequential&quot;, &quot;Diverging&quot;, &quot;Qualitative&quot;])
+</pre></div>
+</div>
+</div>
+<p>… and define thise 3 colormaps based on <a class="reference external" href="https://colorbrewer2.org/#type=sequential&amp;scheme=BuGn&amp;n=3">colorbrewer</a>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sequential = colorbrewer.COLOR_MAPS[&quot;Sequential&quot;]
+diverging = colorbrewer.COLOR_MAPS[&quot;Diverging&quot;]
+qualitative = colorbrewer.COLOR_MAPS[&quot;Qualitative&quot;]
+</pre></div>
+</div>
+</div>
+<p>Next, create value and name options to bind the radio button to the dropdown menus…</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>bindings = {
+    &quot;Sequential&quot;: range(3, 9 + 1),
+    &quot;Diverging&quot;: range(3, 11 + 1),
+    &quot;Qualitative&quot;: range(3, 12 + 1),
+}
+cmap_bindings = {
+    &quot;Sequential&quot;: list(sequential.keys()),
+    &quot;Diverging&quot;: list(diverging.keys()),
+    &quot;Qualitative&quot;: list(qualitative.keys()),
+}
+class_val = Dropdown(options=bindings[data_type.value], value=5)
+cmap_val = Dropdown(options=cmap_bindings[data_type.value])
+</pre></div>
+</div>
+</div>
+<p>… and define 7 <code class="docutils literal notranslate"><span class="pre">mapclassify</span></code> objects data classification.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>k_classifiers = {
+    &quot;equal_interval&quot;: mapclassify.EqualInterval,
+    &quot;fisher_jenks&quot;: mapclassify.FisherJenks,
+    &quot;jenks_caspall&quot;: mapclassify.JenksCaspall,
+    &quot;jenks_caspall_forced&quot;: mapclassify.JenksCaspallForced,
+    &quot;maximum_breaks&quot;: mapclassify.MaximumBreaks,
+    &quot;natural_breaks&quot;: mapclassify.NaturalBreaks,
+    &quot;quantiles&quot;: mapclassify.Quantiles,
+}
+</pre></div>
+</div>
+</div>
+<p>Now it all together with helper functions for visualizing &amp; updating plot options.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def k_values(ctype, cmap):
+    k = list(colorbrewer.COLOR_MAPS[ctype][cmap].keys())
+    return list(map(int, k))
+
+def update_map(method=&quot;quantiles&quot;, k=5, cmap=&quot;Blues&quot;):
+    classifier = k_classifiers[method](gdf.SIDR79, k=k)
+    mapping = dict([(i, s) for i, s in enumerate(classifier.get_legend_classes())])
+    plt_kws = dict(figsize=(16, 9), column=&quot;cl&quot;, categorical=True, legend=True, lw=0.1)
+    ax = gdf.assign(cl=classifier.yb).plot(
+        k=k, cmap=cmap, ec=&quot;grey&quot;, legend_kwds={&quot;loc&quot;: &quot;lower left&quot;}, **plt_kws
+    )
+    ax.set_axis_off()
+    ax.set_title(&quot;SIDR79&quot;)
+    replace_legend_items(ax.get_legend(), mapping)
+
+def type_change(change):
+    class_val.options = bindings[change[&quot;new&quot;]]
+    cmap_val.options = cmap_bindings[change[&quot;new&quot;]]
+
+def cmap_change(change):
+    cmap = change[&quot;new&quot;]
+    ctype = data_type.value
+    k = k_values(ctype, cmap)
+    class_val.options = k
+</pre></div>
+</div>
+</div>
+<p>Finally, let’s play with the interactive plot! * <em>the plot will not render in the docs, but may be accessed directly by running this notebook locally or as a binder.</em></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>data_type.observe(type_change, names=[&quot;value&quot;])
+cmap_val.observe(cmap_change, names=[&quot;value&quot;])
+out = Output()
+Tab().children = [out]
+interact(update_map, method=list(k_classifiers.keys()), cmap=cmap_val, k=class_val)
+display(VBox([data_type, out]))
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "af6a5214390f44b6a5e043384769a369", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "657f0b12b1d540628cd77d50457b41f1", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<p>Changing the type of colormap (sequential, diverging, qualitative) will update the options for the available color maps (<code class="docutils literal notranslate"><span class="pre">cmap</span></code>). Changing any of the values using the dropdowns will update the classification and the resulting choropleth map.</p>
+<p>It is important to note that the example variable is best portrayed with the sequential colormaps. The other two types of colormaps are included for demonstration purposes only.</p>
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../_sources/notebooks/03_choropleth.ipynb.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-, pysal developers.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.0.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mapclassify.pooling &#8212; mapclassify v2.8.0 Manual</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css?v=9afac83c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pysal-styles.css?v=0c2123f2" />
+    <script src="../../_static/documentation_options.js?v=69ff2ef9"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../../_static/pysal_favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          mapclassify</a>
+        <span class="navbar-text navbar-version pull-left"><b>2.8.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../installation.html">Installation</a></li>
+                <li><a href="../../tutorial.html">Tutorial</a></li>
+                <li><a href="../../api.html">API</a></li>
+                <li><a href="../../references.html">References</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#installing-released-version">Installing released version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#installing-development-version">Installing development version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/01_maximum_breaks.html">Introduction to mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/02_legends.html">Legends in mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/03_choropleth.html">Choropleth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/04_pooled.html">Pooled Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/05_Greedy_coloring.html">Getting started with mapclassify.greedy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/06_api.html">Overview of the mapclassify API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/06_api.html#Original-API-(&lt;-2.4.0)">Original API (&lt; 2.4.0)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../notebooks/06_api.html#Extended-API-(&gt;=-2.40)">Extended API (&gt;= 2.40)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#classifiers">Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <h1>Source code for mapclassify.pooling</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">from</span> <span class="nn">.classifiers</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BoxPlot</span><span class="p">,</span>
+    <span class="n">EqualInterval</span><span class="p">,</span>
+    <span class="n">FisherJenks</span><span class="p">,</span>
+    <span class="n">FisherJenksSampled</span><span class="p">,</span>
+    <span class="n">MaximumBreaks</span><span class="p">,</span>
+    <span class="n">Quantiles</span><span class="p">,</span>
+    <span class="n">StdMean</span><span class="p">,</span>
+    <span class="n">UserDefined</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Pooled&quot;</span><span class="p">]</span>
+
+<span class="n">dispatcher</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;boxplot&quot;</span><span class="p">:</span> <span class="n">BoxPlot</span><span class="p">,</span>
+    <span class="s2">&quot;equalinterval&quot;</span><span class="p">:</span> <span class="n">EqualInterval</span><span class="p">,</span>
+    <span class="s2">&quot;fisherjenks&quot;</span><span class="p">:</span> <span class="n">FisherJenks</span><span class="p">,</span>
+    <span class="s2">&quot;fisherjenkssampled&quot;</span><span class="p">:</span> <span class="n">FisherJenksSampled</span><span class="p">,</span>
+    <span class="s2">&quot;quantiles&quot;</span><span class="p">:</span> <span class="n">Quantiles</span><span class="p">,</span>
+    <span class="s2">&quot;maximumbreaks&quot;</span><span class="p">:</span> <span class="n">MaximumBreaks</span><span class="p">,</span>
+    <span class="s2">&quot;stdmean&quot;</span><span class="p">:</span> <span class="n">StdMean</span><span class="p">,</span>
+    <span class="s2">&quot;userdefined&quot;</span><span class="p">:</span> <span class="n">UserDefined</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="Pooled">
+<a class="viewcode-back" href="../../generated/mapclassify.Pooled.html#mapclassify.Pooled">[docs]</a>
+<span class="k">class</span> <span class="nc">Pooled</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Applying global binning across columns.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    Y : numpy.array</span>
+<span class="sd">        :math:`(n, m)`, values to classify, with :math:`m&gt;1`.</span>
+<span class="sd">    classifier : str (default &#39;Quantiles&#39;)</span>
+<span class="sd">        Name of ``mapclassify.classifier`` to apply.</span>
+<span class="sd">    **kwargs : dict</span>
+<span class="sd">        Additional keyword arguments for classifier.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    global_classifier : mapclassify.classifiers.MapClassifier</span>
+<span class="sd">        Instance of the pooled classifier defined as the classifier</span>
+<span class="sd">        applied to the union of the columns.</span>
+<span class="sd">    col_classifier : list</span>
+<span class="sd">        Elements are ``MapClassifier`` instances with the pooled classifier</span>
+<span class="sd">        applied to the associated column of ``Y``.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; import mapclassify</span>
+<span class="sd">    &gt;&gt;&gt; import numpy</span>
+<span class="sd">    &gt;&gt;&gt; n = 20</span>
+<span class="sd">    &gt;&gt;&gt; data = numpy.array([numpy.arange(n)+i*n for i in range(1,4)]).T</span>
+<span class="sd">    &gt;&gt;&gt; res = mapclassify.Pooled(data)</span>
+
+<span class="sd">    &gt;&gt;&gt; res.col_classifiers[0].counts.tolist()</span>
+<span class="sd">    [12, 8, 0, 0, 0]</span>
+
+<span class="sd">    &gt;&gt;&gt; res.col_classifiers[1].counts.tolist()</span>
+<span class="sd">    [0, 4, 12, 4, 0]</span>
+
+<span class="sd">    &gt;&gt;&gt; res.col_classifiers[2].counts.tolist()</span>
+<span class="sd">    [0, 0, 0, 8, 12]</span>
+
+<span class="sd">    &gt;&gt;&gt; res.global_classifier.counts.tolist()</span>
+<span class="sd">    [12, 12, 12, 12, 12]</span>
+
+<span class="sd">    &gt;&gt;&gt; res.global_classifier.bins == res.col_classifiers[0].bins</span>
+<span class="sd">    array([ True,  True,  True,  True,  True])</span>
+
+<span class="sd">    &gt;&gt;&gt; res.global_classifier.bins</span>
+<span class="sd">    array([31.8, 43.6, 55.4, 67.2, 79. ])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Pooled.__init__">
+<a class="viewcode-back" href="../../generated/mapclassify.Pooled.html#mapclassify.Pooled.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">classifier</span><span class="o">=</span><span class="s2">&quot;Quantiles&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">valid_methods</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dispatcher</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_methods</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">classifier</span><span class="si">}</span><span class="s2">&#39; not a valid classifier. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Currently supported classifiers: </span><span class="si">{</span><span class="n">valid_methods</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;f&quot;</span><span class="p">)</span>
+        <span class="n">ymin</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="n">global_classifier</span> <span class="o">=</span> <span class="n">dispatcher</span><span class="p">[</span><span class="n">method</span><span class="p">](</span><span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># self.k = global_classifier.k</span>
+        <span class="n">col_classifiers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Pooled </span><span class="si">{</span><span class="n">classifier</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">UserDefined</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span> <span class="n">c</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">global_classifier</span><span class="o">.</span><span class="n">bins</span><span class="p">,</span> <span class="n">lowest</span><span class="o">=</span><span class="n">ymin</span><span class="p">)</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="n">col_classifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">col_classifiers</span> <span class="o">=</span> <span class="n">col_classifiers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_classifier</span> <span class="o">=</span> <span class="n">global_classifier</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_summary</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_classifier</span><span class="o">.</span><span class="n">classes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_classifier</span><span class="o">.</span><span class="n">tss</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adcm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_classifier</span><span class="o">.</span><span class="n">adcm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gadf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_classifier</span><span class="o">.</span><span class="n">gadf</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;Pooled Classifier&quot;</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">col_classifiers</span><span class="p">:</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">table</span><span class="p">())</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span></div>
+
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-, pysal developers.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.0.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

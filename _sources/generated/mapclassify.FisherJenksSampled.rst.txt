@@ -1,0 +1,40 @@
+﻿mapclassify.FisherJenksSampled
+==============================
+
+.. currentmodule:: mapclassify
+
+.. autoclass:: FisherJenksSampled
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~FisherJenksSampled.__init__
+      ~FisherJenksSampled.find_bin
+      ~FisherJenksSampled.get_adcm
+      ~FisherJenksSampled.get_fmt
+      ~FisherJenksSampled.get_gadf
+      ~FisherJenksSampled.get_legend_classes
+      ~FisherJenksSampled.get_tss
+      ~FisherJenksSampled.make
+      ~FisherJenksSampled.plot
+      ~FisherJenksSampled.plot_histogram
+      ~FisherJenksSampled.set_fmt
+      ~FisherJenksSampled.table
+      ~FisherJenksSampled.update
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~FisherJenksSampled.fmt
+   
+   

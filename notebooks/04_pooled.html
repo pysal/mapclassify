@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Pooled Classification &#8212; mapclassify v2.8.0 Manual</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=9afac83c" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pysal-styles.css?v=0c2123f2" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+    <script src="../_static/documentation_options.js?v=69ff2ef9"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"TeX": {"equationNumbers": {"autoNumber": "AMS", "useLabelIds": true}}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="icon" href="../_static/pysal_favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Getting started with mapclassify.greedy" href="05_Greedy_coloring.html" />
+    <link rel="prev" title="Choropleth" href="03_choropleth.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          mapclassify</a>
+        <span class="navbar-text navbar-version pull-left"><b>2.8.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../installation.html">Installation</a></li>
+                <li><a href="../tutorial.html">Tutorial</a></li>
+                <li><a href="../api.html">API</a></li>
+                <li><a href="../references.html">References</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-released-version">Installing released version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-development-version">Installing development version</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01_maximum_breaks.html">Introduction to mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_legends.html">Legends in mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_choropleth.html">Choropleth</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Pooled Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05_Greedy_coloring.html">Getting started with mapclassify.greedy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_api.html">Overview of the mapclassify API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_api.html#Original-API-(&lt;-2.4.0)">Original API (&lt; 2.4.0)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_api.html#Extended-API-(&gt;=-2.40)">Extended API (&gt;= 2.40)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#classifiers">Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Pooled Classification</a><ul>
+<li><a class="reference internal" href="#Sample-Data">Sample Data</a></li>
+<li><a class="reference internal" href="#Default:-Quintiles">Default: Quintiles</a></li>
+<li><a class="reference internal" href="#Non-default-classifier:-BoxPlot">Non-default classifier: BoxPlot</a></li>
+<li><a class="reference internal" href="#Non-default-classifier:-FisherJenks">Non-default classifier: FisherJenks</a></li>
+<li><a class="reference internal" href="#Non-default-classifier:-MaximumBreaks">Non-default classifier: MaximumBreaks</a></li>
+<li><a class="reference internal" href="#Pinning-the-pooling">Pinning the pooling</a><ul>
+<li><a class="reference internal" href="#Pinning-to-the-last-period">Pinning to the last period</a></li>
+<li><a class="reference internal" href="#Pinning-to-the-first-period">Pinning to the first period</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="admonition note">
+<p>This page was generated from <a class="reference external" href="https://github.com/pysal/mapclassify/blob/main/notebooks/04_pooled.ipynb">notebooks/04_pooled.ipynb</a>.
+Interactive online version:
+<span class="raw-html"><a href="https://mybinder.org/v2/gh/pysal/mapclassify/main?filepath=notebooks/04_pooled.ipynb"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" style="vertical-align:text-bottom"></a></span></p>
+</div>
+<section id="Pooled-Classification">
+<h1>Pooled Classification<a class="headerlink" href="#Pooled-Classification" title="Link to this heading">¶</a></h1>
+<p>A common workflow with longitudinal spatial data is to apply the same classification scheme to an attribute over different time periods. More specifically, one would like to keep the class breaks the same over each period and examine how the mass of the distribution changes over these classes in the different periods.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Pooled</span></code> classifier supports this workflow.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import mapclassify
+import numpy
+
+mapclassify.__version__
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;2.4.2+78.gc62d2d7.dirty&#39;
+</pre></div></div>
+</div>
+<section id="Sample-Data">
+<h2>Sample Data<a class="headerlink" href="#Sample-Data" title="Link to this heading">¶</a></h2>
+<p>We construct a synthetic dataset composed of 20 cross-sectional units at three time points. Here the mean of the series is increasing over time.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>n = 20
+data = numpy.array([numpy.arange(n) + i * n for i in range(1, 4)]).T
+data.shape
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(20, 3)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>data
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[20, 40, 60],
+       [21, 41, 61],
+       [22, 42, 62],
+       [23, 43, 63],
+       [24, 44, 64],
+       [25, 45, 65],
+       [26, 46, 66],
+       [27, 47, 67],
+       [28, 48, 68],
+       [29, 49, 69],
+       [30, 50, 70],
+       [31, 51, 71],
+       [32, 52, 72],
+       [33, 53, 73],
+       [34, 54, 74],
+       [35, 55, 75],
+       [36, 56, 76],
+       [37, 57, 77],
+       [38, 58, 78],
+       [39, 59, 79]])
+</pre></div></div>
+</div>
+</section>
+<section id="Default:-Quintiles">
+<h2>Default: Quintiles<a class="headerlink" href="#Default:-Quintiles" title="Link to this heading">¶</a></h2>
+<p>The default is to apply a <a class="reference external" href="https://en.wikipedia.org/wiki/Vectorization_(mathematics)">vec</a> operator to the data matrix and treat the observations as a single collection. Here the quantiles of the pooled data are obtained.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>res = mapclassify.Pooled(data)
+res
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Pooled Classifier
+
+Pooled Quantiles
+
+   Interval      Count
+----------------------
+[20.00, 31.80] |    12
+(31.80, 43.60] |     8
+(43.60, 55.40] |     0
+(55.40, 67.20] |     0
+(67.20, 79.00] |     0
+
+Pooled Quantiles
+
+   Interval      Count
+----------------------
+[20.00, 31.80] |     0
+(31.80, 43.60] |     4
+(43.60, 55.40] |    12
+(55.40, 67.20] |     4
+(67.20, 79.00] |     0
+
+Pooled Quantiles
+
+   Interval      Count
+----------------------
+[20.00, 31.80] |     0
+(31.80, 43.60] |     0
+(43.60, 55.40] |     0
+(55.40, 67.20] |     8
+(67.20, 79.00] |    12
+</pre></div></div>
+</div>
+<p>Note that the class definitions are constant across the periods.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>res = mapclassify.Pooled(data, k=4)
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>res.col_classifiers[0].counts
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([15,  5,  0,  0])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>res.col_classifiers[-1].counts
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([ 0,  0,  5, 15])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>res.global_classifier.counts
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([15, 15, 15, 15])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>res
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Pooled Classifier
+
+Pooled Quantiles
+
+   Interval      Count
+----------------------
+[20.00, 34.75] |    15
+(34.75, 49.50] |     5
+(49.50, 64.25] |     0
+(64.25, 79.00] |     0
+
+Pooled Quantiles
+
+   Interval      Count
+----------------------
+[20.00, 34.75] |     0
+(34.75, 49.50] |    10
+(49.50, 64.25] |    10
+(64.25, 79.00] |     0
+
+Pooled Quantiles
+
+   Interval      Count
+----------------------
+[20.00, 34.75] |     0
+(34.75, 49.50] |     0
+(49.50, 64.25] |     5
+(64.25, 79.00] |    15
+</pre></div></div>
+</div>
+<p>Extract the pooled classification objects for each column.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>c0, c1, c2 = res.col_classifiers
+c0
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Pooled Quantiles
+
+   Interval      Count
+----------------------
+[20.00, 34.75] |    15
+(34.75, 49.50] |     5
+(49.50, 64.25] |     0
+(64.25, 79.00] |     0
+</pre></div></div>
+</div>
+<p>Compare to the unrestricted classifier for the first column…</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mapclassify.Quantiles(c0.y, k=4)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Quantiles
+
+   Interval      Count
+----------------------
+[20.00, 24.75] |     5
+(24.75, 29.50] |     5
+(29.50, 34.25] |     5
+(34.25, 39.00] |     5
+</pre></div></div>
+</div>
+<p>… and the last column comparisions.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>c2
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Pooled Quantiles
+
+   Interval      Count
+----------------------
+[20.00, 34.75] |     0
+(34.75, 49.50] |     0
+(49.50, 64.25] |     5
+(64.25, 79.00] |    15
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mapclassify.Quantiles(c2.y, k=4)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Quantiles
+
+   Interval      Count
+----------------------
+[60.00, 64.75] |     5
+(64.75, 69.50] |     5
+(69.50, 74.25] |     5
+(74.25, 79.00] |     5
+</pre></div></div>
+</div>
+</section>
+<section id="Non-default-classifier:-BoxPlot">
+<h2>Non-default classifier: BoxPlot<a class="headerlink" href="#Non-default-classifier:-BoxPlot" title="Link to this heading">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>res = mapclassify.Pooled(data, classifier=&quot;BoxPlot&quot;, hinge=1.5)
+res
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Pooled Classifier
+
+Pooled BoxPlot
+
+    Interval       Count
+------------------------
+(  -inf,  -9.50] |     0
+( -9.50,  34.75] |    15
+( 34.75,  49.50] |     5
+( 49.50,  64.25] |     0
+( 64.25, 108.50] |     0
+
+Pooled BoxPlot
+
+    Interval       Count
+------------------------
+(  -inf,  -9.50] |     0
+( -9.50,  34.75] |     0
+( 34.75,  49.50] |    10
+( 49.50,  64.25] |    10
+( 64.25, 108.50] |     0
+
+Pooled BoxPlot
+
+    Interval       Count
+------------------------
+(  -inf,  -9.50] |     0
+( -9.50,  34.75] |     0
+( 34.75,  49.50] |     0
+( 49.50,  64.25] |     5
+( 64.25, 108.50] |    15
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>res.col_classifiers[0].bins
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([ -9.5 ,  34.75,  49.5 ,  64.25, 108.5 ])
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>c0, c1, c2 = res.col_classifiers
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>c0.yb
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2])
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>c00 = mapclassify.BoxPlot(c0.y, hinge=3)
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>c00.yb
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>c00
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+BoxPlot
+
+   Interval      Count
+----------------------
+( -inf, -3.75] |     0
+(-3.75, 24.75] |     5
+(24.75, 29.50] |     5
+(29.50, 34.25] |     5
+(34.25, 62.75] |     5
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>c0
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Pooled BoxPlot
+
+    Interval       Count
+------------------------
+(  -inf,  -9.50] |     0
+( -9.50,  34.75] |    15
+( 34.75,  49.50] |     5
+( 49.50,  64.25] |     0
+( 64.25, 108.50] |     0
+</pre></div></div>
+</div>
+</section>
+<section id="Non-default-classifier:-FisherJenks">
+<h2>Non-default classifier: FisherJenks<a class="headerlink" href="#Non-default-classifier:-FisherJenks" title="Link to this heading">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>res = mapclassify.Pooled(data, classifier=&quot;FisherJenks&quot;, k=5)
+res
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Pooled Classifier
+
+Pooled FisherJenks
+
+   Interval      Count
+----------------------
+[20.00, 31.00] |    12
+(31.00, 43.00] |     8
+(43.00, 55.00] |     0
+(55.00, 67.00] |     0
+(67.00, 79.00] |     0
+
+Pooled FisherJenks
+
+   Interval      Count
+----------------------
+[20.00, 31.00] |     0
+(31.00, 43.00] |     4
+(43.00, 55.00] |    12
+(55.00, 67.00] |     4
+(67.00, 79.00] |     0
+
+Pooled FisherJenks
+
+   Interval      Count
+----------------------
+[20.00, 31.00] |     0
+(31.00, 43.00] |     0
+(43.00, 55.00] |     0
+(55.00, 67.00] |     8
+(67.00, 79.00] |    12
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>c0, c1, c2 = res.col_classifiers
+mapclassify.FisherJenks(c0.y, k=5)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+FisherJenks
+
+   Interval      Count
+----------------------
+[20.00, 23.00] |     4
+(23.00, 27.00] |     4
+(27.00, 31.00] |     4
+(31.00, 35.00] |     4
+(35.00, 39.00] |     4
+</pre></div></div>
+</div>
+</section>
+<section id="Non-default-classifier:-MaximumBreaks">
+<h2>Non-default classifier: MaximumBreaks<a class="headerlink" href="#Non-default-classifier:-MaximumBreaks" title="Link to this heading">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>data[1, 0] = 10
+data[1, 1] = 10
+data[1, 2] = 10
+data[9, 2] = 10
+data
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[20, 40, 60],
+       [10, 10, 10],
+       [22, 42, 62],
+       [23, 43, 63],
+       [24, 44, 64],
+       [25, 45, 65],
+       [26, 46, 66],
+       [27, 47, 67],
+       [28, 48, 68],
+       [29, 49, 10],
+       [30, 50, 70],
+       [31, 51, 71],
+       [32, 52, 72],
+       [33, 53, 73],
+       [34, 54, 74],
+       [35, 55, 75],
+       [36, 56, 76],
+       [37, 57, 77],
+       [38, 58, 78],
+       [39, 59, 79]])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>res = mapclassify.Pooled(data, classifier=&quot;MaximumBreaks&quot;, k=5)
+res
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Pooled Classifier
+
+Pooled MaximumBreaks
+
+   Interval      Count
+----------------------
+[10.00, 15.00] |     1
+(15.00, 21.00] |     1
+(21.00, 41.00] |    18
+(41.00, 61.00] |     0
+(61.00, 79.00] |     0
+
+Pooled MaximumBreaks
+
+   Interval      Count
+----------------------
+[10.00, 15.00] |     1
+(15.00, 21.00] |     0
+(21.00, 41.00] |     1
+(41.00, 61.00] |    18
+(61.00, 79.00] |     0
+
+Pooled MaximumBreaks
+
+   Interval      Count
+----------------------
+[10.00, 15.00] |     2
+(15.00, 21.00] |     0
+(21.00, 41.00] |     0
+(41.00, 61.00] |     1
+(61.00, 79.00] |    17
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>c0, c1, c2 = res.col_classifiers
+c0
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Pooled MaximumBreaks
+
+   Interval      Count
+----------------------
+[10.00, 15.00] |     1
+(15.00, 21.00] |     1
+(21.00, 41.00] |    18
+(41.00, 61.00] |     0
+(61.00, 79.00] |     0
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>c0.y
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([20, 10, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
+       37, 38, 39])
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import warnings
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>with warnings.catch_warnings():
+    warnings.filterwarnings(&quot;error&quot;)
+    try:
+        mapclassify.MaximumBreaks(c0.y, k=5)
+    except UserWarning as e:
+        print(e)
+        with warnings.catch_warnings():
+            warnings.filterwarnings(&quot;ignore&quot;)
+            mapclassify.MaximumBreaks(c0.y, k=5)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Insufficient number of unique diffs. Breaks are random.
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>res = mapclassify.Pooled(
+    data, classifier=&quot;UserDefined&quot;, bins=mapclassify.Quantiles(data[:, -1]).bins
+)
+res
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Pooled Classifier
+
+Pooled UserDefined
+
+   Interval      Count
+----------------------
+[10.00, 62.80] |    20
+(62.80, 66.60] |     0
+(66.60, 71.40] |     0
+(71.40, 75.20] |     0
+(75.20, 79.00] |     0
+
+Pooled UserDefined
+
+   Interval      Count
+----------------------
+[10.00, 62.80] |    20
+(62.80, 66.60] |     0
+(66.60, 71.40] |     0
+(71.40, 75.20] |     0
+(75.20, 79.00] |     0
+
+Pooled UserDefined
+
+   Interval      Count
+----------------------
+[10.00, 62.80] |     4
+(62.80, 66.60] |     4
+(66.60, 71.40] |     4
+(71.40, 75.20] |     4
+(75.20, 79.00] |     4
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mapclassify.Quantiles(data[:, -1])
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Quantiles
+
+   Interval      Count
+----------------------
+[10.00, 62.80] |     4
+(62.80, 66.60] |     4
+(66.60, 71.40] |     4
+(71.40, 75.20] |     4
+(75.20, 79.00] |     4
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>data[:, -1]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([60, 10, 62, 63, 64, 65, 66, 67, 68, 10, 70, 71, 72, 73, 74, 75, 76,
+       77, 78, 79])
+</pre></div></div>
+</div>
+</section>
+<section id="Pinning-the-pooling">
+<h2>Pinning the pooling<a class="headerlink" href="#Pinning-the-pooling" title="Link to this heading">¶</a></h2>
+<p>Another option is to specify a specific subperiod as the definition for the classes in the pooling.</p>
+<section id="Pinning-to-the-last-period">
+<h3>Pinning to the last period<a class="headerlink" href="#Pinning-to-the-last-period" title="Link to this heading">¶</a></h3>
+<p>As an example, we can use the quintles from the third period to defined the pooled classifier:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>pinned = mapclassify.Pooled(
+    data, classifier=&quot;UserDefined&quot;, bins=mapclassify.Quantiles(data[:, -1]).bins
+)
+pinned
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Pooled Classifier
+
+Pooled UserDefined
+
+   Interval      Count
+----------------------
+[10.00, 62.80] |    20
+(62.80, 66.60] |     0
+(66.60, 71.40] |     0
+(71.40, 75.20] |     0
+(75.20, 79.00] |     0
+
+Pooled UserDefined
+
+   Interval      Count
+----------------------
+[10.00, 62.80] |    20
+(62.80, 66.60] |     0
+(66.60, 71.40] |     0
+(71.40, 75.20] |     0
+(75.20, 79.00] |     0
+
+Pooled UserDefined
+
+   Interval      Count
+----------------------
+[10.00, 62.80] |     4
+(62.80, 66.60] |     4
+(66.60, 71.40] |     4
+(71.40, 75.20] |     4
+(75.20, 79.00] |     4
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>pinned.global_classifier
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+UserDefined
+
+   Interval      Count
+----------------------
+[10.00, 62.80] |    44
+(62.80, 66.60] |     4
+(66.60, 71.40] |     4
+(71.40, 75.20] |     4
+(75.20, 79.00] |     4
+</pre></div></div>
+</div>
+</section>
+<section id="Pinning-to-the-first-period">
+<h3>Pinning to the first period<a class="headerlink" href="#Pinning-to-the-first-period" title="Link to this heading">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>pinned = mapclassify.Pooled(
+    data, classifier=&quot;UserDefined&quot;, bins=mapclassify.Quantiles(data[:, 0]).bins
+)
+pinned
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Pooled Classifier
+
+Pooled UserDefined
+
+   Interval      Count
+----------------------
+[10.00, 23.80] |     4
+(23.80, 27.60] |     4
+(27.60, 31.40] |     4
+(31.40, 35.20] |     4
+(35.20, 39.00] |     4
+(39.00, 79.00] |     0
+
+Pooled UserDefined
+
+   Interval      Count
+----------------------
+[10.00, 23.80] |     1
+(23.80, 27.60] |     0
+(27.60, 31.40] |     0
+(31.40, 35.20] |     0
+(35.20, 39.00] |     0
+(39.00, 79.00] |    19
+
+Pooled UserDefined
+
+   Interval      Count
+----------------------
+[10.00, 23.80] |     2
+(23.80, 27.60] |     0
+(27.60, 31.40] |     0
+(31.40, 35.20] |     0
+(35.20, 39.00] |     0
+(39.00, 79.00] |    18
+</pre></div></div>
+</div>
+<p>Note that the quintiles for the first period, by definition, contain all the values from that period, they do not bound the larger values in subsequent periods. Following the <a class="reference external" href="https://github.com/pysal/mapclassify/blob/a7770fb98bf945dad3c62ccf2c0f8b53abb1774a/mapclassify/classifiers.py#L589">mapclassify policy</a>, an additional class is added to contain all values in the pooled series.</p>
+</section>
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../_sources/notebooks/04_pooled.ipynb.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-, pysal developers.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.0.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

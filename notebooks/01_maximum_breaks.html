@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Introduction to mapclassify &#8212; mapclassify v2.8.0 Manual</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=9afac83c" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pysal-styles.css?v=0c2123f2" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+    <script src="../_static/documentation_options.js?v=69ff2ef9"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"TeX": {"equationNumbers": {"autoNumber": "AMS", "useLabelIds": true}}, "tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="icon" href="../_static/pysal_favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Legends in mapclassify" href="02_legends.html" />
+    <link rel="prev" title="Tutorial" href="../tutorial.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          mapclassify</a>
+        <span class="navbar-text navbar-version pull-left"><b>2.8.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../installation.html">Installation</a></li>
+                <li><a href="../tutorial.html">Tutorial</a></li>
+                <li><a href="../api.html">API</a></li>
+                <li><a href="../references.html">References</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-released-version">Installing released version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-development-version">Installing development version</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction to mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_legends.html">Legends in mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_choropleth.html">Choropleth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_pooled.html">Pooled Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05_Greedy_coloring.html">Getting started with mapclassify.greedy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_api.html">Overview of the mapclassify API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_api.html#Original-API-(&lt;-2.4.0)">Original API (&lt; 2.4.0)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_api.html#Extended-API-(&gt;=-2.40)">Extended API (&gt;= 2.40)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#classifiers">Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Introduction to mapclassify</a><ul>
+<li><a class="reference internal" href="#Example-data">Example data</a></li>
+<li><a class="reference internal" href="#Basic-Functionality">Basic Functionality</a></li>
+<li><a class="reference internal" href="#Changing-the-number-of-classes">Changing the number of classes</a></li>
+<li><a class="reference internal" href="#Next-Steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="admonition note">
+<p>This page was generated from <a class="reference external" href="https://github.com/pysal/mapclassify/blob/main/notebooks/01_maximum_breaks.ipynb">notebooks/01_maximum_breaks.ipynb</a>.
+Interactive online version:
+<span class="raw-html"><a href="https://mybinder.org/v2/gh/pysal/mapclassify/main?filepath=notebooks/01_maximum_breaks.ipynb"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" style="vertical-align:text-bottom"></a></span></p>
+</div>
+<section id="Introduction-to-mapclassify">
+<h1>Introduction to mapclassify<a class="headerlink" href="#Introduction-to-mapclassify" title="Link to this heading">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">mapclassify</span></code> implements a family of classification schemes for choropleth maps. Its focus is on the determination of the number of classes, and the assignment of observations to those classes. It is intended for use with upstream mapping and geovisualization packages (see <a class="reference external" href="https://geopandas.org/mapping.html">geopandas</a> and <a class="reference external" href="https://residentmario.github.io/geoplot/user_guide/Customizing_Plots.html">geoplot</a> for examples) that handle the rendering of the maps.</p>
+<p>In this notebook, the basic functionality of mapclassify is presented.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import mapclassify as mc
+
+mc.__version__
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;2.4.2+78.gc62d2d7.dirty&#39;
+</pre></div></div>
+</div>
+<section id="Example-data">
+<h2>Example data<a class="headerlink" href="#Example-data" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">mapclassify</span></code> contains a built-in dataset for employment density for the 58 California counties.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>y = mc.load_example()
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Basic-Functionality">
+<h2>Basic Functionality<a class="headerlink" href="#Basic-Functionality" title="Link to this heading">¶</a></h2>
+<p>All classifiers in <code class="docutils literal notranslate"><span class="pre">mapclassify</span></code> have a common interface and afford similar functionality. We illustrate these using the <code class="docutils literal notranslate"><span class="pre">MaximumBreaks</span></code> classifier.</p>
+<p><code class="docutils literal notranslate"><span class="pre">MaximumBreaks</span></code> requires that the user specify the number of classes <code class="docutils literal notranslate"><span class="pre">k</span></code>. Given this, the logic of the classifier is to sort the observations in ascending order and find the difference between rank adjacent values. The class boundaries are defined as the <span class="math notranslate nohighlight">\(k-1\)</span> largest rank-adjacent breaks in the sorted values.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mc.MaximumBreaks(y, k=4)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+MaximumBreaks
+
+     Interval        Count
+--------------------------
+[   0.13,  228.49] |    52
+( 228.49,  546.67] |     4
+( 546.67, 2417.15] |     1
+(2417.15, 4111.45] |     1
+</pre></div></div>
+</div>
+<p>The classifier returns an instance of <code class="docutils literal notranslate"><span class="pre">MaximumBreaks</span></code> that reports the resulting intervals and counts. The first class has closed lower and upper bounds:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[   0.13,  228.49]
+</pre></div>
+</div>
+<p>with <code class="docutils literal notranslate"><span class="pre">0.13</span></code> being the minimum value in the dataset:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>y.min()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.13
+</pre></div></div>
+</div>
+<p>Subsequent intervals are open on the lower bound and closed on the upper bound. The fourth class has the maximum value as its closed upper bound:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>y.max()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+4111.45
+</pre></div></div>
+</div>
+<p>Assigning the classifier to an object let’s us inspect other aspects of the classifier:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mb4 = mc.MaximumBreaks(y, k=4)
+mb4
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+MaximumBreaks
+
+     Interval        Count
+--------------------------
+[   0.13,  228.49] |    52
+( 228.49,  546.67] |     4
+( 546.67, 2417.15] |     1
+(2417.15, 4111.45] |     1
+</pre></div></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">bins</span></code> attribute has the upper bounds of the intervals:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mb4.bins
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([ 228.49 ,  546.675, 2417.15 , 4111.45 ])
+</pre></div></div>
+</div>
+<p>and <code class="docutils literal notranslate"><span class="pre">counts</span></code> reports the number of values falling in each bin:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mb4.counts
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([52,  4,  1,  1])
+</pre></div></div>
+</div>
+<p>The specific bin (i.e. label) for each observation can be found in the <code class="docutils literal notranslate"><span class="pre">yb</span></code> attribute:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mb4.yb
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 0, 1, 0,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+</pre></div></div>
+</div>
+</section>
+<section id="Changing-the-number-of-classes">
+<h2>Changing the number of classes<a class="headerlink" href="#Changing-the-number-of-classes" title="Link to this heading">¶</a></h2>
+<p>Staying with the the same classifier, the user can apply the same classification rule, but for a different number of classes:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mb7 = mc.MaximumBreaks(y, k=7)
+mb7
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+MaximumBreaks
+
+     Interval        Count
+--------------------------
+[   0.13,  146.00] |    50
+( 146.00,  228.49] |     2
+( 228.49,  291.02] |     1
+( 291.02,  350.21] |     2
+( 350.21,  546.67] |     1
+( 546.67, 2417.15] |     1
+(2417.15, 4111.45] |     1
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mb7.bins
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([ 146.005,  228.49 ,  291.02 ,  350.21 ,  546.675, 2417.15 ,
+       4111.45 ])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mb7.counts
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([50,  2,  1,  2,  1,  1,  1])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mb7.yb
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 1, 0, 0, 0, 6, 0, 0, 3, 0, 2, 0,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+</pre></div></div>
+</div>
+<p>One additional attribute to mention here is the <code class="docutils literal notranslate"><span class="pre">adcm</span></code> attribute:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mb7.adcm
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+727.3200000000002
+</pre></div></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">adcm</span></code> is a measure of fit, defined as the mean absolute deviation around the class median.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mb4.adcm
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1181.4900000000002
+</pre></div></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">adcm</span></code> can be expected to decrease as <span class="math notranslate nohighlight">\(k\)</span> increases for a given classifier. Thus, if using as a measure of fit, the <code class="docutils literal notranslate"><span class="pre">adcm</span></code> should only be used to compare classifiers defined on the same number of classes.</p>
+</section>
+<section id="Next-Steps">
+<h2>Next Steps<a class="headerlink" href="#Next-Steps" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">MaximumBreaks</span></code> is but one of many classifiers in <code class="docutils literal notranslate"><span class="pre">mapclassify</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mc.classifiers.CLASSIFIERS
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&#39;BoxPlot&#39;,
+ &#39;EqualInterval&#39;,
+ &#39;FisherJenks&#39;,
+ &#39;FisherJenksSampled&#39;,
+ &#39;HeadTailBreaks&#39;,
+ &#39;JenksCaspall&#39;,
+ &#39;JenksCaspallForced&#39;,
+ &#39;JenksCaspallSampled&#39;,
+ &#39;MaxP&#39;,
+ &#39;MaximumBreaks&#39;,
+ &#39;NaturalBreaks&#39;,
+ &#39;Quantiles&#39;,
+ &#39;Percentiles&#39;,
+ &#39;StdMean&#39;,
+ &#39;UserDefined&#39;)
+</pre></div></div>
+</div>
+<p>To learn more about an individual classifier, introspection is available:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>mc.MaximumBreaks?
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<p>For more comprehensive appliciations of <code class="docutils literal notranslate"><span class="pre">mapclassify</span></code> the interested reader is directed to the chapter on <a class="reference external" href="https://geographicdata.science/book/notebooks/05_choropleth.html">choropleth mapping</a> in <a class="reference external" href="https://geographicdata.science/book">Rey, Arribas-Bel, and Wolf (2020) “Geographic Data Science with PySAL and the PyData Stack”</a>.</p>
+<hr class="docutils" />
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../_sources/notebooks/01_maximum_breaks.ipynb.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-, pysal developers.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.0.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
