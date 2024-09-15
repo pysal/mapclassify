@@ -10,6 +10,7 @@ dependencies:
   - scikit-learn=1.0
   - scipy=1.8
   # testing
+  - fiona<1.10
   - geopandas<1
   - libpysal
   - pytest
