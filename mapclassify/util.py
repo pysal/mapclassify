@@ -59,6 +59,7 @@ def get_color_array(
     v = pd.Series(values, dtype=object)
     legit_indices = v[~v.isna()].index.values
     legit_vals = v.dropna().values
+    bogus_indices = v[v.isna()].index.values  # stash these for use later
     # transform (non-NaN) values into class bins
     bins = _classify(legit_vals, scheme=scheme, **kwargs).yb
 
@@ -69,13 +70,16 @@ def get_color_array(
     # generate RBGA array and convert to series
     rgbas = colormaps[cmap](normalized_vals, bytes=True, alpha=alpha)
     colors = pd.Series(list(rgbas), index=legit_indices).apply(np.array)
+    nan_colors = pd.Series(
+        [nan_color for i in range(len(bogus_indices))], index=bogus_indices
+    ).apply(lambda x: np.array(x).astype(np.uint8))
 
-    # put colors in their correct places and fill empty with designated color
+    # put colors in their correct places and fill empty with specified color
     v.update(colors)
-    v = v.fillna(f"{nan_color}").apply(np.array)
+    v.update(nan_colors)
 
     # convert to hexcolors if preferred
     if as_hex:
-        colors = colors.apply(lambda x: to_hex(x / 255.0))
+        colors = v.apply(lambda x: to_hex(x / 255.0))
         return colors.values
     return np.stack(v.values)
