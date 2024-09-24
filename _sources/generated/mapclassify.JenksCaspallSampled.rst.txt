@@ -1,0 +1,40 @@
+﻿mapclassify.JenksCaspallSampled
+===============================
+
+.. currentmodule:: mapclassify
+
+.. autoclass:: JenksCaspallSampled
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~JenksCaspallSampled.__init__
+      ~JenksCaspallSampled.find_bin
+      ~JenksCaspallSampled.get_adcm
+      ~JenksCaspallSampled.get_fmt
+      ~JenksCaspallSampled.get_gadf
+      ~JenksCaspallSampled.get_legend_classes
+      ~JenksCaspallSampled.get_tss
+      ~JenksCaspallSampled.make
+      ~JenksCaspallSampled.plot
+      ~JenksCaspallSampled.plot_histogram
+      ~JenksCaspallSampled.set_fmt
+      ~JenksCaspallSampled.table
+      ~JenksCaspallSampled.update
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~JenksCaspallSampled.fmt
+   
+   

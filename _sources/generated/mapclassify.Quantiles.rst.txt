@@ -1,0 +1,40 @@
+﻿mapclassify.Quantiles
+=====================
+
+.. currentmodule:: mapclassify
+
+.. autoclass:: Quantiles
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Quantiles.__init__
+      ~Quantiles.find_bin
+      ~Quantiles.get_adcm
+      ~Quantiles.get_fmt
+      ~Quantiles.get_gadf
+      ~Quantiles.get_legend_classes
+      ~Quantiles.get_tss
+      ~Quantiles.make
+      ~Quantiles.plot
+      ~Quantiles.plot_histogram
+      ~Quantiles.set_fmt
+      ~Quantiles.table
+      ~Quantiles.update
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Quantiles.fmt
+   
+   

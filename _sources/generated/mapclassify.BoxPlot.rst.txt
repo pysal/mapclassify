@@ -1,0 +1,40 @@
+﻿mapclassify.BoxPlot
+===================
+
+.. currentmodule:: mapclassify
+
+.. autoclass:: BoxPlot
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~BoxPlot.__init__
+      ~BoxPlot.find_bin
+      ~BoxPlot.get_adcm
+      ~BoxPlot.get_fmt
+      ~BoxPlot.get_gadf
+      ~BoxPlot.get_legend_classes
+      ~BoxPlot.get_tss
+      ~BoxPlot.make
+      ~BoxPlot.plot
+      ~BoxPlot.plot_histogram
+      ~BoxPlot.set_fmt
+      ~BoxPlot.table
+      ~BoxPlot.update
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BoxPlot.fmt
+   
+   

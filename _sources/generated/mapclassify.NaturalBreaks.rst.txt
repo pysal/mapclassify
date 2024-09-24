@@ -1,0 +1,40 @@
+﻿mapclassify.NaturalBreaks
+=========================
+
+.. currentmodule:: mapclassify
+
+.. autoclass:: NaturalBreaks
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~NaturalBreaks.__init__
+      ~NaturalBreaks.find_bin
+      ~NaturalBreaks.get_adcm
+      ~NaturalBreaks.get_fmt
+      ~NaturalBreaks.get_gadf
+      ~NaturalBreaks.get_legend_classes
+      ~NaturalBreaks.get_tss
+      ~NaturalBreaks.make
+      ~NaturalBreaks.plot
+      ~NaturalBreaks.plot_histogram
+      ~NaturalBreaks.set_fmt
+      ~NaturalBreaks.table
+      ~NaturalBreaks.update
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~NaturalBreaks.fmt
+   
+   

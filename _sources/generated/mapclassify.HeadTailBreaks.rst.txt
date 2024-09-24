@@ -1,0 +1,40 @@
+﻿mapclassify.HeadTailBreaks
+==========================
+
+.. currentmodule:: mapclassify
+
+.. autoclass:: HeadTailBreaks
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~HeadTailBreaks.__init__
+      ~HeadTailBreaks.find_bin
+      ~HeadTailBreaks.get_adcm
+      ~HeadTailBreaks.get_fmt
+      ~HeadTailBreaks.get_gadf
+      ~HeadTailBreaks.get_legend_classes
+      ~HeadTailBreaks.get_tss
+      ~HeadTailBreaks.make
+      ~HeadTailBreaks.plot
+      ~HeadTailBreaks.plot_histogram
+      ~HeadTailBreaks.set_fmt
+      ~HeadTailBreaks.table
+      ~HeadTailBreaks.update
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~HeadTailBreaks.fmt
+   
+   
