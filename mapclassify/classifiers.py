@@ -9,6 +9,8 @@ import warnings
 import numpy as np
 import scipy.stats as stats
 from sklearn.cluster import KMeans
+from .legendgram import _legendgram
+
 
 __author__ = "Sergio J. Rey"
 
@@ -1182,6 +1184,37 @@ class MapClassifier:
             ax.spines["right"].set_visible(False)
             ax.spines["top"].set_visible(False)
         return ax
+
+    def plot_legendgram(
+        self,
+        ax=None,
+        cmap="viridis",
+        bins=50,
+        inset=True,
+        clip=None,
+        vlines=False,
+        vlinecolor="black",
+        vlinewidth=1,
+        loc="lower left",
+        legend_size=(0.27, 0.2),
+        frameon=False,
+        tick_params=None,
+    ):
+        l = _legendgram(
+            self,
+            ax,
+            cmap,
+            bins,
+            inset,
+            clip,
+            vlines,
+            vlinecolor,
+            vlinewidth,
+            loc,
+            legend_size,
+            frameon,
+            tick_params,
+        )
 
 
 class HeadTailBreaks(MapClassifier):
