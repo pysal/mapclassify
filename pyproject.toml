@@ -68,17 +68,31 @@ docs = [
     "sphinxcontrib-bibtex",
     "sphinx_bootstrap_theme",
 ]
-tests = [
+spatial = [
     "geopandas",
     "libpysal",
     "matplotlib",
+    "shapely",
+]
+notebooks = [
+    "mapclassify[spatial]",
+    "geodatasets",
+    "ipywidgets",
+    "jupyterlab",
+    "lonboard",
+    "pyarrow",
+    "pydeck",
+    "seaborn",
+]
+tests = [
+    "mapclassify[spatial]",
     "pytest",
     "pytest-cov",
     "pytest-xdist",
     "pytest-doctestplus",
     "pytest-mpl"
 ]
-all = ["mapclassify[speedups,dev,docs,tests]"]
+all = ["mapclassify[speedups,dev,docs,notebooks,tests]"]
 
 [tool.setuptools.packages.find]
 include = ["mapclassify", "mapclassify.*"]
