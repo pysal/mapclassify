@@ -78,7 +78,7 @@ tests = [
     "pytest-doctestplus",
     "pytest-mpl"
 ]
-all = ["numba[speedups,dev,docs,tests]"]
+all = ["mapclassify[speedups,dev,docs,tests]"]
 
 [tool.setuptools.packages.find]
 include = ["mapclassify", "mapclassify.*"]
