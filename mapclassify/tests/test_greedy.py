@@ -4,7 +4,6 @@ import pytest
 
 from ..greedy import greedy
 
-
 world = geopandas.read_file(
     "https://naciscdn.org/naturalearth/110m/cultural/ne_110m_admin_0_countries.zip"
 )
