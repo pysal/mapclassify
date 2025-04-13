@@ -125,6 +125,9 @@ extend-include = [
     "A004",  # Import is shadowing a Python builtin
     "N802",  # Function name should be lowercase
  ]
+ "docs/conf.py" = [
+    "A001",  # Variable is shadowing a Python builtin
+]
 
 [tool.coverage.run]
 source = ["./mapclassify"]
