@@ -154,9 +154,9 @@ def _get_mpl_labels(mc, fmt="{:.1f}"):
     right = "]" * (k + 1)
     lower = ["{:>{width}}".format(edges[i], width=max_width) for i in range(k)]
     upper = ["{:>{width}}".format(edges[i], width=max_width) for i in range(1, k + 1)]
-    lower = [_l + r for _l, r in zip(left, lower)]
-    upper = [_l + r for _l, r in zip(upper, right)]
-    intervals = [_l + ", " + r for _l, r in zip(lower, upper)]
+    lower = [_l + r for _l, r in zip(left, lower, strict=True)]
+    upper = [_l + r for _l, r in zip(upper, right, strict=True)]
+    intervals = [_l + ", " + r for _l, r in zip(lower, upper, strict=True)]
     return intervals
 
 
@@ -453,7 +453,7 @@ def bin1d(x, bins):
     left = [-float("inf")]
     left.extend(bins[0:-1])
     right = bins
-    cuts = list(zip(left, right))
+    cuts = list(zip(left, right, strict=True))
     k = len(bins)
     binIds = np.zeros(x.shape, dtype="int")
     while cuts:
