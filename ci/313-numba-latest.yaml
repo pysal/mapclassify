@@ -2,7 +2,7 @@ name: test
 channels:
   - conda-forge
 dependencies:
-  - python=3.12
+  - python=3.13
   # required
   - networkx
   - numpy
@@ -15,6 +15,9 @@ dependencies:
   - pytest
   - pytest-cov
   - pytest-xdist
+  - pytest-doctestplus
   - pytest-mpl
   - codecov
   - matplotlib
+  # optional
+  - numba
