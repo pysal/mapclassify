@@ -97,6 +97,7 @@ all = ["mapclassify[speedups,dev,docs,notebooks,tests]"]
 [tool.setuptools.packages.find]
 include = ["mapclassify", "mapclassify.*"]
 
+
 [tool.ruff]
 line-length = 88
 lint.select = ["E", "F", "W", "I", "UP", "N", "B", "A", "C4", "SIM", "ARG"]
@@ -115,7 +116,15 @@ lint.ignore = [
     "N999",
     "UP007"
 ]
-exclude = ["mapclassify/tests/*", "docs/*"]
+extend-include = [
+    "docs/conf.py"
+]
+
+[tool.ruff.lint.per-file-ignores]
+ "*tests/test_*.py" = [
+    "A004",  # Import is shadowing a Python builtin
+    "N802",  # Function name should be lowercase
+ ]
 
 [tool.coverage.run]
 source = ["./mapclassify"]
