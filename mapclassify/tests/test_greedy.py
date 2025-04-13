@@ -1,12 +1,9 @@
-import sys
-
 import geopandas
 import libpysal
 import pytest
 
 from ..greedy import greedy
 
-PY39 = sys.version_info.major == 3 and sys.version_info.minor == 9
 
 world = geopandas.read_file(
     "https://naciscdn.org/naturalearth/110m/cultural/ne_110m_admin_0_countries.zip"
@@ -105,9 +102,7 @@ class TestGreedyParams:
     def test_smallest_last(self, pysal_geos):
         colors = greedy(world, strategy="smallest_last", min_distance=pysal_geos)
         assert set(colors) == {0, 1, 2, 3}
-        # skip pn Python 3.9 due to networkx/networkx#3993
-        if not PY39:
-            assert colors.value_counts().to_list() == [71, 52, 39, 15]
+        assert colors.value_counts().to_list() == [71, 52, 39, 15]
         _check_correctess(colors)
 
     def test_independent_set(self, pysal_geos):

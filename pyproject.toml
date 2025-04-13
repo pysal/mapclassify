@@ -29,22 +29,18 @@ For further theoretical background see "`Choropleth Mapping`_" in Rey, S.J., D. 
 """, content-type = "text/x-rst" }
 classifiers = [
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
     "License :: OSI Approved :: BSD License",
     "Operating System :: OS Independent",
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: GIS",
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 dependencies = [
-    "networkx>=2.7",
-    "numpy>=1.23",
-    "pandas>=1.4,!=1.5.0",
-    "scikit-learn>=1.0",
-    "scipy>=1.8",
+    "networkx>=3.2",
+    "numpy>=1.26",
+    "pandas>=2.1",
+    "scikit-learn>=1.4",
+    "scipy>=1.12",
 ]
 
 [project.urls]
@@ -53,7 +49,7 @@ Repository = "https://github.com/pysal/mapclassify"
 
 [project.optional-dependencies]
 speedups = [
-    "numba>=0.54"
+    "numba>=0.58"
 ]
 dev = [
     "ruff",
