@@ -4,7 +4,6 @@ import pytest
 
 from ..greedy import greedy
 
-
 world = geopandas.read_file(
     "https://naciscdn.org/naturalearth/110m/cultural/ne_110m_admin_0_countries.zip"
 )
@@ -24,20 +23,20 @@ def _check_correctess(colors):
 class TestGreedy:
     def test_default(self):
         colors = greedy(world)
-        assert set(colors) == set([0, 1, 2, 3, 4])
+        assert set(colors) == {0, 1, 2, 3, 4}
         assert colors.value_counts().to_list() == [36, 36, 35, 35, 35]
         assert (colors.index == world.index).all()
         _check_correctess(colors)
 
     def test_rook(self):
         colors = greedy(world, sw="rook")
-        assert set(colors) == set([0, 1, 2, 3, 4])
+        assert set(colors) == {0, 1, 2, 3, 4}
         assert colors.value_counts().to_list() == [36, 36, 35, 35, 35]
         _check_correctess(colors)
 
     def test_sw(self):
         colors = greedy(world, sw=sw)
-        assert set(colors) == set([0, 1, 2, 3, 4])
+        assert set(colors) == {0, 1, 2, 3, 4}
         assert colors.value_counts().to_list() == [36, 36, 35, 35, 35]
         _check_correctess(colors)
 
@@ -60,7 +59,7 @@ class TestGreedyParams:
         colors = greedy(
             world, strategy="balanced", balance="count", min_distance=pysal_geos
         )
-        assert set(colors) == set([0, 1, 2, 3, 4])
+        assert set(colors) == {0, 1, 2, 3, 4}
         assert colors.value_counts().to_list() == [36, 36, 35, 35, 35]
         _check_correctess(colors)
 
@@ -68,7 +67,7 @@ class TestGreedyParams:
         colors = greedy(
             world, strategy="balanced", balance="area", min_distance=pysal_geos
         )
-        assert set(colors) == set([0, 1, 2, 3, 4])
+        assert set(colors) == {0, 1, 2, 3, 4}
         assert colors.value_counts().to_list() == [55, 49, 39, 32, 2]
         _check_correctess(colors)
 
@@ -76,7 +75,7 @@ class TestGreedyParams:
         colors = greedy(
             world, strategy="balanced", balance="centroid", min_distance=pysal_geos
         )
-        assert set(colors) == set([0, 1, 2, 3, 4])
+        assert set(colors) == {0, 1, 2, 3, 4}
         assert colors.value_counts().to_list() == [39, 36, 36, 34, 32]
         _check_correctess(colors)
 
@@ -84,13 +83,13 @@ class TestGreedyParams:
         colors = greedy(
             world, strategy="balanced", balance="distance", min_distance=pysal_geos
         )
-        assert set(colors) == set([0, 1, 2, 3, 4])
+        assert set(colors) == {0, 1, 2, 3, 4}
         assert colors.value_counts().to_list() == [38, 36, 35, 34, 34]
         _check_correctess(colors)
 
     def test_largest_first(self, pysal_geos):
         colors = greedy(world, strategy="largest_first", min_distance=pysal_geos)
-        assert set(colors) == set([0, 1, 2, 3, 4])
+        assert set(colors) == {0, 1, 2, 3, 4}
         assert colors.value_counts().to_list() == [64, 49, 42, 21, 1]
         _check_correctess(colors)
 
@@ -101,13 +100,13 @@ class TestGreedyParams:
 
     def test_smallest_last(self, pysal_geos):
         colors = greedy(world, strategy="smallest_last", min_distance=pysal_geos)
-        assert set(colors) == set([0, 1, 2, 3])
+        assert set(colors) == {0, 1, 2, 3}
         assert colors.value_counts().to_list() == [71, 52, 39, 15]
         _check_correctess(colors)
 
     def test_independent_set(self, pysal_geos):
         colors = greedy(world, strategy="independent_set", min_distance=pysal_geos)
-        assert set(colors) == set([0, 1, 2, 3, 4])
+        assert set(colors) == {0, 1, 2, 3, 4}
         assert colors.value_counts().to_list() == [91, 42, 26, 13, 5]
         _check_correctess(colors)
 
@@ -115,33 +114,32 @@ class TestGreedyParams:
         colors = greedy(
             world, strategy="connected_sequential_bfs", min_distance=pysal_geos
         )
-        assert set(colors) == set([0, 1, 2, 3, 4])
-        counts = colors.value_counts().to_list()
+        assert set(colors) == {0, 1, 2, 3, 4}
         _check_correctess(colors)
 
     def test_connected_sequential_dfs(self, pysal_geos):
         colors = greedy(
             world, strategy="connected_sequential_dfs", min_distance=pysal_geos
         )
-        assert set(colors) == set([0, 1, 2, 3, 4])
+        assert set(colors) == {0, 1, 2, 3, 4}
         _check_correctess(colors)
 
     def test_connected_sequential(self, pysal_geos):
         colors = greedy(world, strategy="connected_sequential", min_distance=pysal_geos)
-        assert set(colors) == set([0, 1, 2, 3, 4])
+        assert set(colors) == {0, 1, 2, 3, 4}
         _check_correctess(colors)
 
     def test_saturation_largest_first(self, pysal_geos):
         colors = greedy(
             world, strategy="saturation_largest_first", min_distance=pysal_geos
         )
-        assert set(colors) == set([0, 1, 2, 3])
+        assert set(colors) == {0, 1, 2, 3}
         assert colors.value_counts().to_list() == [71, 47, 42, 17]
         _check_correctess(colors)
 
     def test_DSATUR(self, pysal_geos):
         colors = greedy(world, strategy="DSATUR", min_distance=pysal_geos)
-        assert set(colors) == set([0, 1, 2, 3])
+        assert set(colors) == {0, 1, 2, 3}
         assert colors.value_counts().to_list() == [71, 47, 42, 17]
         _check_correctess(colors)
 
@@ -150,5 +148,5 @@ class TestGreedyParams:
         reindexed = world.set_index("ten")
         colors = greedy(reindexed, min_distance=pysal_geos)
         assert len(colors) == len(world)
-        assert set(colors) == set([0, 1, 2, 3, 4])
+        assert set(colors) == {0, 1, 2, 3, 4}
         assert colors.value_counts().to_list() == [36, 36, 35, 35, 35]
