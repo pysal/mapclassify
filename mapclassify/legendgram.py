@@ -9,39 +9,42 @@ def _legendgram(
     inset=True,
     clip=None,
     vlines=False,
-    vlinecolor='black',
+    vlinecolor="black",
     vlinewidth=1,
     loc="lower left",
-    legend_size=(0.27, 0.2),
+    legend_size=("27%", "20%"),
     frameon=False,
     tick_params=None,
+    bbox_to_anchor=None,
 ):
     """
-    Add a histogram in a choropleth with colors aligned with map
-    ...
+    Add a histogram in a choropleth with colors aligned with map ...
 
     Arguments
     ---------
-    f           : Figure
-    ax          : AxesSubplot
-    y           : ndarray/Series
-                  Values to map
-    breaks      : list
-                  Sequence with breaks for each class (i.e. boundary values
-                  for colors)
-    pal         : palettable colormap or matplotlib colormap
-    clip        : tuple
-                  [Optional. Default=None] If a tuple, clips the X
-                  axis of the histogram to the bounds provided.
-    loc         :   string or int
-                    valid legend location like that used in matplotlib.pyplot.legend
+    ax : Axes
+    ...
+    loc : string or int
+        valid legend location like that used in matplotlib.pyplot.legend. Valid
+        locations are 'upper left', 'upper center', 'upper right', 'center left',
+        'center', 'center right', 'lower left', 'lower center', 'lower right'.
     legend_size : tuple
-                  tuple of floats between 0 and 1 describing the (width,height)
-                  of the legend relative to the original frame.
-    frameon     : bool (default: False)
-                  whether to add a frame to the legendgram
+        tuple of floats or strings describing the (width, height) of the
+        legend. If a float is provided, it is
+        the size in inches, e.g. ``(1.3, 1)``. If a string is provided, it is
+        the size in relative units, e.g. ``('40%', '20%')``. By default,
+        i.e. if ``bbox_to_anchor`` is not specified, those are relative to
+        the `ax`. Otherwise, they are to be understood relative to the
+        bounding box provided via ``bbox_to_anchor``.
+    frameon : bool (default: False)
+        whether to add a frame to the legendgram
     tick_params : keyword dictionary
-                  options to control how the histogram axis gets ticked/labelled.
+        options to control how the histogram axis gets ticked/labelled.
+    bbox_to_anchor : tuple or ``matplotlib.trasforms.BboxBase``
+        Bbox that the inset axes will be anchored to. If None, a tuple of
+        ``(0, 0, 1, 1)`` is used. If a tuple, can be either
+        ``[left, bottom, width, height]``, or ``[left, bottom]``. If the ``legend_size``
+        is in relative units (%), the 2-tuple ``[left, bottom]`` cannot be used.
 
     Returns
     -------
@@ -51,6 +54,7 @@ def _legendgram(
     try:
         import matplotlib.pyplot as plt
         from matplotlib import colormaps
+        from mpl_toolkits.axes_grid1.inset_locator import inset_axes
     except ImportError as e:
         raise ImportError from e("you must have matplotlib ")
     if ax is None:
@@ -60,7 +64,14 @@ def _legendgram(
     k = len(classifier.bins)
     breaks = classifier.bins
     if inset:
-        histpos = _make_location(ax, loc, legend_size=legend_size)
+        histpos = inset_axes(
+            ax,
+            loc=loc,
+            width=legend_size[0],
+            height=legend_size[1],
+            bbox_to_anchor=bbox_to_anchor,
+            bbox_transform=ax.transAxes,
+        )
         histax = f.add_axes(histpos)
     else:
         histax = ax
@@ -85,72 +96,3 @@ def _legendgram(
     tick_params["labelsize"] = tick_params.get("labelsize", 12)
     histax.tick_params(**tick_params)
     return histax
-
-
-def _make_location(ax, loc, legend_size=(0.27, 0.2)):
-    """
-    Construct the location bounds of a legendgram
-
-    Arguments:
-    ----------
-    ax          :   matplotlib.AxesSubplot
-                    axis on which to add a legendgram
-    loc         :   string or int
-                    valid legend location like that used in matplotlib.pyplot.legend
-    legend_size :   tuple or float
-                    tuple denoting the length/width of the legendgram in terms
-                    of a fraction of the axis. If a float, the legend is assumed
-                    square.
-
-    Returns
-    -------
-    a list [left_anchor, bottom_anchor, width, height] in terms of plot units
-    that defines the location and extent of the legendgram.
-
-
-    """
-    position = ax.get_position()
-    if isinstance(legend_size, float):
-        legend_size = (legend_size, legend_size)
-    lw, lh = legend_size
-    legend_width = position.width * lw
-    legend_height = position.height * lh
-    right_offset = position.width - legend_width
-    top_offset = position.height - legend_height
-    if isinstance(loc, int):
-        try:
-            loc = inv_lut[loc]
-        except KeyError:
-            raise KeyError(
-                "Legend location {} not recognized. Please choose "
-                " from the list of valid matplotlib legend locations."
-                "".format(loc)
-            )
-    if loc.lower() == "lower left" or loc.lower() == "best":
-        anchor_x, anchor_y = position.x0, position.y0
-    elif loc.lower() == "lower center":
-        anchor_x, anchor_y = position.x0 + position.width * 0.5, position.y0
-    elif loc.lower() == "lower right":
-        anchor_x, anchor_y = position.x0 + right_offset, position.y0
-    elif loc.lower() == "center left":
-        anchor_x, anchor_y = position.x0, position.y0 + position.height * 0.5
-    elif loc.lower() == "center":
-        anchor_x, anchor_y = (
-            position.x0 + position.width * 0.5,
-            position.y0 + position.height * 0.5,
-        )
-    elif loc.lower() == "center right" or loc.lower() == "right":
-        anchor_x, anchor_y = (
-            position.x0 + right_offset,
-            position.y0 + position.height * 0.5,
-        )
-    elif loc.lower() == "upper left":
-        anchor_x, anchor_y = position.x0, position.y0 + top_offset
-    elif loc.lower() == "upper center":
-        anchor_x, anchor_y = (
-            position.x0 + position.width * 0.5,
-            position.y0 + top_offset,
-        )
-    elif loc.lower() == "upper right":
-        anchor_x, anchor_y = position.x0 + right_offset, position.y0 + top_offset
-    return [anchor_x, anchor_y, legend_width, legend_height]

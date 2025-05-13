@@ -9,8 +9,8 @@ import warnings
 import numpy as np
 import scipy.stats as stats
 from sklearn.cluster import KMeans
-from .legendgram import _legendgram
 
+from .legendgram import _legendgram
 
 __author__ = "Sergio J. Rey"
 
@@ -186,13 +186,13 @@ def _get_table(mc, fmt="{:.2f}"):
     count_width = max([len(count) for count in counts])
     count_width = max(count_width, len("count"))
     interval_width = max(interval_width, len("interval"))
-    header = f"{'Interval' : ^{interval_width}}"
-    header += " " * 3 + f"{'Count' : >{count_width}}"
+    header = f"{'Interval': ^{interval_width}}"
+    header += " " * 3 + f"{'Count': >{count_width}}"
     title = mc.name
     header += "\n" + "-" * len(header)
     table = [title, "", header]
     for i, interval in enumerate(intervals):
-        row = f"{interval} | {counts[i] : >{count_width}}"
+        row = f"{interval} | {counts[i]: >{count_width}}"
         table.append(row)
     return "\n".join(table)
 
@@ -1196,11 +1196,12 @@ class MapClassifier:
         vlinecolor="black",
         vlinewidth=1,
         loc="lower left",
-        legend_size=(0.27, 0.2),
+        legend_size=("27%", "20%"),
         frameon=False,
         tick_params=None,
+        bbox_to_anchor=None,
     ):
-        l = _legendgram(
+        return _legendgram(
             self,
             ax,
             cmap,
@@ -1214,6 +1215,7 @@ class MapClassifier:
             legend_size,
             frameon,
             tick_params,
+            bbox_to_anchor,
         )
 
 
