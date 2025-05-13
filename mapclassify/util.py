@@ -99,5 +99,3 @@ loc_lut = {
     "center": 10,
 }
 inv_lut = {v: k for k, v in loc_lut.items()}  # yes, it's not general, but it's ok.
-
-
