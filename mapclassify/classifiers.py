@@ -1266,7 +1266,7 @@ class MapClassifier:
 
         >>> ax = data.plot('DV80', k=10, scheme='Quantiles')
         >>> classifier = mapclassify.Quantiles(data['DV80'].values, k=10)
-        >>> classifier.plot_legendgram(
+        >>> lg_ax = classifier.plot_legendgram(
         ...     ax=ax,
         ...     legend_size=("50%", "20%"), # legend size in percentage of the axis
         ...     loc = 'upper left',  # matplotlib-style legend locations
