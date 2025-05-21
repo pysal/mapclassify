@@ -68,6 +68,11 @@ class TestLegendgram:
 
         assert is_frame_on
 
+    @pytest.mark.skipif(
+        Version(matplotlib.__version__) >= Version("3.11.0.dev"),
+        reason="change of font rendering breaks image comparison",
+        # once 3.11 lands, we should update expected and test against that
+    )
     @image_comparison(
         baseline_images=["legendgram_default"],
         extensions=["png"],
@@ -79,6 +84,11 @@ class TestLegendgram:
         _, ax = plt.subplots(figsize=(8, 6))
         _legendgram(self.classifier, ax=ax)
 
+    @pytest.mark.skipif(
+        Version(matplotlib.__version__) >= Version("3.11.0.dev"),
+        reason="change of font rendering breaks image comparison",
+        # once 3.11 lands, we should update expected and test against that
+    )
     @image_comparison(
         baseline_images=["legendgram_vlines"],
         extensions=["png"],
@@ -90,6 +100,11 @@ class TestLegendgram:
         _, ax = plt.subplots(figsize=(8, 6))
         _legendgram(self.classifier, ax=ax, vlines=True, vlinecolor="red", vlinewidth=2)
 
+    @pytest.mark.skipif(
+        Version(matplotlib.__version__) >= Version("3.11.0.dev"),
+        reason="change of font rendering breaks image comparison",
+        # once 3.11 lands, we should update expected and test against that
+    )
     @image_comparison(
         baseline_images=["legendgram_cmap"],
         extensions=["png"],
@@ -101,6 +116,11 @@ class TestLegendgram:
         _, ax = plt.subplots(figsize=(8, 6))
         _legendgram(self.classifier, ax=ax, cmap="plasma")
 
+    @pytest.mark.skipif(
+        Version(matplotlib.__version__) >= Version("3.11.0.dev"),
+        reason="change of font rendering breaks image comparison",
+        # once 3.11 lands, we should update expected and test against that
+    )
     @image_comparison(
         baseline_images=["legendgram_position"],
         extensions=["png"],
