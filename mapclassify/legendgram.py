@@ -65,6 +65,8 @@ def _legendgram(
     k = len(classifier.bins)
     breaks = classifier.bins
     if inset:
+        if not bbox_to_anchor:
+            bbox_to_anchor = (0, 0, 1, 1)
         histpos = inset_axes(
             ax,
             loc=loc,
@@ -79,10 +81,12 @@ def _legendgram(
     N, bins, patches = histax.hist(classifier.y, bins=bins, color="0.1")
     pl = colormaps[cmap]
 
+    colors = [pl(i) for i in np.linspace(0, 1, k)]
+
     bucket_breaks = [0] + [np.searchsorted(bins, i) for i in breaks]
     for c in range(k):
         for b in range(bucket_breaks[c], bucket_breaks[c + 1]):
-            patches[b].set_facecolor(pl(c / k))
+            patches[b].set_facecolor(colors[c])
     if clip is not None:
         histax.set_xlim(*clip)
     histax.set_frame_on(frameon)
@@ -90,7 +94,7 @@ def _legendgram(
     if tick_params is None:
         tick_params = dict()
     if vlines:
-        lim = ax.get_ylim()[1]
+        lim = histax.get_ylim()[1]
         # plot upper limit of each bin
         for i in classifier.bins:
             histax.vlines(i, 0, lim, color=vlinecolor, linewidth=vlinewidth)

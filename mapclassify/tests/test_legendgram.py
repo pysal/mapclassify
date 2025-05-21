@@ -113,12 +113,12 @@ class TestLegendgram:
         )
 
     @image_comparison(
-        baseline_images=["map"],
+        baseline_images=["legendgram_map"],
         extensions=["png"],
         remove_text=False,
         tol=0.05,
     )
-    def test_map(self):
+    def test_legendgram_map(self):
         """Test with geopandas map"""
         data = gpd.read_file(examples.get_path("south.shp")).to_crs(epsg=5070)
         ax = data.plot("DV80", k=10, scheme="Quantiles")
