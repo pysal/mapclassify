@@ -54,7 +54,7 @@ class TestLegendgram:
         """Test that _legendgram applies tick_params correctly"""
         _, ax = plt.subplots(figsize=(8, 6))
         custom_tick_params = {"labelsize": 20, "rotation": 45}
-        histax = _legendgram(self.classifier, ax=ax, tick_params=custom_tick_params)
+        _ = _legendgram(self.classifier, ax=ax, tick_params=custom_tick_params)
         plt.close()
 
     def test_legendgram_frameon(self):
