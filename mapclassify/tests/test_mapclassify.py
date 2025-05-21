@@ -312,7 +312,7 @@ class TestNaturalBreaks:
         )
 
     def test_NaturalBreaks_stability(self):
-        for i in range(10):
+        for _ in range(10):
             nb = NaturalBreaks(self.V, 5)
             assert nb.k == 5
             assert len(nb.counts) == 5
