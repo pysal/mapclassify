@@ -3,6 +3,7 @@ import numpy as np
 
 def _legendgram(
     classifier,
+    *,
     ax=None,
     cmap="viridis",
     bins=50,
