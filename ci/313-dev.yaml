@@ -12,7 +12,7 @@ dependencies:
   - pyproj
   - pip
   - pip:
-      - --pre --index-url https://pypi.anaconda.org/scientific-python-nightly-wheels/simple --extra-index-url https://pypi.org/simple -U
+      - --pre --index-url https://pypi.anaconda.org/scientific-python-nightly-wheels/simple --extra-index-url https://pypi.org/simple
       - scipy
       - scikit-learn
       - pandas
