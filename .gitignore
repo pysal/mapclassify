@@ -12,3 +12,4 @@ mapclassify/tests/.ropeproject/
 .vscode/settings.json
 __pycache__
 /notebooks/.ipynb_checkpoints/
+result_images/
