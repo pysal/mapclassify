@@ -2,8 +2,10 @@ import geopandas as gpd
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+import pytest
 from libpysal import examples
 from matplotlib.testing.decorators import image_comparison
+from packaging.version import Version
 
 from mapclassify import EqualInterval, Quantiles
 from mapclassify.legendgram import _legendgram
@@ -112,6 +114,11 @@ class TestLegendgram:
             self.classifier, ax=ax, loc="upper right", legend_size=("40%", "30%")
         )
 
+    @pytest.mark.skipif(
+        Version(matplotlib.__version__) >= Version("3.11.0.dev"),
+        reason="change of font rendering breaks image comparison",
+        # once 3.11 lands, we should update expected and test against that
+    )
     @image_comparison(
         baseline_images=["legendgram_map"],
         extensions=["png"],
