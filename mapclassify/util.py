@@ -83,19 +83,3 @@ def get_color_array(
         colors = v.apply(lambda x: to_hex(x / 255.0))
         return colors.values
     return np.stack(v.values)
-
-
-loc_lut = {
-    "best": 0,
-    "upper right": 1,
-    "upper left": 2,
-    "lower left": 3,
-    "lower right": 4,
-    "right": 5,
-    "center left": 6,
-    "center right": 7,
-    "lower center": 8,
-    "upper center": 9,
-    "center": 10,
-}
-inv_lut = {v: k for k, v in loc_lut.items()}  # yes, it's not general, but it's ok.
