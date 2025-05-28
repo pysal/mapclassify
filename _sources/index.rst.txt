@@ -1,20 +1,60 @@
-.. No Errors Test Project documentation master file, created by
-   sphinx-quickstart on Fri Aug 30 17:07:56 2019.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. documentation master file
 
-Welcome to No Errors Test Project's documentation!
-==================================================
+mapclassify
+===========
+
+mapclassify is an open-source python library for Choropleth map classification. It is part of `PySAL`_ the Python Spatial Analysis Library.
+
+.. raw:: html
+
+    <div class="container-fluid">
+      <div class="row equal-height">
+        <div class="col-sm-1 col-xs-hidden">
+        </div>
+        <div class="col-md-3 col-xs-12">
+            <a href="http://nbviewer.jupyter.org/github/pysal/mapclassify/blob/main/notebooks/03_choropleth.ipynb" class="thumbnail">
+                <img src="_static/images/equalinterval.png" class="img-responsive center-block">
+                <div class="caption text-center">
+                <h5>Equal Interval</h5>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-1 col-xs-hidden">
+        </div>
+        <div class="col-sm-3 col-xs-12">
+            <a href="http://nbviewer.jupyter.org/github/pysal/mapclassify/blob/main/notebooks/03_choropleth.ipynb" class="thumbnail">
+                <img src="_static/images/quantiles.png" class="img-responsive center-block">
+                <div class="caption text-center">
+                <h5>Quantiles</h5>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-1 col-xs-hidden">
+        </div>
+        <div class="col-sm-3 col-xs-12">
+            <a href="http://nbviewer.jupyter.org/github/pysal/mapclassify/blob/main/notebooks/03_choropleth.ipynb" class="thumbnail">
+                <img src="_static/images/fisherjenks.png"
+                class="img-responsive center-block">
+                <div class="caption text-center">
+                <h5>Fisher Jenks</h5>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-1 col-xs-hidden">
+        </div>
+      </div>
+    </div>
+
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Hello World!
+   :hidden:
+   :maxdepth: 3
+   :caption: Contents:
+
+   Installation <installation>
+   Tutorial <tutorial>
+   API <api>
+   References <references>
 
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. _PySAL: https://github.com/pysal/pysal

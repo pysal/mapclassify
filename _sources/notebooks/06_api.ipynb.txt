@@ -1,0 +1,668 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Overview of the mapclassify API\n",
+    "\n",
+    "There are a number of ways to access the functionality in `mapclassify`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We first load the example dataset that we have seen earlier."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T15:10:19.167785Z",
+     "start_time": "2022-11-05T15:10:14.404320Z"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "import geopandas\n",
+    "import libpysal\n",
+    "import mapclassify"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Current `mapclassify` version."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T15:10:19.182165Z",
+     "start_time": "2022-11-05T15:10:19.171353Z"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'2.4.2+107.gb97c316a.dirty'"
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mapclassify.__version__"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T15:10:19.586837Z",
+     "start_time": "2022-11-05T15:10:19.187232Z"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>AREA</th>\n",
+       "      <th>PERIMETER</th>\n",
+       "      <th>COLUMBUS_</th>\n",
+       "      <th>COLUMBUS_I</th>\n",
+       "      <th>POLYID</th>\n",
+       "      <th>NEIG</th>\n",
+       "      <th>HOVAL</th>\n",
+       "      <th>INC</th>\n",
+       "      <th>CRIME</th>\n",
+       "      <th>OPEN</th>\n",
+       "      <th>...</th>\n",
+       "      <th>DISCBD</th>\n",
+       "      <th>X</th>\n",
+       "      <th>Y</th>\n",
+       "      <th>NSA</th>\n",
+       "      <th>NSB</th>\n",
+       "      <th>EW</th>\n",
+       "      <th>CP</th>\n",
+       "      <th>THOUS</th>\n",
+       "      <th>NEIGNO</th>\n",
+       "      <th>geometry</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>0.309441</td>\n",
+       "      <td>2.440629</td>\n",
+       "      <td>2</td>\n",
+       "      <td>5</td>\n",
+       "      <td>1</td>\n",
+       "      <td>5</td>\n",
+       "      <td>80.467003</td>\n",
+       "      <td>19.531</td>\n",
+       "      <td>15.725980</td>\n",
+       "      <td>2.850747</td>\n",
+       "      <td>...</td>\n",
+       "      <td>5.03</td>\n",
+       "      <td>38.799999</td>\n",
+       "      <td>44.070000</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>1000.0</td>\n",
+       "      <td>1005.0</td>\n",
+       "      <td>POLYGON ((8.62413 14.23698, 8.55970 14.74245, ...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>0.259329</td>\n",
+       "      <td>2.236939</td>\n",
+       "      <td>3</td>\n",
+       "      <td>1</td>\n",
+       "      <td>2</td>\n",
+       "      <td>1</td>\n",
+       "      <td>44.567001</td>\n",
+       "      <td>21.232</td>\n",
+       "      <td>18.801754</td>\n",
+       "      <td>5.296720</td>\n",
+       "      <td>...</td>\n",
+       "      <td>4.27</td>\n",
+       "      <td>35.619999</td>\n",
+       "      <td>42.380001</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>1000.0</td>\n",
+       "      <td>1001.0</td>\n",
+       "      <td>POLYGON ((8.25279 14.23694, 8.28276 14.22994, ...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>0.192468</td>\n",
+       "      <td>2.187547</td>\n",
+       "      <td>4</td>\n",
+       "      <td>6</td>\n",
+       "      <td>3</td>\n",
+       "      <td>6</td>\n",
+       "      <td>26.350000</td>\n",
+       "      <td>15.956</td>\n",
+       "      <td>30.626781</td>\n",
+       "      <td>4.534649</td>\n",
+       "      <td>...</td>\n",
+       "      <td>3.89</td>\n",
+       "      <td>39.820000</td>\n",
+       "      <td>41.180000</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>1000.0</td>\n",
+       "      <td>1006.0</td>\n",
+       "      <td>POLYGON ((8.65331 14.00809, 8.81814 14.00205, ...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>0.083841</td>\n",
+       "      <td>1.427635</td>\n",
+       "      <td>5</td>\n",
+       "      <td>2</td>\n",
+       "      <td>4</td>\n",
+       "      <td>2</td>\n",
+       "      <td>33.200001</td>\n",
+       "      <td>4.477</td>\n",
+       "      <td>32.387760</td>\n",
+       "      <td>0.394427</td>\n",
+       "      <td>...</td>\n",
+       "      <td>3.70</td>\n",
+       "      <td>36.500000</td>\n",
+       "      <td>40.520000</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>1000.0</td>\n",
+       "      <td>1002.0</td>\n",
+       "      <td>POLYGON ((8.45950 13.82035, 8.47341 13.83227, ...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>0.488888</td>\n",
+       "      <td>2.997133</td>\n",
+       "      <td>6</td>\n",
+       "      <td>7</td>\n",
+       "      <td>5</td>\n",
+       "      <td>7</td>\n",
+       "      <td>23.225000</td>\n",
+       "      <td>11.252</td>\n",
+       "      <td>50.731510</td>\n",
+       "      <td>0.405664</td>\n",
+       "      <td>...</td>\n",
+       "      <td>2.83</td>\n",
+       "      <td>40.009998</td>\n",
+       "      <td>38.000000</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>1.0</td>\n",
+       "      <td>0.0</td>\n",
+       "      <td>1000.0</td>\n",
+       "      <td>1007.0</td>\n",
+       "      <td>POLYGON ((8.68527 13.63952, 8.67758 13.72221, ...</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>5 rows × 21 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "       AREA  PERIMETER  COLUMBUS_  COLUMBUS_I  POLYID  NEIG      HOVAL  \\\n",
+       "0  0.309441   2.440629          2           5       1     5  80.467003   \n",
+       "1  0.259329   2.236939          3           1       2     1  44.567001   \n",
+       "2  0.192468   2.187547          4           6       3     6  26.350000   \n",
+       "3  0.083841   1.427635          5           2       4     2  33.200001   \n",
+       "4  0.488888   2.997133          6           7       5     7  23.225000   \n",
+       "\n",
+       "      INC      CRIME      OPEN  ...  DISCBD          X          Y  NSA  NSB  \\\n",
+       "0  19.531  15.725980  2.850747  ...    5.03  38.799999  44.070000  1.0  1.0   \n",
+       "1  21.232  18.801754  5.296720  ...    4.27  35.619999  42.380001  1.0  1.0   \n",
+       "2  15.956  30.626781  4.534649  ...    3.89  39.820000  41.180000  1.0  1.0   \n",
+       "3   4.477  32.387760  0.394427  ...    3.70  36.500000  40.520000  1.0  1.0   \n",
+       "4  11.252  50.731510  0.405664  ...    2.83  40.009998  38.000000  1.0  1.0   \n",
+       "\n",
+       "    EW   CP   THOUS  NEIGNO                                           geometry  \n",
+       "0  1.0  0.0  1000.0  1005.0  POLYGON ((8.62413 14.23698, 8.55970 14.74245, ...  \n",
+       "1  0.0  0.0  1000.0  1001.0  POLYGON ((8.25279 14.23694, 8.28276 14.22994, ...  \n",
+       "2  1.0  0.0  1000.0  1006.0  POLYGON ((8.65331 14.00809, 8.81814 14.00205, ...  \n",
+       "3  0.0  0.0  1000.0  1002.0  POLYGON ((8.45950 13.82035, 8.47341 13.83227, ...  \n",
+       "4  1.0  0.0  1000.0  1007.0  POLYGON ((8.68527 13.63952, 8.67758 13.72221, ...  \n",
+       "\n",
+       "[5 rows x 21 columns]"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "pth = libpysal.examples.get_path(\"columbus.shp\")\n",
+    "gdf = geopandas.read_file(pth)\n",
+    "y = gdf.HOVAL\n",
+    "gdf.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Original API (< 2.4.0)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T15:10:19.595711Z",
+     "start_time": "2022-11-05T15:10:19.589037Z"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "BoxPlot\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "( -inf, -0.70] |     0\n",
+       "(-0.70, 25.70] |    13\n",
+       "(25.70, 33.50] |    12\n",
+       "(33.50, 43.30] |    12\n",
+       "(43.30, 69.70] |     7\n",
+       "(69.70, 96.40] |     5"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "bp = mapclassify.BoxPlot(y)\n",
+    "bp"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Extended API (>= 2.40)\n",
+    "\n",
+    "Note the original API is still available so this extension keeps backwards compatibility."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T15:10:19.603460Z",
+     "start_time": "2022-11-05T15:10:19.598526Z"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "BoxPlot\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "( -inf, -0.70] |     0\n",
+       "(-0.70, 25.70] |    13\n",
+       "(25.70, 33.50] |    12\n",
+       "(33.50, 43.30] |    12\n",
+       "(43.30, 69.70] |     7\n",
+       "(69.70, 96.40] |     5"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "bp = mapclassify.classify(y, \"box_plot\")\n",
+    "bp"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T15:10:19.611996Z",
+     "start_time": "2022-11-05T15:10:19.608075Z"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "mapclassify.classifiers.BoxPlot"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "type(bp)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T15:10:19.619168Z",
+     "start_time": "2022-11-05T15:10:19.614412Z"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Quantiles\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[17.90, 23.08] |    10\n",
+       "(23.08, 30.48] |    10\n",
+       "(30.48, 39.10] |     9\n",
+       "(39.10, 45.83] |    10\n",
+       "(45.83, 96.40] |    10"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "q5 = mapclassify.classify(y, \"quantiles\", k=5)\n",
+    "q5"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Robustness of the `scheme` argument"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T15:10:19.627988Z",
+     "start_time": "2022-11-05T15:10:19.621853Z"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "BoxPlot\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "( -inf, -0.70] |     0\n",
+       "(-0.70, 25.70] |    13\n",
+       "(25.70, 33.50] |    12\n",
+       "(33.50, 43.30] |    12\n",
+       "(43.30, 69.70] |     7\n",
+       "(69.70, 96.40] |     5"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mapclassify.classify(y, \"boxPlot\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T15:10:19.634396Z",
+     "start_time": "2022-11-05T15:10:19.629847Z"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "BoxPlot\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "( -inf, -0.70] |     0\n",
+       "(-0.70, 25.70] |    13\n",
+       "(25.70, 33.50] |    12\n",
+       "(33.50, 43.30] |    12\n",
+       "(43.30, 69.70] |     7\n",
+       "(69.70, 96.40] |     5"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mapclassify.classify(y, \"Boxplot\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T15:10:19.641115Z",
+     "start_time": "2022-11-05T15:10:19.636017Z"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "BoxPlot\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "( -inf, -0.70] |     0\n",
+       "(-0.70, 25.70] |    13\n",
+       "(25.70, 33.50] |    12\n",
+       "(33.50, 43.30] |    12\n",
+       "(43.30, 69.70] |     7\n",
+       "(69.70, 96.40] |     5"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mapclassify.classify(y, \"Box_plot\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T15:10:19.691302Z",
+     "start_time": "2022-11-05T15:10:19.645124Z"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "StdMean\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "( -inf,  1.50] |     0\n",
+       "( 1.50, 19.97] |     5\n",
+       "(19.97, 56.90] |    37\n",
+       "(56.90, 75.37] |     3\n",
+       "(75.37, 96.40] |     4"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mapclassify.classify(y, 'Std_Mean')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-10-26T03:01:45.977181Z",
+     "start_time": "2022-10-26T03:01:45.931234Z"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "StdMean\n",
+       "\n",
+       "   Interval      Count\n",
+       "----------------------\n",
+       "[17.90, 19.97] |     5\n",
+       "(19.97, 38.44] |    24\n",
+       "(38.44, 56.90] |    13\n",
+       "(56.90, 75.37] |     3\n",
+       "(75.37, 93.83] |     3\n",
+       "(93.83, 96.40] |     1"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mapclassify.classify(y, 'Std_Mean', anchor=True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(38.43622446938775, 18.466069465206047, 17.9, 96.400002)"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "y.mean(), y.std(), y.min(), y.max()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.10"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
