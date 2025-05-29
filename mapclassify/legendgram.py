@@ -17,6 +17,7 @@ def _legendgram(
     frameon=False,
     tick_params=None,
     bbox_to_anchor=None,
+    **kwargs,
 ):
     """
     Add a histogram in a choropleth with colors aligned with map ...
@@ -78,10 +79,11 @@ def _legendgram(
         histax = f.add_axes(histpos)
     else:
         histax = ax
-    N, bins, patches = histax.hist(classifier.y, bins=bins, color="0.1")
-    pl = colormaps[cmap]
+    N, bins, patches = histax.hist(classifier.y, bins=bins, color="0.1", **kwargs)
+    if isinstance(cmap, str):
+        cmap = colormaps[cmap]
 
-    colors = [pl(i) for i in np.linspace(0, 1, k)]
+    colors = [cmap(i) for i in np.linspace(0, 1, k)]
 
     bucket_breaks = [0] + [np.searchsorted(bins, i) for i in breaks]
     for c in range(k):
