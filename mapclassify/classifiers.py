@@ -1201,6 +1201,7 @@ class MapClassifier:
         frameon=False,
         tick_params=None,
         bbox_to_anchor=None,
+        **kwargs,
     ):
         """Plot a legendgram, which is a histogram with classification breaks.
 
@@ -1211,7 +1212,7 @@ class MapClassifier:
         ----------
         ax : matplotlib.Axes, optional
             Matplotlib axes on which to draw the plot, by default None
-        cmap : str, optional
+        cmap : str | matplotlib.colors.Colormap, optional
             Matplotlib colormap for the histogram, by default "viridis"
         bins : int, optional
             Number of bins for histogram, by default 50
@@ -1246,6 +1247,8 @@ class MapClassifier:
             ``[left, bottom, width, height]``, or ``[left, bottom]``. If the
             ``legend_size`` is in relative units (%), the 2-tuple ``[left, bottom]``
             cannot be used. By default None
+        **kwargs
+            Additional keyword arguments passed to ``Axes.hist``.
 
         Returns
         -------
@@ -1288,6 +1291,7 @@ class MapClassifier:
             frameon=frameon,
             tick_params=tick_params,
             bbox_to_anchor=bbox_to_anchor,
+            **kwargs,
         )
 
 

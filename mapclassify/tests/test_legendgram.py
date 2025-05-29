@@ -122,6 +122,22 @@ class TestLegendgram:
         # once 3.11 lands, we should update expected and test against that
     )
     @image_comparison(
+        baseline_images=["legendgram_cmap"],
+        extensions=["png"],
+        remove_text=False,
+        tol=0.05,
+    )
+    def test_legendgram_cmap_class(self):
+        """Test legendgram with custom colormap"""
+        _, ax = plt.subplots(figsize=(8, 6))
+        _legendgram(self.classifier, ax=ax, cmap=matplotlib.cm.plasma)
+
+    @pytest.mark.skipif(
+        Version(matplotlib.__version__) >= Version("3.11.0.dev"),
+        reason="change of font rendering breaks image comparison",
+        # once 3.11 lands, we should update expected and test against that
+    )
+    @image_comparison(
         baseline_images=["legendgram_position"],
         extensions=["png"],
         remove_text=False,
@@ -154,3 +170,21 @@ class TestLegendgram:
             ax=ax, legend_size=("50%", "20%"), loc="upper left", clip=(2, 10)
         )
         ax.set_axis_off()
+
+    @pytest.mark.skipif(
+        Version(matplotlib.__version__) >= Version("3.11.0.dev"),
+        reason="change of font rendering breaks image comparison",
+        # once 3.11 lands, we should update expected and test against that
+    )
+    @image_comparison(
+        baseline_images=["legendgram_kwargs"],
+        extensions=["png"],
+        remove_text=False,
+        tol=0.05,
+    )
+    def test_legendgram_kwargs(self):
+        """Test default legendgram appearance"""
+        _, ax = plt.subplots(figsize=(8, 6))
+        _legendgram(
+            self.classifier, ax=ax, legend_size=("20%", "30%"), orientation="horizontal"
+        )
