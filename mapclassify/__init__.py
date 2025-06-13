@@ -1,7 +1,7 @@
 import contextlib
 from importlib.metadata import PackageNotFoundError, version
 
-from . import util
+from . import legendgram, util
 from ._classify_API import classify
 from .classifiers import (
     CLASSIFIERS,

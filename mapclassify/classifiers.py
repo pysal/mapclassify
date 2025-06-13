@@ -10,6 +10,8 @@ import numpy as np
 import scipy.stats as stats
 from sklearn.cluster import KMeans
 
+from .legendgram import _legendgram
+
 __author__ = "Sergio J. Rey"
 
 __all__ = [
@@ -1182,6 +1184,115 @@ class MapClassifier:
             ax.spines["right"].set_visible(False)
             ax.spines["top"].set_visible(False)
         return ax
+
+    def plot_legendgram(
+        self,
+        *,
+        ax=None,
+        cmap="viridis",
+        bins=50,
+        inset=True,
+        clip=None,
+        vlines=False,
+        vlinecolor="black",
+        vlinewidth=1,
+        loc="lower left",
+        legend_size=("27%", "20%"),
+        frameon=False,
+        tick_params=None,
+        bbox_to_anchor=None,
+        **kwargs,
+    ):
+        """Plot a legendgram, which is a histogram with classification breaks.
+
+        Legendgrams are map legends that visualize the distribution of observations
+        by color in a given map.
+
+        Parameters
+        ----------
+        ax : matplotlib.Axes, optional
+            Matplotlib axes on which to draw the plot, by default None
+        cmap : str | matplotlib.colors.Colormap, optional
+            Matplotlib colormap for the histogram, by default "viridis"
+        bins : int, optional
+            Number of bins for histogram, by default 50
+        inset : bool, optional
+            Whether to plot the legendgram as an inset axis (True) or directly on
+            provided ax (False), by default True
+        clip : tuple, optional
+            Min and max values to clip the histogram x axis, by default None
+        vlines : bool, optional
+            Whether to draw vertical lines for class breaks, by default False
+        vlinecolor : str, optional
+            Color for vertical lines showing breaks, by default "black"
+        vlinewidth : int, optional
+            Width of vertical lines showing breaks, by default 1
+        loc : str, optional
+            Location for the inset axes if inset=True, by default "lower left"
+        legend_size : tuple, optional
+            tuple of floats or strings describing the (width, height) of the legend. If
+            a float is provided, it is the size in inches, e.g. ``(1.3, 1)``. If a
+            string is provided, it is the size in relative units, e.g.
+            ``('40%', '20%')``. By default, i.e. if ``bbox_to_anchor`` is not specified,
+            those are relative to the `ax`. Otherwise, they are to be understood
+            relative to the bounding box provided via ``bbox_to_anchor``. By default
+            ("27%", "20%")
+        frameon : bool, optional
+            Whether to draw a frame around the inset legend, by default False
+        tick_params : dict, optional
+            Dictionary of parameters to customize tick appearance, by default None
+        bbox_to_anchor : tuple or ``matplotlib.trasforms.BboxBase``
+            Bbox that the inset axes will be anchored to. If None, a tuple of
+            ``(0, 0, 1, 1)`` is used. If a tuple, can be either
+            ``[left, bottom, width, height]``, or ``[left, bottom]``. If the
+            ``legend_size`` is in relative units (%), the 2-tuple ``[left, bottom]``
+            cannot be used. By default None
+        **kwargs
+            Additional keyword arguments passed to ``Axes.hist``.
+
+        Returns
+        -------
+        matplotlib.Axes
+            The axes object containing the legendgram plot
+
+        Examples
+        --------
+        >>> import mapclassify
+        >>> import geopandas as gpd
+        >>> from libpysal import examples
+
+        Load example data:
+
+        >>> data = gpd.read_file(examples.get_path('south.shp')).to_crs(epsg=5070)
+
+        Plot the map with the legendgram included.
+
+        >>> ax = data.plot('DV80', k=10, scheme='Quantiles')
+        >>> classifier = mapclassify.Quantiles(data['DV80'].values, k=10)
+        >>> lg_ax = classifier.plot_legendgram(
+        ...     ax=ax,
+        ...     legend_size=("50%", "20%"), # legend size in percentage of the axis
+        ...     loc = 'upper left',  # matplotlib-style legend locations
+        ...     clip = (2, 10),  # clip the displayed range of the histogram
+        ... )
+        """
+        return _legendgram(
+            self,
+            ax=ax,
+            cmap=cmap,
+            bins=bins,
+            inset=inset,
+            clip=clip,
+            vlines=vlines,
+            vlinecolor=vlinecolor,
+            vlinewidth=vlinewidth,
+            loc=loc,
+            legend_size=legend_size,
+            frameon=frameon,
+            tick_params=tick_params,
+            bbox_to_anchor=bbox_to_anchor,
+            **kwargs,
+        )
 
 
 class HeadTailBreaks(MapClassifier):
