@@ -22,27 +22,27 @@ jobs:
         os: ["ubuntu-latest"]
         environment-file:
           [
-            ci/311-oldest.yaml,
-            ci/311-latest.yaml,
-            ci/311-numba-latest.yaml,
-            ci/312-latest.yaml,
-            ci/312-numba-latest.yaml,
-            ci/313-latest.yaml,
-            ci/313-numba-latest.yaml,
-            ci/313-dev.yaml,
+            311-oldest,
+            311-latest,
+            311-numba-latest,
+            312-latest,
+            312-numba-latest,
+            313-latest,
+            313-numba-latest,
+            313-dev,
           ]
         include:
-          - environment-file: ci/313-latest.yaml
+          - environment-file: 313-latest
             os: macos-13 # Intel
-          - environment-file: ci/313-numba-latest.yaml
+          - environment-file: 313-numba-latest
             os: macos-13 # Intel
-          - environment-file: ci/313-latest.yaml
+          - environment-file: 313-latest
             os: macos-14 # Apple Silicon
-          - environment-file: ci/313-numba-latest.yaml
+          - environment-file: 313-numba-latest
             os: macos-14 # Apple Silicon
-          - environment-file: ci/313-latest.yaml
+          - environment-file: 313-latest
             os: windows-latest
-          - environment-file: ci/313-numba-latest.yaml
+          - environment-file: 313-numba-latest
             os: windows-latest
       fail-fast: false
 
@@ -55,7 +55,7 @@ jobs:
       - name: setup micromamba
         uses: mamba-org/setup-micromamba@v2
         with:
-          environment-file: ${{ matrix.environment-file }}
+          environment-file: ci/${{ matrix.environment-file }}.yaml
           micromamba-version: 'latest'
 
       - name: environment info
@@ -81,7 +81,7 @@ jobs:
           mapclassify \
           -r a \
           -v \
-          -n auto \
+          -n logical \
           --color yes \
           --cov-append \
           --cov mapclassify \
@@ -92,19 +92,34 @@ jobs:
         if: contains(matrix.environment-file, '312-numba-latest') && contains(matrix.os, 'ubuntu')
         run: |
           pytest \
+          mapclassify \
+          --doctest-only \
           -v \
           -r a \
-          -n auto \
+          -n logical \
           --color yes \
           --cov-append \
           --cov mapclassify \
-          --cov-report xml \
-          --doctest-only \
-          --mpl mapclassify
+          --cov-report xml . \
+          --cov-report term-missing
+
+      - name: zip resultant image comparisons - Ubuntu & macOS
+        run: zip result_images.zip result_images -r
+        if: matrix.os != 'windows-latest' && (success() || failure())
+
+      - name: zip resultant image comparisons - Windows
+        shell: powershell
+        run: Compress-Archive -Path result_images -Destination result_images.zip
+        if: matrix.os == 'windows-latest' && (success() || failure())
+
+      - name: archive & upload resultant image comparisons
+        uses: actions/upload-artifact@v4
+        with:
+          name: result_images-${{ matrix.os }}-${{ matrix.environment-file }}
+          path: result_images.zip
+        if: success() || failure()
 
       - name: codecov (${{ matrix.os }}, ${{ matrix.environment-file }})
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
-          name: mapclassify-codecov
