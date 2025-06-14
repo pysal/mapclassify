@@ -2,6 +2,7 @@ import types
 
 import numpy
 import pytest
+from matplotlib.testing.decorators import image_comparison
 
 from ..classifiers import *
 from ..classifiers import bin, bin1d, binC, load_example
@@ -743,17 +744,24 @@ class TestPlots:
         n = 20
         self.data = numpy.array([numpy.arange(n) + i * n for i in range(1, 4)]).T
 
-    @pytest.mark.mpl_image_compare
+    ################################################################################
+    #
+    # * baseline images are initially generated in top directory `result_images/`
+    # * they must be moved to the appropriate location withint `mapclassify/tests/`
+    #
+    ################################################################################
+
+    @image_comparison(["test_histogram_plot"], **pytest.image_comp_kws)
     def test_histogram_plot(self):
         ax = Quantiles(self.data).plot_histogram()
         return ax.get_figure()
 
-    @pytest.mark.mpl_image_compare
+    @image_comparison(["test_histogram_plot_despine"], **pytest.image_comp_kws)
     def test_histogram_plot_despine(self):
         ax = Quantiles(self.data).plot_histogram(despine=False)
         return ax.get_figure()
 
-    @pytest.mark.mpl_image_compare
+    @image_comparison(["test_histogram_plot_linewidth"], **pytest.image_comp_kws)
     def test_histogram_plot_linewidth(self):
         ax = Quantiles(self.data).plot_histogram(
             linewidth=3, linecolor="red", color="yellow"

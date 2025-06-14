@@ -10,8 +10,23 @@ from packaging.version import Version
 from mapclassify import EqualInterval, Quantiles
 from mapclassify.legendgram import _legendgram
 
+MPL_GE_311_DEV = Version(matplotlib.__version__) >= Version("3.11.0.dev")
+
+# once 3.11 lands, we should update expected and test against that
+skip_mpl_ge_311_dev = pytest.mark.skipif(
+    MPL_GE_311_DEV,
+    reason="change of font rendering breaks image comparison",
+)
+
+IMAGE_COMP_KWS = {"tol": 0.05} | pytest.image_comp_kws
+
 
 class TestLegendgram:
+    #
+    # * baseline images are initially generated in top directory `result_images/`
+    # * they must be moved to the appropriate location withint `mapclassify/tests/`
+    #
+
     def setup_method(self):
         np.random.seed(42)
         self.data = np.random.normal(0, 1, 100)
@@ -68,81 +83,43 @@ class TestLegendgram:
 
         assert is_frame_on
 
-    @pytest.mark.skipif(
-        Version(matplotlib.__version__) >= Version("3.11.0.dev"),
-        reason="change of font rendering breaks image comparison",
-        # once 3.11 lands, we should update expected and test against that
-    )
-    @image_comparison(
-        baseline_images=["legendgram_default"],
-        extensions=["png"],
-        remove_text=False,
-        tol=0.05,
-    )
+    ################################################################################
+    #
+    # * baseline images are initially generated in top directory `result_images/`
+    # * they must be moved to the appropriate location withint `mapclassify/tests/`
+    #
+    ################################################################################
+
+    @skip_mpl_ge_311_dev
+    @image_comparison(["legendgram_default"], **IMAGE_COMP_KWS)
     def test_legendgram_default(self):
         """Test default legendgram appearance"""
         _, ax = plt.subplots(figsize=(8, 6))
         _legendgram(self.classifier, ax=ax)
 
-    @pytest.mark.skipif(
-        Version(matplotlib.__version__) >= Version("3.11.0.dev"),
-        reason="change of font rendering breaks image comparison",
-        # once 3.11 lands, we should update expected and test against that
-    )
-    @image_comparison(
-        baseline_images=["legendgram_vlines"],
-        extensions=["png"],
-        remove_text=False,
-        tol=0.05,
-    )
+    @skip_mpl_ge_311_dev
+    @image_comparison(["legendgram_vlines"], **IMAGE_COMP_KWS)
     def test_legendgram_vlines(self):
         """Test legendgram with vertical lines"""
         _, ax = plt.subplots(figsize=(8, 6))
         _legendgram(self.classifier, ax=ax, vlines=True, vlinecolor="red", vlinewidth=2)
 
-    @pytest.mark.skipif(
-        Version(matplotlib.__version__) >= Version("3.11.0.dev"),
-        reason="change of font rendering breaks image comparison",
-        # once 3.11 lands, we should update expected and test against that
-    )
-    @image_comparison(
-        baseline_images=["legendgram_cmap"],
-        extensions=["png"],
-        remove_text=False,
-        tol=0.05,
-    )
+    @skip_mpl_ge_311_dev
+    @image_comparison(["legendgram_cmap"], **IMAGE_COMP_KWS)
     def test_legendgram_cmap(self):
         """Test legendgram with custom colormap"""
         _, ax = plt.subplots(figsize=(8, 6))
         _legendgram(self.classifier, ax=ax, cmap="plasma")
 
-    @pytest.mark.skipif(
-        Version(matplotlib.__version__) >= Version("3.11.0.dev"),
-        reason="change of font rendering breaks image comparison",
-        # once 3.11 lands, we should update expected and test against that
-    )
-    @image_comparison(
-        baseline_images=["legendgram_cmap"],
-        extensions=["png"],
-        remove_text=False,
-        tol=0.05,
-    )
+    @skip_mpl_ge_311_dev
+    @image_comparison(["legendgram_cmap"], **IMAGE_COMP_KWS)
     def test_legendgram_cmap_class(self):
         """Test legendgram with custom colormap"""
         _, ax = plt.subplots(figsize=(8, 6))
         _legendgram(self.classifier, ax=ax, cmap=matplotlib.cm.plasma)
 
-    @pytest.mark.skipif(
-        Version(matplotlib.__version__) >= Version("3.11.0.dev"),
-        reason="change of font rendering breaks image comparison",
-        # once 3.11 lands, we should update expected and test against that
-    )
-    @image_comparison(
-        baseline_images=["legendgram_position"],
-        extensions=["png"],
-        remove_text=False,
-        tol=0.05,
-    )
+    @skip_mpl_ge_311_dev
+    @image_comparison(["legendgram_position"], **IMAGE_COMP_KWS)
     def test_legendgram_position(self):
         """Test legendgram with custom position"""
         _, ax = plt.subplots(figsize=(8, 6))
@@ -150,17 +127,8 @@ class TestLegendgram:
             self.classifier, ax=ax, loc="upper right", legend_size=("40%", "30%")
         )
 
-    @pytest.mark.skipif(
-        Version(matplotlib.__version__) >= Version("3.11.0.dev"),
-        reason="change of font rendering breaks image comparison",
-        # once 3.11 lands, we should update expected and test against that
-    )
-    @image_comparison(
-        baseline_images=["legendgram_map"],
-        extensions=["png"],
-        remove_text=False,
-        tol=0.05,
-    )
+    @skip_mpl_ge_311_dev
+    @image_comparison(["legendgram_map"], **IMAGE_COMP_KWS)
     def test_legendgram_map(self):
         """Test with geopandas map"""
         data = gpd.read_file(examples.get_path("south.shp")).to_crs(epsg=5070)
@@ -171,17 +139,8 @@ class TestLegendgram:
         )
         ax.set_axis_off()
 
-    @pytest.mark.skipif(
-        Version(matplotlib.__version__) >= Version("3.11.0.dev"),
-        reason="change of font rendering breaks image comparison",
-        # once 3.11 lands, we should update expected and test against that
-    )
-    @image_comparison(
-        baseline_images=["legendgram_kwargs"],
-        extensions=["png"],
-        remove_text=False,
-        tol=0.05,
-    )
+    @skip_mpl_ge_311_dev
+    @image_comparison(["legendgram_kwargs"], **IMAGE_COMP_KWS)
     def test_legendgram_kwargs(self):
         """Test default legendgram appearance"""
         _, ax = plt.subplots(figsize=(8, 6))

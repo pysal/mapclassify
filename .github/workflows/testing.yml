@@ -81,7 +81,7 @@ jobs:
           mapclassify \
           -r a \
           -v \
-          -n auto \
+          -n logical \
           --color yes \
           --cov-append \
           --cov mapclassify \
@@ -92,15 +92,25 @@ jobs:
         if: contains(matrix.environment-file, '312-numba-latest') && contains(matrix.os, 'ubuntu')
         run: |
           pytest \
+          mapclassify \
+          --doctest-only \
           -v \
           -r a \
-          -n auto \
+          -n logical \
           --color yes \
           --cov-append \
           --cov mapclassify \
           --cov-report xml \
-          --doctest-only \
-          --mpl mapclassify
+          --cov-report term-missing
+
+      - name: zip artifacts - Ubuntu & macOS
+        run: zip result_images.zip result_images -r
+        if: matrix.os != 'windows-latest' && (success() || failure())
+
+      - name: zip artifacts - Windows
+        shell: powershell
+        run: Compress-Archive -Path result_images -Destination result_images.zip
+        if: matrix.os == 'windows-latest' && (success() || failure())
 
       - name: codecov (${{ matrix.os }}, ${{ matrix.environment-file }})
         uses: codecov/codecov-action@v5
