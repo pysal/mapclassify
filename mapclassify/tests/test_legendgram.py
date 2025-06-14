@@ -70,7 +70,7 @@ class TestLegendgram:
     ################################################################################
     #
     # * baseline images are initially generated in top directory `result_images/`
-    # * they must be moved to the appropriate location withint `mapclassify/tests/`
+    # * they must be moved to the appropriate location within `mapclassify/tests/`
     #
     ################################################################################
 
