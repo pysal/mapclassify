@@ -103,14 +103,21 @@ jobs:
           --cov-report xml \
           --cov-report term-missing
 
-      - name: zip artifacts - Ubuntu & macOS
+      - name: zip resultant image comparisons - Ubuntu & macOS
         run: zip result_images.zip result_images -r
         if: matrix.os != 'windows-latest' && (success() || failure())
 
-      - name: zip artifacts - Windows
+      - name: zip resultant image comparisons - Windows
         shell: powershell
         run: Compress-Archive -Path result_images -Destination result_images.zip
         if: matrix.os == 'windows-latest' && (success() || failure())
+
+      - name: archive & upload resultant image comparisons
+        uses: actions/upload-artifact@v4
+        with:
+          name: result_images-${{ matrix.os }}-${{ matrix.environment-file }}
+          path: result_images.zip
+        if: success() || failure()
 
       - name: codecov (${{ matrix.os }}, ${{ matrix.environment-file }})
         uses: codecov/codecov-action@v5
