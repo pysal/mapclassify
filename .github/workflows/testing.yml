@@ -100,7 +100,7 @@ jobs:
           --color yes \
           --cov-append \
           --cov mapclassify \
-          --cov-report xml \
+          --cov-report xml . \
           --cov-report term-missing
 
       - name: zip resultant image comparisons - Ubuntu & macOS
@@ -123,5 +123,3 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
-          name: mapclassify-codecov
