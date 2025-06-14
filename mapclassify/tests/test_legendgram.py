@@ -22,11 +22,6 @@ IMAGE_COMP_KWS = {"tol": 0.05} | pytest.image_comp_kws
 
 
 class TestLegendgram:
-    #
-    # * baseline images are initially generated in top directory `result_images/`
-    # * they must be moved to the appropriate location withint `mapclassify/tests/`
-    #
-
     def setup_method(self):
         np.random.seed(42)
         self.data = np.random.normal(0, 1, 100)
@@ -90,35 +85,35 @@ class TestLegendgram:
     #
     ################################################################################
 
-    @skip_mpl_ge_311_dev
+    # @skip_mpl_ge_311_dev
     @image_comparison(["legendgram_default"], **IMAGE_COMP_KWS)
     def test_legendgram_default(self):
         """Test default legendgram appearance"""
         _, ax = plt.subplots(figsize=(8, 6))
         _legendgram(self.classifier, ax=ax)
 
-    @skip_mpl_ge_311_dev
+    # @skip_mpl_ge_311_dev
     @image_comparison(["legendgram_vlines"], **IMAGE_COMP_KWS)
     def test_legendgram_vlines(self):
         """Test legendgram with vertical lines"""
         _, ax = plt.subplots(figsize=(8, 6))
         _legendgram(self.classifier, ax=ax, vlines=True, vlinecolor="red", vlinewidth=2)
 
-    @skip_mpl_ge_311_dev
+    # @skip_mpl_ge_311_dev
     @image_comparison(["legendgram_cmap"], **IMAGE_COMP_KWS)
     def test_legendgram_cmap(self):
         """Test legendgram with custom colormap"""
         _, ax = plt.subplots(figsize=(8, 6))
         _legendgram(self.classifier, ax=ax, cmap="plasma")
 
-    @skip_mpl_ge_311_dev
+    # @skip_mpl_ge_311_dev
     @image_comparison(["legendgram_cmap"], **IMAGE_COMP_KWS)
     def test_legendgram_cmap_class(self):
         """Test legendgram with custom colormap"""
         _, ax = plt.subplots(figsize=(8, 6))
         _legendgram(self.classifier, ax=ax, cmap=matplotlib.cm.plasma)
 
-    @skip_mpl_ge_311_dev
+    # @skip_mpl_ge_311_dev
     @image_comparison(["legendgram_position"], **IMAGE_COMP_KWS)
     def test_legendgram_position(self):
         """Test legendgram with custom position"""
@@ -127,7 +122,7 @@ class TestLegendgram:
             self.classifier, ax=ax, loc="upper right", legend_size=("40%", "30%")
         )
 
-    @skip_mpl_ge_311_dev
+    # @skip_mpl_ge_311_dev
     @image_comparison(["legendgram_map"], **IMAGE_COMP_KWS)
     def test_legendgram_map(self):
         """Test with geopandas map"""
@@ -139,7 +134,7 @@ class TestLegendgram:
         )
         ax.set_axis_off()
 
-    @skip_mpl_ge_311_dev
+    # @skip_mpl_ge_311_dev
     @image_comparison(["legendgram_kwargs"], **IMAGE_COMP_KWS)
     def test_legendgram_kwargs(self):
         """Test default legendgram appearance"""
