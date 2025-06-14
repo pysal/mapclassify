@@ -22,27 +22,27 @@ jobs:
         os: ["ubuntu-latest"]
         environment-file:
           [
-            ci/311-oldest.yaml,
-            ci/311-latest.yaml,
-            ci/311-numba-latest.yaml,
-            ci/312-latest.yaml,
-            ci/312-numba-latest.yaml,
-            ci/313-latest.yaml,
-            ci/313-numba-latest.yaml,
-            ci/313-dev.yaml,
+            311-oldest,
+            311-latest,
+            311-numba-latest,
+            312-latest,
+            312-numba-latest,
+            313-latest,
+            313-numba-latest,
+            313-dev,
           ]
         include:
-          - environment-file: ci/313-latest.yaml
+          - environment-file: 313-latest
             os: macos-13 # Intel
-          - environment-file: ci/313-numba-latest.yaml
+          - environment-file: 313-numba-latest
             os: macos-13 # Intel
-          - environment-file: ci/313-latest.yaml
+          - environment-file: 313-latest
             os: macos-14 # Apple Silicon
-          - environment-file: ci/313-numba-latest.yaml
+          - environment-file: 313-numba-latest
             os: macos-14 # Apple Silicon
-          - environment-file: ci/313-latest.yaml
+          - environment-file: 313-latest
             os: windows-latest
-          - environment-file: ci/313-numba-latest.yaml
+          - environment-file: 313-numba-latest
             os: windows-latest
       fail-fast: false
 
@@ -55,7 +55,7 @@ jobs:
       - name: setup micromamba
         uses: mamba-org/setup-micromamba@v2
         with:
-          environment-file: ${{ matrix.environment-file }}
+          environment-file: ci/${{ matrix.environment-file }}.yaml
           micromamba-version: 'latest'
 
       - name: environment info
