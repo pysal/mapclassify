@@ -96,7 +96,9 @@ include = ["mapclassify", "mapclassify.*"]
 
 [tool.ruff]
 line-length = 88
-extend-include = ["*.ipynb"]
+extend-include = [
+    "*.ipynb", "docs/conf.py"
+]
 exclude = ["mapclassify/tests/*", "docs/*"]
 
 [tool.ruff.lint]
@@ -113,9 +115,6 @@ ignore = [
     "N806",
     "N999",
     "UP007"
-]
-extend-include = [
-    "docs/conf.py"
 ]
 
 [tool.ruff.lint.per-file-ignores]
