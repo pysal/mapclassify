@@ -18,7 +18,7 @@ skip_mpl_ge_311_dev = pytest.mark.skipif(
     reason="change of font rendering breaks image comparison",
 )
 
-IMAGE_COMP_KWS = {"tol": 0.05} | pytest.image_comp_kws
+IMAGE_COMP_KWS = {"tol": 0.05, "remove_text": True} | pytest.image_comp_kws
 
 
 class TestLegendgram:

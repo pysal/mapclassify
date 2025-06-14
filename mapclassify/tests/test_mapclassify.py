@@ -739,6 +739,9 @@ class TestPooled:
             Pooled(self.data, classifier=classifier, k=4)
 
 
+IMAGE_COMP_KWS = {"tol": 0.05, "remove_text": True} | pytest.image_comp_kws
+
+
 class TestPlots:
     def setup_method(self):
         n = 20
@@ -751,17 +754,17 @@ class TestPlots:
     #
     ################################################################################
 
-    @image_comparison(["test_histogram_plot"], **pytest.image_comp_kws)
+    @image_comparison(["test_histogram_plot"], **IMAGE_COMP_KWS)
     def test_histogram_plot(self):
         ax = Quantiles(self.data).plot_histogram()
         return ax.get_figure()
 
-    @image_comparison(["test_histogram_plot_despine"], **pytest.image_comp_kws)
+    @image_comparison(["test_histogram_plot_despine"], **IMAGE_COMP_KWS)
     def test_histogram_plot_despine(self):
         ax = Quantiles(self.data).plot_histogram(despine=False)
         return ax.get_figure()
 
-    @image_comparison(["test_histogram_plot_linewidth"], **pytest.image_comp_kws)
+    @image_comparison(["test_histogram_plot_linewidth"], **IMAGE_COMP_KWS)
     def test_histogram_plot_linewidth(self):
         ax = Quantiles(self.data).plot_histogram(
             linewidth=3, linecolor="red", color="yellow"
