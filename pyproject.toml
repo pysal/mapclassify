@@ -96,27 +96,36 @@ include = ["mapclassify", "mapclassify.*"]
 
 [tool.ruff]
 line-length = 88
-lint.select = ["E", "F", "W", "I", "UP", "N", "B", "A", "C4", "SIM", "ARG"]
-lint.ignore = [
+extend-include = [
+    "*.ipynb", "docs/conf.py"
+]
+exclude = ["mapclassify/tests/*", "docs/*"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "N", "B", "A", "C4", "SIM", "ARG"]
+ignore = [
     "B006",
     "B008",
     "B009",
     "B010",
     "C408",
     "E731",
-    "F401",
-    "F403",
     "F405",
     "N803",
     "N806",
     "N999",
     "UP007"
 ]
-extend-include = [
-    "docs/conf.py"
-]
 
 [tool.ruff.lint.per-file-ignores]
+ "*__init__.py" = [
+     "F401",  # imported but unused
+     "F403",  # star import; unable to detect undefined names
+ ]
+ "*.ipynb" = [
+    "C416",  # Unnecessary dict comprehension (rewrite using `dict()`)
+    "F401",  # imported but unused
+]
  "*tests/test_*.py" = [
     "A004",  # Import is shadowing a Python builtin
     "N802",  # Function name should be lowercase
