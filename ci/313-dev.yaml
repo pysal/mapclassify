@@ -20,6 +20,5 @@ dependencies:
       - matplotlib
       - shapely
       - fiona
-      - pytest-mpl
       - git+https://github.com/pysal/libpysal.git@main
       - git+https://github.com/geopandas/geopandas.git@main
