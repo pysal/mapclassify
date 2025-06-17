@@ -86,7 +86,6 @@ tests = [
     "pytest-cov",
     "pytest-xdist",
     "pytest-doctestplus",
-    "pytest-mpl"
 ]
 all = ["mapclassify[speedups,dev,docs,notebooks,tests]"]
 
