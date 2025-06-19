@@ -1189,7 +1189,7 @@ class MapClassifier:
         self,
         *,
         ax=None,
-        cmap="viridis",
+        cmap=None,
         bins=50,
         inset=True,
         clip=None,
@@ -1213,7 +1213,10 @@ class MapClassifier:
         ax : matplotlib.Axes, optional
             Matplotlib axes on which to draw the plot, by default None
         cmap : str | matplotlib.colors.Colormap, optional
-            Matplotlib colormap for the histogram, by default "viridis"
+            Matplotlib colormap for the histogram, by default ``None``.
+            If ``None``, defaults to the most recent colormap associated with
+            the input ``ax``. If there is no colormap associated with ``ax`` then
+            ``'viridis'`` is used.
         bins : int, optional
             Number of bins for histogram, by default 50
         inset : bool, optional
@@ -1272,8 +1275,8 @@ class MapClassifier:
         >>> lg_ax = classifier.plot_legendgram(
         ...     ax=ax,
         ...     legend_size=("50%", "20%"), # legend size in percentage of the axis
-        ...     loc = 'upper left',  # matplotlib-style legend locations
-        ...     clip = (2, 10),  # clip the displayed range of the histogram
+        ...     loc='upper left',  # matplotlib-style legend locations
+        ...     clip=(2, 10),  # clip the displayed range of the histogram
         ... )
         """
         return _legendgram(

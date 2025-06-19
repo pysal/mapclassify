@@ -1,3 +1,5 @@
+import warnings
+
 import numpy as np
 
 
@@ -5,7 +7,7 @@ def _legendgram(
     classifier,
     *,
     ax=None,
-    cmap="viridis",
+    cmap=None,
     bins=50,
     inset=True,
     clip=None,
@@ -19,52 +21,57 @@ def _legendgram(
     bbox_to_anchor=None,
     **kwargs,
 ):
-    """
-    Add a histogram in a choropleth with colors aligned with map ...
-
-    Arguments
-    ---------
-    ax : Axes
-    ...
-    loc : string or int
-        valid legend location like that used in matplotlib.pyplot.legend. Valid
-        locations are 'upper left', 'upper center', 'upper right', 'center left',
-        'center', 'center right', 'lower left', 'lower center', 'lower right'.
-    legend_size : tuple
-        tuple of floats or strings describing the (width, height) of the
-        legend. If a float is provided, it is
-        the size in inches, e.g. ``(1.3, 1)``. If a string is provided, it is
-        the size in relative units, e.g. ``('40%', '20%')``. By default,
-        i.e. if ``bbox_to_anchor`` is not specified, those are relative to
-        the `ax`. Otherwise, they are to be understood relative to the
-        bounding box provided via ``bbox_to_anchor``.
-    frameon : bool (default: False)
-        whether to add a frame to the legendgram
-    tick_params : keyword dictionary
-        options to control how the histogram axis gets ticked/labelled.
-    bbox_to_anchor : tuple or ``matplotlib.trasforms.BboxBase``
-        Bbox that the inset axes will be anchored to. If None, a tuple of
-        ``(0, 0, 1, 1)`` is used. If a tuple, can be either
-        ``[left, bottom, width, height]``, or ``[left, bottom]``. If the ``legend_size``
-        is in relative units (%), the 2-tuple ``[left, bottom]`` cannot be used.
-
-    Returns
-    -------
-    axis containing the legendgram.
-    """
+    """See ``classifiers.MapClassifier.plot_legendgram()`` docstring."""
 
     try:
         import matplotlib.pyplot as plt
         from matplotlib import colormaps
+        from matplotlib.collections import Collection
         from mpl_toolkits.axes_grid1.inset_locator import inset_axes
     except ImportError as e:
         raise ImportError from e("you must have matplotlib ")
+
+    def _get_cmap(_ax):
+        """Detect the most recent matplotlib colormap used, if previously rendered."""
+
+        _child_cmaps = [
+            (cc.cmap, cc.cmap.name)
+            for cc in _ax.properties()["children"]
+            if isinstance(cc, Collection)
+        ]
+        has_child_cmaps = len(_child_cmaps)
+        n_unique_cmaps = len({cc[1] for cc in _child_cmaps})
+        if has_child_cmaps:
+            _cmap, cmap_name = _child_cmaps[-1]
+            if n_unique_cmaps > 1:
+                warnings.warn(
+                    (
+                        f"There are {n_unique_cmaps} unique colormaps associated with "
+                        f"the axes. Defaulting to most recent colormap: '{cmap_name}'"
+                    ),
+                    UserWarning,
+                    stacklevel=2,
+                )
+        else:
+            warnings.warn(
+                "There is no data associated with the `ax`.", UserWarning, stacklevel=2
+            )
+            _cmap = colormaps.get_cmap("viridis")
+        return _cmap
+
     if ax is None:
         f, ax = plt.subplots()
     else:
         f = ax.get_figure()
+
+    if cmap is None:
+        cmap = _get_cmap(ax)
+    if isinstance(cmap, str):
+        cmap = colormaps[cmap]
+
     k = len(classifier.bins)
     breaks = classifier.bins
+
     if inset:
         if not bbox_to_anchor:
             bbox_to_anchor = (0, 0, 1, 1)
@@ -80,8 +87,6 @@ def _legendgram(
     else:
         histax = ax
     N, bins, patches = histax.hist(classifier.y, bins=bins, color="0.1", **kwargs)
-    if isinstance(cmap, str):
-        cmap = colormaps[cmap]
 
     colors = [cmap(i) for i in np.linspace(0, 1, k)]
 
