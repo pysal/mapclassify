@@ -27,6 +27,7 @@ from .classifiers import (
 )
 from .greedy import greedy
 from .pooling import Pooled
+from .value_by_alpha import vba_choropleth
 
 with contextlib.suppress(PackageNotFoundError):
     __version__ = version("mapclassify")

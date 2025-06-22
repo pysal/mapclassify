@@ -98,9 +98,7 @@ def classify(
         to ``-inf`` if  ``y.min()`` > first upper bound (which will override
         the default), otherwise minimum is set to ``y.min()``.
     anchor : bool (default False)
-            Anchor upper bound of one class to the sample mean.
-
-
+        Anchor upper bound of one class to the sample mean.
 
     Returns
     -------
