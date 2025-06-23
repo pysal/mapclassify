@@ -15,8 +15,8 @@ import numpy as np
 from matplotlib import colormaps as cm
 from matplotlib import colors, patches
 
-from .classifiers import _format_intervals
 from ._classify_API import classify
+from .classifiers import _format_intervals
 
 __author__ = "Stefanie Lumnitz <stefanie.lumitz@gmail.com>"
 
@@ -43,8 +43,11 @@ def vba_choropleth(
     legend_kwargs=None,
     min_alpha=0.2,
 ):
-    """
-    Value by Alpha Choropleth
+    """Generarte Value by Alpha Choropleth plots.
+
+    A Value-by-Alpha Choropleth is a bivariate choropleth that uses the values
+    of the second input variable ``y`` as a transparency mask, determining how much
+    of the choropleth displaying the values of a first variable ``x`` is shown.
 
     Parameters
     ----------
@@ -209,10 +212,6 @@ def vba_choropleth(
         )
         y = alpha_bins.yb
 
-
-    #return alpha_bins ###########################################################################
-
-
     rgba, vba_cmap = _value_by_alpha_cmap(
         x,
         y,
@@ -367,20 +366,8 @@ def _vba_legend(
             )
             ax.add_patch(rect)
 
-    #values_alpha, x_in_thousand = format_legend(alpha_bins.bins)
-    #values_rgb, y_in_thousand = format_legend(rgb_bins.bins)
-
-    
-    #values_alpha, _, x_in_thousand = _format_intervals(alpha_bins, fmt="{1.1f}")
-    #values_rgb, _, y_in_thousand = _format_intervals(rgb_bins, fmt="{1.1f}")
-
-    values_alpha, _, x_in_thousand = _format_intervals(alpha_bins, fmt="{.1f}")
-    values_rgb, _, y_in_thousand = _format_intervals(rgb_bins, fmt="{.1f}")
-
-    values_alpha = values_alpha[1:]
-    values_rgb = values_rgb[1:]
-
-
+    values_alpha, _, x_in_thousand = _format_intervals(alpha_bins, fmt="{:.1f}")
+    values_rgb, _, y_in_thousand = _format_intervals(rgb_bins, fmt="{:.1f}")
 
     ax.plot([], [])
     ax.set_xlim([0, irow + 1])
@@ -388,11 +375,11 @@ def _vba_legend(
     ax.set_xticks(np.arange(irow + 1) + 0.5)
     ax.set_yticks(np.arange(icol + 1) + 0.5)
     ax.set_xticklabels(
-        [f"$<${val}" for val in values_alpha],
+        [f"$<${val}" for val in values_alpha[1:]],
         rotation=30,
         horizontalalignment="right",
     )
-    ax.set_yticklabels([f"$<${val}" for val in values_rgb])
+    ax.set_yticklabels([f"$<${val}" for val in values_rgb[1:]])
 
     alpha_label = alpha_label if alpha_label else "alpha variable"
     rgb_label = rgb_label if rgb_label else "rgb variable"
@@ -417,28 +404,6 @@ def _vba_legend(
 # stuff from ``splot/_viz_utils.py
 #
 ############################################################
-
-
-
-
-
-
-
-def format_legend(values):
-    """Helper to return sensible legend values
-
-    Parameters
-    ----------
-    values : array
-        Values plotted in legend.
-    """
-    in_thousand = False
-    if np.any(values > 1000):
-        in_thousand = True
-        values = values / 1000
-    return values, in_thousand
-#############################################################################################
-
 
 
 # Utility function #1 - forces continuous diverging colormap to be centered at zero
