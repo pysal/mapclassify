@@ -10,13 +10,22 @@ for vba_choropleth
 
 import collections.abc
 
-import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib import colormaps as cm
-from matplotlib import colors, patches
 
 from ._classify_API import classify
 from .classifiers import _format_intervals
+
+try:
+    import matplotlib.pyplot as plt
+    from matplotlib import colormaps as cm
+    from matplotlib import colors, patches
+
+    MPL_AVAILABLE = True
+except (ImportError, ModuleNotFoundError):
+    MPL_AVAILABLE = False
+
+MPL_NOT_AVAILABLE = ImportError("you must have matplotlib")
+
 
 __author__ = "Stefanie Lumnitz <stefanie.lumitz@gmail.com>"
 
@@ -43,7 +52,7 @@ def vba_choropleth(
     legend_kwargs=None,
     min_alpha=0.2,
 ):
-    """Generarte Value by Alpha Choropleth plots.
+    """Generate Value by Alpha Choropleth plots.
 
     A Value-by-Alpha Choropleth is a bivariate choropleth that uses the values
     of the second input variable ``y`` as a transparency mask, determining how much
@@ -109,34 +118,42 @@ def vba_choropleth(
     Plot a Value-by-Alpha map
 
     >>> fig, _ = vba_choropleth('HOVAL', 'CRIME', gdf)
+    >>> plt.show()  # doctest: +SKIP
+    >>> plt.close()
 
     Plot a Value-by-Alpha map with reverted alpha values
 
     >>> fig, _ = vba_choropleth('HOVAL', 'CRIME', gdf, cmap='RdBu',
     ...                         revert_alpha=True)
+    >>> plt.show()  # doctest: +SKIP
+    >>> plt.close()
 
     Plot a Value-by-Alpha map with classified alpha and rgb values
 
     >>> fig, axs = plt.subplots(2,2, figsize=(20,10))
     >>> vba_choropleth('HOVAL', 'CRIME', gdf, cmap='viridis', ax = axs[0,0],
     ...                rgb=dict(classifier='quantiles', k=3),
-    ...                alpha=dict(classifier='quantiles', k=3))
+    ...                alpha=dict(classifier='quantiles', k=3))  # doctest: +SKIP
     >>> vba_choropleth('HOVAL', 'CRIME', gdf, cmap='viridis', ax = axs[0,1],
     ...                rgb=dict(classifier='natural_breaks'),
-    ...                alpha=dict(classifier='natural_breaks'))
+    ...                alpha=dict(classifier='natural_breaks'))  # doctest: +SKIP
     >>> vba_choropleth('HOVAL', 'CRIME', gdf, cmap='viridis', ax = axs[1,0],
     ...                rgb=dict(classifier='std_mean'),
-    ...                alpha=dict(classifier='std_mean'))
+    ...                alpha=dict(classifier='std_mean'))  # doctest: +SKIP
     >>> vba_choropleth('HOVAL', 'CRIME', gdf, cmap='viridis', ax = axs[1,1],
     ...                rgb=dict(classifier='fisher_jenks', k=3),
-    ...                alpha=dict(classifier='fisher_jenks', k=3))
+    ...                alpha=dict(classifier='fisher_jenks', k=3))  # doctest: +SKIP
+    >>> plt.show()  # doctest: +SKIP
+    >>> plt.close()
 
     Pass in a list of colors instead of a cmap
 
     >>> color_list = ['#a1dab4','#41b6c4','#225ea8']
     >>> vba_choropleth('HOVAL', 'CRIME', gdf, cmap=color_list,
     ...                rgb=dict(classifier='quantiles', k=3),
-    ...                alpha=dict(classifier='quantiles'))
+    ...                alpha=dict(classifier='quantiles'))  # doctest: +SKIP
+    >>> plt.show()  # doctest: +SKIP
+    >>> plt.close()
 
     Add a legend and use divergent alpha values
 
@@ -146,9 +163,14 @@ def vba_choropleth(
     ...                alpha=dict(classifier='quantiles', k=5),
     ...                rgb=dict(classifier='quantiles', k=5),
     ...                legend=True, ax=ax,
-    ...                legend_kwargs={"alpha_label": "CRIME", "rgb_label": "HOVAL"})
+    ...                legend_kwargs={"alpha_label": "CRIME", "rgb_label": "HOVAL"})  # doctest: +SKIP
+    >>> plt.show()  # doctest: +SKIP
+    >>> plt.close()
 
-    """
+    """  # noqa: E501
+
+    if not MPL_AVAILABLE:
+        raise MPL_NOT_AVAILABLE
 
     x = gdf[x_var].to_numpy() if isinstance(x_var, str) else x_var
     y = gdf[y_var].to_numpy() if isinstance(y_var, str) else y_var
@@ -273,6 +295,10 @@ def _value_by_alpha_cmap(
         Colormap for the VBA layer
 
     """
+
+    if not MPL_AVAILABLE:
+        raise MPL_NOT_AVAILABLE
+
     # option for cmap or colorlist input
     if isinstance(cmap, str):
         cmap = cm.get_cmap(cmap)
@@ -333,6 +359,10 @@ def _vba_legend(
         Axes in which the figure is plotted
 
     """
+
+    if not MPL_AVAILABLE:
+        raise MPL_NOT_AVAILABLE
+
     # VALUES
     rgba, legend_cmap = _value_by_alpha_cmap(
         rgb_bins.yb, alpha_bins.yb, cmap=cmap, min_alpha=min_alpha
@@ -434,6 +464,9 @@ def shift_colormap(cmap, *, start=0, midpoint=0.5, stop=1.0, name="shiftedcmap")
     new_cmap : matplotlib.colors.Colormap
         A new colormap that has been shifted.
     """
+    if not MPL_AVAILABLE:
+        raise MPL_NOT_AVAILABLE
+
     if isinstance(cmap, str):
         cmap = cm.get_cmap(cmap)
 
@@ -486,6 +519,9 @@ def truncate_colormap(cmap, *, minval=0.0, maxval=1.0, n=100):
     new_cmap : matplotlib.colors.Colormap
         A new colormap that has been shifted.
     """
+
+    if not MPL_AVAILABLE:
+        raise MPL_NOT_AVAILABLE
 
     if isinstance(cmap, str):
         cmap = cm.get_cmap(cmap)
