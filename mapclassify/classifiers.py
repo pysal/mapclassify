@@ -510,6 +510,34 @@ def load_example():
     return calemp.load()
 
 
+def _jenks_caspall(y, k):
+    x = y.copy()
+    q = quantile(x, k)
+    solving = True
+    xb, cnts = bin1d(x, q)
+    if x.ndim == 1:
+        x.shape = (x.size, 1)
+    n, _k = x.shape
+    xm = [np.median(x[xb==i]) for i in np.unique(xb)]
+    xb0 = xb.copy()
+    q = xm
+    it = 0
+    rk = list(range(k))
+    while solving:
+        xb = np.zeros(xb0.shape, int)
+        d = abs(x - q)
+        xb = d.argmin(axis=1)
+        if (xb0 == xb).all():
+            solving = False
+        else:
+            xb0 = xb
+        it += 1
+        q = np.array([np.median(x[xb==i]) for i in rk])
+    cuts = np.array([max(x[xb==i]) for i in np.unique(xb)])
+    cuts.shape = (len(cuts),)
+    return cuts, it
+
+
 def _kmeans(y, k=5, n_init=10):
     """
     Helper function to do k-means in one dimension.
@@ -682,7 +710,9 @@ class MapClassifier:
     """
 
     def __init__(self, y):
-        y = np.asarray(y).flatten()
+        y = np.asarray(y).flatten().astype(float)
+
+        self.n = len(y)
         self.name = "Map Classifier"
         self.fmt = FMT
         self.y = y
@@ -698,15 +728,23 @@ class MapClassifier:
     fmt = property(get_fmt, set_fmt)
 
     def _summary(self):
-        yb = self.yb
+        yb = self.yb[self.mask]
         self.classes = [np.nonzero(yb == c)[0].tolist() for c in range(self.k)]
         self.tss = self.get_tss()
         self.adcm = self.get_adcm()
         self.gadf = self.get_gadf()
 
     def _classify(self):
+        mask = ~np.isnan(self.y)
+        _y = self.y
+        self.y = self.y[mask]
         self._set_bins()
-        self.yb, self.counts = bin1d(self.y, self.bins)
+        yb, self.counts = bin1d(self.y, self.bins)
+        self.yb = np.zeros(_y.shape, np.int8)
+        self.yb[mask] = yb
+        self.yb[~mask] = -1
+        self.y = _y
+        self.mask = mask
 
     def _update(self, data, *args, **kwargs):
         """
@@ -967,7 +1005,7 @@ class MapClassifier:
 
     def get_gadf(self):
         """Goodness of absolute deviation of fit."""
-        adam = (np.abs(self.y - np.median(self.y))).sum()
+        adam = (np.abs(self.y[self.mask] - np.median(self.y[self.mask]))).sum()
         # return 1 if array is invariant
         gadf = 1 if adam == 0 else 1 - self.adcm / adam
         return gadf
@@ -2202,7 +2240,8 @@ class FisherJenksSampled(MapClassifier):
             pct = 1000.0 / n
         ids = np.random.randint(0, n, int(n * pct))
         y = np.asarray(y)
-        yr = y[ids]
+        mask = ~np.isnan(y)
+        yr = y[mask][ids]
         yr[-1] = max(y)  # make sure we have the upper bound
         yr[0] = min(y)  # make sure we have the min
         self.original_y = y
@@ -2210,8 +2249,15 @@ class FisherJenksSampled(MapClassifier):
         self._truncated = truncate
         self.yr = yr
         self.yr_n = yr.size
-        MapClassifier.__init__(self, yr)
-        self.yb, self.counts = bin1d(y, self.bins)
+        #MapClassifier.__init__(self, yr)
+        bins = _fisher_jenks_means(yr, k)
+
+
+        yb, self.counts = bin1d(y[mask], bins)
+        self.yb = np.zeros(y.shape, np.uint8)
+        self.yb[mask] = yb
+        self.yb[~mask] = -1
+        self.bins = bins
         self.name = "FisherJenksSampled"
         self.y = y
         self._summary()  # have to recalculate summary stats
@@ -2219,6 +2265,9 @@ class FisherJenksSampled(MapClassifier):
     def _set_bins(self):
         fj = FisherJenks(self.y, self.k)
         self.bins = fj.bins
+
+    def _summary(self):
+        pass
 
     def update(self, y=None, inplace=False, **kwargs):
         """
@@ -2393,27 +2442,35 @@ class JenksCaspallSampled(MapClassifier):
 
     def __init__(self, y, k=K, pct=0.10):
         self.k = k
-        n = y.size
+        mask = ~np.isnan(y)
+        n = y[mask].size
         if pct * n > 1000:
             pct = 1000.0 / n
         ids = np.random.randint(0, n, int(n * pct))
         y = np.asarray(y)
-        yr = y[ids]
-        yr[0] = max(y)  # make sure we have the upper bound
+        yr = y[mask][ids]
+        yr[0] = max(y[mask])  # make sure we have the upper bound
+        # fit on sample
+        bins, its = _jenks_caspall(yr, k)
         self.original_y = y
         self.pct = pct
         self.yr = yr
         self.yr_n = yr.size
-        MapClassifier.__init__(self, yr)
-        self.yb, self.counts = bin1d(y, self.bins)
+        self.mask = mask
+        # transform all values
+        yb, counts = bin1d(y[mask], bins)
+        self.yb = np.zeros(y.shape, np.uint8)
+        self.yb[mask] = yb
+        self.yb[~mask] = -1
         self.name = "JenksCaspallSampled"
         self.y = y
+        self.bins = bins
+        self.counts = counts 
+        self.iterations = its
         self._summary()  # have to recalculate summary stats
 
-    def _set_bins(self):
-        jc = JenksCaspall(self.y, self.k)
-        self.bins = jc.bins
-        self.iterations = jc.iterations
+    def _summary(self):
+        pass
 
     def update(self, y=None, inplace=False, **kwargs):
         """
