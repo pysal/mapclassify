@@ -182,56 +182,14 @@ def vba_choropleth(
         fig = ax.get_figure()
 
     if rgb is not None:
-        rgb.setdefault("k", 5)
-        rgb.setdefault("hinge", 1.5)
-        rgb.setdefault("multiples", [-2, -1, 1, 2])
-        rgb.setdefault("mindiff", 0)
-        rgb.setdefault("initial", 100)
-        rgb.setdefault("bins", [20, max(x)])
-        classifier = rgb["classifier"]
-        k = rgb["k"]
-        hinge = rgb["hinge"]
-        multiples = rgb["multiples"]
-        mindiff = rgb["mindiff"]
-        initial = rgb["initial"]
-        bins = rgb["bins"]
-        rgb_bins = classify(
-            x,
-            classifier,
-            k=k,
-            hinge=hinge,
-            multiples=multiples,
-            mindiff=mindiff,
-            initial=initial,
-            bins=bins,
-        )
+        classifier = rgb.pop("classifier")
+        rgb_bins = classify(x, classifier, **rgb)
         x = rgb_bins.yb
 
     if alpha is not None:
-        alpha.setdefault("k", 5)
-        alpha.setdefault("hinge", 1.5)
-        alpha.setdefault("multiples", [-2, -1, 1, 2])
-        alpha.setdefault("mindiff", 0)
-        alpha.setdefault("initial", 100)
-        alpha.setdefault("bins", [20, max(y)])
-        classifier = alpha["classifier"]
-        k = alpha["k"]
-        hinge = alpha["hinge"]
-        multiples = alpha["multiples"]
-        mindiff = alpha["mindiff"]
-        initial = alpha["initial"]
-        bins = alpha["bins"]
+        classifier = alpha.pop("classifier")
         # TODO: use the pct keyword here
-        alpha_bins = classify(
-            y,
-            classifier,
-            k=k,
-            hinge=hinge,
-            multiples=multiples,
-            mindiff=mindiff,
-            initial=initial,
-            bins=bins,
-        )
+        alpha_bins = classify(y, classifier, **alpha)
         y = alpha_bins.yb
 
     rgba, vba_cmap = _value_by_alpha_cmap(
@@ -243,8 +201,6 @@ def vba_choropleth(
         min_alpha=min_alpha,
     )
     gdf.plot(color=rgba, ax=ax)
-    ax.set_axis_off()
-    ax.set_aspect("equal")
 
     if legend:
         left, bottom, width, height = [0, 0.5, 0.2, 0.2]
