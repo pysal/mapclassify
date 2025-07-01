@@ -11,21 +11,10 @@ for vba_choropleth
 import collections.abc
 
 import numpy as np
+from libpysal.common import requires
 
 from ._classify_API import classify
 from .classifiers import _format_intervals
-
-try:
-    import matplotlib.pyplot as plt
-    from matplotlib import colormaps as cm
-    from matplotlib import colors, patches
-
-    MPL_AVAILABLE = True
-except (ImportError, ModuleNotFoundError):
-    MPL_AVAILABLE = False
-
-MPL_NOT_AVAILABLE = ImportError("you must have matplotlib")
-
 
 __author__ = "Stefanie Lumnitz <stefanie.lumitz@gmail.com>"
 
@@ -37,6 +26,7 @@ __author__ = "Stefanie Lumnitz <stefanie.lumitz@gmail.com>"
 ############################################################
 
 
+@requires("matplotlib")
 def vba_choropleth(
     x_var,
     y_var,
@@ -169,8 +159,7 @@ def vba_choropleth(
 
     """  # noqa: E501
 
-    if not MPL_AVAILABLE:
-        raise MPL_NOT_AVAILABLE
+    import matplotlib.pyplot as plt
 
     x = gdf[x_var].to_numpy() if isinstance(x_var, str) else x_var
     y = gdf[y_var].to_numpy() if isinstance(y_var, str) else y_var
@@ -214,6 +203,7 @@ def vba_choropleth(
     return fig, ax
 
 
+@requires("matplotlib")
 def _value_by_alpha_cmap(
     x,
     y,
@@ -252,12 +242,11 @@ def _value_by_alpha_cmap(
 
     """
 
-    if not MPL_AVAILABLE:
-        raise MPL_NOT_AVAILABLE
+    from matplotlib import colormaps, colors
 
     # option for cmap or colorlist input
     if isinstance(cmap, str):
-        cmap = cm.get_cmap(cmap)
+        cmap = colormaps.get_cmap(cmap)
     elif isinstance(cmap, collections.abc.Sequence):
         cmap = colors.LinearSegmentedColormap.from_list("newmap", cmap)
 
@@ -278,6 +267,7 @@ def _value_by_alpha_cmap(
     return rgba, cmap
 
 
+@requires("matplotlib")
 def _vba_legend(
     rgb_bins,
     alpha_bins,
@@ -316,8 +306,8 @@ def _vba_legend(
 
     """
 
-    if not MPL_AVAILABLE:
-        raise MPL_NOT_AVAILABLE
+    import matplotlib.pyplot as plt
+    from matplotlib import patches
 
     # VALUES
     rgba, legend_cmap = _value_by_alpha_cmap(
@@ -393,6 +383,7 @@ def _vba_legend(
 
 
 # Utility function #1 - forces continuous diverging colormap to be centered at zero
+@requires("matplotlib")
 def shift_colormap(cmap, *, start=0, midpoint=0.5, stop=1.0, name="shiftedcmap"):
     """Offset the "center" of a colormap. Useful for data with a negative min and
     positive max and you want the middle of the colormap's dynamic range to be at zero.
@@ -420,11 +411,11 @@ def shift_colormap(cmap, *, start=0, midpoint=0.5, stop=1.0, name="shiftedcmap")
     new_cmap : matplotlib.colors.Colormap
         A new colormap that has been shifted.
     """
-    if not MPL_AVAILABLE:
-        raise MPL_NOT_AVAILABLE
+
+    from matplotlib import colormaps, colors
 
     if isinstance(cmap, str):
-        cmap = cm.get_cmap(cmap)
+        cmap = colormaps.get_cmap(cmap)
 
     cdict = {"red": [], "green": [], "blue": [], "alpha": []}
 
@@ -448,11 +439,12 @@ def shift_colormap(cmap, *, start=0, midpoint=0.5, stop=1.0, name="shiftedcmap")
         cdict["alpha"].append((si, a, a))
 
     new_cmap = colors.LinearSegmentedColormap(name, cdict)
-    cm.register(new_cmap)
+    colormaps.register(new_cmap)
     return new_cmap
 
 
 # Utility #2 - truncate colorcap in order to grab only positive or negative portion
+@requires("matplotlib")
 def truncate_colormap(cmap, *, minval=0.0, maxval=1.0, n=100):
     """Truncate a colormap by selecting a subset of the original colormap's values.
 
@@ -476,11 +468,10 @@ def truncate_colormap(cmap, *, minval=0.0, maxval=1.0, n=100):
         A new colormap that has been shifted.
     """
 
-    if not MPL_AVAILABLE:
-        raise MPL_NOT_AVAILABLE
+    from matplotlib import colormaps, colors
 
     if isinstance(cmap, str):
-        cmap = cm.get_cmap(cmap)
+        cmap = colormaps.get_cmap(cmap)
 
     new_cmap = colors.LinearSegmentedColormap.from_list(
         f"trunc({cmap.name},{minval:.2f},{maxval:.2f})",
