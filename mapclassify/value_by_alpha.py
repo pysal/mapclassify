@@ -11,10 +11,21 @@ for vba_choropleth
 import collections.abc
 
 import numpy as np
-from libpysal.common import requires
 
 from ._classify_API import classify
 from .classifiers import _format_intervals
+
+try:
+    import matplotlib.pyplot as plt
+    from matplotlib import colormaps as cm
+    from matplotlib import colors, patches
+
+    MPL_AVAILABLE = True
+except (ImportError, ModuleNotFoundError):
+    MPL_AVAILABLE = False
+
+MPL_NOT_AVAILABLE = ImportError("you must have matplotlib")
+
 
 __author__ = "Stefanie Lumnitz <stefanie.lumitz@gmail.com>"
 
@@ -26,15 +37,14 @@ __author__ = "Stefanie Lumnitz <stefanie.lumitz@gmail.com>"
 ############################################################
 
 
-@requires("matplotlib")
 def vba_choropleth(
-    x_var,
-    y_var,
+    x,
+    y,
     gdf,
     *,
     cmap="GnBu",
-    rgb=None,
-    alpha=None,
+    x_classification_kwds=None,
+    y_classification_kwds=None,
     divergent=False,
     revert_alpha=False,
     ax=None,
@@ -50,24 +60,22 @@ def vba_choropleth(
 
     Parameters
     ----------
-    x_var : string or array
+    x : str | numpy.ndarray | pandas.Series
         The color determining variable. It can be passed is as the name of the column
-        in ``gdf`` of the actual values.
-    y_var : string or array
+        in ``gdf`` or the actual values.
+    y : str | numpy.ndarray | pandas.Series
         The alpha determining variable. It can be passed is as the name of the column
-        in ``gdf`` of the actual values.
+        in ``gdf`` or the actual values.
     gdf : geopandas dataframe instance
         The dataframe containing information to plot.
     cmap : str | list[str] | matplotlib.colors.Colormap
         Matplotlib colormap or list of colors used to create the vba_layer
-    rgb : dict
-        Keywords used for binning input values and classifying rgb values with
-        ``mapclassify.classify``.  Note: valid keywords are e.g.
-        ``dict(classifier='quantiles', k=5, hinge=1.5)``.
-    alpha : dict
-        Keywords used for binning input values and classifying alpha values with
-        ``mapclassify.classify``. Note: valid keywords are e.g.
-        ``dict(classifier='quantiles', k=5, hinge=1.5)``.
+    x_classification_kwds : dict
+        Keywords used for binning and classifying color-determinant input values with
+        ``mapclassify.classify``.
+    y_classification_kwds : dict
+        Keywords used for binning and classifying alpha-determinant input values with
+        ``mapclassify.classify``.
     divergent : bool, optional
         Creates a divergent alpha array with high values at the extremes and low,
         transparent values in the middle of the input values.
@@ -122,17 +130,17 @@ def vba_choropleth(
 
     >>> fig, axs = plt.subplots(2,2, figsize=(20,10))
     >>> vba_choropleth('HOVAL', 'CRIME', gdf, cmap='viridis', ax = axs[0,0],
-    ...                rgb=dict(classifier='quantiles', k=3),
-    ...                alpha=dict(classifier='quantiles', k=3))  # doctest: +SKIP
+    ...                x_classification_kwds=dict(classifier='quantiles', k=3),
+    ...                y_classification_kwds=dict(classifier='quantiles', k=3))  # doctest: +SKIP
     >>> vba_choropleth('HOVAL', 'CRIME', gdf, cmap='viridis', ax = axs[0,1],
-    ...                rgb=dict(classifier='natural_breaks'),
-    ...                alpha=dict(classifier='natural_breaks'))  # doctest: +SKIP
+    ...                x_classification_kwds=dict(classifier='natural_breaks'),
+    ...                y_classification_kwds=dict(classifier='natural_breaks'))  # doctest: +SKIP
     >>> vba_choropleth('HOVAL', 'CRIME', gdf, cmap='viridis', ax = axs[1,0],
-    ...                rgb=dict(classifier='std_mean'),
-    ...                alpha=dict(classifier='std_mean'))  # doctest: +SKIP
+    ...                x_classification_kwds=dict(classifier='std_mean'),
+    ...                y_classification_kwds=dict(classifier='std_mean'))  # doctest: +SKIP
     >>> vba_choropleth('HOVAL', 'CRIME', gdf, cmap='viridis', ax = axs[1,1],
-    ...                rgb=dict(classifier='fisher_jenks', k=3),
-    ...                alpha=dict(classifier='fisher_jenks', k=3))  # doctest: +SKIP
+    ...                x_classification_kwds=dict(classifier='fisher_jenks', k=3),
+    ...                y_classification_kwds=dict(classifier='fisher_jenks', k=3))  # doctest: +SKIP
     >>> plt.show()  # doctest: +SKIP
     >>> plt.close()
 
@@ -140,8 +148,8 @@ def vba_choropleth(
 
     >>> color_list = ['#a1dab4','#41b6c4','#225ea8']
     >>> vba_choropleth('HOVAL', 'CRIME', gdf, cmap=color_list,
-    ...                rgb=dict(classifier='quantiles', k=3),
-    ...                alpha=dict(classifier='quantiles'))  # doctest: +SKIP
+    ...                x_classification_kwds=dict(classifier='quantiles', k=3),
+    ...                y_classification_kwds=dict(classifier='quantiles'))  # doctest: +SKIP
     >>> plt.show()  # doctest: +SKIP
     >>> plt.close()
 
@@ -150,8 +158,8 @@ def vba_choropleth(
     >>> fig = plt.figure(figsize=(15,10))
     >>> ax = fig.add_subplot(111)
     >>> vba_choropleth('HOVAL', 'CRIME', gdf, divergent=True,
-    ...                alpha=dict(classifier='quantiles', k=5),
-    ...                rgb=dict(classifier='quantiles', k=5),
+    ...                x_classification_kwds=dict(classifier='quantiles', k=5),
+    ...                y_classification_kwds=dict(classifier='quantiles', k=5),
     ...                legend=True, ax=ax,
     ...                legend_kwargs={"alpha_label": "CRIME", "rgb_label": "HOVAL"})  # doctest: +SKIP
     >>> plt.show()  # doctest: +SKIP
@@ -159,10 +167,11 @@ def vba_choropleth(
 
     """  # noqa: E501
 
-    import matplotlib.pyplot as plt
+    if not MPL_AVAILABLE:
+        raise MPL_NOT_AVAILABLE
 
-    x = gdf[x_var].to_numpy() if isinstance(x_var, str) else x_var
-    y = gdf[y_var].to_numpy() if isinstance(y_var, str) else y_var
+    x = gdf[x].to_numpy() if isinstance(x, str) else x
+    y = gdf[y].to_numpy() if isinstance(y, str) else y
 
     if ax is None:
         fig = plt.figure()
@@ -170,16 +179,16 @@ def vba_choropleth(
     else:
         fig = ax.get_figure()
 
-    if rgb is not None:
-        classifier = rgb.pop("classifier")
-        rgb_bins = classify(x, classifier, **rgb)
-        x = rgb_bins.yb
+    if x_classification_kwds is not None:
+        classifier = x_classification_kwds.pop("classifier")
+        x_bins = classify(x, classifier, **x_classification_kwds)
+        x = x_bins.yb
 
-    if alpha is not None:
-        classifier = alpha.pop("classifier")
+    if y_classification_kwds is not None:
+        classifier = y_classification_kwds.pop("classifier")
         # TODO: use the pct keyword here
-        alpha_bins = classify(y, classifier, **alpha)
-        y = alpha_bins.yb
+        y_bins = classify(y, classifier, **y_classification_kwds)
+        y = y_bins.yb
 
     rgba, vba_cmap = _value_by_alpha_cmap(
         x,
@@ -199,11 +208,10 @@ def vba_choropleth(
         else:
             legend_kwargs = {"ax": ax2}
         legend_kwargs |= {"min_alpha": min_alpha}
-        _vba_legend(rgb_bins, alpha_bins, vba_cmap, **legend_kwargs)
+        _vba_legend(x_bins, y_bins, vba_cmap, **legend_kwargs)
     return fig, ax
 
 
-@requires("matplotlib")
 def _value_by_alpha_cmap(
     x,
     y,
@@ -242,11 +250,12 @@ def _value_by_alpha_cmap(
 
     """
 
-    from matplotlib import colormaps, colors
+    if not MPL_AVAILABLE:
+        raise MPL_NOT_AVAILABLE
 
     # option for cmap or colorlist input
     if isinstance(cmap, str):
-        cmap = colormaps.get_cmap(cmap)
+        cmap = cm.get_cmap(cmap)
     elif isinstance(cmap, collections.abc.Sequence):
         cmap = colors.LinearSegmentedColormap.from_list("newmap", cmap)
 
@@ -267,33 +276,32 @@ def _value_by_alpha_cmap(
     return rgba, cmap
 
 
-@requires("matplotlib")
 def _vba_legend(
-    rgb_bins,
-    alpha_bins,
+    x_bins,
+    y_bins,
     cmap,
     *,
     ax=None,
-    rgb_label=None,
-    alpha_label=None,
+    x_label=None,
+    y_label=None,
     min_alpha=0.2,
 ):
     """Creates Value by Alpha heatmap used as choropleth legend.
 
     Parameters
     ----------
-    rgb_bins : mapclassify instance
-        Object of classified values used for rgb.
-    alpha_bins : mapclassify instance
+    x_bins : MapClassifier
+        Object of classified values used for color.
+    y_bins : MapClassifier
         Object of classified values used for alpha.
     cmap : matplotlib.colors.Colormap
         Colormap for the VBA layer
     ax : matplotlib Axes instance, optional
         Axes in which to plot the figure in multiple Axes layout. Default is None
-    rgb_label : str, optional
-        Label for the y-axis; the rgb variable.
-    alpha_label : str, optional
-        Label for the x-axis; the alpha variable.
+    x_label : str, optional
+        Label for the x-axis; the color variable.
+    y_label : str, optional
+        Label for the y-axis; the alpha variable.
     min_alpha : float = 0.2
         Minimum alpha threshold to prevent fully transparent masking.
 
@@ -303,23 +311,21 @@ def _vba_legend(
         Figure of Value by Alpha heatmap
     ax : matplotlib Axes instance
         Axes in which the figure is plotted
-
     """
 
-    import matplotlib.pyplot as plt
-    from matplotlib import patches
+    if not MPL_AVAILABLE:
+        raise MPL_NOT_AVAILABLE
 
     # VALUES
     rgba, legend_cmap = _value_by_alpha_cmap(
-        rgb_bins.yb, alpha_bins.yb, cmap=cmap, min_alpha=min_alpha
+        x_bins.yb, y_bins.yb, cmap=cmap, min_alpha=min_alpha
     )
     # separate rgb and alpha values
     alpha = rgba[:, 3]
     # extract unique values for alpha and rgb
     alpha_vals = np.unique(alpha)
     rgb_vals = legend_cmap(
-        (rgb_bins.bins - rgb_bins.bins.min())
-        / (rgb_bins.bins.max() - rgb_bins.bins.min())
+        (x_bins.bins - x_bins.bins.min()) / (x_bins.bins.max() - x_bins.bins.min())
     )[:, 0:3]
 
     # PLOTTING
@@ -342,8 +348,8 @@ def _vba_legend(
             )
             ax.add_patch(rect)
 
-    values_alpha, _, x_in_thousand = _format_intervals(alpha_bins, fmt="{:.1f}")
-    values_rgb, _, y_in_thousand = _format_intervals(rgb_bins, fmt="{:.1f}")
+    values_rgb, _, x_in_thousand = _format_intervals(x_bins, fmt="{:.1f}")
+    values_alpha, _, y_in_thousand = _format_intervals(y_bins, fmt="{:.1f}")
 
     ax.plot([], [])
     ax.set_xlim([0, irow + 1])
@@ -351,22 +357,22 @@ def _vba_legend(
     ax.set_xticks(np.arange(irow + 1) + 0.5)
     ax.set_yticks(np.arange(icol + 1) + 0.5)
     ax.set_xticklabels(
-        [f"$<${val}" for val in values_alpha[1:]],
+        [f"$<${val}" for val in values_rgb[1:]],
         rotation=30,
         horizontalalignment="right",
     )
-    ax.set_yticklabels([f"$<${val}" for val in values_rgb[1:]])
+    ax.set_yticklabels([f"$<${val}" for val in values_alpha[1:]])
 
-    alpha_label = alpha_label if alpha_label else "alpha variable"
-    rgb_label = rgb_label if rgb_label else "rgb variable"
+    x_label = x_label if x_label else "x-rgb variable"
+    y_label = y_label if y_label else "y-alpha variable"
 
     if x_in_thousand:
-        ax.set_xlabel(f"{alpha_label} ($10^3$)")
+        ax.set_xlabel(f"{x_label} ($10^3$)")
     if y_in_thousand:
-        ax.set_ylabel(f"{rgb_label} ($10^3$)")
+        ax.set_ylabel(f"{y_label} ($10^3$)")
     else:
-        ax.set_xlabel(alpha_label)
-        ax.set_ylabel(rgb_label)
+        ax.set_xlabel(x_label)
+        ax.set_ylabel(y_label)
 
     ax.spines["left"].set_visible(False)
     ax.spines["right"].set_visible(False)
@@ -383,7 +389,6 @@ def _vba_legend(
 
 
 # Utility function #1 - forces continuous diverging colormap to be centered at zero
-@requires("matplotlib")
 def shift_colormap(cmap, *, start=0, midpoint=0.5, stop=1.0, name="shiftedcmap"):
     """Offset the "center" of a colormap. Useful for data with a negative min and
     positive max and you want the middle of the colormap's dynamic range to be at zero.
@@ -411,11 +416,11 @@ def shift_colormap(cmap, *, start=0, midpoint=0.5, stop=1.0, name="shiftedcmap")
     new_cmap : matplotlib.colors.Colormap
         A new colormap that has been shifted.
     """
-
-    from matplotlib import colormaps, colors
+    if not MPL_AVAILABLE:
+        raise MPL_NOT_AVAILABLE
 
     if isinstance(cmap, str):
-        cmap = colormaps.get_cmap(cmap)
+        cmap = cm.get_cmap(cmap)
 
     cdict = {"red": [], "green": [], "blue": [], "alpha": []}
 
@@ -439,12 +444,11 @@ def shift_colormap(cmap, *, start=0, midpoint=0.5, stop=1.0, name="shiftedcmap")
         cdict["alpha"].append((si, a, a))
 
     new_cmap = colors.LinearSegmentedColormap(name, cdict)
-    colormaps.register(new_cmap)
+    cm.register(new_cmap)
     return new_cmap
 
 
 # Utility #2 - truncate colorcap in order to grab only positive or negative portion
-@requires("matplotlib")
 def truncate_colormap(cmap, *, minval=0.0, maxval=1.0, n=100):
     """Truncate a colormap by selecting a subset of the original colormap's values.
 
@@ -468,10 +472,11 @@ def truncate_colormap(cmap, *, minval=0.0, maxval=1.0, n=100):
         A new colormap that has been shifted.
     """
 
-    from matplotlib import colormaps, colors
+    if not MPL_AVAILABLE:
+        raise MPL_NOT_AVAILABLE
 
     if isinstance(cmap, str):
-        cmap = colormaps.get_cmap(cmap)
+        cmap = cm.get_cmap(cmap)
 
     new_cmap = colors.LinearSegmentedColormap.from_list(
         f"trunc({cmap.name},{minval:.2f},{maxval:.2f})",
