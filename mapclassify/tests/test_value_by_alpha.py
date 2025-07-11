@@ -1,3 +1,5 @@
+import copy
+
 import geopandas
 import libpysal
 import matplotlib
@@ -101,7 +103,7 @@ class TestValueByAlphaChoropleth:
         ):
             vba_choropleth(self.x, self.y, self.gdf, legend=True)
 
-    @image_comparison(["legend"], **pytest.image_comp_kws)
+    @image_comparison(["legend"], **pytest.image_comp_kws_legend_text)
     def test_legend(self):
         fig, ax = vba_choropleth(
             self.x,
@@ -115,7 +117,7 @@ class TestValueByAlphaChoropleth:
         assert isinstance(fig, matplotlib.figure.Figure)
         assert isinstance(ax, matplotlib.axes.Axes)
 
-    @image_comparison(["legend_kwargs"], **pytest.image_comp_kws)
+    @image_comparison(["legend_kwargs"], **pytest.image_comp_kws_legend_text)
     def test_legend_kwargs(self):
         fig, ax = vba_choropleth(
             self.x,
