@@ -170,6 +170,12 @@ def vba_choropleth(
     if not MPL_AVAILABLE:
         raise MPL_NOT_AVAILABLE
 
+    if legend and (not x_classification_kwds or not y_classification_kwds):
+        raise ValueError(
+            "Plotting a legend requires classification for both the `x` and `y` "
+            "variables. See `x_classification_kwds` and `y_classification_kwds`."
+        )
+
     x = gdf[x].to_numpy() if isinstance(x, str) else x
     y = gdf[y].to_numpy() if isinstance(y, str) else y
 
