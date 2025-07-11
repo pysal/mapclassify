@@ -1,10 +1,8 @@
-import re
-
 import geopandas
+import libpysal
 import matplotlib
 import matplotlib.pyplot as plt
 import pytest
-import libpysal
 from matplotlib.testing.decorators import image_comparison
 
 from mapclassify import shift_colormap, truncate_colormap, vba_choropleth
@@ -35,7 +33,9 @@ class TestValueByAlphaChoropleth:
     @image_comparison(["classify_xy_redblue"], **pytest.image_comp_kws)
     def test_classify_xy_redblue(self):
         fig, ax = vba_choropleth(
-            self.x, self.y, self.gdf,
+            self.x,
+            self.y,
+            self.gdf,
             x_classification_kwds={"classifier": "quantiles"},
             y_classification_kwds={"classifier": "quantiles"},
             cmap="RdBu",
@@ -47,7 +47,9 @@ class TestValueByAlphaChoropleth:
     @image_comparison(["divergent_revert_alpha_min_alpha"], **pytest.image_comp_kws)
     def test_divergent_revert_alpha_min_alpha(self):
         fig, ax = vba_choropleth(
-            self.x, self.y, self.gdf,
+            self.x,
+            self.y,
+            self.gdf,
             x_classification_kwds=dict(classifier="fisher_jenks", k=3),
             y_classification_kwds=dict(classifier="fisher_jenks", k=3),
             cmap="berlin",
@@ -62,10 +64,7 @@ class TestValueByAlphaChoropleth:
     @image_comparison(["userdefined_colors"], **pytest.image_comp_kws)
     def test_userdefined_colors(self):
         color_list = ["#a1dab4", "#41b6c4", "#225ea8"]
-        fig, ax = vba_choropleth(
-            self.x, self.y, self.gdf,
-            cmap=color_list,
-        )
+        fig, ax = vba_choropleth(self.x, self.y, self.gdf, cmap=color_list)
 
         assert isinstance(fig, matplotlib.figure.Figure)
         assert isinstance(ax, matplotlib.axes.Axes)
@@ -76,9 +75,7 @@ class TestValueByAlphaChoropleth:
 
         assert mid08.name == "RdBu_08"
 
-        fig, ax = vba_choropleth(
-            self.x, self.y, self.gdf, cmap=mid08,
-        )
+        fig, ax = vba_choropleth(self.x, self.y, self.gdf, cmap=mid08)
 
         assert isinstance(fig, matplotlib.figure.Figure)
         assert isinstance(ax, matplotlib.axes.Axes)
@@ -89,9 +86,7 @@ class TestValueByAlphaChoropleth:
 
         assert trunc0206.name == "trunc(RdBu,0.20,0.60)"
 
-        fig, ax = vba_choropleth(
-            self.x, self.y, self.gdf, cmap=trunc0206,
-        )
+        fig, ax = vba_choropleth(self.x, self.y, self.gdf, cmap=trunc0206)
 
         assert isinstance(fig, matplotlib.figure.Figure)
         assert isinstance(ax, matplotlib.axes.Axes)
@@ -102,14 +97,16 @@ class TestValueByAlphaChoropleth:
             match=(
                 "Plotting a legend requires classification for both the `x` and `y` "
                 "variables. See `x_classification_kwds` and `y_classification_kwds`."
-            )
+            ),
         ):
             vba_choropleth(self.x, self.y, self.gdf, legend=True)
 
     @image_comparison(["legend"], **pytest.image_comp_kws)
     def test_legend(self):
         fig, ax = vba_choropleth(
-            self.x, self.y, self.gdf, 
+            self.x,
+            self.y,
+            self.gdf,
             x_classification_kwds={"classifier": "quantiles"},
             y_classification_kwds={"classifier": "quantiles"},
             legend=True,
@@ -121,7 +118,9 @@ class TestValueByAlphaChoropleth:
     @image_comparison(["legend_kwargs"], **pytest.image_comp_kws)
     def test_legend_kwargs(self):
         fig, ax = vba_choropleth(
-            self.x, self.y, self.gdf, 
+            self.x,
+            self.y,
+            self.gdf,
             x_classification_kwds={"classifier": "quantiles"},
             y_classification_kwds={"classifier": "quantiles"},
             legend=True,
