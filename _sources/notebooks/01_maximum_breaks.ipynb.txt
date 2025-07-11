@@ -1,0 +1,784 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Introduction to mapclassify\n",
+    "\n",
+    "`mapclassify` implements a family of classification schemes for choropleth maps. \n",
+    "Its focus is on the determination of the number of classes, and the assignment of observations to those classes.\n",
+    "It is intended for use with upstream mapping and geovisualization packages (see [geopandas](https://geopandas.org/mapping.html) and [geoplot](https://residentmario.github.io/geoplot/user_guide/Customizing_Plots.html) for examples) that handle the rendering of the maps.\n",
+    "\n",
+    "In this notebook, the basic functionality of mapclassify is presented."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T16:51:55.127728Z",
+     "start_time": "2022-11-04T16:51:54.017906Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:50.298194Z",
+     "iopub.status.busy": "2025-07-11T20:08:50.297864Z",
+     "iopub.status.idle": "2025-07-11T20:08:51.743169Z",
+     "shell.execute_reply": "2025-07-11T20:08:51.742941Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:50.298170Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'2.9.1.dev9+gde74d6f.d20250614'"
+      ]
+     },
+     "execution_count": 1,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import mapclassify as mc\n",
+    "\n",
+    "mc.__version__"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Example data\n",
+    "`mapclassify` contains a built-in dataset for employment density for the 58 California counties."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T16:51:55.397263Z",
+     "start_time": "2022-11-04T16:51:55.130764Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:51.743710Z",
+     "iopub.status.busy": "2025-07-11T20:08:51.743588Z",
+     "iopub.status.idle": "2025-07-11T20:08:51.753079Z",
+     "shell.execute_reply": "2025-07-11T20:08:51.752855Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:51.743702Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "y = mc.load_example()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Basic Functionality\n",
+    "All classifiers in `mapclassify` have a common interface and afford similar functionality. We illustrate these using the `MaximumBreaks` classifier.\n",
+    "\n",
+    "`MaximumBreaks` requires that the user specify the number of classes `k`. Given this, the logic of the classifier is to sort the observations in ascending order and find the difference between rank adjacent values. The class boundaries are defined as the $k-1$ largest rank-adjacent breaks in the sorted values."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T16:51:55.407290Z",
+     "start_time": "2022-11-04T16:51:55.401874Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:51.753495Z",
+     "iopub.status.busy": "2025-07-11T20:08:51.753407Z",
+     "iopub.status.idle": "2025-07-11T20:08:51.755663Z",
+     "shell.execute_reply": "2025-07-11T20:08:51.755478Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:51.753488Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "MaximumBreaks\n",
+       "\n",
+       "     Interval        Count\n",
+       "--------------------------\n",
+       "[   0.13,  228.49] |    52\n",
+       "( 228.49,  546.67] |     4\n",
+       "( 546.67, 2417.15] |     1\n",
+       "(2417.15, 4111.45] |     1"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mc.MaximumBreaks(y, k=4)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The classifier returns an instance of `MaximumBreaks` that reports the resulting intervals and counts. The first class has closed lower and upper bounds:\n",
+    "\n",
+    "```\n",
+    "[   0.13,  228.49]\n",
+    "```\n",
+    "\n",
+    "with `0.13` being the minimum value in the dataset:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T16:51:55.413265Z",
+     "start_time": "2022-11-04T16:51:55.408990Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:51.756019Z",
+     "iopub.status.busy": "2025-07-11T20:08:51.755953Z",
+     "iopub.status.idle": "2025-07-11T20:08:51.757684Z",
+     "shell.execute_reply": "2025-07-11T20:08:51.757528Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:51.756012Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "np.float64(0.13)"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "y.min()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Subsequent intervals are open on the lower bound and closed on the upper bound. The fourth class has the maximum value as its closed upper bound:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T16:51:55.419714Z",
+     "start_time": "2022-11-04T16:51:55.415775Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:51.758076Z",
+     "iopub.status.busy": "2025-07-11T20:08:51.757988Z",
+     "iopub.status.idle": "2025-07-11T20:08:51.760282Z",
+     "shell.execute_reply": "2025-07-11T20:08:51.760063Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:51.758069Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "np.float64(4111.45)"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "y.max()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Assigning the classifier to an object let's us inspect other aspects of the classifier:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T16:51:55.426490Z",
+     "start_time": "2022-11-04T16:51:55.421539Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:51.761781Z",
+     "iopub.status.busy": "2025-07-11T20:08:51.761689Z",
+     "iopub.status.idle": "2025-07-11T20:08:51.764139Z",
+     "shell.execute_reply": "2025-07-11T20:08:51.763953Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:51.761773Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "MaximumBreaks\n",
+       "\n",
+       "     Interval        Count\n",
+       "--------------------------\n",
+       "[   0.13,  228.49] |    52\n",
+       "( 228.49,  546.67] |     4\n",
+       "( 546.67, 2417.15] |     1\n",
+       "(2417.15, 4111.45] |     1"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mb4 = mc.MaximumBreaks(y, k=4)\n",
+    "mb4"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The `bins` attribute has the upper bounds of the intervals:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T16:51:55.433994Z",
+     "start_time": "2022-11-04T16:51:55.429143Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:51.764596Z",
+     "iopub.status.busy": "2025-07-11T20:08:51.764533Z",
+     "iopub.status.idle": "2025-07-11T20:08:51.766608Z",
+     "shell.execute_reply": "2025-07-11T20:08:51.766403Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:51.764589Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([ 228.49 ,  546.675, 2417.15 , 4111.45 ])"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mb4.bins"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "and `counts` reports the number of values falling in each bin:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T16:51:55.441325Z",
+     "start_time": "2022-11-04T16:51:55.437014Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:51.767004Z",
+     "iopub.status.busy": "2025-07-11T20:08:51.766930Z",
+     "iopub.status.idle": "2025-07-11T20:08:51.768853Z",
+     "shell.execute_reply": "2025-07-11T20:08:51.768659Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:51.766997Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([52,  4,  1,  1])"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mb4.counts"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The specific bin (i.e. label) for each observation can be found in the `yb` attribute:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T16:51:55.447878Z",
+     "start_time": "2022-11-04T16:51:55.443824Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:51.769165Z",
+     "iopub.status.busy": "2025-07-11T20:08:51.769105Z",
+     "iopub.status.idle": "2025-07-11T20:08:51.771164Z",
+     "shell.execute_reply": "2025-07-11T20:08:51.770960Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:51.769158Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,\n",
+       "       0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 0, 1, 0,\n",
+       "       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mb4.yb"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Changing the number of classes\n",
+    "\n",
+    "Staying with the the same classifier, the user can apply the same classification rule, but for a different number of classes:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T16:51:55.454514Z",
+     "start_time": "2022-11-04T16:51:55.449706Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:51.771674Z",
+     "iopub.status.busy": "2025-07-11T20:08:51.771567Z",
+     "iopub.status.idle": "2025-07-11T20:08:51.774175Z",
+     "shell.execute_reply": "2025-07-11T20:08:51.773986Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:51.771666Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "MaximumBreaks\n",
+       "\n",
+       "     Interval        Count\n",
+       "--------------------------\n",
+       "[   0.13,  146.00] |    50\n",
+       "( 146.00,  228.49] |     2\n",
+       "( 228.49,  291.02] |     1\n",
+       "( 291.02,  350.21] |     2\n",
+       "( 350.21,  546.67] |     1\n",
+       "( 546.67, 2417.15] |     1\n",
+       "(2417.15, 4111.45] |     1"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mb7 = mc.MaximumBreaks(y, k=7)\n",
+    "mb7"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T16:51:55.461787Z",
+     "start_time": "2022-11-04T16:51:55.456906Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:51.774568Z",
+     "iopub.status.busy": "2025-07-11T20:08:51.774500Z",
+     "iopub.status.idle": "2025-07-11T20:08:51.777199Z",
+     "shell.execute_reply": "2025-07-11T20:08:51.776971Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:51.774560Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([ 146.005,  228.49 ,  291.02 ,  350.21 ,  546.675, 2417.15 ,\n",
+       "       4111.45 ])"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mb7.bins"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T16:51:55.471152Z",
+     "start_time": "2022-11-04T16:51:55.466248Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:51.777602Z",
+     "iopub.status.busy": "2025-07-11T20:08:51.777529Z",
+     "iopub.status.idle": "2025-07-11T20:08:51.779968Z",
+     "shell.execute_reply": "2025-07-11T20:08:51.779769Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:51.777594Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([50,  2,  1,  2,  1,  1,  1])"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mb7.counts"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T16:51:55.477524Z",
+     "start_time": "2022-11-04T16:51:55.473430Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:51.780322Z",
+     "iopub.status.busy": "2025-07-11T20:08:51.780260Z",
+     "iopub.status.idle": "2025-07-11T20:08:51.782337Z",
+     "shell.execute_reply": "2025-07-11T20:08:51.782155Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:51.780315Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0,\n",
+       "       0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 1, 0, 0, 0, 6, 0, 0, 3, 0, 2, 0,\n",
+       "       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mb7.yb"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "One additional attribute to mention here is the `adcm` attribute:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T16:51:55.483597Z",
+     "start_time": "2022-11-04T16:51:55.479867Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:51.782728Z",
+     "iopub.status.busy": "2025-07-11T20:08:51.782658Z",
+     "iopub.status.idle": "2025-07-11T20:08:51.784700Z",
+     "shell.execute_reply": "2025-07-11T20:08:51.784526Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:51.782721Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "np.float64(727.3200000000002)"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mb7.adcm"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "`adcm` is a measure of fit, defined as the mean absolute deviation around the class median. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T16:51:55.489640Z",
+     "start_time": "2022-11-04T16:51:55.485845Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:51.785004Z",
+     "iopub.status.busy": "2025-07-11T20:08:51.784940Z",
+     "iopub.status.idle": "2025-07-11T20:08:51.786769Z",
+     "shell.execute_reply": "2025-07-11T20:08:51.786565Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:51.784996Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "np.float64(1181.4900000000002)"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mb4.adcm"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The `adcm` can be expected to decrease as $k$ increases for a given classifier. Thus, if using as a measure of fit, the `adcm` should only be used to compare classifiers defined on the same number of classes."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Next Steps\n",
+    "`MaximumBreaks` is but one of many classifiers in `mapclassify`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T16:51:55.496548Z",
+     "start_time": "2022-11-04T16:51:55.492318Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:51.787157Z",
+     "iopub.status.busy": "2025-07-11T20:08:51.787086Z",
+     "iopub.status.idle": "2025-07-11T20:08:51.789246Z",
+     "shell.execute_reply": "2025-07-11T20:08:51.789062Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:51.787151Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "('BoxPlot',\n",
+       " 'EqualInterval',\n",
+       " 'FisherJenks',\n",
+       " 'FisherJenksSampled',\n",
+       " 'HeadTailBreaks',\n",
+       " 'JenksCaspall',\n",
+       " 'JenksCaspallForced',\n",
+       " 'JenksCaspallSampled',\n",
+       " 'MaxP',\n",
+       " 'MaximumBreaks',\n",
+       " 'NaturalBreaks',\n",
+       " 'Quantiles',\n",
+       " 'Percentiles',\n",
+       " 'PrettyBreaks',\n",
+       " 'StdMean',\n",
+       " 'UserDefined')"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mc.classifiers.CLASSIFIERS"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To learn more about an individual classifier, introspection is available:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T16:51:55.537870Z",
+     "start_time": "2022-11-04T16:51:55.499084Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:51.789653Z",
+     "iopub.status.busy": "2025-07-11T20:08:51.789560Z",
+     "iopub.status.idle": "2025-07-11T20:08:51.804577Z",
+     "shell.execute_reply": "2025-07-11T20:08:51.804347Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:51.789646Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "\u001b[31mInit signature:\u001b[39m mc.MaximumBreaks(y, k=\u001b[32m5\u001b[39m, mindiff=\u001b[32m0\u001b[39m)\n",
+       "\u001b[31mDocstring:\u001b[39m     \n",
+       "Maximum Breaks Map Classification.\n",
+       "\n",
+       "Parameters\n",
+       "----------\n",
+       "\n",
+       "y : numpy.array\n",
+       "    :math:`(n,1)`, values to classify.\n",
+       "k : int (default 5)\n",
+       "    The number of classes required.\n",
+       "\n",
+       "mindiff : float (default 0)\n",
+       "    The minimum difference between class breaks.\n",
+       "\n",
+       "Attributes\n",
+       "----------\n",
+       "\n",
+       "yb : numpy.array\n",
+       "    :math:`(n,1)`, bin IDs for observations.\n",
+       "bins : numpy.array\n",
+       "    :math:`(k,1)`, the upper bounds of each class.\n",
+       "k : int\n",
+       "    The number of classes.\n",
+       "counts : numpy.array\n",
+       "    :math:`(k,1)`, the number of observations falling in each class.\n",
+       "\n",
+       "Examples\n",
+       "--------\n",
+       "\n",
+       ">>> import mapclassify\n",
+       ">>> cal = mapclassify.load_example()\n",
+       ">>> mb = mapclassify.MaximumBreaks(cal, k=5)\n",
+       ">>> mb.k\n",
+       "5\n",
+       "\n",
+       ">>> mb.bins\n",
+       "array([ 146.005,  228.49 ,  546.675, 2417.15 , 4111.45 ])\n",
+       "\n",
+       ">>> mb.counts.tolist()\n",
+       "[50, 2, 4, 1, 1]\n",
+       "\u001b[31mFile:\u001b[39m           ~/github_repos/mapclassify/mapclassify/classifiers.py\n",
+       "\u001b[31mType:\u001b[39m           type\n",
+       "\u001b[31mSubclasses:\u001b[39m     "
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "mc.MaximumBreaks?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "-------------------------\n",
+    "\n",
+    "For more comprehensive appliciations of `mapclassify` the interested reader is directed to the chapter on [choropleth mapping](https://geographicdata.science/book/notebooks/05_choropleth.html) in [Rey, Arribas-Bel, and Wolf (2020) \"Geographic Data Science with PySAL and the PyData Stack”](https://geographicdata.science/book).\n",
+    "\n",
+    "-------------------------"
+   ]
+  }
+ ],
+ "metadata": {
+  "anaconda-cloud": {},
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.13.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

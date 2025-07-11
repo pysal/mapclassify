@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Value-by-Alpha Choropleth &#8212; mapclassify v2.10.0 Manual</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=9afac83c" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pysal-styles.css?v=0c2123f2" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <script src="../_static/documentation_options.js?v=67920a36"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/pysal_favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API reference" href="../api.html" />
+    <link rel="prev" title="Using legendgram as a map legend" href="09_legendgram.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          mapclassify</a>
+        <span class="navbar-text navbar-version pull-left"><b>2.10.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../installation.html">Installation</a></li>
+                <li><a href="../tutorial.html">Tutorial</a></li>
+                <li><a href="../api.html">API</a></li>
+                <li><a href="../references.html">References</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-released-version">Installing released version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-development-version">Installing development version</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01_maximum_breaks.html">Introduction to mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_legends.html">Legends in mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_choropleth.html">Choropleth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_pooled.html">Pooled Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05_Greedy_coloring.html">Getting started with mapclassify.greedy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_api.html">Overview of the mapclassify API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_api.html#Original-API-(&lt;-2.4.0)">Original API (&lt; 2.4.0)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_api.html#Extended-API-(&gt;=-2.40)">Extended API (&gt;= 2.40)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="09_legendgram.html">Using legendgram as a map legend</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Value-by-Alpha Choropleth</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#classifiers">Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Value-by-Alpha Choropleth</a><ul>
+<li><a class="reference internal" href="#Set-up">Set up</a><ul>
+<li><a class="reference internal" href="#Imports">Imports</a></li>
+<li><a class="reference internal" href="#Data-Preparation">Data Preparation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Create-Value-by-Alpha-Choropleths">Create Value-by-Alpha Choropleths</a><ul>
+<li><a class="reference internal" href="#What-is-a-Value-by-Alpha-choropleth?">What is a Value by Alpha choropleth?</a><ul>
+<li><a class="reference internal" href="#Classification-&amp;-binning-options">Classification &amp; binning options</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#User-defined-colors">User-defined colors</a></li>
+<li><a class="reference internal" href="#Transposing-transparency">Transposing transparency</a></li>
+<li><a class="reference internal" href="#Displaying-divergency">Displaying divergency</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Create-your-own-cmap-for-plotting">Create your own cmap for plotting</a><ul>
+<li><a class="reference internal" href="#Colormap-shifting">Colormap shifting</a></li>
+<li><a class="reference internal" href="#Colormap-truncation">Colormap truncation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Add-a-legend">Add a legend</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="admonition note">
+<p>This page was generated from <a class="reference external" href="https://github.com/pysal/mapclassify/blob/main/notebooks/value_by_alpha.ipynb">notebooks/value_by_alpha.ipynb</a>.
+Interactive online version:
+<span class="raw-html"><a href="https://mybinder.org/v2/gh/pysal/mapclassify/main?filepath=notebooks/value_by_alpha.ipynb"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" style="vertical-align:text-bottom"></a></span></p>
+</div>
+<section id="Value-by-Alpha-Choropleth">
+<h1>Value-by-Alpha Choropleth<a class="headerlink" href="#Value-by-Alpha-Choropleth" title="Link to this heading">¶</a></h1>
+<p>Value-by-Alpha Choropleth plotting with <code class="docutils literal notranslate"><span class="pre">mapclassify</span></code></p>
+<ul class="simple">
+<li><p><em>This notebook is adapted from one originally written by</em> <a class="reference external" href="https://github.com/slumnitz">&#64;slumnitz</a> in the <code class="docutils literal notranslate"><span class="pre">splot</span></code> project (original <a class="reference external" href="https://github.com/pysal/splot/blob/b8361cb5f4685d0945e08cbf9172ba701ce57c44/notebooks/mapping_vba.ipynb">here</a>).</p></li>
+</ul>
+<section id="Set-up">
+<h2>Set up<a class="headerlink" href="#Set-up" title="Link to this heading">¶</a></h2>
+<section id="Imports">
+<h3>Imports<a class="headerlink" href="#Imports" title="Link to this heading">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import geopandas
+import libpysal
+import matplotlib.pyplot as plt
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Data-Preparation">
+<h3>Data Preparation<a class="headerlink" href="#Data-Preparation" title="Link to this heading">¶</a></h3>
+<p>Load example data into a <code class="docutils literal notranslate"><span class="pre">geopandas.GeoDataFrame</span></code> and inspect column names. In this example we will use the <code class="docutils literal notranslate"><span class="pre">columbus.shp</span></code> file containing neighborhood crime data of 1980.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>link_to_data = libpysal.examples.get_path(&quot;columbus.shp&quot;)
+gdf = geopandas.read_file(link_to_data)
+gdf.columns
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Index([&#39;AREA&#39;, &#39;PERIMETER&#39;, &#39;COLUMBUS_&#39;, &#39;COLUMBUS_I&#39;, &#39;POLYID&#39;, &#39;NEIG&#39;,
+       &#39;HOVAL&#39;, &#39;INC&#39;, &#39;CRIME&#39;, &#39;OPEN&#39;, &#39;PLUMB&#39;, &#39;DISCBD&#39;, &#39;X&#39;, &#39;Y&#39;, &#39;NSA&#39;,
+       &#39;NSB&#39;, &#39;EW&#39;, &#39;CP&#39;, &#39;THOUS&#39;, &#39;NEIGNO&#39;, &#39;geometry&#39;],
+      dtype=&#39;object&#39;)
+</pre></div></div>
+</div>
+<p>Our two variables of interest in <code class="docutils literal notranslate"><span class="pre">gdf</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code>: <code class="docutils literal notranslate"><span class="pre">HOVAL</span></code> – housing value (in $1,000); the rgb variable</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y</span></code>: <code class="docutils literal notranslate"><span class="pre">CRIME</span></code> – residential burglaries and vehicle thefts per 1000 households; the alpha variable</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>x = &quot;HOVAL&quot;
+y = &quot;CRIME&quot;
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="Create-Value-by-Alpha-Choropleths">
+<h2>Create Value-by-Alpha Choropleths<a class="headerlink" href="#Create-Value-by-Alpha-Choropleths" title="Link to this heading">¶</a></h2>
+<section id="What-is-a-Value-by-Alpha-choropleth?">
+<h3>What is a Value by Alpha choropleth?<a class="headerlink" href="#What-is-a-Value-by-Alpha-choropleth?" title="Link to this heading">¶</a></h3>
+<p>In a nutshell, a Value-by-Alpha Choropleth is a bivariate choropleth that uses the values of the second input variable <code class="docutils literal notranslate"><span class="pre">y</span></code> as a transparency mask, determining how much of the choropleth displaying the values of a first variable <code class="docutils literal notranslate"><span class="pre">x</span></code> is shown. In comparison to a cartogram, Value-By-Alpha choropleths will not distort shapes and sizes but modify the alpha channel (transparency) of polygons according to the second input variable <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p>
+<p>Let’s look at a couple of examples.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from mapclassify.value_by_alpha import vba_choropleth
+</pre></div>
+</div>
+</div>
+<p>We can create a value by alpha map using <code class="docutils literal notranslate"><span class="pre">vba_choropleth</span></code>.</p>
+<p>We will plot a Value-by-Alpha Choropleth with <code class="docutils literal notranslate"><span class="pre">x</span></code> (<code class="docutils literal notranslate"><span class="pre">HOVAL</span></code>) defining the rgb values and <code class="docutils literal notranslate"><span class="pre">y</span></code> (<code class="docutils literal notranslate"><span class="pre">CRIME</span></code>) defining the alpha value. For comparison we plot a choropleth of <code class="docutils literal notranslate"><span class="pre">x</span></code> with <code class="docutils literal notranslate"><span class="pre">gdf.plot()</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Create new figure
+fig, axs = plt.subplots(2, 2, figsize=(15, 10))
+
+# use gdf.plot() to create regular choropleth
+axs[0, 0].set_title(&quot;normal Choropleth&quot;)
+axs[0, 0].set_axis_off()
+gdf.plot(column=x, scheme=&quot;quantiles&quot;, cmap=&quot;RdBu&quot;, ax=axs[0, 0])
+
+# use vba_choropleth to create Value-by-Alpha Choropleth
+axs[0, 1].set_title(&quot;Value-by-Alpha Choropleth&quot;)
+axs[0, 1].set_axis_off()
+vba_choropleth(
+    x,
+    y,
+    gdf,
+    x_classification_kwds={&quot;classifier&quot;: &quot;quantiles&quot;},
+    y_classification_kwds={&quot;classifier&quot;: &quot;quantiles&quot;},
+    cmap=&quot;RdBu&quot;,
+    ax=axs[0, 1],
+)
+
+# create a VBA Choropleth - divergent=False, revert_alpha=False
+axs[1, 0].set_title(&quot;divergent=False, revert_alpha=False&quot;)
+axs[1, 0].set_axis_off()
+vba_choropleth(
+    x,
+    y,
+    gdf,
+    x_classification_kwds={&quot;classifier&quot;: &quot;quantiles&quot;},
+    y_classification_kwds={&quot;classifier&quot;: &quot;quantiles&quot;},
+    cmap=&quot;RdBu&quot;,
+    ax=axs[1, 0],
+    divergent=True,
+    revert_alpha=False,
+)
+
+# create a VBA Choropleth - divergent=False, revert_alpha=True
+axs[1, 1].set_title(&quot;divergent=False, revert_alpha=True&quot;)
+axs[1, 1].set_axis_off()
+vba_choropleth(
+    x,
+    y,
+    gdf,
+    x_classification_kwds={&quot;classifier&quot;: &quot;quantiles&quot;},
+    y_classification_kwds={&quot;classifier&quot;: &quot;quantiles&quot;},
+    cmap=&quot;RdBu&quot;,
+    ax=axs[1, 1],
+    divergent=False,
+    revert_alpha=True,
+)
+
+plt.show()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_value_by_alpha_9_0.png" src="../_images/notebooks_value_by_alpha_9_0.png" />
+</div>
+</div>
+<p>You can see the original choropleth is fading into transparency wherever there is a high <code class="docutils literal notranslate"><span class="pre">y</span></code> value.</p>
+<section id="Classification-&amp;-binning-options">
+<h4>Classification &amp; binning options<a class="headerlink" href="#Classification-&-binning-options" title="Link to this heading">¶</a></h4>
+<p>You can use the option to bin or classify your <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> values, and display the alternative color and alpha ranges:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Create new figure
+fig, axs = plt.subplots(2, 2, figsize=(15, 10))
+
+# classify with Quantiles
+axs[0, 0].set_axis_off()
+vba_choropleth(
+    x,
+    y,
+    gdf,
+    cmap=&quot;viridis&quot;,
+    ax=axs[0, 0],
+    x_classification_kwds={&quot;classifier&quot;: &quot;quantiles&quot;, &quot;k&quot;: 3},
+    y_classification_kwds={&quot;classifier&quot;: &quot;quantiles&quot;, &quot;k&quot;: 3},
+)
+
+# classifier with Natural Breaks
+axs[0, 1].set_axis_off()
+vba_choropleth(
+    x,
+    y,
+    gdf,
+    cmap=&quot;viridis&quot;,
+    ax=axs[0, 1],
+    x_classification_kwds={&quot;classifier&quot;: &quot;natural_breaks&quot;},
+    y_classification_kwds={&quot;classifier&quot;: &quot;natural_breaks&quot;},
+)
+
+# classify with Standard Deviation Mean
+axs[1, 0].set_axis_off()
+vba_choropleth(
+    x,
+    y,
+    gdf,
+    cmap=&quot;viridis&quot;,
+    ax=axs[1, 0],
+    x_classification_kwds={&quot;classifier&quot;: &quot;std_mean&quot;},
+    y_classification_kwds={&quot;classifier&quot;: &quot;std_mean&quot;},
+)
+
+# classify with Fisher Jenks
+axs[1, 1].set_axis_off()
+vba_choropleth(
+    x,
+    y,
+    gdf,
+    cmap=&quot;viridis&quot;,
+    ax=axs[1, 1],
+    x_classification_kwds={&quot;classifier&quot;: &quot;fisher_jenks&quot;, &quot;k&quot;: 3},
+    y_classification_kwds={&quot;classifier&quot;: &quot;fisher_jenks&quot;, &quot;k&quot;: 3},
+)
+
+plt.show()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_value_by_alpha_11_0.png" src="../_images/notebooks_value_by_alpha_11_0.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="User-defined-colors">
+<h3>User-defined colors<a class="headerlink" href="#User-defined-colors" title="Link to this heading">¶</a></h3>
+<p>Instead of using a colormap you can also pass a list of colors:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>color_list = [&quot;#a1dab4&quot;, &quot;#41b6c4&quot;, &quot;#225ea8&quot;]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>_, ax = vba_choropleth(
+    x,
+    y,
+    gdf,
+    cmap=color_list,
+    x_classification_kwds={&quot;classifier&quot;: &quot;quantiles&quot;, &quot;k&quot;: 3},
+    y_classification_kwds={&quot;classifier&quot;: &quot;quantiles&quot;},
+)
+ax.set_axis_off()
+plt.show()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_value_by_alpha_14_0.png" src="../_images/notebooks_value_by_alpha_14_0.png" />
+</div>
+</div>
+</section>
+<section id="Transposing-transparency">
+<h3>Transposing transparency<a class="headerlink" href="#Transposing-transparency" title="Link to this heading">¶</a></h3>
+<p>Sometimes it is important in geospatial analysis to actually see the high values and let the small values fade out. With the <code class="docutils literal notranslate"><span class="pre">revert_alpha</span> <span class="pre">=</span> <span class="pre">True</span></code> argument, you can revert the transparency of the <code class="docutils literal notranslate"><span class="pre">y</span></code> values so that high <code class="docutils literal notranslate"><span class="pre">y</span></code> values will more transparent and low values will more opaque.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Create new figure
+fig, axs = plt.subplots(1, 2, figsize=(20, 10))
+
+# create a vba_choropleth
+axs[0].set_title(&quot;revert_alpha = False&quot;)
+axs[0].set_axis_off()
+vba_choropleth(
+    x,
+    y,
+    gdf,
+    x_classification_kwds={&quot;classifier&quot;: &quot;quantiles&quot;},
+    y_classification_kwds={&quot;classifier&quot;: &quot;quantiles&quot;},
+    cmap=&quot;RdBu&quot;,
+    ax=axs[0],
+    revert_alpha=False,
+)
+
+# set revert_alpha argument to True
+axs[1].set_title(&quot;revert_alpha = True&quot;)
+axs[1].set_axis_off()
+vba_choropleth(
+    x,
+    y,
+    gdf,
+    x_classification_kwds={&quot;classifier&quot;: &quot;quantiles&quot;},
+    y_classification_kwds={&quot;classifier&quot;: &quot;quantiles&quot;},
+    cmap=&quot;RdBu&quot;,
+    ax=axs[1],
+    revert_alpha=True,
+)
+
+plt.show()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_value_by_alpha_16_0.png" src="../_images/notebooks_value_by_alpha_16_0.png" />
+</div>
+</div>
+</section>
+<section id="Displaying-divergency">
+<h3>Displaying divergency<a class="headerlink" href="#Displaying-divergency" title="Link to this heading">¶</a></h3>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">divergent</span></code> argument to display divergent alpha values. This means values at the extremes of your data range will be displayed with an alpha value of 1. Values towards the middle of your data range will be mapped increasingly transparent approaching an alpha value of 0.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># create new figure
+fig, axs = plt.subplots(1, 2, figsize=(20, 10))
+
+# create a vba_choropleth
+axs[0].set_title(&quot;divergent = False&quot;)
+axs[0].set_axis_off()
+vba_choropleth(x, y, gdf, cmap=&quot;RdBu&quot;, divergent=False, ax=axs[0])
+
+# set divergent to True
+axs[1].set_title(&quot;divergent = True&quot;)
+axs[1].set_axis_off()
+vba_choropleth(x, y, gdf, cmap=&quot;RdBu&quot;, divergent=True, ax=axs[1])
+
+plt.show()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_value_by_alpha_18_0.png" src="../_images/notebooks_value_by_alpha_18_0.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="Create-your-own-cmap-for-plotting">
+<h2>Create your own cmap for plotting<a class="headerlink" href="#Create-your-own-cmap-for-plotting" title="Link to this heading">¶</a></h2>
+<section id="Colormap-shifting">
+<h3>Colormap shifting<a class="headerlink" href="#Colormap-shifting" title="Link to this heading">¶</a></h3>
+<p>Sometimes you need to display divergent values with a natural midpoint not overlapping with the median of your data. For example, if you measure the temperature over a country ranging from -2 to 10 degrees Celsius. Or if you need to assess whether a certain threshold is reached.</p>
+<p>For cases like this, we can use <code class="docutils literal notranslate"><span class="pre">shift_colormap</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from mapclassify.value_by_alpha import shift_colormap
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># shift the midpoint to the 80th percentile of your datarange
+mid08 = shift_colormap(&quot;RdBu&quot;, midpoint=0.8, name=&quot;RdBu_08&quot;)
+mid08
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div style="vertical-align: middle;"><strong>RdBu_08</strong> </div><div class="cmap"><img alt="RdBu_08 colormap" title="RdBu_08" style="border: 1px solid #555;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAABACAYAAABsv8+/AAAAFnRFWHRUaXRsZQBSZEJ1XzA4IGNvbG9ybWFwFjS1lAAAABx0RVh0RGVzY3JpcHRpb24AUmRCdV8wOCBjb2xvcm1hcLEaBO0AAAAxdEVYdEF1dGhvcgBNYXRwbG90bGliIHYzLjEwLjMsIGh0dHBzOi8vbWF0cGxvdGxpYi5vcmeGenhVAAAAM3RFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHYzLjEwLjMsIGh0dHBzOi8vbWF0cGxvdGxpYi5vcmcjXmuhAAACVklEQVR4nO3WS3KjMBQFUMFGsrze/8yODfTAAgphBae6Z/eciaKnP6lU7vCnfC2llDKUl7H+MG79oem/2qFTP61b51/s1z3nl+uGi3v03jVc3KNd1ztnGNf2uPFe77Trezvj/X3W4c/OKRfnnPd5P/9f77Ov79ynDgz7L7r2x8P+vfppXbPffo/39XW/8zt75x/POdX/971769rvtt2nec+p3r73fb2dP3Tq/X2O32ff5+dzPt1vuDin+30632n/g2nnvx9fTvWr/eq6Mr6t988Z39bP84/7Lr+c31/38/nb/Oo513ZZSimlTPNyrK/9bbypN+33tLbzob1v/Tr+nD+ad39MpZRSbo+5ttOhva/159SMz828V/uo9ame/6z1tb/X134dr/3nOm9b93i13/daf7Xz49bUb8fxTn2ZnqWU/f8XABBEAACAQAIAAAQSAAAgkAAAAIEEAAAIJAAAQCABAAACCQAAEEgAAIBAAgAABBIAACCQAAAAgQQAAAgkAABAIAEAAAIJAAAQSAAAgEACAAAEEgAAIJAAAACBBAAACCQAAEAgAQAAAgkAABBIAACAQAIAAAQSAAAgkAAAAIEEAAAIJAAAQCABAAACCQAAEEgAAIBAAgAABBIAACCQAAAAgQQAAAgkAABAIAEAAAIJAAAQSAAAgEACAAAEEgAAIJAAAACBBAAACCQAAEAgAQAAAgkAABBIAACAQAIAAAQSAAAgkAAAAIEEAAAIJAAAQCABAAACCQAAEEgAAIBAAgAABBIAACCQAAAAgQQAAAgkAABAoL/1Ep4V0UaZuwAAAABJRU5ErkJggg=="></div><div style="vertical-align: middle; max-width: 514px; display: flex; justify-content: space-between;"><div style="float: left;"><div title="#67001fff" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #67001fff;"></div> under</div><div style="margin: 0 auto; display: inline-block;">bad <div title="#00000000" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #00000000;"></div></div><div style="float: right;">over <div title="#053061ff" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #053061ff;"></div></div></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># shift the midpoint to the 20th percentile of your datarange
+mid02 = shift_colormap(&quot;RdBu&quot;, midpoint=0.2, name=&quot;RdBu_02&quot;)
+mid02
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div style="vertical-align: middle;"><strong>RdBu_02</strong> </div><div class="cmap"><img alt="RdBu_02 colormap" title="RdBu_02" style="border: 1px solid #555;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAABACAYAAABsv8+/AAAAFnRFWHRUaXRsZQBSZEJ1XzAyIGNvbG9ybWFwARYlXQAAABx0RVh0RGVzY3JpcHRpb24AUmRCdV8wMiBjb2xvcm1hcKY4lCQAAAAxdEVYdEF1dGhvcgBNYXRwbG90bGliIHYzLjEwLjMsIGh0dHBzOi8vbWF0cGxvdGxpYi5vcmeGenhVAAAAM3RFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHYzLjEwLjMsIGh0dHBzOi8vbWF0cGxvdGxpYi5vcmcjXmuhAAACRUlEQVR4nO3WTXbaMABGUWEMZBddXve/AbkD26SSUU160km/eyeqflDUhMG7/Cw/llJKeUyX8vv4cW3nn+tTO9/3u/Pz/bqOH/M6Ptb5dRvnx9zN9/3R+VsppZRpG6/7eL+388O47d/b9Wn73OX+WMfbPrbr5dbvb+P++W1e5nVeruv9yzaW69zMl+nWnZvb+bSP6/97WXfLsv1jPF/a+cm5Mto/rC9v/vzu/OBcOXv3t72nvbcu7fph/jzX3l+/+5593r1zeG9p5//sntNz23pt1/tztQ7W+/N1sH5yz/gdf/mes3tO3vnue57fx9p9f7u/Q1lG+9365x/s9f5gfrj/7fe8eX89effwXd3+4F1lqdu8dr+Hfr3+cf1wX23PHde/er773GG9Dta/ev75xXu53v8eetPLVQDgvyYAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQAIAAAIJAAAIJAAAIJAAAIBAAgAAAgkAAAgkAAAgkAAAgEACAAACCQAACCQAACCQAACAQL8Al0vbJJqDCXMAAAAASUVORK5CYII="></div><div style="vertical-align: middle; max-width: 514px; display: flex; justify-content: space-between;"><div style="float: left;"><div title="#67001fff" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #67001fff;"></div> under</div><div style="margin: 0 auto; display: inline-block;">bad <div title="#00000000" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #00000000;"></div></div><div style="float: right;">over <div title="#053061ff" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #053061ff;"></div></div></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># create new figure
+fig, axs = plt.subplots(1, 2, figsize=(20, 10))
+
+# vba_choropleth with cmap mid08
+vba_choropleth(x, y, gdf, cmap=mid08, ax=axs[0], divergent=True)
+axs[0].set_axis_off()
+
+# vba_choropleth with cmap mid02
+vba_choropleth(x, y, gdf, cmap=mid02, ax=axs[1], divergent=True)
+axs[1].set_axis_off()
+
+plt.show()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_value_by_alpha_23_0.png" src="../_images/notebooks_value_by_alpha_23_0.png" />
+</div>
+</div>
+</section>
+<section id="Colormap-truncation">
+<h3>Colormap truncation<a class="headerlink" href="#Colormap-truncation" title="Link to this heading">¶</a></h3>
+<p>You may also want to truncate minimum and maximum values for demonstrative or merely aesthetic purposes.</p>
+<p>For cases like this, we can use <code class="docutils literal notranslate"><span class="pre">truncate_colormap</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from mapclassify.value_by_alpha import truncate_colormap
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># truncate to the 20th-60th percentile of your datarange
+trunc0206 = truncate_colormap(&quot;RdBu&quot;, minval=0.2, maxval=0.6, n=2)
+trunc0206
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div style="vertical-align: middle;"><strong>trunc(RdBu,0.20,0.60)</strong> </div><div class="cmap"><img alt="trunc(RdBu,0.20,0.60) colormap" title="trunc(RdBu,0.20,0.60)" style="border: 1px solid #555;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAABACAYAAABsv8+/AAAAJHRFWHRUaXRsZQB0cnVuYyhSZEJ1LDAuMjAsMC42MCkgY29sb3JtYXA5eBZGAAAAKnRFWHREZXNjcmlwdGlvbgB0cnVuYyhSZEJ1LDAuMjAsMC42MCkgY29sb3JtYXAuguzTAAAAMXRFWHRBdXRob3IATWF0cGxvdGxpYiB2My4xMC4zLCBodHRwczovL21hdHBsb3RsaWIub3Jnhnp4VQAAADN0RVh0U29mdHdhcmUATWF0cGxvdGxpYiB2My4xMC4zLCBodHRwczovL21hdHBsb3RsaWIub3JnI15roQAAAYlJREFUeJzt1ltqg0AAQNGx++seuupuZ/ITEpJSJKiN5Z7zI8KMMoyPu3x/fc4xxpjjalnGg9v58nC4n786fuv8X8Yfdd2j17Fy3bnbOrbOfxr/rn3eOn+nff75vhy8jnft89b7/fE+z72ey7M8r6+u46Tv3Vxbx1m/z2vj/8t/5nn89fgxAIAcAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAg6AKFJwklx0Do9QAAAABJRU5ErkJggg=="></div><div style="vertical-align: middle; max-width: 514px; display: flex; justify-content: space-between;"><div style="float: left;"><div title="#d6604dff" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #d6604dff;"></div> under</div><div style="margin: 0 auto; display: inline-block;">bad <div title="#00000000" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #00000000;"></div></div><div style="float: right;">over <div title="#d1e5f0ff" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #d1e5f0ff;"></div></div></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># truncate to the 40th-90th percentile of your datarange
+trunc0409 = truncate_colormap(&quot;RdBu&quot;, minval=0.4, maxval=0.9, n=2)
+trunc0409
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div style="vertical-align: middle;"><strong>trunc(RdBu,0.40,0.90)</strong> </div><div class="cmap"><img alt="trunc(RdBu,0.40,0.90) colormap" title="trunc(RdBu,0.40,0.90)" style="border: 1px solid #555;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAABACAYAAABsv8+/AAAAJHRFWHRUaXRsZQB0cnVuYyhSZEJ1LDAuNDAsMC45MCkgY29sb3JtYXDs2D4/AAAAKnRFWHREZXNjcmlwdGlvbgB0cnVuYyhSZEJ1LDAuNDAsMC45MCkgY29sb3JtYXD7IsSqAAAAMXRFWHRBdXRob3IATWF0cGxvdGxpYiB2My4xMC4zLCBodHRwczovL21hdHBsb3RsaWIub3Jnhnp4VQAAADN0RVh0U29mdHdhcmUATWF0cGxvdGxpYiB2My4xMC4zLCBodHRwczovL21hdHBsb3RsaWIub3JnI15roQAAAdxJREFUeJzt1kFO4zAAQFEP978Xh5izoLAARmpa106Z3X9vgWSltlOntP/Px9/3Y4wxjuMYY4zx9XeM7+FyPP6Nr80f09ftrTOf/zN+vM563mSd1fzl/R5Pr0/PaXU+y31n15+f892+F9eZ7zsb3058/Zw2z3l5v3vr3D+f8/j587rfd2+d5b7T+33t/3x6zpfnna9vnvNyn8frrJ/PeXz6HG7PO+978Zyn9/ufz/nyvMk6q8/v5jrXn8/tDV/f9/aF298X5/c7eT+v/179jB9/X/z6czx5/dsAAHIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAICgTxsGc7xDLlDzAAAAAElFTkSuQmCC"></div><div style="vertical-align: middle; max-width: 514px; display: flex; justify-content: space-between;"><div style="float: left;"><div title="#fddbc7ff" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #fddbc7ff;"></div> under</div><div style="margin: 0 auto; display: inline-block;">bad <div title="#00000000" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #00000000;"></div></div><div style="float: right;">over <div title="#2065abff" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #2065abff;"></div></div></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># create new figure
+fig, axs = plt.subplots(1, 2, figsize=(20, 10))
+
+# vba_choropleth with cmap trunc0206
+vba_choropleth(x, y, gdf, cmap=trunc0206, ax=axs[0], divergent=True)
+axs[0].set_axis_off()
+
+# vba_choropleth with cmap trunc0409
+vba_choropleth(x, y, gdf, cmap=trunc0409, ax=axs[1], divergent=True)
+axs[1].set_axis_off()
+
+plt.show()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_value_by_alpha_28_0.png" src="../_images/notebooks_value_by_alpha_28_0.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="Add-a-legend">
+<h2>Add a legend<a class="headerlink" href="#Add-a-legend" title="Link to this heading">¶</a></h2>
+<p>If your values are classified, you have the option to add a legend to your map.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig = plt.figure(figsize=(15, 10))
+ax = fig.add_subplot(111)
+
+gdf.plot(ax=ax, fc=&quot;none&quot;, ec=&quot;k&quot;, lw=0.1)
+vba_choropleth(
+    x,
+    y,
+    gdf,
+    ax=ax,
+    x_classification_kwds={&quot;classifier&quot;: &quot;quantiles&quot;, &quot;k&quot;: 5},
+    y_classification_kwds={&quot;classifier&quot;: &quot;quantiles&quot;, &quot;k&quot;: 5},
+    legend=True,
+    legend_kwargs={&quot;x_label&quot;: x, &quot;y_label&quot;: y},
+)
+ax.set_axis_off()
+
+plt.show()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_value_by_alpha_30_0.png" src="../_images/notebooks_value_by_alpha_30_0.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../_sources/notebooks/value_by_alpha.ipynb.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-, pysal developers.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

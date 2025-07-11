@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Using legendgram as a map legend &#8212; mapclassify v2.10.0 Manual</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css?v=9afac83c" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pysal-styles.css?v=0c2123f2" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <script src="../_static/documentation_options.js?v=67920a36"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/pysal_favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Value-by-Alpha Choropleth" href="value_by_alpha.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="08_manual_coloring.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          mapclassify</a>
+        <span class="navbar-text navbar-version pull-left"><b>2.10.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../installation.html">Installation</a></li>
+                <li><a href="../tutorial.html">Tutorial</a></li>
+                <li><a href="../api.html">API</a></li>
+                <li><a href="../references.html">References</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-released-version">Installing released version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#installing-development-version">Installing development version</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01_maximum_breaks.html">Introduction to mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02_legends.html">Legends in mapclassify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_choropleth.html">Choropleth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04_pooled.html">Pooled Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05_Greedy_coloring.html">Getting started with mapclassify.greedy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_api.html">Overview of the mapclassify API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_api.html#Original-API-(&lt;-2.4.0)">Original API (&lt; 2.4.0)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06_api.html#Extended-API-(&gt;=-2.40)">Extended API (&gt;= 2.40)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Using legendgram as a map legend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="value_by_alpha.html">Value-by-Alpha Choropleth</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#classifiers">Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Using legendgram as a map legend</a><ul>
+<li><a class="reference internal" href="#Using-legendgrams-with-plots-can-be-simple:">Using legendgrams with plots can be simple:</a></li>
+<li><a class="reference internal" href="#but-you-can-also-tweak-quite-a-bit,-like-the-size-&amp;-location:">but you can also tweak quite a bit, like the size &amp; location:</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="admonition note">
+<p>This page was generated from <a class="reference external" href="https://github.com/pysal/mapclassify/blob/main/notebooks/09_legendgram.ipynb">notebooks/09_legendgram.ipynb</a>.
+Interactive online version:
+<span class="raw-html"><a href="https://mybinder.org/v2/gh/pysal/mapclassify/main?filepath=notebooks/09_legendgram.ipynb"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" style="vertical-align:text-bottom"></a></span></p>
+</div>
+<section id="Using-legendgram-as-a-map-legend">
+<h1>Using legendgram as a map legend<a class="headerlink" href="#Using-legendgram-as-a-map-legend" title="Link to this heading">¶</a></h1>
+<p>With mapclassify, you can replace standard legend with one composed of a histogram of the values showed in the colors you can see in the map.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import geopandas as gpd
+from libpysal import examples
+
+import mapclassify
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>gdf = gpd.read_file(examples.get_path(&quot;NAT.shp&quot;)).to_crs(epsg=5070)
+gdf.head()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>NAME</th>
+      <th>STATE_NAME</th>
+      <th>STATE_FIPS</th>
+      <th>CNTY_FIPS</th>
+      <th>FIPS</th>
+      <th>STFIPS</th>
+      <th>COFIPS</th>
+      <th>FIPSNO</th>
+      <th>SOUTH</th>
+      <th>HR60</th>
+      <th>...</th>
+      <th>BLK90</th>
+      <th>GI59</th>
+      <th>GI69</th>
+      <th>GI79</th>
+      <th>GI89</th>
+      <th>FH60</th>
+      <th>FH70</th>
+      <th>FH80</th>
+      <th>FH90</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Lake of the Woods</td>
+      <td>Minnesota</td>
+      <td>27</td>
+      <td>077</td>
+      <td>27077</td>
+      <td>27</td>
+      <td>77</td>
+      <td>27077</td>
+      <td>0</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.024534</td>
+      <td>0.285235</td>
+      <td>0.372336</td>
+      <td>0.342104</td>
+      <td>0.336455</td>
+      <td>11.279621</td>
+      <td>5.4</td>
+      <td>5.663881</td>
+      <td>9.515860</td>
+      <td>POLYGON ((49050.745 2838555.999, 49054.346 285...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Ferry</td>
+      <td>Washington</td>
+      <td>53</td>
+      <td>019</td>
+      <td>53019</td>
+      <td>53</td>
+      <td>19</td>
+      <td>53019</td>
+      <td>0</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.317712</td>
+      <td>0.256158</td>
+      <td>0.360665</td>
+      <td>0.361928</td>
+      <td>0.360640</td>
+      <td>10.053476</td>
+      <td>2.6</td>
+      <td>10.079576</td>
+      <td>11.397059</td>
+      <td>POLYGON ((-1704187.741 2978490.561, -1690089.6...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Stevens</td>
+      <td>Washington</td>
+      <td>53</td>
+      <td>065</td>
+      <td>53065</td>
+      <td>53</td>
+      <td>65</td>
+      <td>53065</td>
+      <td>0</td>
+      <td>1.863863</td>
+      <td>...</td>
+      <td>0.210030</td>
+      <td>0.283999</td>
+      <td>0.394083</td>
+      <td>0.357566</td>
+      <td>0.369942</td>
+      <td>9.258437</td>
+      <td>5.6</td>
+      <td>6.812127</td>
+      <td>10.352015</td>
+      <td>POLYGON ((-1598348.829 2964085.947, -1605943.0...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Okanogan</td>
+      <td>Washington</td>
+      <td>53</td>
+      <td>047</td>
+      <td>53047</td>
+      <td>53</td>
+      <td>47</td>
+      <td>53047</td>
+      <td>0</td>
+      <td>2.612330</td>
+      <td>...</td>
+      <td>0.155922</td>
+      <td>0.258540</td>
+      <td>0.371218</td>
+      <td>0.381240</td>
+      <td>0.394519</td>
+      <td>9.039900</td>
+      <td>8.1</td>
+      <td>10.084926</td>
+      <td>12.840340</td>
+      <td>POLYGON ((-1713271.344 2979541.451, -1712880.7...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Pend Oreille</td>
+      <td>Washington</td>
+      <td>53</td>
+      <td>051</td>
+      <td>53051</td>
+      <td>53</td>
+      <td>51</td>
+      <td>53051</td>
+      <td>0</td>
+      <td>0.000000</td>
+      <td>...</td>
+      <td>0.134605</td>
+      <td>0.243263</td>
+      <td>0.365614</td>
+      <td>0.358706</td>
+      <td>0.387848</td>
+      <td>8.243930</td>
+      <td>4.1</td>
+      <td>7.557643</td>
+      <td>10.313002</td>
+      <td>POLYGON ((-1574802.183 3066600.159, -1545432.6...</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 70 columns</p>
+</div></div>
+</div>
+<section id="Using-legendgrams-with-plots-can-be-simple:">
+<h2>Using legendgrams with plots can be simple:<a class="headerlink" href="#Using-legendgrams-with-plots-can-be-simple:" title="Link to this heading">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ax = gdf.plot(&quot;GI89&quot;)
+ax.axis(&quot;off&quot;)
+classifier = mapclassify.EqualInterval(gdf[&quot;GI89&quot;], k=100)
+classifier.plot_legendgram(ax=ax)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesHostAxes: &gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_09_legendgram_4_1.png" src="../_images/notebooks_09_legendgram_4_1.png" />
+</div>
+</div>
+</section>
+<section id="but-you-can-also-tweak-quite-a-bit,-like-the-size-&amp;-location:">
+<h2>but you can also tweak quite a bit, like the size &amp; location:<a class="headerlink" href="#but-you-can-also-tweak-quite-a-bit,-like-the-size-&-location:" title="Link to this heading">¶</a></h2>
+<p>We’ll make the legend a little longer &amp; shorter, as well as moving it to the lower right:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ax = gdf.plot(&quot;GI89&quot;)
+ax.axis(&quot;off&quot;)
+classifier = mapclassify.EqualInterval(gdf[&quot;GI89&quot;], k=100)
+classifier.plot_legendgram(ax=ax, legend_size=(&quot;60%&quot;, &quot;12%&quot;), loc=&quot;lower right&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesHostAxes: &gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_09_legendgram_7_1.png" src="../_images/notebooks_09_legendgram_7_1.png" />
+</div>
+</div>
+<p>We can clip the display to a smaller range to cut off any dangling long tails and use different scheme:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ax = gdf.plot(&quot;GI89&quot;, scheme=&quot;Quantiles&quot;)
+ax.axis(&quot;off&quot;)
+classifier = mapclassify.Quantiles(gdf[&quot;GI89&quot;])
+hax = classifier.plot_legendgram(
+    ax=ax,
+    legend_size=(&quot;50%&quot;, &quot;12%&quot;),
+    loc=&quot;lower left&quot;,
+    clip=(0.3, 0.5),
+    vlines=True,
+)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_09_legendgram_9_0.png" src="../_images/notebooks_09_legendgram_9_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ret = hax.hist(classifier.y, bins=50, color=&quot;0.1&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ret[2]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;BarContainer object of 50 artists&gt;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>hax.get_ylim()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(np.float64(0.0), np.float64(237.0375))
+</pre></div></div>
+</div>
+<p>When calling <code class="docutils literal notranslate"><span class="pre">plot_legendgram()</span></code> the most recently plotted <code class="docutils literal notranslate"><span class="pre">cmap</span></code> is used unless otherwise stipulated:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ax = gdf.plot(&quot;GI89&quot;, cmap=&quot;plasma&quot;, scheme=&quot;Quantiles&quot;)
+ax.axis(&quot;off&quot;)
+classifier = mapclassify.Quantiles(gdf[&quot;GI89&quot;])
+hax = classifier.plot_legendgram(
+    ax=ax,
+    legend_size=(&quot;15%&quot;, &quot;30%&quot;),
+    loc=&quot;lower right&quot;,
+    clip=(0.3, 0.4),
+)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_09_legendgram_14_0.png" src="../_images/notebooks_09_legendgram_14_0.png" />
+</div>
+</div>
+<p>Further, you can work directly on the Axes, if you prefer very fine-grained control over the plot parameters. <code class="docutils literal notranslate"><span class="pre">legendgram</span></code> returns the Axes on which the legendgram was plotted, so you can modify it after the fact:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>riverside_loc = gdf.iloc[2255]
+riverside = gpd.GeoDataFrame(riverside_loc.to_frame().T)
+riverside
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>NAME</th>
+      <th>STATE_NAME</th>
+      <th>STATE_FIPS</th>
+      <th>CNTY_FIPS</th>
+      <th>FIPS</th>
+      <th>STFIPS</th>
+      <th>COFIPS</th>
+      <th>FIPSNO</th>
+      <th>SOUTH</th>
+      <th>HR60</th>
+      <th>...</th>
+      <th>BLK90</th>
+      <th>GI59</th>
+      <th>GI69</th>
+      <th>GI79</th>
+      <th>GI89</th>
+      <th>FH60</th>
+      <th>FH70</th>
+      <th>FH80</th>
+      <th>FH90</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2255</th>
+      <td>Riverside</td>
+      <td>California</td>
+      <td>06</td>
+      <td>065</td>
+      <td>06065</td>
+      <td>6</td>
+      <td>65</td>
+      <td>6065</td>
+      <td>0</td>
+      <td>4.898903</td>
+      <td>...</td>
+      <td>5.43321</td>
+      <td>0.284</td>
+      <td>0.376737</td>
+      <td>0.383226</td>
+      <td>0.368177</td>
+      <td>9.769959</td>
+      <td>9.2</td>
+      <td>11.145612</td>
+      <td>12.67834</td>
+      <td>POLYGON ((-1841135.909 1346087.732, -1926639.5...</td>
+    </tr>
+  </tbody>
+</table>
+<p>1 rows × 70 columns</p>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ax = gdf.plot(&quot;GI89&quot;, cmap=&quot;Blues&quot;, figsize=(10, 10))
+ax.axis(&quot;off&quot;)
+classifier = mapclassify.EqualInterval(gdf[&quot;GI89&quot;], k=100)
+hax = classifier.plot_legendgram(ax=ax, legend_size=(&quot;65%&quot;, &quot;25%&quot;))
+
+# riverside in red
+riverside.plot(&quot;GI89&quot;, linewidth=2, edgecolor=&quot;r&quot;, ax=ax)
+# mark Riverside&#39;s Gini in the legend
+hax.vlines(riverside_loc[&quot;GI89&quot;], 0, 1, color=&quot;r&quot;, transform=hax.transAxes)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.collections.LineCollection at 0x156340690&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_09_legendgram_17_1.png" src="../_images/notebooks_09_legendgram_17_1.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../_sources/notebooks/09_legendgram.ipynb.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2018-, pysal developers.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
