@@ -11,4 +11,6 @@ Tutorial
     notebooks/04_pooled.ipynb
     notebooks/05_Greedy_coloring.ipynb
     notebooks/06_api.ipynb
-
+    notebooks/08_manual_coloring.ipynb
+    notebooks/09_legendgram.ipynb
+    notebooks/value_by_alpha.ipynb
