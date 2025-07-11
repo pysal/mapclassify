@@ -276,7 +276,7 @@ def greedy(
         try:
             import networkx as nx
 
-            STRATEGIES = nx.algorithms.coloring.greedy_coloring.STRATEGIES.keys()
+            STRATEGIES = nx.algorithms.coloring.greedy_coloring.STRATEGIES.keys()  # noqa: N806
 
         except ImportError:
             raise ImportError("The 'networkx' package is required.") from None

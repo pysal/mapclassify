@@ -77,7 +77,7 @@ class Pooled:
 
     """
 
-    def __init__(self, Y, classifier="Quantiles", **kwargs):
+    def __init__(self, Y, classifier="Quantiles", **kwargs):  # noqa: N803
         method = classifier.lower()
         valid_methods = list(dispatcher.keys())
         if method not in valid_methods:
@@ -87,9 +87,9 @@ class Pooled:
             )
 
         self.__dict__.update(kwargs)
-        Y = numpy.asarray(Y)
-        n, cols = Y.shape
-        y = numpy.reshape(Y, (-1, 1), order="f")
+        _y = numpy.asarray(Y)
+        n, cols = _y.shape
+        y = numpy.reshape(_y, (-1, 1), order="f")
         ymin = y.min()
         global_classifier = dispatcher[method](y, **kwargs)
         # self.k = global_classifier.k
