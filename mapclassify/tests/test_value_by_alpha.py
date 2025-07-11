@@ -1,5 +1,3 @@
-import copy
-
 import geopandas
 import libpysal
 import matplotlib
@@ -52,8 +50,8 @@ class TestValueByAlphaChoropleth:
             self.x,
             self.y,
             self.gdf,
-            x_classification_kwds=dict(classifier="fisher_jenks", k=3),
-            y_classification_kwds=dict(classifier="fisher_jenks", k=3),
+            x_classification_kwds={"classifier": "fisher_jenks", "k": 3},
+            y_classification_kwds={"classifier": "fisher_jenks", "k": 3},
             cmap="berlin",
             divergent=True,
             revert_alpha=True,

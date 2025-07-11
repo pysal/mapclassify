@@ -9,10 +9,9 @@ from matplotlib.testing.decorators import image_comparison
 from mapclassify import EqualInterval, Quantiles
 from mapclassify.legendgram import _legendgram
 
-
-
 no_data_warning = pytest.warns(
-    UserWarning, match="There is no data associated with the `ax`",
+    UserWarning,
+    match="There is no data associated with the `ax`",
 )
 
 
@@ -98,7 +97,9 @@ class TestLegendgram:
         """Test legendgram with vertical lines"""
         _, ax = plt.subplots(figsize=(8, 6))
         with no_data_warning:
-            _legendgram(self.classifier, ax=ax, vlines=True, vlinecolor="red", vlinewidth=2)
+            _legendgram(
+                self.classifier, ax=ax, vlines=True, vlinecolor="red", vlinewidth=2
+            )
 
     @image_comparison(["legendgram_cmap"], **pytest.image_comp_kws)
     def test_legendgram_cmap(self):
@@ -138,7 +139,10 @@ class TestLegendgram:
         _, ax = plt.subplots(figsize=(8, 6))
         with no_data_warning:
             _legendgram(
-                self.classifier, ax=ax, legend_size=("20%", "30%"), orientation="horizontal"
+                self.classifier,
+                ax=ax,
+                legend_size=("20%", "30%"),
+                orientation="horizontal",
             )
 
     @image_comparison(["legendgram_most_recent_cmap"], **pytest.image_comp_kws)
