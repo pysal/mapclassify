@@ -86,7 +86,7 @@ def _legendgram(
         histax = f.add_axes(histpos)
     else:
         histax = ax
-    N, bins, patches = histax.hist(classifier.y, bins=bins, color="0.1", **kwargs)
+    _, bins, patches = histax.hist(classifier.y, bins=bins, color="0.1", **kwargs)
 
     colors = [cmap(i) for i in np.linspace(0, 1, k)]
 
@@ -99,7 +99,7 @@ def _legendgram(
     histax.set_frame_on(frameon)
     histax.get_yaxis().set_visible(False)
     if tick_params is None:
-        tick_params = dict()
+        tick_params = {}
     if vlines:
         lim = histax.get_ylim()[1]
         # plot upper limit of each bin

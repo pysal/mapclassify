@@ -428,7 +428,7 @@ def bin1d(x, bins):
     Returns
     -------
 
-    binIds : numpy.array
+    bin_ids : numpy.array
         1-d array of integer bin IDs.
     counts : int
         Number of elements of ``x`` falling in each bin.
@@ -440,8 +440,8 @@ def bin1d(x, bins):
     >>> import mapclassify
     >>> x = numpy.arange(100, dtype = "float")
     >>> bins = [25, 74, 100]
-    >>> binIds, counts = mapclassify.classifiers.bin1d(x, bins)
-    >>> binIds
+    >>> bin_ids, counts = mapclassify.classifiers.bin1d(x, bins)
+    >>> bin_ids
     array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
            0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -457,13 +457,13 @@ def bin1d(x, bins):
     right = bins
     cuts = list(zip(left, right, strict=False))
     k = len(bins)
-    binIds = np.zeros(x.shape, dtype="int")
+    bin_ids = np.zeros(x.shape, dtype="int")
     while cuts:
         k -= 1
         _l, r = cuts.pop(-1)
-        binIds += (x > _l) * (x <= r) * k
-    counts = np.bincount(binIds, minlength=len(bins))
-    return (binIds, counts)
+        bin_ids += (x > _l) * (x <= r) * k
+    counts = np.bincount(bin_ids, minlength=len(bins))
+    return (bin_ids, counts)
 
 
 def _pretty_number(x, rounded=True):
@@ -632,10 +632,10 @@ def _fisher_jenks_means(values, classes=5):
     kclass = np.zeros(classes + 1, dtype=values.dtype)
     kclass[classes] = values[len(values) - 1]
     kclass[0] = values[0]
-    for countNum in range(classes, 1, -1):
-        pivot = mat1[k, countNum]
+    for count_num in range(classes, 1, -1):
+        pivot = mat1[k, count_num]
         _id = int(pivot - 2)
-        kclass[countNum - 1] = values[_id]
+        kclass[count_num - 1] = values[_id]
         k = int(pivot - 1)
     return np.delete(kclass, 0)
 
