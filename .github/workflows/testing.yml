@@ -33,13 +33,13 @@ jobs:
           ]
         include:
           - environment-file: 313-latest
-            os: macos-13 # Intel
+            os: macos-15-intel # Intel
           - environment-file: 313-numba-latest
-            os: macos-13 # Intel
+            os: macos-15-intel # Intel
           - environment-file: 313-latest
-            os: macos-14 # Apple Silicon
+            os: macos-latest # Apple Silicon
           - environment-file: 313-numba-latest
-            os: macos-14 # Apple Silicon
+            os: macos-latest # Apple Silicon
           - environment-file: 313-latest
             os: windows-latest
           - environment-file: 313-numba-latest
