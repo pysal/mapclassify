@@ -12,13 +12,15 @@ dependencies:
   - pyproj
   - pip
   - pip:
-      - --pre --index-url https://pypi.anaconda.org/scientific-python-nightly-wheels/simple --extra-index-url https://pypi.org/simple
+      - --pre \
+        --index-url https://pypi.anaconda.org/scientific-python-nightly-wheels/simple \
+        --extra-index-url \
+        https://pypi.org/simple
+      - matplotlib
+      - networkx
+      - pandas
       - scipy
       - scikit-learn
-      - pandas
-      - networkx
-      - matplotlib
       - shapely
-      - fiona
-      - git+https://github.com/pysal/libpysal.git@main
       - git+https://github.com/geopandas/geopandas.git@main
+      - git+https://github.com/pysal/libpysal.git@main
