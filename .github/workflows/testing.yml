@@ -29,20 +29,22 @@ jobs:
             312-numba-latest,
             313-latest,
             313-numba-latest,
-            313-dev,
+            314-latest,
+            314-numba-latest,
+            314-dev,
           ]
         include:
-          - environment-file: 313-latest
+          - environment-file: 314-latest
             os: macos-15-intel # Intel
-          - environment-file: 313-numba-latest
+          - environment-file: 314-numba-latest
             os: macos-15-intel # Intel
-          - environment-file: 313-latest
+          - environment-file: 314-latest
             os: macos-latest # Apple Silicon
-          - environment-file: 313-numba-latest
+          - environment-file: 314-numba-latest
             os: macos-latest # Apple Silicon
-          - environment-file: 313-latest
+          - environment-file: 314-latest
             os: windows-latest
-          - environment-file: 313-numba-latest
+          - environment-file: 314-numba-latest
             os: windows-latest
       fail-fast: false
 
@@ -113,7 +115,7 @@ jobs:
         if: matrix.os == 'windows-latest' && (success() || failure())
 
       - name: archive & upload resultant image comparisons
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: result_images-${{ matrix.os }}-${{ matrix.environment-file }}
           path: result_images.zip
