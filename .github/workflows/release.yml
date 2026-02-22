@@ -15,6 +15,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # MANDATORY for trusted publishing to PyPI
+      contents: write  # MANDATORY for the Github release action
+
     steps:
     - name: Checkout repo
       uses: actions/checkout@v6
@@ -42,6 +46,3 @@ jobs:
    
     - name: Publish distribution 📦 to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_PASSWORD }}
