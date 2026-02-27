@@ -115,7 +115,7 @@ jobs:
         if: matrix.os == 'windows-latest' && (success() || failure())
 
       - name: archive & upload resultant image comparisons
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: result_images-${{ matrix.os }}-${{ matrix.environment-file }}
           path: result_images.zip
