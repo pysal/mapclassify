@@ -3207,9 +3207,8 @@ class MaximumLikelihood(MapClassifier):
         breaks_idx = []
         curr_i = n
         for j in range(k, 0, -1):
+            breaks_idx.append(curr_i - 1)
             curr_i = backtrack[curr_i, j]
-            if curr_i > 0:
-                breaks_idx.append(curr_i - 1)
         breaks_idx.reverse()
         bins = [y_sorted[idx] for idx in breaks_idx]
 
