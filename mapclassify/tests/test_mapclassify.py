@@ -794,37 +794,44 @@ class TestPlots:
 
 
 class TestMaximumLikelihood:
-    def setup_method(self):
-        # A deterministic dataset designed to clearly cluster into 3 groups
-        self.y = numpy.array([10.0, 20.0, 100.0, 110.0, 200.0, 210.0])
-        self.sigma = numpy.array([1.0, 1.0, 2.0, 2.0, 1.0, 1.0])
-
     def test_MaximumLikelihood(self):
-        ml = MaximumLikelihood(self.y, self.sigma, k=3)
+        # An ordered dataset that has 2 groups
+        # Normal classifier would group 90 as its own class
+        # but MLE will group it with 50 and instead split the lower
+        # valued elements with low uncertainity
+        y = [10, 12, 14, 50, 90]
+        sigma = [1, 1, 1, 1, 20]
+        ml = MaximumLikelihood(y, sigma, k=3)
+
+        # not needed but just checking :)
         assert ml.k == 3
         assert len(ml.counts) == 3
+        # the last value in bin should be the maximum value (invariant)
+        assert ml.bins[-1] == max(y)
+        # total count should equal the length of input
+        assert ml.counts.sum() == len(y)
+        # each class must have atleast one element
+        assert numpy.all(ml.counts > 0)
 
-        numpy.testing.assert_array_almost_equal(
-            ml.bins, numpy.array([20.0, 110.0, 210.0])
-        )
-        numpy.testing.assert_array_almost_equal(ml.counts, numpy.array([2, 2, 2]))
+        numpy.testing.assert_array_equal(ml.bins, numpy.array([10, 14, 90]))
+        numpy.testing.assert_array_equal(ml.counts, numpy.array([1, 2, 2]))
 
     def test_MaximumLikelihood_unordered(self):
-        # The classifier should be able to handle unsorted data
-        y_unordered = numpy.array([210.0, 10.0, 110.0, 20.0, 100.0, 200.0])
-        sigma_unordered = numpy.array([1.0, 1.0, 2.0, 1.0, 2.0, 1.0])
+        # Ordered and unordered data should give same result
+        y_unordered = numpy.array([10, 90, 14, 50, 12])
+        sigma_unordered = numpy.array([1, 20, 1, 1, 1])
 
         ml = MaximumLikelihood(y_unordered, sigma_unordered, k=3)
 
-        numpy.testing.assert_array_almost_equal(
-            ml.bins, numpy.array([20.0, 110.0, 210.0])
-        )
-        numpy.testing.assert_array_almost_equal(ml.counts, numpy.array([2, 2, 2]))
+        # not needed but just checking :)
+        assert ml.k == 3
+        assert len(ml.counts) == 3
+        # the last value in bin should be the maximum value (invariant)
+        assert ml.bins[-1] == max(y_unordered)
+        # total count should equal the length of input
+        assert ml.counts.sum() == len(y_unordered)
+        # each class must have atleast one element
+        assert numpy.all(ml.counts > 0)
 
-    def test_MaximumLikelihood_stability(self):
-        # Verify the dynamic programming approach consistently yields the same results
-        for _ in range(10):
-            ml = MaximumLikelihood(self.y, self.sigma, k=3)
-            assert ml.k == 3
-            assert len(ml.counts) == 3
-            numpy.testing.assert_array_almost_equal(ml.counts, numpy.array([2, 2, 2]))
+        numpy.testing.assert_array_equal(ml.bins, numpy.array([10, 14, 90]))
+        numpy.testing.assert_array_equal(ml.counts, numpy.array([1, 2, 2]))
