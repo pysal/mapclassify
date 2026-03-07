@@ -27,6 +27,7 @@ __all__ = [
     "HeadTailBreaks",
     "MaxP",
     "MaximumBreaks",
+    "MaximumLikelihood",
     "NaturalBreaks",
     "Quantiles",
     "Percentiles",
@@ -36,7 +37,6 @@ __all__ = [
     "gadf",
     "KClassifiers",
     "CLASSIFIERS",
-    "MaximumLikelihood",
 ]
 
 CLASSIFIERS = (
@@ -49,14 +49,13 @@ CLASSIFIERS = (
     "JenksCaspallForced",
     "JenksCaspallSampled",
     "MaxP",
-    "MaximumBreaks",
+    "MaximumBreaksMaximumLikelihood",
     "NaturalBreaks",
     "Quantiles",
     "Percentiles",
     "PrettyBreaks",
     "StdMean",
     "UserDefined",
-    "MaximumLikelihood",
 )
 
 K = 5  # default number of classes in any map scheme with this as an argument
@@ -3141,23 +3140,27 @@ class MaximumLikelihood(MapClassifier):
 
     Notes
     -----
+
     This classification scheme incorporates data uncertainty (standard deviation)
     into the creation of choropleth maps. It assumes the existence of a
     representative value for each class and determines class breaks using
     a dynamic programming approach to minimize the overall within-class
-    deviation while accounting for the uncertainty. :cite:`Mu_2019`.
+    deviation while accounting for the uncertainty. :cite:`Mu_2019`
 
     Examples
     --------
+
     >>> import numpy as np
     >>> import mapclassify
     >>> y = [32000, 45000, 46000, 50000, 61000, 62000, 85000, 90000]
     >>> sigma = [1500, 2000, 2100, 1800, 3000, 3100, 4500, 5000]
     >>> ml = mapclassify.MaximumLikelihood(y, sigma, k=3)
     >>> ml.bins
-    array([46000, 62000, 90000])
+    array([32000, 62000, 90000])
+    For e.g. FisherJenks would return array([50000., 62000., 90000.])
     >>> ml.counts.tolist()
     [3, 3, 2]
+
     """
 
     def __init__(self, y, sigma, k=5):
