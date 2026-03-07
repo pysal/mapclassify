@@ -15,6 +15,7 @@ from ..classifiers import (
     JenksCaspallSampled,
     KClassifiers,
     MaximumBreaks,
+    MaximumLikelihood,
     MaxP,
     NaturalBreaks,
     Percentiles,
@@ -790,3 +791,40 @@ class TestPlots:
             linewidth=3, linecolor="red", color="yellow"
         )
         return ax.get_figure()
+
+
+class TestMaximumLikelihood:
+    def setup_method(self):
+        # A deterministic dataset designed to clearly cluster into 3 groups
+        self.y = numpy.array([10.0, 20.0, 100.0, 110.0, 200.0, 210.0])
+        self.sigma = numpy.array([1.0, 1.0, 2.0, 2.0, 1.0, 1.0])
+
+    def test_MaximumLikelihood(self):
+        ml = MaximumLikelihood(self.y, self.sigma, k=3)
+        assert ml.k == 3
+        assert len(ml.counts) == 3
+
+        numpy.testing.assert_array_almost_equal(
+            ml.bins, numpy.array([20.0, 110.0, 210.0])
+        )
+        numpy.testing.assert_array_almost_equal(ml.counts, numpy.array([2, 2, 2]))
+
+    def test_MaximumLikelihood_unordered(self):
+        # The classifier should be able to handle unsorted data
+        y_unordered = numpy.array([210.0, 10.0, 110.0, 20.0, 100.0, 200.0])
+        sigma_unordered = numpy.array([1.0, 1.0, 2.0, 1.0, 2.0, 1.0])
+
+        ml = MaximumLikelihood(y_unordered, sigma_unordered, k=3)
+
+        numpy.testing.assert_array_almost_equal(
+            ml.bins, numpy.array([20.0, 110.0, 210.0])
+        )
+        numpy.testing.assert_array_almost_equal(ml.counts, numpy.array([2, 2, 2]))
+
+    def test_MaximumLikelihood_stability(self):
+        # Verify the dynamic programming approach consistently yields the same results
+        for _ in range(10):
+            ml = MaximumLikelihood(self.y, self.sigma, k=3)
+            assert ml.k == 3
+            assert len(ml.counts) == 3
+            numpy.testing.assert_array_almost_equal(ml.counts, numpy.array([2, 2, 2]))
