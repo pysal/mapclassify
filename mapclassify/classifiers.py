@@ -36,6 +36,7 @@ __all__ = [
     "gadf",
     "KClassifiers",
     "CLASSIFIERS",
+    "MaximumLikelihood"
 ]
 
 CLASSIFIERS = (
@@ -55,6 +56,7 @@ CLASSIFIERS = (
     "PrettyBreaks",
     "StdMean",
     "UserDefined",
+    "MaximumLikelihood"
 )
 
 K = 5  # default number of classes in any map scheme with this as an argument
@@ -3109,3 +3111,89 @@ class KClassifiers:
                 pct0 = pct1
         self.results = results
         self.best = best[1]
+
+class MaximumLikelihood(MapClassifier):
+    """
+    Maximumum Likelihood Estimation based Map Classification.
+
+    Parameters
+    ----------
+
+    y : numpy.array
+        (n, 1), values to classify.
+    sigma : numpy.array
+        (n, 1), standard deviation corresponding to each value in y.
+    k : int (default 5)
+        The number of classes required.
+
+    Attributes
+    ----------
+
+    yb = numpy.array
+        :math:`(n,1)`, bin IDs for observations.
+    bins : numpy.array
+        :math:`(k,1)`, the upper bounds of each class.
+    k : int
+        The number of classes.
+    counts : numpy.array
+        :math:`(k,1)`, the number of observations falling in each class.
+    """
+
+    def __init__(self, y, sigma, k=5):
+        self.sigma = np.asarray(sigma)
+        self.k = k
+        self.name = "MaximumLikelihood"
+        MapClassifier.__init__(self, y)
+
+    def _set_bins(self):
+        y = self.y
+        sigma = self.sigma
+        k = self.k
+        n = len(y)
+
+        # The algorithm requires sorted areal values
+        sort_idx = np.argsort(y)
+        y_sorted = y[sort_idx]
+        sigma_sorted = sigma[sort_idx]
+
+        # Precompute the objective value matrix (omega)
+        omega = np.zeros((n, n))
+        for i in range(n):
+            for j in range(i, n):
+                y_slice = y_sorted[i:j + 1]
+                sig_slice = sigma_sorted[i:j + 1]
+
+                # Calculate the representative value v
+                variance_inv = 1.0 / (sig_slice ** 2)
+                v_val = np.sum(y_slice * variance_inv) / np.sum(variance_inv)
+
+                # Calculate objective cost for the class
+                omega[i, j] = np.sum(((v_val - y_slice) ** 2) * variance_inv)
+
+        #  Dynamic Programming approach to find the optimal breaks
+        dp = np.full((n + 1, k + 1), np.inf)
+        dp[0, 0] = 0
+        backtrack = np.zeros((n + 1, k + 1), dtype=int)
+
+        for j in range(1, k + 1):
+            for i in range(j, n + 1):
+                for m in range(j - 1, i):
+                    cost = dp[m, j - 1] + omega[m, i - 1]
+                    if cost < dp[i, j]:
+                        dp[i, j] = cost
+                        backtrack[i, j] = m
+
+        breaks_idx = []
+        curr_i = n
+        for j in range(k, 0, -1):
+            curr_i = backtrack[curr_i, j]
+            if curr_i > 0:
+                breaks_idx.append(curr_i - 1)
+        breaks_idx.reverse()
+        bins = [y_sorted[idx] for idx in breaks_idx]
+
+        # Ensure the maximum value is the final bin edge
+        if len(bins) > 0 and bins[-1] != y_sorted[-1]:
+            bins[-1] = y_sorted[-1]
+
+        self.bins = np.array(bins)
