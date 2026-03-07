@@ -15,6 +15,7 @@ from .classifiers import (
     JenksCaspallSampled,
     KClassifiers,
     MaximumBreaks,
+    MaximumLikelihood,
     MaxP,
     NaturalBreaks,
     Percentiles,
