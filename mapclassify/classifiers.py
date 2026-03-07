@@ -3151,8 +3151,8 @@ class MaximumLikelihood(MapClassifier):
     --------
     >>> import numpy as np
     >>> import mapclassify
-    >>> y = np.array([32000, 45000, 46000, 50000, 61000, 62000, 85000, 90000])
-    >>> sigma = np.array([1500, 2000, 2100, 1800, 3000, 3100, 4500, 5000])
+    >>> y = [32000, 45000, 46000, 50000, 61000, 62000, 85000, 90000]
+    >>> sigma = [1500, 2000, 2100, 1800, 3000, 3100, 4500, 5000]
     >>> ml = mapclassify.MaximumLikelihood(y, sigma, k=3)
     >>> ml.bins
     array([46000, 62000, 90000])
@@ -3177,33 +3177,39 @@ class MaximumLikelihood(MapClassifier):
         y_sorted = y[sort_idx]
         sigma_sorted = sigma[sort_idx]
 
-        # Precompute the objective value matrix (omega)
+        # omega[m][i] -> cost of segment (m+1, i)
         omega = np.zeros((n, n))
         for i in range(n):
             for j in range(i, n):
                 y_slice = y_sorted[i : j + 1]
                 sig_slice = sigma_sorted[i : j + 1]
 
-                # Calculate the representative value v
+                # Calculate the representative value for each class
                 variance_inv = 1.0 / (sig_slice**2)
                 v_val = np.sum(y_slice * variance_inv) / np.sum(variance_inv)
 
-                # Calculate objective cost for the class
+                # Calculate the cost for each class
                 omega[i, j] = np.sum(((v_val - y_slice) ** 2) * variance_inv)
 
-        #  Dynamic Programming approach to find the optimal breaks
+        #  dp[i][j] stores minimum cost to split first i elements into j classes
         dp = np.full((n + 1, k + 1), np.inf)
         dp[0, 0] = 0
+
+        # backtrack[i][j] stores the index where the j-th class starts
         backtrack = np.zeros((n + 1, k + 1), dtype=int)
 
+        # j -> no.of classes, j = k is the required solution
         for j in range(1, k + 1):
+            # i -> no.of elements considered, i must be >= j
             for i in range(j, n + 1):
+                # try all possible breakpoints, m -> end of previous classs
                 for m in range(j - 1, i):
                     cost = dp[m, j - 1] + omega[m, i - 1]
                     if cost < dp[i, j]:
                         dp[i, j] = cost
                         backtrack[i, j] = m
 
+        # find the breakpoints by looping backwards on dp.
         breaks_idx = []
         curr_i = n
         for j in range(k, 0, -1):
@@ -3211,9 +3217,5 @@ class MaximumLikelihood(MapClassifier):
             curr_i = backtrack[curr_i, j]
         breaks_idx.reverse()
         bins = [y_sorted[idx] for idx in breaks_idx]
-
-        # Ensure the maximum value is the final bin edge
-        if len(bins) > 0 and bins[-1] != y_sorted[-1]:
-            bins[-1] = y_sorted[-1]
 
         self.bins = np.array(bins)
