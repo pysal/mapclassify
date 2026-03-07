@@ -15,6 +15,7 @@ from ..classifiers import (
     JenksCaspallSampled,
     KClassifiers,
     MaximumBreaks,
+    MaximumLikelihood,
     MaxP,
     NaturalBreaks,
     Percentiles,
@@ -790,3 +791,47 @@ class TestPlots:
             linewidth=3, linecolor="red", color="yellow"
         )
         return ax.get_figure()
+
+
+class TestMaximumLikelihood:
+    def test_MaximumLikelihood(self):
+        # An ordered dataset that has 2 groups
+        # Normal classifier would group 90 as its own class
+        # but MLE will group it with 50 and instead split the lower
+        # valued elements with low uncertainity
+        y = [10, 12, 14, 50, 90]
+        sigma = [1, 1, 1, 1, 20]
+        ml = MaximumLikelihood(y, sigma, k=3)
+
+        # not needed but just checking :)
+        assert ml.k == 3
+        assert len(ml.counts) == 3
+        # the last value in bin should be the maximum value (invariant)
+        assert ml.bins[-1] == max(y)
+        # total count should equal the length of input
+        assert ml.counts.sum() == len(y)
+        # each class must have atleast one element
+        assert numpy.all(ml.counts > 0)
+
+        numpy.testing.assert_array_equal(ml.bins, numpy.array([10, 14, 90]))
+        numpy.testing.assert_array_equal(ml.counts, numpy.array([1, 2, 2]))
+
+    def test_MaximumLikelihood_unordered(self):
+        # Ordered and unordered data should give same result
+        y_unordered = numpy.array([10, 90, 14, 50, 12])
+        sigma_unordered = numpy.array([1, 20, 1, 1, 1])
+
+        ml = MaximumLikelihood(y_unordered, sigma_unordered, k=3)
+
+        # not needed but just checking :)
+        assert ml.k == 3
+        assert len(ml.counts) == 3
+        # the last value in bin should be the maximum value (invariant)
+        assert ml.bins[-1] == max(y_unordered)
+        # total count should equal the length of input
+        assert ml.counts.sum() == len(y_unordered)
+        # each class must have atleast one element
+        assert numpy.all(ml.counts > 0)
+
+        numpy.testing.assert_array_equal(ml.bins, numpy.array([10, 14, 90]))
+        numpy.testing.assert_array_equal(ml.counts, numpy.array([1, 2, 2]))
