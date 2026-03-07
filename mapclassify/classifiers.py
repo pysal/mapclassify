@@ -36,7 +36,7 @@ __all__ = [
     "gadf",
     "KClassifiers",
     "CLASSIFIERS",
-    "MaximumLikelihood"
+    "MaximumLikelihood",
 ]
 
 CLASSIFIERS = (
@@ -56,7 +56,7 @@ CLASSIFIERS = (
     "PrettyBreaks",
     "StdMean",
     "UserDefined",
-    "MaximumLikelihood"
+    "MaximumLikelihood",
 )
 
 K = 5  # default number of classes in any map scheme with this as an argument
@@ -3112,6 +3112,7 @@ class KClassifiers:
         self.results = results
         self.best = best[1]
 
+
 class MaximumLikelihood(MapClassifier):
     """
     Maximumum Likelihood Estimation based Map Classification.
@@ -3137,6 +3138,26 @@ class MaximumLikelihood(MapClassifier):
         The number of classes.
     counts : numpy.array
         :math:`(k,1)`, the number of observations falling in each class.
+
+    Notes
+    -----
+    This classification scheme incorporates data uncertainty (standard deviation)
+    into the creation of choropleth maps. It assumes the existence of a
+    representative value for each class and determines class breaks using
+    a dynamic programming approach to minimize the overall within-class
+    deviation while accounting for the uncertainty. :cite:`Mu_2019`.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> import mapclassify
+    >>> y = np.array([32000, 45000, 46000, 50000, 61000, 62000, 85000, 90000])
+    >>> sigma = np.array([1500, 2000, 2100, 1800, 3000, 3100, 4500, 5000])
+    >>> ml = mapclassify.MaximumLikelihood(y, sigma, k=3)
+    >>> ml.bins
+    array([46000, 62000, 90000])
+    >>> ml.counts.tolist()
+    [3, 3, 2]
     """
 
     def __init__(self, y, sigma, k=5):
@@ -3160,11 +3181,11 @@ class MaximumLikelihood(MapClassifier):
         omega = np.zeros((n, n))
         for i in range(n):
             for j in range(i, n):
-                y_slice = y_sorted[i:j + 1]
-                sig_slice = sigma_sorted[i:j + 1]
+                y_slice = y_sorted[i : j + 1]
+                sig_slice = sigma_sorted[i : j + 1]
 
                 # Calculate the representative value v
-                variance_inv = 1.0 / (sig_slice ** 2)
+                variance_inv = 1.0 / (sig_slice**2)
                 v_val = np.sum(y_slice * variance_inv) / np.sum(variance_inv)
 
                 # Calculate objective cost for the class
