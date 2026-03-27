@@ -1,3 +1,8 @@
+import matplotlib
+
+matplotlib.use("Agg")
+
+
 import geopandas as gpd
 import matplotlib
 import matplotlib.pyplot as plt
