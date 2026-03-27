@@ -122,6 +122,6 @@ jobs:
         if: success() || failure()
 
       - name: codecov (${{ matrix.os }}, ${{ matrix.environment-file }})
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
