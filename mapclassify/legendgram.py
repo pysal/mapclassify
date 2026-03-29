@@ -21,7 +21,30 @@ def _legendgram(
     bbox_to_anchor=None,
     **kwargs,
 ):
-    """See ``classifiers.MapClassifier.plot_legendgram()`` docstring."""
+    """
+    Plot a legendgram for a given classifier.
+
+    Parameters
+    ----------
+    classifier : mapclassify classifier
+        A fitted mapclassify classifier object.
+    ax : matplotlib axes, optional
+        Axes on which to draw the legendgram.
+    cmap : str or matplotlib colormap, optional
+        Colormap to use.
+    bins : int, optional
+        Number of histogram bins.
+    inset : bool, optional
+        Whether to draw the legendgram as an inset.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> import mapclassify
+    >>> y = np.array([1, 2, 3, 4, 5])
+    >>> mc = mapclassify.Quantiles(y, k=3)
+    >>> ax = mc.plot_legendgram()
+    """
 
     try:
         import matplotlib.pyplot as plt
@@ -29,7 +52,10 @@ def _legendgram(
         from matplotlib.collections import Collection
         from mpl_toolkits.axes_grid1.inset_locator import inset_axes
     except ImportError as e:
-        raise ImportError from e("you must have matplotlib ")
+        raise ImportError(
+            "matplotlib is required for legendgram plotting. "
+            "Install it using `pip install matplotlib`."
+        ) from e
 
     def _get_cmap(_ax):
         """Detect the most recent matplotlib colormap used, if previously rendered."""
@@ -86,6 +112,7 @@ def _legendgram(
         histax = f.add_axes(histpos)
     else:
         histax = ax
+
     _, bins, patches = histax.hist(classifier.y, bins=bins, color="0.1", **kwargs)
 
     colors = [cmap(i) for i in np.linspace(0, 1, k)]
@@ -94,17 +121,21 @@ def _legendgram(
     for c in range(k):
         for b in range(bucket_breaks[c], bucket_breaks[c + 1]):
             patches[b].set_facecolor(colors[c])
+
     if clip is not None:
         histax.set_xlim(*clip)
     histax.set_frame_on(frameon)
     histax.get_yaxis().set_visible(False)
+
     if tick_params is None:
         tick_params = {}
+
     if vlines:
         lim = histax.get_ylim()[1]
-        # plot upper limit of each bin
         for i in classifier.bins:
             histax.vlines(i, 0, lim, color=vlinecolor, linewidth=vlinewidth)
+
     tick_params["labelsize"] = tick_params.get("labelsize", 12)
     histax.tick_params(**tick_params)
+
     return histax
