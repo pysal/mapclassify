@@ -10,7 +10,12 @@ import operator
 __all__ = ["greedy"]
 
 
-def _balanced(features, sw, balance="count", min_colors=4):
+def _balanced(
+    features,
+    sw,
+    balance: str = "count",
+    min_colors: int = 4,
+) -> dict:
     """
     Strategy to color features in a way which is visually balanced.
 
@@ -276,9 +281,7 @@ def greedy(
         try:
             import networkx as nx
 
-            STRATEGIES = (
-                nx.algorithms.coloring.greedy_coloring.STRATEGIES.keys()
-            )  # noqa: N806
+            strategies = nx.algorithms.coloring.greedy_coloring.STRATEGIES.keys()  # noqa: N806
 
         except ImportError:
             raise ImportError("The 'networkx' package is required.") from None
@@ -314,7 +317,7 @@ def greedy(
     if strategy == "balanced":
         color = pd.Series(_balanced(gdf, sw, balance=balance, min_colors=min_colors))
 
-    elif strategy in STRATEGIES:
+    elif strategy in strategies:
         color = nx.greedy_color(
             sw.to_networkx(), strategy=strategy, interchange=interchange
         )
