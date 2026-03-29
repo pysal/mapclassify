@@ -136,7 +136,13 @@ def greedy(
     interchange=False,
 ):
     """
-    Color GeoDataFrame using various strategies of greedy (topological) colouring.
+     Color a GeoDataFrame using greedy (topological) coloring strategies.
+
+    This function assigns color codes to geographic features such that
+    no adjacent features share the same color. It supports a custom
+    balanced coloring strategy as well as multiple strategies from
+    NetworkX greedy graph coloring.
+
 
     Attempts to color a GeoDataFrame using as few colors as possible, where no
     neighbours can have same color as the feature itself. Offers various strategies
@@ -276,9 +282,7 @@ def greedy(
         try:
             import networkx as nx
 
-            STRATEGIES = (
-                nx.algorithms.coloring.greedy_coloring.STRATEGIES.keys()
-            )  # noqa: N806
+            strategies = nx.algorithms.coloring.greedy_coloring.STRATEGIES.keys()  # noqa: N806
 
         except ImportError:
             raise ImportError("The 'networkx' package is required.") from None
@@ -314,7 +318,7 @@ def greedy(
     if strategy == "balanced":
         color = pd.Series(_balanced(gdf, sw, balance=balance, min_colors=min_colors))
 
-    elif strategy in STRATEGIES:
+    elif strategy in strategies:
         color = nx.greedy_color(
             sw.to_networkx(), strategy=strategy, interchange=interchange
         )
