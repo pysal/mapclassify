@@ -8,16 +8,12 @@
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/pysal/mapclassify/main)
 
-`mapclassify` implements a family of classification schemes for choropleth maps.
-Its focus is on the determination of the number of classes, and the assignment
-of observations to those classes. It is intended for use with upstream mapping
-and geovisualization packages (see
-[geopandas](https://geopandas.org/mapping.html))
-that handle the rendering of the maps.
+`mapclassify` implements a family of classification schemes for choropleth maps. Its focus is on the determination of the number of classes, and the assignment of observations to those classes. It is intended for use with upstream mapping and geovisualization packages (see [geopandas](https://geopandas.org/mapping.html)) that handle the rendering of the maps.
 
 For further theoretical background see [Rey, S.J., D. Arribas-Bel, and L.J. Wolf (2020) "Geographic Data Science with PySAL and the PyData Stack”](https://geographicdata.science/book/notebooks/05_choropleth.html).
 
 ## Using `mapclassify`
+
 Load built-in example data reporting employment density in 58 California counties:
 
 ```python
@@ -47,8 +43,6 @@ BoxPlot
 (  39.53,   94.97] |     6
 (  94.97, 4111.45] |     9
 ```
-
-
 
 ### EqualInterval
 
@@ -284,13 +278,13 @@ UserDefined
 ( 674.00, 4112.00] |     2
 ```
 
-## Alternative API 
+## Alternative API
 
 As of version 2.4.0 the API has been extended. A `classify` function is now
 available for a streamlined interface:
 
 ```python
->>> classify(y, 'boxplot')                                  
+>>> classify(y, 'boxplot')
 BoxPlot                   
 
      Interval        Count
@@ -303,9 +297,6 @@ BoxPlot
 (  94.97, 4111.45] |     9
 
 ```
-
-
-
 
 ## Use Cases
 
@@ -356,7 +347,9 @@ BoxPlot
 array([1, 2, 5, 4])
 
 ```
+
 Note that `find_bin` does not recalibrate the classifier:
+
 ```python
 >>> bp
 BoxPlot
@@ -405,11 +398,9 @@ BoxPlot
 
 ```
 
-
 ## Development Notes
 
 Because we use `geopandas` in development, and geopandas has stable `mapclassify` as a dependency, setting up a local development installation involves creating a conda environment, then replacing the stable `mapclassify` with the development version of `mapclassify` in the development environment. This can be accomplished with the following steps:
-
 
 ```
 conda-env create -f environment.yml

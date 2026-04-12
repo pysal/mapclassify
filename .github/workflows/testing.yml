@@ -1,14 +1,20 @@
+---
 name: Continuous Integration
 
 on:
   push:
-    branches:
-      - "*"
+    branches: [main]
   pull_request:
     branches:
       - "*"
   schedule:
     - cron: "59 21 * * *"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Manual CI Run
+        default: test
+        required: false
 
 jobs:
   testing:
@@ -22,9 +28,8 @@ jobs:
         os: ["ubuntu-latest"]
         environment-file:
           [
-            311-oldest,
-            311-latest,
-            311-numba-latest,
+            312-oldest,
+            312-numba-oldest,
             312-latest,
             312-numba-latest,
             313-latest,
@@ -32,6 +37,7 @@ jobs:
             314-latest,
             314-numba-latest,
             314-dev,
+            314-numba-dev,
           ]
         include:
           - environment-file: 314-latest
@@ -91,7 +97,7 @@ jobs:
           --cov-report term-missing
 
       - name: run docstring tests
-        if: contains(matrix.environment-file, '312-numba-latest') && contains(matrix.os, 'ubuntu')
+        if: contains(matrix.environment-file, '314-numba-latest') && contains(matrix.os, 'ubuntu')
         run: |
           pytest \
           mapclassify \
