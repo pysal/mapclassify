@@ -51,6 +51,7 @@ def vba_choropleth(
     legend=False,
     legend_kwargs=None,
     min_alpha=0.2,
+    axis_labels=False,
 ):
     """Generate Value by Alpha Choropleth plots.
 
@@ -91,13 +92,17 @@ def vba_choropleth(
         Keyword arguments for the legend.
     min_alpha : float = 0.2
         Minimum alpha threshold to prevent fully transparent masking.
+    axis_labels : bool = False
+        Remove CRS unit axis labels from the returned ``ax``. This retains default
+        behavior in ``mapclassify`` and only has an affect when ``geopandas>v1.1.3``
+        is installed.
 
     Returns
     -------
     fig : matplotlip Figure instance
-        Figure of Value by Alpha choropleth
+        Figure of Value by Alpha choropleth.
     ax : matplotlib Axes instance
-        Axes in which the figure is plotted
+        Axes in which the figure is plotted.
 
     Examples
     --------
@@ -205,6 +210,10 @@ def vba_choropleth(
         min_alpha=min_alpha,
     )
     gdf.plot(color=rgba, ax=ax)
+
+    if not axis_labels:
+        ax.set_xlabel("")
+        ax.set_ylabel("")
 
     if legend:
         left, bottom, width, height = [0, 0.5, 0.2, 0.2]
