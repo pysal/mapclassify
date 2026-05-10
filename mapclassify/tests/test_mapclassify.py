@@ -1,6 +1,7 @@
 import types
 
 import numpy
+import pandas
 import pytest
 from matplotlib.testing.decorators import image_comparison
 
@@ -753,6 +754,17 @@ class TestPooled:
         res = Pooled(self.data, classifier="BoxPlot", hinge=1.5)
         numpy.testing.assert_array_almost_equal(
             res.col_classifiers[0].bins, numpy.array([-9.5, 34.75, 49.5, 64.25, 108.5])
+        )
+
+    def test_pooled_dataframe(self):
+        data = pandas.DataFrame(self.data, columns=["a", "b", "c"])
+        res = Pooled(data, k=4)
+
+        numpy.testing.assert_array_almost_equal(
+            res.col_classifiers[0].counts, numpy.array([15, 5, 0, 0])
+        )
+        numpy.testing.assert_array_almost_equal(
+            res.global_classifier.counts, numpy.array([15, 15, 15, 15])
         )
 
     def test_pooled_bad_classifier(self):
