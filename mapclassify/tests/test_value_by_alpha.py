@@ -4,8 +4,12 @@ import matplotlib
 import matplotlib.pyplot as plt
 import pytest
 from matplotlib.testing.decorators import image_comparison
+from packaging.version import Version
 
 from mapclassify import shift_colormap, truncate_colormap, vba_choropleth
+
+# see gh#305
+GPD_GT_113 = Version(geopandas.__version__) > Version("1.1.3")
 
 
 class TestValueByAlphaChoropleth:
@@ -126,6 +130,14 @@ class TestValueByAlphaChoropleth:
             legend=True,
             legend_kwargs={"x_label": self.x, "y_label": self.y},
         )
+
+        assert isinstance(fig, matplotlib.figure.Figure)
+        assert isinstance(ax, matplotlib.axes.Axes)
+
+    @pytest.mark.skipif(not GPD_GT_113, reason="See GH#305")
+    @image_comparison(["crs_labels"], **pytest.image_comp_kws)
+    def test_crs_labels(self):
+        fig, ax = vba_choropleth(self.x, self.y, self.gdf, axis_labels=True)
 
         assert isinstance(fig, matplotlib.figure.Figure)
         assert isinstance(ax, matplotlib.axes.Axes)
