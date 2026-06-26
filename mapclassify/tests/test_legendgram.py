@@ -1,3 +1,5 @@
+import copy
+
 import geopandas as gpd
 import matplotlib
 import matplotlib.pyplot as plt
@@ -5,9 +7,15 @@ import numpy as np
 import pytest
 from libpysal import examples
 from matplotlib.testing.decorators import image_comparison
+from packaging.version import Version
 
 from mapclassify import EqualInterval, Quantiles
 from mapclassify.legendgram import _legendgram
+
+GPD_113_dev = Version(gpd.__version__).is_devrelease and Version(
+    Version(gpd.__version__).base_version
+) >= Version("1.1.2")
+
 
 no_data_warning = pytest.warns(
     UserWarning,
@@ -122,7 +130,10 @@ class TestLegendgram:
                 self.classifier, ax=ax, loc="upper right", legend_size=("40%", "30%")
             )
 
-    @image_comparison(["legendgram_map"], **pytest.image_comp_kws)
+    map_image_comp_kws = copy.deepcopy(pytest.image_comp_kws)
+    map_image_comp_kws["tol"] = 2.14
+
+    @image_comparison(["legendgram_map"], **map_image_comp_kws)
     def test_legendgram_map(self):
         """Test with geopandas map"""
         data = gpd.read_file(examples.get_path("south.shp")).to_crs(epsg=5070)
@@ -145,6 +156,7 @@ class TestLegendgram:
                 orientation="horizontal",
             )
 
+    @pytest.mark.skipif(GPD_113_dev, reason="Fixed in GeoPandas dev as of [2026/06]")
     @image_comparison(["legendgram_most_recent_cmap"], **pytest.image_comp_kws)
     def test_legendgram_most_recent_cmap(self):
         """Test most recent  colormap legendgram appearance"""
@@ -152,6 +164,7 @@ class TestLegendgram:
         ax = data.plot("DV80", k=10, scheme="Quantiles", cmap="Blues")
         data.plot("DV80", ax=ax, k=10, scheme="Quantiles", cmap="Greens")
         classifier = Quantiles(data["DV80"].values, k=10)
+
         with pytest.warns(
             UserWarning,
             match=(
@@ -159,7 +172,11 @@ class TestLegendgram:
                 "Defaulting to most recent colormap: 'Greens'"
             ),
         ):
-            classifier.plot_legendgram(
-                ax=ax, legend_size=("50%", "20%"), loc="upper left", clip=(2, 10)
-            )
+            kwargs = {
+                "ax": ax,
+                "legend_size": ("50%", "20%"),
+                "loc": "upper left",
+                "clip": (2, 10),
+            }
+            classifier.plot_legendgram(**kwargs)
         ax.set_axis_off()

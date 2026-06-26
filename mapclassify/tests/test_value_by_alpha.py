@@ -17,6 +17,7 @@ class TestValueByAlphaChoropleth:
     @image_comparison(["no_classify_default"], **pytest.image_comp_kws)
     def test_no_classify_default(self):
         fig, ax = vba_choropleth(self.x, self.y, self.gdf)
+        ax.set(xlabel=None, ylabel=None)
 
         assert isinstance(fig, matplotlib.figure.Figure)
         assert isinstance(ax, matplotlib.axes.Axes)
@@ -26,6 +27,7 @@ class TestValueByAlphaChoropleth:
         fig = plt.figure()
         ax = fig.add_subplot(111)
         fig, ax = vba_choropleth(self.x, self.y, self.gdf, ax=ax)
+        ax.set(xlabel=None, ylabel=None)
 
         assert isinstance(fig, matplotlib.figure.Figure)
         assert isinstance(ax, matplotlib.axes.Axes)
@@ -40,6 +42,7 @@ class TestValueByAlphaChoropleth:
             y_classification_kwds={"classifier": "quantiles"},
             cmap="RdBu",
         )
+        ax.set(xlabel=None, ylabel=None)
 
         assert isinstance(fig, matplotlib.figure.Figure)
         assert isinstance(ax, matplotlib.axes.Axes)
@@ -57,6 +60,7 @@ class TestValueByAlphaChoropleth:
             revert_alpha=True,
             min_alpha=0.5,
         )
+        ax.set(xlabel=None, ylabel=None)
 
         assert isinstance(fig, matplotlib.figure.Figure)
         assert isinstance(ax, matplotlib.axes.Axes)
@@ -65,6 +69,7 @@ class TestValueByAlphaChoropleth:
     def test_userdefined_colors(self):
         color_list = ["#a1dab4", "#41b6c4", "#225ea8"]
         fig, ax = vba_choropleth(self.x, self.y, self.gdf, cmap=color_list)
+        ax.set(xlabel=None, ylabel=None)
 
         assert isinstance(fig, matplotlib.figure.Figure)
         assert isinstance(ax, matplotlib.axes.Axes)
@@ -76,6 +81,7 @@ class TestValueByAlphaChoropleth:
         assert mid08.name == "RdBu_08"
 
         fig, ax = vba_choropleth(self.x, self.y, self.gdf, cmap=mid08)
+        ax.set(xlabel=None, ylabel=None)
 
         assert isinstance(fig, matplotlib.figure.Figure)
         assert isinstance(ax, matplotlib.axes.Axes)
@@ -87,6 +93,7 @@ class TestValueByAlphaChoropleth:
         assert trunc0206.name == "trunc(RdBu,0.20,0.60)"
 
         fig, ax = vba_choropleth(self.x, self.y, self.gdf, cmap=trunc0206)
+        ax.set(xlabel=None, ylabel=None)
 
         assert isinstance(fig, matplotlib.figure.Figure)
         assert isinstance(ax, matplotlib.axes.Axes)
@@ -111,6 +118,7 @@ class TestValueByAlphaChoropleth:
             y_classification_kwds={"classifier": "quantiles"},
             legend=True,
         )
+        ax.set(xlabel=None, ylabel=None)
 
         assert isinstance(fig, matplotlib.figure.Figure)
         assert isinstance(ax, matplotlib.axes.Axes)
@@ -126,6 +134,7 @@ class TestValueByAlphaChoropleth:
             legend=True,
             legend_kwargs={"x_label": self.x, "y_label": self.y},
         )
+        ax.set(xlabel=None, ylabel=None)
 
         assert isinstance(fig, matplotlib.figure.Figure)
         assert isinstance(ax, matplotlib.axes.Axes)
