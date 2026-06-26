@@ -6,13 +6,11 @@ def pytest_configure(config):  # noqa: ARG001
 
     pytest.image_comp_kws = {
         "extensions": ["png"],
-        # "tol": 0.35, ######################################################
         "remove_text": True,
         "style": "mpl20",
     }
     pytest.image_comp_kws_legend_text = {
         "extensions": ["png"],
-        # "tol": 2.8, #######################################################
         "remove_text": True,
         "style": "mpl20",
     }
