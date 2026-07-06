@@ -1,5 +1,6 @@
 import types
 
+import matplotlib
 import numpy
 import pandas
 import pytest
@@ -788,17 +789,23 @@ class TestPlots:
 
     @image_comparison(["test_histogram_plot"], **pytest.image_comp_kws)
     def test_histogram_plot(self):
-        ax = Quantiles(self.data).plot_histogram()
+        fig, ax = matplotlib.pyplot.subplots(**{"figsize": (8, 6), "dpi": 100})
+        ax = Quantiles(self.data).plot_histogram(ax=ax)
+        ax.set(xlabel=None, ylabel=None)
         return ax.get_figure()
 
     @image_comparison(["test_histogram_plot_despine"], **pytest.image_comp_kws)
     def test_histogram_plot_despine(self):
-        ax = Quantiles(self.data).plot_histogram(despine=False)
+        fig, ax = matplotlib.pyplot.subplots(**{"figsize": (8, 6), "dpi": 100})
+        ax = Quantiles(self.data).plot_histogram(ax=ax, despine=False)
+        ax.set(xlabel=None, ylabel=None)
         return ax.get_figure()
 
     @image_comparison(["test_histogram_plot_linewidth"], **pytest.image_comp_kws)
     def test_histogram_plot_linewidth(self):
+        fig, ax = matplotlib.pyplot.subplots(**{"figsize": (8, 6), "dpi": 100})
         ax = Quantiles(self.data).plot_histogram(
-            linewidth=3, linecolor="red", color="yellow"
+            ax=ax, linewidth=3, linecolor="red", color="yellow"
         )
+        ax.set(xlabel=None, ylabel=None)
         return ax.get_figure()
