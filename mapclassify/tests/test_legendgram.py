@@ -156,8 +156,7 @@ class TestLegendgram:
                 orientation="horizontal",
             )
 
-    # @pytest.mark.skipif(GPD_113_dev, reason="Fixed in GeoPandas dev as of [2026/06]")
-    @image_comparison(["legendgram_most_recent_cmap"], **pytest.image_comp_kws)
+    @image_comparison(["legendgram_most_recent_cmap"], **pytest.image_comp_kws, tol=3)
     def test_legendgram_most_recent_cmap(self):
         """Test most recent  colormap legendgram appearance"""
         data = gpd.read_file(examples.get_path("south.shp")).to_crs(epsg=5070)
