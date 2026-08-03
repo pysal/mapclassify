@@ -27,6 +27,7 @@ __all__ = [
     "HeadTailBreaks",
     "MaxP",
     "MaximumBreaks",
+    "MaximumLikelihood",
     "NaturalBreaks",
     "Quantiles",
     "Percentiles",
@@ -49,6 +50,7 @@ CLASSIFIERS = (
     "JenksCaspallSampled",
     "MaxP",
     "MaximumBreaks",
+    "MaximumLikelihood",
     "NaturalBreaks",
     "Quantiles",
     "Percentiles",
@@ -3109,3 +3111,115 @@ class KClassifiers:
                 pct0 = pct1
         self.results = results
         self.best = best[1]
+
+
+class MaximumLikelihood(MapClassifier):
+    """
+    Maximumum Likelihood Estimation based Map Classification.
+
+    Parameters
+    ----------
+
+    y : numpy.array
+        (n, 1), values to classify.
+    sigma : numpy.array
+        (n, 1), standard deviation corresponding to each value in y.
+    k : int (default 5)
+        The number of classes required.
+
+    Attributes
+    ----------
+
+    yb = numpy.array
+        :math:`(n,1)`, bin IDs for observations.
+    bins : numpy.array
+        :math:`(k,1)`, the upper bounds of each class.
+    k : int
+        The number of classes.
+    counts : numpy.array
+        :math:`(k,1)`, the number of observations falling in each class.
+
+    Notes
+    -----
+
+    This classification scheme incorporates data uncertainty (standard deviation)
+    into the creation of choropleth maps. It assumes the existence of a
+    representative value for each class and determines class breaks using
+    a dynamic programming approach to minimize the overall within-class
+    deviation while accounting for the uncertainty. :cite:`Mu_2019`
+
+    Examples
+    --------
+
+    >>> import numpy as np
+    >>> import mapclassify
+    >>> y = [32000, 45000, 46000, 50000, 61000, 62000, 85000, 90000]
+    >>> sigma = [1500, 2000, 2100, 1800, 3000, 3100, 4500, 5000]
+    >>> ml = mapclassify.MaximumLikelihood(y, sigma, k=3)
+    >>> ml.bins
+    array([32000, 62000, 90000])
+    For e.g. FisherJenks would return array([50000., 62000., 90000.])
+    >>> ml.counts.tolist()
+    [3, 3, 2]
+
+    """
+
+    def __init__(self, y, sigma, k=5):
+        self.sigma = np.asarray(sigma)
+        self.k = k
+        self.name = "MaximumLikelihood"
+        MapClassifier.__init__(self, y)
+
+    def _set_bins(self):
+        y = self.y
+        sigma = self.sigma
+        k = self.k
+        n = len(y)
+
+        # The algorithm requires sorted areal values
+        sort_idx = np.argsort(y)
+        y_sorted = y[sort_idx]
+        sigma_sorted = sigma[sort_idx]
+
+        # omega[m][i] -> cost of segment (m+1, i)
+        omega = np.zeros((n, n))
+        for i in range(n):
+            for j in range(i, n):
+                y_slice = y_sorted[i : j + 1]
+                sig_slice = sigma_sorted[i : j + 1]
+
+                # Calculate the representative value for each class
+                variance_inv = 1.0 / (sig_slice**2)
+                v_val = np.sum(y_slice * variance_inv) / np.sum(variance_inv)
+
+                # Calculate the cost for each class
+                omega[i, j] = np.sum(((v_val - y_slice) ** 2) * variance_inv)
+
+        #  dp[i][j] stores minimum cost to split first i elements into j classes
+        dp = np.full((n + 1, k + 1), np.inf)
+        dp[0, 0] = 0
+
+        # backtrack[i][j] stores the index where the j-th class starts
+        backtrack = np.zeros((n + 1, k + 1), dtype=int)
+
+        # j -> no.of classes, j = k is the required solution
+        for j in range(1, k + 1):
+            # i -> no.of elements considered, i must be >= j
+            for i in range(j, n + 1):
+                # try all possible breakpoints, m -> end of previous classs
+                for m in range(j - 1, i):
+                    cost = dp[m, j - 1] + omega[m, i - 1]
+                    if cost < dp[i, j]:
+                        dp[i, j] = cost
+                        backtrack[i, j] = m
+
+        # find the breakpoints by looping backwards on dp.
+        breaks_idx = []
+        curr_i = n
+        for j in range(k, 0, -1):
+            breaks_idx.append(curr_i - 1)
+            curr_i = backtrack[curr_i, j]
+        breaks_idx.reverse()
+        bins = [y_sorted[idx] for idx in breaks_idx]
+
+        self.bins = np.array(bins)
