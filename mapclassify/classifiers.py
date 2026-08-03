@@ -527,7 +527,7 @@ def _kmeans(y, k=5, n_init=10):
     """
 
     y = y * 1.0  # sklearn.cluster.KMeans needs float or double dtype
-    y.shape = (-1, 1)
+    y = y.reshape((-1, 1))
     result = KMeans(n_clusters=k, init="k-means++", n_init=n_init).fit(y)
     class_ids = result.labels_
     centroids = result.cluster_centers_
@@ -2300,7 +2300,7 @@ class JenksCaspall(MapClassifier):
         xb, cnts = bin1d(x, q)
         # class means
         if x.ndim == 1:
-            x.shape = (x.size, 1)
+            x = x.reshape((x.size, 1))
         n, k = x.shape
         xm = [np.median(x[xb == i]) for i in np.unique(xb)]
         xb0 = xb.copy()
@@ -2318,7 +2318,7 @@ class JenksCaspall(MapClassifier):
             it += 1
             q = np.array([np.median(x[xb == i]) for i in rk])
         cuts = np.array([max(x[xb == i]) for i in np.unique(xb)])
-        cuts.shape = (len(cuts),)
+        cuts = cuts.reshape((len(cuts),))
         self.bins = cuts
         self.iterations = it
 
@@ -2511,12 +2511,12 @@ class JenksCaspallForced(MapClassifier):
         xb, cnt = bin1d(x, q)
         # class means
         if x.ndim == 1:
-            x.shape = (x.size, 1)
+            x = x.reshape((x.size, 1))
         n, tmp = x.shape
         xm = [x[xb == i].mean() for i in np.unique(xb)]
         q = xm
         xbar = np.array([xm[xbi] for xbi in xb])
-        xbar.shape = (n, 1)
+        xbar = xbar.reshape((n, 1))
         ss = x - xbar
         ss *= ss
         ss = sum(ss)
@@ -2541,7 +2541,7 @@ class JenksCaspallForced(MapClassifier):
                         tmp[mover] = xb[mover] + 1
                         tm = [x[tmp == j].mean() for j in np.unique(tmp)]
                         txbar = np.array([tm[xbi] for xbi in tmp])
-                        txbar.shape = (n, 1)
+                        txbar = txbar.reshape((n, 1))
                         tss = x - txbar
                         tss *= tss
                         tss = sum(tss)
@@ -2571,7 +2571,7 @@ class JenksCaspallForced(MapClassifier):
                         tmp[mover] = target_class
                         tm = [x[tmp == j].mean() for j in np.unique(tmp)]
                         txbar = np.array([tm[xbi] for xbi in tmp])
-                        txbar.shape = (n, 1)
+                        txbar = txbar.reshape((n, 1))
                         tss = x - txbar
                         tss *= tss
                         tss = sum(tss)
@@ -2815,7 +2815,7 @@ class MaxP(MapClassifier):
         k = self.k
         q = quantile(x, k)
         if x.ndim == 1:
-            x.shape = (x.size, 1)
+            x = x.reshape((x.size, 1))
         n, tmp = x.shape
         x.sort(axis=0)
         # find best of initial solutions
