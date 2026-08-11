@@ -1,0 +1,6 @@
+﻿mapclassify.greedy
+==================
+
+.. currentmodule:: mapclassify
+
+.. autofunction:: greedy
