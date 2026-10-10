@@ -562,6 +562,14 @@ class TestFisherJenks:
             fj.counts, numpy.array([49, 3, 4, 1, 1])
         )
 
+    @pytest.mark.parametrize("shift", [0, 273.15, 1e4, 1e6])
+    def test_FisherJenks_shift_invariant(self, shift):
+        # adding a constant must not change the classes (gh-318)
+        y = numpy.array([1.0, 2.0, 3.0, 11.0, 12.0, 13.0, 21.0, 22.0, 23.0])
+        fj = FisherJenks(y + shift, k=3)
+        numpy.testing.assert_array_equal(fj.counts, [3, 3, 3])
+        numpy.testing.assert_allclose(fj.bins, numpy.array([3.0, 13.0, 23.0]) + shift)
+
 
 class TestJenksCaspall:
     def setup_method(self):
