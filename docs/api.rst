@@ -24,6 +24,7 @@ Classifiers
     mapclassify.JenksCaspallSampled
     mapclassify.MaxP
     mapclassify.MaximumBreaks
+    mapclassify.MaximumLikelihood
     mapclassify.NaturalBreaks
     mapclassify.Percentiles
     mapclassify.PrettyBreaks
