@@ -602,22 +602,23 @@ def _fisher_jenks_means(values, classes=5):
     """
     n_data = len(values)
     mat1 = np.zeros((n_data + 1, classes + 1), dtype=np.int32)
-    mat2 = np.zeros((n_data + 1, classes + 1), dtype=np.float32)
+    mat2 = np.zeros((n_data + 1, classes + 1), dtype=np.float64)
     mat1[1, 1:] = 1
     mat2[2:, 1:] = np.inf
 
-    v = np.float32(0)
+    v = np.float64(0)
     for _l in range(2, len(values) + 1):
-        s1 = np.float32(0)
-        s2 = np.float32(0)
-        w = np.float32(0)
+        mean = np.float64(0)
+        m2 = np.float64(0)
+        w = np.float64(0)
         for m in range(1, _l + 1):
             i3 = _l - m + 1
-            val = np.float32(values[i3 - 1])
-            s2 += val * val
-            s1 += val
-            w += np.float32(1)
-            v = s2 - (s1 * s1) / w
+            val = np.float64(values[i3 - 1])
+            w += np.float64(1)
+            delta = val - mean
+            mean += delta / w
+            m2 += delta * (val - mean)
+            v = m2
             i4 = i3 - 1
             if i4 != 0:
                 for j in range(2, classes + 1):
