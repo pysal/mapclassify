@@ -41,10 +41,6 @@ jobs:
           ]
         include:
           - environment-file: 314-latest
-            os: macos-15-intel # Intel
-          - environment-file: 314-numba-latest
-            os: macos-15-intel # Intel
-          - environment-file: 314-latest
             os: macos-latest # Apple Silicon
           - environment-file: 314-numba-latest
             os: macos-latest # Apple Silicon
