@@ -1,3 +1,4 @@
+---
 name: Release Package
 
 on:
@@ -22,18 +23,18 @@ jobs:
     steps:
     - name: Checkout repo
       uses: actions/checkout@v7
-    
+
     - name: Set up Python
       uses: actions/setup-python@v7
       with:
         python-version: '3.x'
-    
+
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip build twine
         python -m build
         twine check --strict dist/*
-    
+
     - name: Create Release Notes
       uses: actions/github-script@v9
       with:
@@ -43,6 +44,6 @@ jobs:
               tag_name: "${{ github.ref }}",
               generate_release_notes: true
           });
-   
+
     - name: Publish distribution 📦 to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
