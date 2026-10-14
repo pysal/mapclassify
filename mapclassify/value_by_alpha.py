@@ -9,6 +9,8 @@ for vba_choropleth
 """
 
 import collections.abc
+import re
+from importlib.metadata import PackageNotFoundError, version
 
 import numpy as np
 
@@ -25,6 +27,13 @@ except (ImportError, ModuleNotFoundError):
     MPL_AVAILABLE = False
 
 MPL_NOT_AVAILABLE = ImportError("you must have matplotlib")
+
+try:
+    # ``add_labels`` keyword in ``GeoDataFrame.plot()`` -- see gh#305
+    _gpd_ver = re.match(r"(\d+)\.(\d+)", version("geopandas")).groups()
+    GPD_GE_120 = tuple(map(int, _gpd_ver)) >= (1, 2)
+except PackageNotFoundError:
+    GPD_GE_120 = False
 
 
 __author__ = "Stefanie Lumnitz <stefanie.lumitz@gmail.com>"
@@ -93,9 +102,9 @@ def vba_choropleth(
     min_alpha : float = 0.2
         Minimum alpha threshold to prevent fully transparent masking.
     axis_labels : bool = False
-        Remove CRS unit axis labels from the returned ``ax``. This retains default
-        behavior in ``mapclassify`` and only has an affect when ``geopandas>v1.1.3``
-        is installed.
+        Add CRS unit axis labels to the returned ``ax``. The default (``False``)
+        retains the unlabeled behavior of ``mapclassify``. Only has an effect when
+        ``geopandas>=1.2.0`` is installed.
 
     Returns
     -------
@@ -209,11 +218,8 @@ def vba_choropleth(
         revert_alpha=revert_alpha,
         min_alpha=min_alpha,
     )
-    gdf.plot(color=rgba, ax=ax)
-
-    if not axis_labels:
-        ax.set_xlabel("")
-        ax.set_ylabel("")
+    plot_kws = {"add_labels": axis_labels} if GPD_GE_120 else {}
+    gdf.plot(color=rgba, ax=ax, **plot_kws)
 
     if legend:
         left, bottom, width, height = [0, 0.5, 0.2, 0.2]
