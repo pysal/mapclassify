@@ -32,7 +32,7 @@ try:
     from packaging.version import Version
 
     GPD_GE_120 = Version(version("geopandas")) >= Version("1.2.0")
-except (ImportError, PackageNotFoundError):
+except (ImportError, PackageNotFoundError):  # pragma: no cover
     GPD_GE_120 = False
 
 
