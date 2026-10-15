@@ -6,6 +6,7 @@ import pytest
 from matplotlib.testing.decorators import image_comparison
 
 from mapclassify import shift_colormap, truncate_colormap, vba_choropleth
+from mapclassify.value_by_alpha import GPD_GE_120
 
 
 class TestValueByAlphaChoropleth:
@@ -138,3 +139,18 @@ class TestValueByAlphaChoropleth:
 
         assert isinstance(fig, matplotlib.figure.Figure)
         assert isinstance(ax, matplotlib.axes.Axes)
+
+    @pytest.mark.skipif(not GPD_GE_120, reason="See GH#305")
+    @image_comparison(["crs_labels"], **pytest.image_comp_kws)
+    def test_crs_labels(self):
+        fig, ax = vba_choropleth(self.x, self.y, self.gdf, axis_labels=True)
+
+        assert isinstance(fig, matplotlib.figure.Figure)
+        assert isinstance(ax, matplotlib.axes.Axes)
+        assert ax.get_xlabel() and ax.get_ylabel()
+
+    def test_no_axis_labels_default(self):
+        _, ax = vba_choropleth(self.x, self.y, self.gdf)
+
+        assert ax.get_xlabel() == ""
+        assert ax.get_ylabel() == ""
