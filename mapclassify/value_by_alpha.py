@@ -9,7 +9,6 @@ for vba_choropleth
 """
 
 import collections.abc
-import re
 from importlib.metadata import PackageNotFoundError, version
 
 import numpy as np
@@ -30,9 +29,10 @@ MPL_NOT_AVAILABLE = ImportError("you must have matplotlib")
 
 try:
     # ``add_labels`` keyword in ``GeoDataFrame.plot()`` -- see gh#305
-    _gpd_ver = re.match(r"(\d+)\.(\d+)", version("geopandas")).groups()
-    GPD_GE_120 = tuple(map(int, _gpd_ver)) >= (1, 2)
-except PackageNotFoundError:
+    from packaging.version import Version
+
+    GPD_GE_120 = Version(version("geopandas")) >= Version("1.2.0")
+except (ImportError, PackageNotFoundError):
     GPD_GE_120 = False
 
 
