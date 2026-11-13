@@ -1,0 +1,1659 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="09_legendgram.html">
+      
+      
+        <link rel="next" href="../references.html">
+      
+      
+      <link rel="icon" href="../_static/pysal_favicon.ico">
+    
+    
+      
+        <title>Value-by-Alpha Choropleth - mapclassify</title>
+      
+    
+    
+      
+        
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.6efbe22605a23fcd6.min.css?v=b2ceb110" />
+        <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+        <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+        <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=d127c87d" />
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#set-up" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="mapclassify" class="md-header__button md-logo" aria-label="mapclassify" data-md-component="logo">
+      <img src="../_static/pysal_logo.svg" alt="logo">
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            mapclassify
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Value-by-Alpha Choropleth
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="red"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="red"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/pysal/mapclassify/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pysal/mapclassify
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="mapclassify" class="md-nav__button md-logo" aria-label="mapclassify" data-md-component="logo">
+      <img src="../_static/pysal_logo.svg" alt="logo">
+    </a>
+    mapclassify
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/pysal/mapclassify/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pysal/mapclassify
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Home</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Installation</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    <span>User Guide</span>
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            <span>User Guide</span>
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01_maximum_breaks.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Introduction to mapclassify</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02_legends.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Legends in mapclassify</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="03_choropleth.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Choropleth</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04_pooled.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Pooled Classification</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="05_Greedy_coloring.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Topological coloring</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="06_api.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Overview of the mapclassify API</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="08_manual_coloring.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Manual coloring</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="09_legendgram.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Using legendgram as a map legend</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    <span>Value-<wbr>by-<wbr>Alpha Choropleth</span>
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="#" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Value-<wbr>by-<wbr>Alpha Choropleth</span>
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#set-up" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Set up</span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Set up">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Imports</span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-preparation" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Data Preparation</span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-value-by-alpha-choropleths" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Create Value-<wbr>by-<wbr>Alpha Choropleths</span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Create Value-by-Alpha Choropleths">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-value-by-alpha-choropleth" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>What is a Value by Alpha choropleth?</span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What is a Value by Alpha choropleth?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#classification-binning-options" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Classification &amp; binning options</span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-defined-colors" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>User-<wbr>defined colors</span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transposing-transparency" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Transposing transparency</span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#displaying-divergency" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Displaying divergency</span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-your-own-cmap-for-plotting" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Create your own cmap for plotting</span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Create your own cmap for plotting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#colormap-shifting" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Colormap shifting</span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#colormap-truncation" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Colormap truncation</span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-legend" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Add a legend</span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../references.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>References</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    <span>API</span>
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            <span>API</span>
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>API reference</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    <span>For contributors</span>
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            <span>For contributors</span>
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/pysal/mapclassify" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Git<wbr>Hub</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/pysal/mapclassify/releases" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Changelog</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#set-up" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Set up</span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Set up">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Imports</span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-preparation" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Data Preparation</span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-value-by-alpha-choropleths" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Create Value-<wbr>by-<wbr>Alpha Choropleths</span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Create Value-by-Alpha Choropleths">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-value-by-alpha-choropleth" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>What is a Value by Alpha choropleth?</span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What is a Value by Alpha choropleth?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#classification-binning-options" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Classification &amp; binning options</span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user-defined-colors" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>User-<wbr>defined colors</span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transposing-transparency" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Transposing transparency</span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#displaying-divergency" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Displaying divergency</span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-your-own-cmap-for-plotting" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Create your own cmap for plotting</span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Create your own cmap for plotting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#colormap-shifting" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Colormap shifting</span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#colormap-truncation" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Colormap truncation</span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add-a-legend" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Add a legend</span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                
+                
+                  
+
+
+  
+    <a href="https://github.com/pysal/mapclassify/blob/main/docs/user-guide/value_by_alpha.ipynb" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg>
+    </a>
+  
+  
+
+<h1 id="value-by-alpha-choropleth">Value-by-Alpha Choropleth<a class="headerlink" href="#value-by-alpha-choropleth" title="Link to this heading">¶</a></h1>
+<p>Value-by-Alpha Choropleth plotting with <code class="docutils literal notranslate"><span class="pre">mapclassify</span></code></p>
+<ul class="simple">
+<li><p><em>This notebook is adapted from one originally written by <a class="reference external" href="https://github.com/slumnitz">&#64;slumnitz</a></em> in the <code class="docutils literal notranslate"><span class="pre">splot</span></code> project (original <a class="reference external" href="https://github.com/pysal/splot/blob/b8361cb5f4685d0945e08cbf9172ba701ce57c44/notebooks/mapping_vba.ipynb">here</a>).</p></li>
+</ul>
+<h2 id="set-up">Set up<a class="headerlink" href="#set-up" title="Link to this heading">¶</a></h2>
+<h3 id="imports">Imports<a class="headerlink" href="#imports" title="Link to this heading">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">geodatasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_path</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="data-preparation">Data Preparation<a class="headerlink" href="#data-preparation" title="Link to this heading">¶</a></h3>
+<p>Load example data into a <code class="docutils literal notranslate"><span class="pre">geopandas.GeoDataFrame</span></code> and inspect column names. In this example we will use the <code class="docutils literal notranslate"><span class="pre">columbus.shp</span></code> file containing neighborhood crime data of 1980.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">link_to_data</span> <span class="o">=</span> <span class="n">get_path</span><span class="p">(</span><span class="s2">"spdata.columbus"</span><span class="p">)</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">link_to_data</span><span class="p">)</span>
+<span class="n">gdf</span><span class="o">.</span><span class="n">columns</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>Index(['AREA', 'PERIMETER', 'COLUMBUS_', 'COLUMBUS_I', 'POLYID', 'NEIG',
+       'HOVAL', 'INC', 'CRIME', 'OPEN', 'PLUMB', 'DISCBD', 'X', 'Y', 'NSA',
+       'NSB', 'EW', 'CP', 'THOUS', 'NEIGNO', 'geometry'],
+      dtype='str')
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Our two variables of interest in <code class="docutils literal notranslate"><span class="pre">gdf</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code>: <code class="docutils literal notranslate"><span class="pre">HOVAL</span></code> – housing value (in $1,000); the rgb variable</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y</span></code>: <code class="docutils literal notranslate"><span class="pre">CRIME</span></code> – residential burglaries and vehicle thefts per 1000 households; the alpha variable</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="s2">"HOVAL"</span>
+<span class="n">y</span> <span class="o">=</span> <span class="s2">"CRIME"</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<h2 id="create-value-by-alpha-choropleths">Create Value-by-Alpha Choropleths<a class="headerlink" href="#create-value-by-alpha-choropleths" title="Link to this heading">¶</a></h2>
+<h3 id="what-is-a-value-by-alpha-choropleth">What is a Value by Alpha choropleth?<a class="headerlink" href="#what-is-a-value-by-alpha-choropleth" title="Link to this heading">¶</a></h3>
+<p>In a nutshell, a Value-by-Alpha Choropleth is a bivariate choropleth that uses the values of the second input variable <code class="docutils literal notranslate"><span class="pre">y</span></code> as a transparency mask, determining how much of the choropleth displaying the values of a first variable <code class="docutils literal notranslate"><span class="pre">x</span></code> is shown. In comparison to a cartogram, Value-By-Alpha choropleths will not distort shapes and sizes but modify the alpha channel (transparency) of polygons according to the second input variable <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p>
+<p>Let’s look at a couple of examples.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">mapclassify.value_by_alpha</span><span class="w"> </span><span class="kn">import</span> <span class="n">vba_choropleth</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>We can create a value by alpha map using <code class="docutils literal notranslate"><span class="pre">vba_choropleth</span></code>.</p>
+<p>We will plot a Value-by-Alpha Choropleth with <code class="docutils literal notranslate"><span class="pre">x</span></code> (<code class="docutils literal notranslate"><span class="pre">HOVAL</span></code>) defining the rgb values and <code class="docutils literal notranslate"><span class="pre">y</span></code> (<code class="docutils literal notranslate"><span class="pre">CRIME</span></code>) defining the alpha value. For comparison we plot a choropleth of <code class="docutils literal notranslate"><span class="pre">x</span></code> with <code class="docutils literal notranslate"><span class="pre">gdf.plot()</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="c1"># Create new figure</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="c1"># use gdf.plot() to create regular choropleth</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"normal Choropleth"</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">scheme</span><span class="o">=</span><span class="s2">"quantiles"</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"RdBu"</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># use vba_choropleth to create Value-by-Alpha Choropleth</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Value-by-Alpha Choropleth"</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">vba_choropleth</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">,</span>
+    <span class="n">gdf</span><span class="p">,</span>
+    <span class="n">x_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"quantiles"</span><span class="p">},</span>
+    <span class="n">y_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"quantiles"</span><span class="p">},</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">"RdBu"</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># create a VBA Choropleth - divergent=False, revert_alpha=False</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"divergent=False, revert_alpha=False"</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">vba_choropleth</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">,</span>
+    <span class="n">gdf</span><span class="p">,</span>
+    <span class="n">x_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"quantiles"</span><span class="p">},</span>
+    <span class="n">y_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"quantiles"</span><span class="p">},</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">"RdBu"</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">divergent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">revert_alpha</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># create a VBA Choropleth - divergent=False, revert_alpha=True</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"divergent=False, revert_alpha=True"</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">vba_choropleth</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">,</span>
+    <span class="n">gdf</span><span class="p">,</span>
+    <span class="n">x_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"quantiles"</span><span class="p">},</span>
+    <span class="n">y_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"quantiles"</span><span class="p">},</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">"RdBu"</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">divergent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">revert_alpha</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e50b6b20920eda35f87364a6e12a5d3eade62d9f32d7a61a1f2fef0d017fd2fb.png" src="../_images/e50b6b20920eda35f87364a6e12a5d3eade62d9f32d7a61a1f2fef0d017fd2fb.png" />
+</div>
+</div>
+<p>You can see the original choropleth is fading into transparency wherever there is a high <code class="docutils literal notranslate"><span class="pre">y</span></code> value.</p>
+<h4 id="classification-binning-options">Classification &amp; binning options<a class="headerlink" href="#classification-binning-options" title="Link to this heading">¶</a></h4>
+<p>You can use the option to bin or classify your <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> values, and display the alternative color and alpha ranges:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="c1"># Create new figure</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="c1"># classify with Quantiles</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">vba_choropleth</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">,</span>
+    <span class="n">gdf</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">"viridis"</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">x_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"quantiles"</span><span class="p">,</span> <span class="s2">"k"</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+    <span class="n">y_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"quantiles"</span><span class="p">,</span> <span class="s2">"k"</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+<span class="p">)</span>
+
+<span class="c1"># classifier with Natural Breaks</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">vba_choropleth</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">,</span>
+    <span class="n">gdf</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">"viridis"</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">x_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"natural_breaks"</span><span class="p">},</span>
+    <span class="n">y_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"natural_breaks"</span><span class="p">},</span>
+<span class="p">)</span>
+
+<span class="c1"># classify with Standard Deviation Mean</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">vba_choropleth</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">,</span>
+    <span class="n">gdf</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">"viridis"</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">x_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"std_mean"</span><span class="p">},</span>
+    <span class="n">y_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"std_mean"</span><span class="p">},</span>
+<span class="p">)</span>
+
+<span class="c1"># classify with Fisher Jenks</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">vba_choropleth</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">,</span>
+    <span class="n">gdf</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">"viridis"</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">x_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"fisher_jenks"</span><span class="p">,</span> <span class="s2">"k"</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+    <span class="n">y_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"fisher_jenks"</span><span class="p">,</span> <span class="s2">"k"</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+<span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><code>/home/runner/micromamba/envs/docs/lib/python3.14/site-packages/mapclassify/value_by_alpha.py:190: UserWarning: Numba not installed. Using slow pure python version.
+  x_bins = classify(x, classifier, **x_classification_kwds)
+/home/runner/micromamba/envs/docs/lib/python3.14/site-packages/mapclassify/value_by_alpha.py:196: UserWarning: Numba not installed. Using slow pure python version.
+  y_bins = classify(y, classifier, **y_classification_kwds)
+</code></pre></div>
+</div>
+<img alt="../_images/b80a454bc4e4a483404ed99f3974d1db9b38f0763099957fd8e9beef0da7ae60.png" src="../_images/b80a454bc4e4a483404ed99f3974d1db9b38f0763099957fd8e9beef0da7ae60.png" />
+</div>
+</div>
+<h3 id="user-defined-colors">User-defined colors<a class="headerlink" href="#user-defined-colors" title="Link to this heading">¶</a></h3>
+<p>Instead of using a colormap you can also pass a list of colors:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">color_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"#a1dab4"</span><span class="p">,</span> <span class="s2">"#41b6c4"</span><span class="p">,</span> <span class="s2">"#225ea8"</span><span class="p">]</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">vba_choropleth</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">,</span>
+    <span class="n">gdf</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="n">color_list</span><span class="p">,</span>
+    <span class="n">x_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"quantiles"</span><span class="p">,</span> <span class="s2">"k"</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+    <span class="n">y_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"quantiles"</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ccbf68ed837f51cf8afbbdf6d725f3fc2d22945033600d51260b50691fa13b1f.png" src="../_images/ccbf68ed837f51cf8afbbdf6d725f3fc2d22945033600d51260b50691fa13b1f.png" />
+</div>
+</div>
+<h3 id="transposing-transparency">Transposing transparency<a class="headerlink" href="#transposing-transparency" title="Link to this heading">¶</a></h3>
+<p>Sometimes it is important in geospatial analysis to actually see the high values and let the small values fade out. With the <code class="docutils literal notranslate"><span class="pre">revert_alpha</span> <span class="pre">=</span> <span class="pre">True</span></code> argument, you can revert the transparency of the <code class="docutils literal notranslate"><span class="pre">y</span></code> values so that high <code class="docutils literal notranslate"><span class="pre">y</span></code> values will more transparent and low values will more opaque.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="c1"># Create new figure</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="c1"># create a vba_choropleth</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"revert_alpha = False"</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">vba_choropleth</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">,</span>
+    <span class="n">gdf</span><span class="p">,</span>
+    <span class="n">x_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"quantiles"</span><span class="p">},</span>
+    <span class="n">y_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"quantiles"</span><span class="p">},</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">"RdBu"</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">revert_alpha</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># set revert_alpha argument to True</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"revert_alpha = True"</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">vba_choropleth</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">,</span>
+    <span class="n">gdf</span><span class="p">,</span>
+    <span class="n">x_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"quantiles"</span><span class="p">},</span>
+    <span class="n">y_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"quantiles"</span><span class="p">},</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">"RdBu"</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">revert_alpha</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8349d81db5fe4f5798eff313248ea6b846384585dfb034712de8fb7d344844c4.png" src="../_images/8349d81db5fe4f5798eff313248ea6b846384585dfb034712de8fb7d344844c4.png" />
+</div>
+</div>
+<h3 id="displaying-divergency">Displaying divergency<a class="headerlink" href="#displaying-divergency" title="Link to this heading">¶</a></h3>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">divergent</span></code> argument to display divergent alpha values. This means values at the extremes of your data range will be displayed with an alpha value of 1. Values towards the middle of your data range will be mapped increasingly transparent approaching an alpha value of 0.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="c1"># create new figure</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="c1"># create a vba_choropleth</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"divergent = False"</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">vba_choropleth</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">gdf</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"RdBu"</span><span class="p">,</span> <span class="n">divergent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># set divergent to True</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"divergent = True"</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">vba_choropleth</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">gdf</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">"RdBu"</span><span class="p">,</span> <span class="n">divergent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/91690b136a361d2f77f72ff8847049e1b5f937ab658397ebc8743031013cb889.png" src="../_images/91690b136a361d2f77f72ff8847049e1b5f937ab658397ebc8743031013cb889.png" />
+</div>
+</div>
+<h2 id="create-your-own-cmap-for-plotting">Create your own cmap for plotting<a class="headerlink" href="#create-your-own-cmap-for-plotting" title="Link to this heading">¶</a></h2>
+<h3 id="colormap-shifting">Colormap shifting<a class="headerlink" href="#colormap-shifting" title="Link to this heading">¶</a></h3>
+<p>Sometimes you need to display divergent values with a natural midpoint not overlapping with the median of your data. For example, if you measure the temperature over a country ranging from -2 to 10 degrees Celsius. Or if you need to assess whether a certain threshold is reached.</p>
+<p>For cases like this, we can use <code class="docutils literal notranslate"><span class="pre">shift_colormap</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">mapclassify.value_by_alpha</span><span class="w"> </span><span class="kn">import</span> <span class="n">shift_colormap</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="c1"># shift the midpoint to the 80th percentile of your datarange</span>
+<span class="n">mid08</span> <span class="o">=</span> <span class="n">shift_colormap</span><span class="p">(</span><span class="s2">"RdBu"</span><span class="p">,</span> <span class="n">midpoint</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"RdBu_08"</span><span class="p">)</span>
+<span class="n">mid08</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div style="vertical-align: middle;"><strong>RdBu_08</strong> </div><div class="cmap"><img alt="RdBu_08 colormap" title="RdBu_08" style="border: 1px solid #555;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAABACAYAAABsv8+/AAAAFnRFWHRUaXRsZQBSZEJ1XzA4IGNvbG9ybWFwFjS1lAAAABx0RVh0RGVzY3JpcHRpb24AUmRCdV8wOCBjb2xvcm1hcLEaBO0AAAAxdEVYdEF1dGhvcgBNYXRwbG90bGliIHYzLjExLjIsIGh0dHBzOi8vbWF0cGxvdGxpYi5vcmdNffMaAAAAM3RFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHYzLjExLjIsIGh0dHBzOi8vbWF0cGxvdGxpYi5vcmfoWeDuAAACV0lEQVR4nO3WS3LiMBQFUDsb6eX1/mcQPu5qkOSyjDCpyuyeM4iip6+dgtz57/RnmaZpmv//mKbpq/zy1fpz13+286C+W1fnH+w3POeH6+aDe4yeq6378LlG58xlwdxtvNYHbX3ewfh4nzr82Tn1hY7vMdj/l++zrh/cpwy0+W281Of39d26br/1Hq/rdb/9c47O356zq//2vUfr+vfW7tM9z67eP+/rej9/fZ5P99m+n3Wf9+d8ut98cM7w/Qze0/qB6ee/Hl929aP9yrr6TdLVx+e0L5iD+dt9lx/OH697f36bX1zvpV0e/26m233Z1mu/jXf1rv2+1fa+ac+tX8bLAUfzzpfboz1dnvVT6z/bc61ft/V+ft3nUuq3cv611Gt/rdd+GS/9a53X1l2e7fe51J/t/XLq6qft+KC+3K6Ptv4VAYAgAgAABBIAACCQAAAAgQQAAAgkAABAIAEAAAIJAAAQSAAAgEACAAAEEgAAIJAAAACBBAAACCQAAEAgAQAAAgkAABBIAACAQAIAAAQSAAAgkAAAAIEEAAAIJAAAQCABAAACCQAAEEgAAIBAAgAABBIAACCQAAAAgQQAAAgkAABAIAEAAAIJAAAQSAAAgEACAAAEEgAAIJAAAACBBAAACCQAAEAgAQAAAgkAABBIAACAQAIAAAQSAAAgkAAAAIEEAAAIJAAAQCABAAACCQAAEEgAAIBAAgAABBIAACCQAAAAgQQAAAgkAABAIAEAAAIJAAAQSAAAgEACAAAEEgAAIJAAAACBBAAACCQAAEAgAQAAAv0D9RKeFY+RFosAAAAASUVORK5CYII="></div><div style="vertical-align: middle; max-width: 514px; display: flex; justify-content: space-between;"><div style="float: left;"><div title="#67001fff" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #67001fff;"></div> under</div><div style="margin: 0 auto; display: inline-block;">bad <div title="#00000000" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #00000000;"></div></div><div style="float: right;">over <div title="#053061ff" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #053061ff;"></div></div></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="c1"># shift the midpoint to the 20th percentile of your datarange</span>
+<span class="n">mid02</span> <span class="o">=</span> <span class="n">shift_colormap</span><span class="p">(</span><span class="s2">"RdBu"</span><span class="p">,</span> <span class="n">midpoint</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"RdBu_02"</span><span class="p">)</span>
+<span class="n">mid02</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div style="vertical-align: middle;"><strong>RdBu_02</strong> </div><div class="cmap"><img alt="RdBu_02 colormap" title="RdBu_02" style="border: 1px solid #555;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAABACAYAAABsv8+/AAAAFnRFWHRUaXRsZQBSZEJ1XzAyIGNvbG9ybWFwARYlXQAAABx0RVh0RGVzY3JpcHRpb24AUmRCdV8wMiBjb2xvcm1hcKY4lCQAAAAxdEVYdEF1dGhvcgBNYXRwbG90bGliIHYzLjExLjIsIGh0dHBzOi8vbWF0cGxvdGxpYi5vcmdNffMaAAAAM3RFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHYzLjExLjIsIGh0dHBzOi8vbWF0cGxvdGxpYi5vcmfoWeDuAAACQklEQVR4nO3WXXKbMACFURkwzi66vO5/A9Bp+EklQk3j9Ome86JIyLISeybf7Wf5MZdSyqO7lT/Ht76ef6x39Xx73uwfxn4Z34ZlfCzzfh2Hx9DMt+dn++/vY7eO/TaOYz0/jOvzsV7v1tfdxscy3rexXi/7ejNur1/nZVjmpV/On9ex9EM1n7t7s2+o5+vzuVt+7/cP5/e4/nA+n+v5k33l7Plhfb74/s3+k33l2b2/7T71udNcrx/m+776/Om7z9nmzT1Pzy31/L+d83Tfuj7V6+2+aTpZb/fv+/7tnPN7fPE+02v3vHqf/fu4Luzf1+Zz2H44Pm/WPz6wz5+fzA/nX77PxfOnJ/c+vde1v1OZlzeYt3E6W5/+un44b6r3lZf3N687rG9fmFf371+8T9fbv0Nr+W8OAEQRAAAQSAAAQCABAACBBAAABBIAABBIAABAIAEAAIEEAAAEEgAAEEgAAEAgAQAAgQQAAAQSAAAQSAAAQCABAACBBAAABBIAABBIAABAIAEAAIEEAAAEEgAAEEgAAEAgAQAAgQQAAAQSAAAQSAAAQCABAACBBAAABBIAABBIAABAIAEAAIEEAAAEEgAAEEgAAEAgAQAAgQQAAAQSAAAQSAAAQCABAACBBAAABBIAABBIAABAIAEAAIEEAAAEEgAAEEgAAEAgAQAAgQQAAAQSAAAQSAAAQCABAACBBAAABBIAABBIAABAIAEAAIEEAAAEEgAAEEgAAEAgAQAAgQQAAAQSAAAQSAAAQKBfl0vbJBUr1bIAAAAASUVORK5CYII="></div><div style="vertical-align: middle; max-width: 514px; display: flex; justify-content: space-between;"><div style="float: left;"><div title="#67001fff" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #67001fff;"></div> under</div><div style="margin: 0 auto; display: inline-block;">bad <div title="#00000000" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #00000000;"></div></div><div style="float: right;">over <div title="#053061ff" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #053061ff;"></div></div></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="c1"># create new figure</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="c1"># vba_choropleth with cmap mid08</span>
+<span class="n">vba_choropleth</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">gdf</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">mid08</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">divergent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+
+<span class="c1"># vba_choropleth with cmap mid02</span>
+<span class="n">vba_choropleth</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">gdf</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">mid02</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">divergent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/beb4283372b3bbb518e9291d1f283954fd766d1ecc164e21c5220cc2d62a4177.png" src="../_images/beb4283372b3bbb518e9291d1f283954fd766d1ecc164e21c5220cc2d62a4177.png" />
+</div>
+</div>
+<h3 id="colormap-truncation">Colormap truncation<a class="headerlink" href="#colormap-truncation" title="Link to this heading">¶</a></h3>
+<p>You may also want to truncate minimum and maximum values for demonstrative or merely aesthetic purposes.</p>
+<p>For cases like this, we can use <code class="docutils literal notranslate"><span class="pre">truncate_colormap</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">mapclassify.value_by_alpha</span><span class="w"> </span><span class="kn">import</span> <span class="n">truncate_colormap</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="c1"># truncate to the 20th-60th percentile of your datarange</span>
+<span class="n">trunc0206</span> <span class="o">=</span> <span class="n">truncate_colormap</span><span class="p">(</span><span class="s2">"RdBu"</span><span class="p">,</span> <span class="n">minval</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">trunc0206</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div style="vertical-align: middle;"><strong>trunc(RdBu,0.20,0.60)</strong> </div><div class="cmap"><img alt="trunc(RdBu,0.20,0.60) colormap" title="trunc(RdBu,0.20,0.60)" style="border: 1px solid #555;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAABACAYAAABsv8+/AAAAJHRFWHRUaXRsZQB0cnVuYyhSZEJ1LDAuMjAsMC42MCkgY29sb3JtYXA5eBZGAAAAKnRFWHREZXNjcmlwdGlvbgB0cnVuYyhSZEJ1LDAuMjAsMC42MCkgY29sb3JtYXAuguzTAAAAMXRFWHRBdXRob3IATWF0cGxvdGxpYiB2My4xMS4yLCBodHRwczovL21hdHBsb3RsaWIub3JnTX3zGgAAADN0RVh0U29mdHdhcmUATWF0cGxvdGxpYiB2My4xMS4yLCBodHRwczovL21hdHBsb3RsaWIub3Jn6Fng7gAAAYhJREFUeJzt1mFqwjAAgNHW++0OO7XXyXA4QUE616od33s/rNKkEhLlm4+fH2Oapun75WSef97dfD5fL7fnP45fO//O+Gc999nrWHju2Gwda+ffjH/XPq+dv9E+j1ev4137vPb7XrzPY6tzuZfz+ug6dvq7G0vr2Ov/86/P9z9bx/l6uL4LABQIAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBX4UnCSVZ/FhPAAAAAElFTkSuQmCC"></div><div style="vertical-align: middle; max-width: 514px; display: flex; justify-content: space-between;"><div style="float: left;"><div title="#d6604dff" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #d6604dff;"></div> under</div><div style="margin: 0 auto; display: inline-block;">bad <div title="#00000000" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #00000000;"></div></div><div style="float: right;">over <div title="#d1e5f0ff" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #d1e5f0ff;"></div></div></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="c1"># truncate to the 40th-90th percentile of your datarange</span>
+<span class="n">trunc0409</span> <span class="o">=</span> <span class="n">truncate_colormap</span><span class="p">(</span><span class="s2">"RdBu"</span><span class="p">,</span> <span class="n">minval</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">trunc0409</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div style="vertical-align: middle;"><strong>trunc(RdBu,0.40,0.90)</strong> </div><div class="cmap"><img alt="trunc(RdBu,0.40,0.90) colormap" title="trunc(RdBu,0.40,0.90)" style="border: 1px solid #555;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAABACAYAAABsv8+/AAAAJHRFWHRUaXRsZQB0cnVuYyhSZEJ1LDAuNDAsMC45MCkgY29sb3JtYXDs2D4/AAAAKnRFWHREZXNjcmlwdGlvbgB0cnVuYyhSZEJ1LDAuNDAsMC45MCkgY29sb3JtYXD7IsSqAAAAMXRFWHRBdXRob3IATWF0cGxvdGxpYiB2My4xMS4yLCBodHRwczovL21hdHBsb3RsaWIub3JnTX3zGgAAADN0RVh0U29mdHdhcmUATWF0cGxvdGxpYiB2My4xMS4yLCBodHRwczovL21hdHBsb3RsaWIub3Jn6Fng7gAAAcNJREFUeJzt1ktOwzAAQMHA/e/FITgLMgLEIkVW7NDdm1mALNWfOqn0Xj7e38ZxHMcY3/+On79f42Np/Gt3/jH93No68/m/43Fz3mSdq/mX5z2vs3xPV/dzue+9e/6z7+Y6831n4/PE+/e0eM+X5x03n8/e81r/vmNv3+l57/3Op/e8Pe/mPV/uM24+n8fxw3u4PO+f9zw975PveXveZJ2r93dxnf3ncz7w/r6P33ds7rt2L8/6nT/tPZ58/vV8PACgQAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACBIAABAkAAAgSAAAQJAAAIAgAQAAQQIAAIIEAAAECQAACPoEGwZzvFPBYiYAAAAASUVORK5CYII="></div><div style="vertical-align: middle; max-width: 514px; display: flex; justify-content: space-between;"><div style="float: left;"><div title="#fddbc7ff" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #fddbc7ff;"></div> under</div><div style="margin: 0 auto; display: inline-block;">bad <div title="#00000000" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #00000000;"></div></div><div style="float: right;">over <div title="#2065abff" style="display: inline-block; width: 1em; height: 1em; margin: 0; vertical-align: middle; border: 1px solid #555; background-color: #2065abff;"></div></div></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="c1"># create new figure</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="c1"># vba_choropleth with cmap trunc0206</span>
+<span class="n">vba_choropleth</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">gdf</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">trunc0206</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">divergent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+
+<span class="c1"># vba_choropleth with cmap trunc0409</span>
+<span class="n">vba_choropleth</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">gdf</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">trunc0409</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">divergent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/7cdebd10a1ae46717533d83775a7cb7bdb71bf3ae93722f6df145d29cfbb301c.png" src="../_images/7cdebd10a1ae46717533d83775a7cb7bdb71bf3ae93722f6df145d29cfbb301c.png" />
+</div>
+</div>
+<h2 id="add-a-legend">Add a legend<a class="headerlink" href="#add-a-legend" title="Link to this heading">¶</a></h2>
+<p>If your values are classified, you have the option to add a legend to your map.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+
+<span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s2">"k"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">vba_choropleth</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">y</span><span class="p">,</span>
+    <span class="n">gdf</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">x_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"quantiles"</span><span class="p">,</span> <span class="s2">"k"</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
+    <span class="n">y_classification_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">"classifier"</span><span class="p">:</span> <span class="s2">"quantiles"</span><span class="p">,</span> <span class="s2">"k"</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
+    <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">legend_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">"x_label"</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s2">"y_label"</span><span class="p">:</span> <span class="n">y</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/fd26dabc5187f9907e8f52d80ee3539407392592434cac89def2e4ba61e6c34e.png" src="../_images/fd26dabc5187f9907e8f52d80ee3539407392592434cac89def2e4ba61e6c34e.png" />
+</div>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2018-, pysal developers.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    9.2.0.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.top", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy", "content.action.edit"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "https://pysal.org/mapclassify/versions.json"}}</script>
+    
+      
+        <script src="../_static/sphinx_immaterial_theme.32136f45f91ae6956.min.js?v=a7a9472a"></script>
+        <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="../_static/copybutton.js?v=f281be69"></script>
+    
+  </body>
+</html>

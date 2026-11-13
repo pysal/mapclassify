@@ -1,0 +1,680 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Value-by-Alpha Choropleth\n",
+    "\n",
+    "Value-by-Alpha Choropleth plotting with `mapclassify`\n",
+    "\n",
+    "* *This notebook is adapted from one originally written by [@slumnitz](https://github.com/slumnitz)* in the `splot` project (original [here](https://github.com/pysal/splot/blob/b8361cb5f4685d0945e08cbf9172ba701ce57c44/notebooks/mapping_vba.ipynb)).\n",
+    "\n",
+    "## Set up\n",
+    "\n",
+    "### Imports"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-07-11T19:53:33.802055Z",
+     "iopub.status.busy": "2025-07-11T19:53:33.801867Z",
+     "iopub.status.idle": "2025-07-11T19:53:36.020933Z",
+     "shell.execute_reply": "2025-07-11T19:53:36.020715Z",
+     "shell.execute_reply.started": "2025-07-11T19:53:33.802034Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import geopandas\n",
+    "import matplotlib.pyplot as plt\n",
+    "from geodatasets import get_path"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Data Preparation\n",
+    "\n",
+    "Load example data into a `geopandas.GeoDataFrame` and inspect column names. In this example we will use the `columbus.shp` file containing neighborhood crime data of 1980."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-07-11T19:53:36.021345Z",
+     "iopub.status.busy": "2025-07-11T19:53:36.021213Z",
+     "iopub.status.idle": "2025-07-11T19:53:36.652926Z",
+     "shell.execute_reply": "2025-07-11T19:53:36.652705Z",
+     "shell.execute_reply.started": "2025-07-11T19:53:36.021336Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "link_to_data = get_path(\"spdata.columbus\")\n",
+    "gdf = geopandas.read_file(link_to_data)\n",
+    "gdf.columns"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Our two variables of interest in `gdf`:\n",
+    "* `x`: `HOVAL` – housing value (in $1,000); the rgb variable\n",
+    "* `y`: `CRIME` – residential burglaries and vehicle thefts per 1000 households; the alpha variable"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-07-11T19:53:36.653398Z",
+     "iopub.status.busy": "2025-07-11T19:53:36.653267Z",
+     "iopub.status.idle": "2025-07-11T19:53:36.654812Z",
+     "shell.execute_reply": "2025-07-11T19:53:36.654617Z",
+     "shell.execute_reply.started": "2025-07-11T19:53:36.653390Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "x = \"HOVAL\"\n",
+    "y = \"CRIME\""
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Create Value-by-Alpha Choropleths\n",
+    "\n",
+    "### What is a Value by Alpha choropleth?\n",
+    "\n",
+    "In a nutshell, a Value-by-Alpha Choropleth is a bivariate choropleth that uses the values of the second input variable `y` as a transparency mask, determining how much of the choropleth displaying the values of a first variable `x` is shown. In comparison to a cartogram, Value-By-Alpha choropleths will not distort shapes and sizes but modify the alpha channel (transparency) of polygons according to the second input variable `y`.\n",
+    "\n",
+    "Let's look at a couple of examples."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-07-11T19:53:36.655257Z",
+     "iopub.status.busy": "2025-07-11T19:53:36.655159Z",
+     "iopub.status.idle": "2025-07-11T19:53:37.313978Z",
+     "shell.execute_reply": "2025-07-11T19:53:37.313740Z",
+     "shell.execute_reply.started": "2025-07-11T19:53:36.655250Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from mapclassify.value_by_alpha import vba_choropleth"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can create a value by alpha map using `vba_choropleth`.\n",
+    "\n",
+    "We will plot a Value-by-Alpha Choropleth with `x` (`HOVAL`) defining the rgb values and `y` (`CRIME`) defining the alpha value. For comparison we plot a choropleth of `x` with `gdf.plot()`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-07-11T19:53:37.314460Z",
+     "iopub.status.busy": "2025-07-11T19:53:37.314323Z",
+     "iopub.status.idle": "2025-07-11T19:53:37.618909Z",
+     "shell.execute_reply": "2025-07-11T19:53:37.618679Z",
+     "shell.execute_reply.started": "2025-07-11T19:53:37.314452Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# Create new figure\n",
+    "fig, axs = plt.subplots(2, 2, figsize=(15, 10))\n",
+    "\n",
+    "# use gdf.plot() to create regular choropleth\n",
+    "axs[0, 0].set_title(\"normal Choropleth\")\n",
+    "axs[0, 0].set_axis_off()\n",
+    "gdf.plot(column=x, scheme=\"quantiles\", cmap=\"RdBu\", ax=axs[0, 0])\n",
+    "\n",
+    "# use vba_choropleth to create Value-by-Alpha Choropleth\n",
+    "axs[0, 1].set_title(\"Value-by-Alpha Choropleth\")\n",
+    "axs[0, 1].set_axis_off()\n",
+    "vba_choropleth(\n",
+    "    x,\n",
+    "    y,\n",
+    "    gdf,\n",
+    "    x_classification_kwds={\"classifier\": \"quantiles\"},\n",
+    "    y_classification_kwds={\"classifier\": \"quantiles\"},\n",
+    "    cmap=\"RdBu\",\n",
+    "    ax=axs[0, 1],\n",
+    ")\n",
+    "\n",
+    "# create a VBA Choropleth - divergent=False, revert_alpha=False\n",
+    "axs[1, 0].set_title(\"divergent=False, revert_alpha=False\")\n",
+    "axs[1, 0].set_axis_off()\n",
+    "vba_choropleth(\n",
+    "    x,\n",
+    "    y,\n",
+    "    gdf,\n",
+    "    x_classification_kwds={\"classifier\": \"quantiles\"},\n",
+    "    y_classification_kwds={\"classifier\": \"quantiles\"},\n",
+    "    cmap=\"RdBu\",\n",
+    "    ax=axs[1, 0],\n",
+    "    divergent=True,\n",
+    "    revert_alpha=False,\n",
+    ")\n",
+    "\n",
+    "# create a VBA Choropleth - divergent=False, revert_alpha=True\n",
+    "axs[1, 1].set_title(\"divergent=False, revert_alpha=True\")\n",
+    "axs[1, 1].set_axis_off()\n",
+    "vba_choropleth(\n",
+    "    x,\n",
+    "    y,\n",
+    "    gdf,\n",
+    "    x_classification_kwds={\"classifier\": \"quantiles\"},\n",
+    "    y_classification_kwds={\"classifier\": \"quantiles\"},\n",
+    "    cmap=\"RdBu\",\n",
+    "    ax=axs[1, 1],\n",
+    "    divergent=False,\n",
+    "    revert_alpha=True,\n",
+    ")\n",
+    "\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "You can see the original choropleth is fading into transparency wherever there is a high `y` value.\n",
+    "\n",
+    "#### Classification & binning options\n",
+    "\n",
+    "You can use the option to bin or classify your `x` and `y` values, and display the alternative color and alpha ranges:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-07-11T19:53:37.620223Z",
+     "iopub.status.busy": "2025-07-11T19:53:37.620139Z",
+     "iopub.status.idle": "2025-07-11T19:53:37.795919Z",
+     "shell.execute_reply": "2025-07-11T19:53:37.795669Z",
+     "shell.execute_reply.started": "2025-07-11T19:53:37.620215Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# Create new figure\n",
+    "fig, axs = plt.subplots(2, 2, figsize=(15, 10))\n",
+    "\n",
+    "# classify with Quantiles\n",
+    "axs[0, 0].set_axis_off()\n",
+    "vba_choropleth(\n",
+    "    x,\n",
+    "    y,\n",
+    "    gdf,\n",
+    "    cmap=\"viridis\",\n",
+    "    ax=axs[0, 0],\n",
+    "    x_classification_kwds={\"classifier\": \"quantiles\", \"k\": 3},\n",
+    "    y_classification_kwds={\"classifier\": \"quantiles\", \"k\": 3},\n",
+    ")\n",
+    "\n",
+    "# classifier with Natural Breaks\n",
+    "axs[0, 1].set_axis_off()\n",
+    "vba_choropleth(\n",
+    "    x,\n",
+    "    y,\n",
+    "    gdf,\n",
+    "    cmap=\"viridis\",\n",
+    "    ax=axs[0, 1],\n",
+    "    x_classification_kwds={\"classifier\": \"natural_breaks\"},\n",
+    "    y_classification_kwds={\"classifier\": \"natural_breaks\"},\n",
+    ")\n",
+    "\n",
+    "# classify with Standard Deviation Mean\n",
+    "axs[1, 0].set_axis_off()\n",
+    "vba_choropleth(\n",
+    "    x,\n",
+    "    y,\n",
+    "    gdf,\n",
+    "    cmap=\"viridis\",\n",
+    "    ax=axs[1, 0],\n",
+    "    x_classification_kwds={\"classifier\": \"std_mean\"},\n",
+    "    y_classification_kwds={\"classifier\": \"std_mean\"},\n",
+    ")\n",
+    "\n",
+    "# classify with Fisher Jenks\n",
+    "axs[1, 1].set_axis_off()\n",
+    "vba_choropleth(\n",
+    "    x,\n",
+    "    y,\n",
+    "    gdf,\n",
+    "    cmap=\"viridis\",\n",
+    "    ax=axs[1, 1],\n",
+    "    x_classification_kwds={\"classifier\": \"fisher_jenks\", \"k\": 3},\n",
+    "    y_classification_kwds={\"classifier\": \"fisher_jenks\", \"k\": 3},\n",
+    ")\n",
+    "\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### User-defined colors\n",
+    "\n",
+    "Instead of using a colormap you can also pass a list of colors:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-07-11T19:53:37.796430Z",
+     "iopub.status.busy": "2025-07-11T19:53:37.796339Z",
+     "iopub.status.idle": "2025-07-11T19:53:37.797988Z",
+     "shell.execute_reply": "2025-07-11T19:53:37.797810Z",
+     "shell.execute_reply.started": "2025-07-11T19:53:37.796419Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "color_list = [\"#a1dab4\", \"#41b6c4\", \"#225ea8\"]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-07-11T19:53:37.798367Z",
+     "iopub.status.busy": "2025-07-11T19:53:37.798300Z",
+     "iopub.status.idle": "2025-07-11T19:53:37.825519Z",
+     "shell.execute_reply": "2025-07-11T19:53:37.825294Z",
+     "shell.execute_reply.started": "2025-07-11T19:53:37.798359Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "_, ax = vba_choropleth(\n",
+    "    x,\n",
+    "    y,\n",
+    "    gdf,\n",
+    "    cmap=color_list,\n",
+    "    x_classification_kwds={\"classifier\": \"quantiles\", \"k\": 3},\n",
+    "    y_classification_kwds={\"classifier\": \"quantiles\"},\n",
+    ")\n",
+    "ax.set_axis_off()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Transposing transparency\n",
+    "\n",
+    "Sometimes it is important in geospatial analysis to actually see the high values and let the small values fade out. With the `revert_alpha = True` argument, you can revert the transparency of the `y` values so that high `y` values will more transparent and low values will more opaque."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-07-11T19:53:37.825999Z",
+     "iopub.status.busy": "2025-07-11T19:53:37.825926Z",
+     "iopub.status.idle": "2025-07-11T19:53:37.896177Z",
+     "shell.execute_reply": "2025-07-11T19:53:37.895953Z",
+     "shell.execute_reply.started": "2025-07-11T19:53:37.825991Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# Create new figure\n",
+    "fig, axs = plt.subplots(1, 2, figsize=(20, 10))\n",
+    "\n",
+    "# create a vba_choropleth\n",
+    "axs[0].set_title(\"revert_alpha = False\")\n",
+    "axs[0].set_axis_off()\n",
+    "vba_choropleth(\n",
+    "    x,\n",
+    "    y,\n",
+    "    gdf,\n",
+    "    x_classification_kwds={\"classifier\": \"quantiles\"},\n",
+    "    y_classification_kwds={\"classifier\": \"quantiles\"},\n",
+    "    cmap=\"RdBu\",\n",
+    "    ax=axs[0],\n",
+    "    revert_alpha=False,\n",
+    ")\n",
+    "\n",
+    "# set revert_alpha argument to True\n",
+    "axs[1].set_title(\"revert_alpha = True\")\n",
+    "axs[1].set_axis_off()\n",
+    "vba_choropleth(\n",
+    "    x,\n",
+    "    y,\n",
+    "    gdf,\n",
+    "    x_classification_kwds={\"classifier\": \"quantiles\"},\n",
+    "    y_classification_kwds={\"classifier\": \"quantiles\"},\n",
+    "    cmap=\"RdBu\",\n",
+    "    ax=axs[1],\n",
+    "    revert_alpha=True,\n",
+    ")\n",
+    "\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Displaying divergency\n",
+    "\n",
+    "You can use the `divergent` argument to display divergent alpha values. This means values at the extremes of your data range will be displayed with an alpha value of 1. Values towards the middle of your data range will be mapped increasingly transparent approaching an alpha value of 0."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-07-11T19:53:37.896589Z",
+     "iopub.status.busy": "2025-07-11T19:53:37.896518Z",
+     "iopub.status.idle": "2025-07-11T19:53:37.964458Z",
+     "shell.execute_reply": "2025-07-11T19:53:37.964248Z",
+     "shell.execute_reply.started": "2025-07-11T19:53:37.896580Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# create new figure\n",
+    "fig, axs = plt.subplots(1, 2, figsize=(20, 10))\n",
+    "\n",
+    "# create a vba_choropleth\n",
+    "axs[0].set_title(\"divergent = False\")\n",
+    "axs[0].set_axis_off()\n",
+    "vba_choropleth(x, y, gdf, cmap=\"RdBu\", divergent=False, ax=axs[0])\n",
+    "\n",
+    "# set divergent to True\n",
+    "axs[1].set_title(\"divergent = True\")\n",
+    "axs[1].set_axis_off()\n",
+    "vba_choropleth(x, y, gdf, cmap=\"RdBu\", divergent=True, ax=axs[1])\n",
+    "\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Create your own cmap for plotting\n",
+    "\n",
+    "### Colormap shifting\n",
+    "\n",
+    "Sometimes you need to display divergent values with a natural midpoint not overlapping with the median of your data. For example, if you measure the temperature over a country ranging from -2 to 10 degrees Celsius. Or if you need to assess whether a certain threshold is reached.\n",
+    "\n",
+    "For cases like this, we can use `shift_colormap`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-07-11T19:53:37.964872Z",
+     "iopub.status.busy": "2025-07-11T19:53:37.964787Z",
+     "iopub.status.idle": "2025-07-11T19:53:37.966330Z",
+     "shell.execute_reply": "2025-07-11T19:53:37.966140Z",
+     "shell.execute_reply.started": "2025-07-11T19:53:37.964863Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from mapclassify.value_by_alpha import shift_colormap"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-07-11T19:53:37.966770Z",
+     "iopub.status.busy": "2025-07-11T19:53:37.966664Z",
+     "iopub.status.idle": "2025-07-11T19:53:37.973107Z",
+     "shell.execute_reply": "2025-07-11T19:53:37.972929Z",
+     "shell.execute_reply.started": "2025-07-11T19:53:37.966763Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# shift the midpoint to the 80th percentile of your datarange\n",
+    "mid08 = shift_colormap(\"RdBu\", midpoint=0.8, name=\"RdBu_08\")\n",
+    "mid08"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-07-11T19:53:37.973534Z",
+     "iopub.status.busy": "2025-07-11T19:53:37.973436Z",
+     "iopub.status.idle": "2025-07-11T19:53:37.980803Z",
+     "shell.execute_reply": "2025-07-11T19:53:37.980438Z",
+     "shell.execute_reply.started": "2025-07-11T19:53:37.973526Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# shift the midpoint to the 20th percentile of your datarange\n",
+    "mid02 = shift_colormap(\"RdBu\", midpoint=0.2, name=\"RdBu_02\")\n",
+    "mid02"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-07-11T19:53:37.981374Z",
+     "iopub.status.busy": "2025-07-11T19:53:37.981249Z",
+     "iopub.status.idle": "2025-07-11T19:53:38.047920Z",
+     "shell.execute_reply": "2025-07-11T19:53:38.047718Z",
+     "shell.execute_reply.started": "2025-07-11T19:53:37.981332Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# create new figure\n",
+    "fig, axs = plt.subplots(1, 2, figsize=(20, 10))\n",
+    "\n",
+    "# vba_choropleth with cmap mid08\n",
+    "vba_choropleth(x, y, gdf, cmap=mid08, ax=axs[0], divergent=True)\n",
+    "axs[0].set_axis_off()\n",
+    "\n",
+    "# vba_choropleth with cmap mid02\n",
+    "vba_choropleth(x, y, gdf, cmap=mid02, ax=axs[1], divergent=True)\n",
+    "axs[1].set_axis_off()\n",
+    "\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Colormap truncation\n",
+    "\n",
+    "You may also want to truncate minimum and maximum values for demonstrative or merely aesthetic purposes.\n",
+    "\n",
+    "For cases like this, we can use `truncate_colormap`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-07-11T19:53:38.048385Z",
+     "iopub.status.busy": "2025-07-11T19:53:38.048310Z",
+     "iopub.status.idle": "2025-07-11T19:53:38.049870Z",
+     "shell.execute_reply": "2025-07-11T19:53:38.049672Z",
+     "shell.execute_reply.started": "2025-07-11T19:53:38.048376Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from mapclassify.value_by_alpha import truncate_colormap"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-07-11T19:53:38.050190Z",
+     "iopub.status.busy": "2025-07-11T19:53:38.050126Z",
+     "iopub.status.idle": "2025-07-11T19:53:38.054243Z",
+     "shell.execute_reply": "2025-07-11T19:53:38.054057Z",
+     "shell.execute_reply.started": "2025-07-11T19:53:38.050182Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# truncate to the 20th-60th percentile of your datarange\n",
+    "trunc0206 = truncate_colormap(\"RdBu\", minval=0.2, maxval=0.6, n=2)\n",
+    "trunc0206"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-07-11T19:53:38.054690Z",
+     "iopub.status.busy": "2025-07-11T19:53:38.054591Z",
+     "iopub.status.idle": "2025-07-11T19:53:38.059064Z",
+     "shell.execute_reply": "2025-07-11T19:53:38.058822Z",
+     "shell.execute_reply.started": "2025-07-11T19:53:38.054682Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# truncate to the 40th-90th percentile of your datarange\n",
+    "trunc0409 = truncate_colormap(\"RdBu\", minval=0.4, maxval=0.9, n=2)\n",
+    "trunc0409"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-07-11T19:53:38.059518Z",
+     "iopub.status.busy": "2025-07-11T19:53:38.059433Z",
+     "iopub.status.idle": "2025-07-11T19:53:38.123678Z",
+     "shell.execute_reply": "2025-07-11T19:53:38.123449Z",
+     "shell.execute_reply.started": "2025-07-11T19:53:38.059509Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# create new figure\n",
+    "fig, axs = plt.subplots(1, 2, figsize=(20, 10))\n",
+    "\n",
+    "# vba_choropleth with cmap trunc0206\n",
+    "vba_choropleth(x, y, gdf, cmap=trunc0206, ax=axs[0], divergent=True)\n",
+    "axs[0].set_axis_off()\n",
+    "\n",
+    "# vba_choropleth with cmap trunc0409\n",
+    "vba_choropleth(x, y, gdf, cmap=trunc0409, ax=axs[1], divergent=True)\n",
+    "axs[1].set_axis_off()\n",
+    "\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Add a legend\n",
+    "\n",
+    "If your values are classified, you have the option to add a legend to your map."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-07-11T19:53:38.124138Z",
+     "iopub.status.busy": "2025-07-11T19:53:38.124065Z",
+     "iopub.status.idle": "2025-07-11T19:53:38.252136Z",
+     "shell.execute_reply": "2025-07-11T19:53:38.251914Z",
+     "shell.execute_reply.started": "2025-07-11T19:53:38.124130Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "fig = plt.figure(figsize=(15, 10))\n",
+    "ax = fig.add_subplot(111)\n",
+    "\n",
+    "gdf.plot(ax=ax, fc=\"none\", ec=\"k\", lw=0.1)\n",
+    "vba_choropleth(\n",
+    "    x,\n",
+    "    y,\n",
+    "    gdf,\n",
+    "    ax=ax,\n",
+    "    x_classification_kwds={\"classifier\": \"quantiles\", \"k\": 5},\n",
+    "    y_classification_kwds={\"classifier\": \"quantiles\", \"k\": 5},\n",
+    "    legend=True,\n",
+    "    legend_kwargs={\"x_label\": x, \"y_label\": y},\n",
+    ")\n",
+    "ax.set_axis_off()\n",
+    "\n",
+    "plt.show()"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "default",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.14.10"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

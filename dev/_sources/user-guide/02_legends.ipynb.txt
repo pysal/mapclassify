@@ -1,0 +1,216 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Legends in mapclassify\n",
+    "\n",
+    "`mapclassify` allows for user defined formatting of legends"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T18:03:55.559087Z",
+     "start_time": "2022-11-04T18:03:53.594867Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:07.380511Z",
+     "iopub.status.busy": "2025-07-11T20:09:07.380236Z",
+     "iopub.status.idle": "2025-07-11T20:09:08.852814Z",
+     "shell.execute_reply": "2025-07-11T20:09:08.852614Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:07.380490Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import mapclassify\n",
+    "\n",
+    "mapclassify.__version__"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T18:03:56.030661Z",
+     "start_time": "2022-11-04T18:03:55.564369Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:08.853204Z",
+     "iopub.status.busy": "2025-07-11T20:09:08.853090Z",
+     "iopub.status.idle": "2025-07-11T20:09:08.861325Z",
+     "shell.execute_reply": "2025-07-11T20:09:08.861048Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:08.853197Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "cal = mapclassify.load_example()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T18:03:56.041172Z",
+     "start_time": "2022-11-04T18:03:56.034966Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:08.861775Z",
+     "iopub.status.busy": "2025-07-11T20:09:08.861651Z",
+     "iopub.status.idle": "2025-07-11T20:09:08.865236Z",
+     "shell.execute_reply": "2025-07-11T20:09:08.864973Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:08.861764Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "q6 = mapclassify.Quantiles(cal, k=6)\n",
+    "q6"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The default is to use two decimal places for this dataset.\n",
+    "\n",
+    "If the user desires a list of strings with these values, the `get_legend_classes` method can be called\n",
+    "which will return the strings with the default format:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T18:03:56.047765Z",
+     "start_time": "2022-11-04T18:03:56.042764Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:08.865763Z",
+     "iopub.status.busy": "2025-07-11T20:09:08.865626Z",
+     "iopub.status.idle": "2025-07-11T20:09:08.868002Z",
+     "shell.execute_reply": "2025-07-11T20:09:08.867811Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:08.865721Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "q6.get_legend_classes()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To set the legends to integers, an option can be passed into the method:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T18:03:56.055615Z",
+     "start_time": "2022-11-04T18:03:56.050635Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:08.868326Z",
+     "iopub.status.busy": "2025-07-11T20:09:08.868260Z",
+     "iopub.status.idle": "2025-07-11T20:09:08.870404Z",
+     "shell.execute_reply": "2025-07-11T20:09:08.870187Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:08.868319Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "q6.get_legend_classes(fmt=\"{:.0f}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Note that this does not change the original object:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T18:03:56.064112Z",
+     "start_time": "2022-11-04T18:03:56.058884Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:08.871564Z",
+     "iopub.status.busy": "2025-07-11T20:09:08.871488Z",
+     "iopub.status.idle": "2025-07-11T20:09:08.873453Z",
+     "shell.execute_reply": "2025-07-11T20:09:08.873252Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:08.871557Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "q6"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The format can be changed on the object by calling the `set_fmt` method:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-04T18:03:56.073242Z",
+     "start_time": "2022-11-04T18:03:56.067329Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:08.873838Z",
+     "iopub.status.busy": "2025-07-11T20:09:08.873773Z",
+     "iopub.status.idle": "2025-07-11T20:09:08.875806Z",
+     "shell.execute_reply": "2025-07-11T20:09:08.875598Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:08.873831Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "q6.set_fmt(fmt=\"{:.0f}\")\n",
+    "q6"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.13.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

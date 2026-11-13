@@ -1,0 +1,610 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Choropleth\n",
+    "\n",
+    "`mapclassify` is intended to be used with visualization packages to handle the actual rendering of the choropleth maps defined on its classifiers. In this notebook, we explore some examples of how this is done. The notebook also includes an example that combines `mapclassify` with [ipywidgets](https://ipywidgets.readthedocs.io/en/latest/) to allow for the interactive exploration of the choice of:\n",
+    "\n",
+    "- classification method\n",
+    "- number of classes\n",
+    "- colormap"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T01:00:43.535547Z",
+     "start_time": "2022-11-05T01:00:40.391594Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:15.318782Z",
+     "iopub.status.busy": "2025-07-11T20:08:15.318399Z",
+     "iopub.status.idle": "2025-07-11T20:08:17.242431Z",
+     "shell.execute_reply": "2025-07-11T20:08:17.242214Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:15.318758Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import geopandas\n",
+    "from geodatasets import get_path\n",
+    "\n",
+    "import mapclassify"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The example in this notebook uses data on sudden death infant syndrome for counties in North Carolina. It is a dataset available through `geodatasets`. We use it to obtain the path to the shapefile and then use `geopandas` to create a geodataframe from the shapefile:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T01:00:43.733714Z",
+     "start_time": "2022-11-05T01:00:43.549872Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:17.244980Z",
+     "iopub.status.busy": "2025-07-11T20:08:17.244916Z",
+     "iopub.status.idle": "2025-07-11T20:08:17.291889Z",
+     "shell.execute_reply": "2025-07-11T20:08:17.291690Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:17.244972Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "pth = get_path('geoda.sids2')\n",
+    "gdf = geopandas.read_file(pth)\n",
+    "gdf.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Once created, the geodataframe has a `plot` method that can be called to create our first choropleth map. We will specify the column to classify and plot as `SIDR79`: SIDS death rate per 1,000 births (1979-84). The classification scheme is set to  `Quantiles`, and the number of classes set to `k=10` (declies):"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T01:00:44.072165Z",
+     "start_time": "2022-11-05T01:00:43.736051Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:17.292415Z",
+     "iopub.status.busy": "2025-07-11T20:08:17.292263Z",
+     "iopub.status.idle": "2025-07-11T20:08:17.350460Z",
+     "shell.execute_reply": "2025-07-11T20:08:17.350245Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:17.292407Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "ax = gdf.plot(column=\"SIDR79\", scheme=\"Quantiles\", k=10, figsize=(16, 9))\n",
+    "ax.set_axis_off()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can peak under the hood a bit and recreate the classification object that was used in the previous choropleth:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T01:00:44.081602Z",
+     "start_time": "2022-11-05T01:00:44.075185Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:17.350934Z",
+     "iopub.status.busy": "2025-07-11T20:08:17.350853Z",
+     "iopub.status.idle": "2025-07-11T20:08:17.353396Z",
+     "shell.execute_reply": "2025-07-11T20:08:17.353228Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:17.350925Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "q10 = mapclassify.Quantiles(gdf.SIDR79, k=10)\n",
+    "q10"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "For quick, exploratory work, the classifier object has its own `plot` method that takes a geodataframe as an argument:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T01:00:44.264108Z",
+     "start_time": "2022-11-05T01:00:44.084642Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:17.354587Z",
+     "iopub.status.busy": "2025-07-11T20:08:17.354499Z",
+     "iopub.status.idle": "2025-07-11T20:08:17.390728Z",
+     "shell.execute_reply": "2025-07-11T20:08:17.390525Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:17.354579Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "q10.plot(gdf);"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Back to working directly with the dataframe, we can toggle on the `legend`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T01:00:44.637932Z",
+     "start_time": "2022-11-05T01:00:44.266642Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:17.391181Z",
+     "iopub.status.busy": "2025-07-11T20:08:17.391097Z",
+     "iopub.status.idle": "2025-07-11T20:08:17.453742Z",
+     "shell.execute_reply": "2025-07-11T20:08:17.453498Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:17.391172Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "ax = gdf.assign(cl=q10.yb).plot(\n",
+    "    figsize=(16, 9),\n",
+    "    column=\"cl\",\n",
+    "    categorical=True,\n",
+    "    k=10,\n",
+    "    cmap=\"OrRd\",\n",
+    "    linewidth=0.1,\n",
+    "    edgecolor=\"white\",\n",
+    "    legend=True,\n",
+    ")\n",
+    "ax.set_axis_off()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Here we see the 10 classes, but without more specific information on the legend, the user has to know that 0 is the first decile and 9 the 10th. We also do not know the values that define these classes. \n",
+    "\n",
+    "We can rectify this as follows:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T01:00:44.646109Z",
+     "start_time": "2022-11-05T01:00:44.640625Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:17.454112Z",
+     "iopub.status.busy": "2025-07-11T20:08:17.454041Z",
+     "iopub.status.idle": "2025-07-11T20:08:17.455997Z",
+     "shell.execute_reply": "2025-07-11T20:08:17.455814Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:17.454103Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "q10.get_legend_classes()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T01:00:44.653754Z",
+     "start_time": "2022-11-05T01:00:44.648642Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:17.456301Z",
+     "iopub.status.busy": "2025-07-11T20:08:17.456227Z",
+     "iopub.status.idle": "2025-07-11T20:08:17.458208Z",
+     "shell.execute_reply": "2025-07-11T20:08:17.458037Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:17.456293Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "mapping = {i: s for i, s in enumerate(q10.get_legend_classes())}\n",
+    "mapping"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T01:00:44.659702Z",
+     "start_time": "2022-11-05T01:00:44.656459Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:17.458596Z",
+     "iopub.status.busy": "2025-07-11T20:08:17.458505Z",
+     "iopub.status.idle": "2025-07-11T20:08:17.460077Z",
+     "shell.execute_reply": "2025-07-11T20:08:17.459925Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:17.458589Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def replace_legend_items(legend, mapping):\n",
+    "    for txt in legend.texts:\n",
+    "        for k, v in mapping.items():\n",
+    "            if txt.get_text() == str(k):\n",
+    "                txt.set_text(v)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T01:00:45.026943Z",
+     "start_time": "2022-11-05T01:00:44.662743Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:17.460477Z",
+     "iopub.status.busy": "2025-07-11T20:08:17.460385Z",
+     "iopub.status.idle": "2025-07-11T20:08:17.526970Z",
+     "shell.execute_reply": "2025-07-11T20:08:17.526753Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:17.460471Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "ax = gdf.assign(cl=q10.yb).plot(\n",
+    "    figsize=(16, 9),\n",
+    "    column=\"cl\",\n",
+    "    categorical=True,\n",
+    "    k=10,\n",
+    "    cmap=\"OrRd\",\n",
+    "    linewidth=0.1,\n",
+    "    edgecolor=\"white\",\n",
+    "    legend=True,\n",
+    "    legend_kwds={\"loc\": \"lower right\"},\n",
+    ")\n",
+    "ax.set_axis_off()\n",
+    "replace_legend_items(ax.get_legend(), mapping)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Interactive Exploration of Choropleth Classification\n",
+    "\n",
+    "Next, we develop a small application that relies on `mapclassify` together with [palettable](https://jiffyclub.github.io/palettable/) and [ipywidgets](https://ipywidgets.readthedocs.io/en/latest/) to explore the choice of:\n",
+    "\n",
+    "- classification method\n",
+    "- number of classes\n",
+    "- colormap\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T01:00:45.128715Z",
+     "start_time": "2022-11-05T01:00:45.033912Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:17.527397Z",
+     "iopub.status.busy": "2025-07-11T20:08:17.527314Z",
+     "iopub.status.idle": "2025-07-11T20:08:17.569315Z",
+     "shell.execute_reply": "2025-07-11T20:08:17.569094Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:17.527388Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from ipywidgets import (\n",
+    "    Button,\n",
+    "    Dropdown,\n",
+    "    FloatSlider,\n",
+    "    HBox,\n",
+    "    IntSlider,\n",
+    "    Label,\n",
+    "    Output,\n",
+    "    RadioButtons,\n",
+    "    Tab,\n",
+    "    VBox,\n",
+    "    interact,\n",
+    ")\n",
+    "from palettable import colorbrewer"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Declare that our application shall have 3 options for color scheme..."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T01:00:45.139393Z",
+     "start_time": "2022-11-05T01:00:45.131309Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:17.569692Z",
+     "iopub.status.busy": "2025-07-11T20:08:17.569609Z",
+     "iopub.status.idle": "2025-07-11T20:08:17.571871Z",
+     "shell.execute_reply": "2025-07-11T20:08:17.571655Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:17.569683Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "data_type = RadioButtons(options=[\"Sequential\", \"Diverging\", \"Qualitative\"])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "... and define thise 3 colormaps based on [colorbrewer](https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T01:00:45.146386Z",
+     "start_time": "2022-11-05T01:00:45.142688Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:17.572168Z",
+     "iopub.status.busy": "2025-07-11T20:08:17.572101Z",
+     "iopub.status.idle": "2025-07-11T20:08:17.573584Z",
+     "shell.execute_reply": "2025-07-11T20:08:17.573419Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:17.572160Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "sequential = colorbrewer.COLOR_MAPS[\"Sequential\"]\n",
+    "diverging = colorbrewer.COLOR_MAPS[\"Diverging\"]\n",
+    "qualitative = colorbrewer.COLOR_MAPS[\"Qualitative\"]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Next, create value and name options to bind the radio button to the dropdown menus..."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T01:00:45.162086Z",
+     "start_time": "2022-11-05T01:00:45.148913Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:17.574001Z",
+     "iopub.status.busy": "2025-07-11T20:08:17.573904Z",
+     "iopub.status.idle": "2025-07-11T20:08:17.576775Z",
+     "shell.execute_reply": "2025-07-11T20:08:17.576549Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:17.573994Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "bindings = {\n",
+    "    \"Sequential\": range(3, 9 + 1),\n",
+    "    \"Diverging\": range(3, 11 + 1),\n",
+    "    \"Qualitative\": range(3, 12 + 1),\n",
+    "}\n",
+    "cmap_bindings = {\n",
+    "    \"Sequential\": list(sequential.keys()),\n",
+    "    \"Diverging\": list(diverging.keys()),\n",
+    "    \"Qualitative\": list(qualitative.keys()),\n",
+    "}\n",
+    "class_val = Dropdown(options=bindings[data_type.value], value=5)\n",
+    "cmap_val = Dropdown(options=cmap_bindings[data_type.value])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "... and define 7 `mapclassify` objects data classification. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T01:00:45.168640Z",
+     "start_time": "2022-11-05T01:00:45.165083Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:17.577218Z",
+     "iopub.status.busy": "2025-07-11T20:08:17.577152Z",
+     "iopub.status.idle": "2025-07-11T20:08:17.579073Z",
+     "shell.execute_reply": "2025-07-11T20:08:17.578857Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:17.577211Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "k_classifiers = {\n",
+    "    \"equal_interval\": mapclassify.EqualInterval,\n",
+    "    \"fisher_jenks\": mapclassify.FisherJenks,\n",
+    "    \"jenks_caspall\": mapclassify.JenksCaspall,\n",
+    "    \"jenks_caspall_forced\": mapclassify.JenksCaspallForced,\n",
+    "    \"maximum_breaks\": mapclassify.MaximumBreaks,\n",
+    "    \"natural_breaks\": mapclassify.NaturalBreaks,\n",
+    "    \"quantiles\": mapclassify.Quantiles,\n",
+    "}"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now it all together with helper functions for visualizing & updating plot options."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T01:00:45.175681Z",
+     "start_time": "2022-11-05T01:00:45.170573Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:17.579369Z",
+     "iopub.status.busy": "2025-07-11T20:08:17.579307Z",
+     "iopub.status.idle": "2025-07-11T20:08:17.582328Z",
+     "shell.execute_reply": "2025-07-11T20:08:17.582123Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:17.579359Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "def k_values(ctype, cmap):\n",
+    "    k = list(colorbrewer.COLOR_MAPS[ctype][cmap].keys())\n",
+    "    return list(map(int, k))\n",
+    "\n",
+    "\n",
+    "def update_map(method=\"quantiles\", k=5, cmap=\"Blues\"):\n",
+    "    classifier = k_classifiers[method](gdf.SIDR79, k=k)\n",
+    "    mapping = {i: s for i, s in enumerate(classifier.get_legend_classes())}\n",
+    "    plt_kws = {\n",
+    "        \"figsize\": (16, 9),\n",
+    "        \"column\": \"cl\",\n",
+    "        \"categorical\": True,\n",
+    "        \"legend\": True,\n",
+    "        \"lw\": 0.1,\n",
+    "    }\n",
+    "    ax = gdf.assign(cl=classifier.yb).plot(\n",
+    "        k=k, cmap=cmap, ec=\"grey\", legend_kwds={\"loc\": \"lower left\"}, **plt_kws\n",
+    "    )\n",
+    "    ax.set_axis_off()\n",
+    "    ax.set_title(\"SIDR79\")\n",
+    "    replace_legend_items(ax.get_legend(), mapping)\n",
+    "\n",
+    "\n",
+    "def type_change(change):\n",
+    "    class_val.options = bindings[change[\"new\"]]\n",
+    "    cmap_val.options = cmap_bindings[change[\"new\"]]\n",
+    "\n",
+    "\n",
+    "def cmap_change(change):\n",
+    "    cmap = change[\"new\"]\n",
+    "    ctype = data_type.value\n",
+    "    k = k_values(ctype, cmap)\n",
+    "    class_val.options = k"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Finally, let's play with the interactive plot!\n",
+    "* *the plot will not render in the docs, but may be accessed directly by running this notebook locally or as a binder.*"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T01:00:45.475549Z",
+     "start_time": "2022-11-05T01:00:45.177737Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:08:17.582814Z",
+     "iopub.status.busy": "2025-07-11T20:08:17.582674Z",
+     "iopub.status.idle": "2025-07-11T20:08:17.647820Z",
+     "shell.execute_reply": "2025-07-11T20:08:17.647567Z",
+     "shell.execute_reply.started": "2025-07-11T20:08:17.582807Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "data_type.observe(type_change, names=[\"value\"])\n",
+    "cmap_val.observe(cmap_change, names=[\"value\"])\n",
+    "out = Output()\n",
+    "Tab().children = [out]\n",
+    "interact(update_map, method=list(k_classifiers.keys()), cmap=cmap_val, k=class_val)\n",
+    "display(VBox([data_type, out]))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Changing the type of colormap (sequential, diverging, qualitative) will update the options for the available color maps (`cmap`). Changing any of the values using the dropdowns will update the classification and the resulting choropleth map.\n",
+    "\n",
+    "It is important to note that the example variable is best portrayed with the sequential colormaps. The other two types of colormaps are included for demonstration purposes only."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.13.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

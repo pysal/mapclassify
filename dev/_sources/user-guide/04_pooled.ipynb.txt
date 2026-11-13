@@ -1,0 +1,898 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Pooled Classification\n",
+    "\n",
+    "A common workflow with longitudinal spatial data is to apply the same classification scheme to an attribute over different time periods. More specifically, one would like to keep the class breaks the same over each period and examine how the mass of the distribution changes over these classes in the different periods.\n",
+    "\n",
+    "The `Pooled` classifier supports this workflow."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:41.941529Z",
+     "start_time": "2022-11-05T19:18:40.603589Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:26.436870Z",
+     "iopub.status.busy": "2025-07-11T20:09:26.436634Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.889059Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.888847Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:26.436845Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import numpy\n",
+    "\n",
+    "import mapclassify\n",
+    "\n",
+    "mapclassify.__version__"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Sample Data\n",
+    "We construct a synthetic dataset composed of 20 cross-sectional units at three time points. Here the mean of the series is increasing over time."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:41.949728Z",
+     "start_time": "2022-11-05T19:18:41.945010Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.889460Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.889336Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.891484Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.891297Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.889453Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "n = 20\n",
+    "data = numpy.array([numpy.arange(n) + i * n for i in range(1, 4)]).T\n",
+    "data.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:41.955945Z",
+     "start_time": "2022-11-05T19:18:41.951635Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.891751Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.891690Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.893577Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.893379Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.891745Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "data"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Default: Quintiles\n",
+    "The default is to apply a [vec](https://en.wikipedia.org/wiki/Vectorization_(mathematics)) operator to the data matrix and treat the observations as a single collection. Here the quantiles of the pooled data are obtained."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:41.965023Z",
+     "start_time": "2022-11-05T19:18:41.957991Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.893896Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.893838Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.896375Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.896222Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.893889Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "res = mapclassify.Pooled(data)\n",
+    "res"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Note that the class definitions are constant across the periods."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:41.971895Z",
+     "start_time": "2022-11-05T19:18:41.967042Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.896709Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.896648Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.898438Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.898270Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.896702Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "res = mapclassify.Pooled(data, k=4)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:41.978331Z",
+     "start_time": "2022-11-05T19:18:41.974160Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.899550Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.899475Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.901214Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.901053Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.899543Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "res.col_classifiers[0].counts"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:41.984738Z",
+     "start_time": "2022-11-05T19:18:41.980393Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.901580Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.901470Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.903176Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.903011Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.901574Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "res.col_classifiers[-1].counts"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:41.990334Z",
+     "start_time": "2022-11-05T19:18:41.986702Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.903491Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.903432Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.905163Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.904974Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.903484Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "res.global_classifier.counts"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.001119Z",
+     "start_time": "2022-11-05T19:18:41.997311Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.905412Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.905355Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.907365Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.907172Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.905405Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "res"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Extract the pooled classification objects for each column."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.007476Z",
+     "start_time": "2022-11-05T19:18:42.003714Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.907807Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.907737Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.910340Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.910143Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.907800Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "c0, c1, c2 = res.col_classifiers\n",
+    "c0"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Compare to the unrestricted classifier for the first column..."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.016243Z",
+     "start_time": "2022-11-05T19:18:42.010510Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.910677Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.910620Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.912837Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.912653Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.910671Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "mapclassify.Quantiles(c0.y, k=4)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "... and the last column comparisions."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.024230Z",
+     "start_time": "2022-11-05T19:18:42.018980Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.913187Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.913134Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.915033Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.914840Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.913181Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "c2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.034362Z",
+     "start_time": "2022-11-05T19:18:42.027227Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.915302Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.915242Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.917452Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.917276Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.915296Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "mapclassify.Quantiles(c2.y, k=4)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Non-default classifier: BoxPlot"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.046090Z",
+     "start_time": "2022-11-05T19:18:42.037414Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.917751Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.917691Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.920192Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.920005Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.917744Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "res = mapclassify.Pooled(data, classifier=\"BoxPlot\", hinge=1.5)\n",
+    "res"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.054064Z",
+     "start_time": "2022-11-05T19:18:42.048325Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.920544Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.920476Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.922486Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.922281Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.920537Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "res.col_classifiers[0].bins"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.060428Z",
+     "start_time": "2022-11-05T19:18:42.056889Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.922812Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.922756Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.924242Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.924055Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.922806Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "c0, c1, c2 = res.col_classifiers"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.067574Z",
+     "start_time": "2022-11-05T19:18:42.062869Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.924636Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.924571Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.926389Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.926225Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.924630Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "c0.yb"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.076215Z",
+     "start_time": "2022-11-05T19:18:42.070735Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.926767Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.926702Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.928352Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.928166Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.926761Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "c00 = mapclassify.BoxPlot(c0.y, hinge=3)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.085022Z",
+     "start_time": "2022-11-05T19:18:42.078938Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.928735Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.928618Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.930507Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.930321Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.928728Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "c00.yb"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.093521Z",
+     "start_time": "2022-11-05T19:18:42.088235Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.930763Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.930695Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.933175Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.932986Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.930755Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "c00"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.100363Z",
+     "start_time": "2022-11-05T19:18:42.095608Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.935748Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.935658Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.938444Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.938219Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.935741Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "c0"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Non-default classifier: FisherJenks"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.111872Z",
+     "start_time": "2022-11-05T19:18:42.103537Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.938976Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.938786Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.941939Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.941747Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.938965Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "res = mapclassify.Pooled(data, classifier=\"FisherJenks\", k=5)\n",
+    "res"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.119626Z",
+     "start_time": "2022-11-05T19:18:42.113905Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.942365Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.942291Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.944501Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.944319Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.942358Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "c0, c1, c2 = res.col_classifiers\n",
+    "mapclassify.FisherJenks(c0.y, k=5)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Non-default classifier: MaximumBreaks\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.127177Z",
+     "start_time": "2022-11-05T19:18:42.121621Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.944780Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.944718Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.946888Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.946706Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.944773Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "data[1, 0] = 10\n",
+    "data[1, 1] = 10\n",
+    "data[1, 2] = 10\n",
+    "data[9, 2] = 10\n",
+    "data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.136098Z",
+     "start_time": "2022-11-05T19:18:42.128885Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.947183Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.947120Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.949682Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.949473Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.947177Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "res = mapclassify.Pooled(data, classifier=\"MaximumBreaks\", k=5)\n",
+    "res"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.143133Z",
+     "start_time": "2022-11-05T19:18:42.138961Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.950163Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.950044Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.951905Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.951722Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.950156Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "c0, c1, c2 = res.col_classifiers\n",
+    "c0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.149335Z",
+     "start_time": "2022-11-05T19:18:42.144915Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.952286Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.952216Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.953962Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.953796Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.952279Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "c0.y"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.154525Z",
+     "start_time": "2022-11-05T19:18:42.151983Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.954242Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.954185Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.955631Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.955443Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.954235Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import warnings"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.163717Z",
+     "start_time": "2022-11-05T19:18:42.156794Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.955900Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.955844Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.958018Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.957842Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.955893Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "with warnings.catch_warnings():\n",
+    "    warnings.filterwarnings(\"error\")\n",
+    "    try:\n",
+    "        mapclassify.MaximumBreaks(c0.y, k=5)\n",
+    "    except UserWarning as e:\n",
+    "        print(e)\n",
+    "        with warnings.catch_warnings():\n",
+    "            warnings.filterwarnings(\"ignore\")\n",
+    "            mapclassify.MaximumBreaks(c0.y, k=5)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.174401Z",
+     "start_time": "2022-11-05T19:18:42.166025Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.958377Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.958313Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.961102Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.960907Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.958370Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "res = mapclassify.Pooled(\n",
+    "    data, classifier=\"UserDefined\", bins=mapclassify.Quantiles(data[:, -1]).bins\n",
+    ")\n",
+    "res"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.181788Z",
+     "start_time": "2022-11-05T19:18:42.176573Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.961595Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.961527Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.964196Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.964003Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.961587Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "mapclassify.Quantiles(data[:, -1])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.188254Z",
+     "start_time": "2022-11-05T19:18:42.183388Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.964521Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.964460Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.966457Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.966222Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.964514Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "data[:, -1]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Pinning the pooling\n",
+    "\n",
+    "Another option is to specify a specific subperiod as the definition for the classes in the pooling.\n",
+    "\n",
+    "### Pinning to the last period\n",
+    "\n",
+    "As an example, we can use the quintles from the third period to defined the pooled classifier:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.198019Z",
+     "start_time": "2022-11-05T19:18:42.190998Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.966763Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.966702Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.969472Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.969276Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.966756Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "pinned = mapclassify.Pooled(\n",
+    "    data, classifier=\"UserDefined\", bins=mapclassify.Quantiles(data[:, -1]).bins\n",
+    ")\n",
+    "pinned"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.206186Z",
+     "start_time": "2022-11-05T19:18:42.200535Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.969874Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.969800Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.971653Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.971467Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.969867Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "pinned.global_classifier"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Pinning to the first period"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2022-11-05T19:18:42.215909Z",
+     "start_time": "2022-11-05T19:18:42.207832Z"
+    },
+    "execution": {
+     "iopub.execute_input": "2025-07-11T20:09:27.972019Z",
+     "iopub.status.busy": "2025-07-11T20:09:27.971958Z",
+     "iopub.status.idle": "2025-07-11T20:09:27.974710Z",
+     "shell.execute_reply": "2025-07-11T20:09:27.974519Z",
+     "shell.execute_reply.started": "2025-07-11T20:09:27.972012Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "pinned = mapclassify.Pooled(\n",
+    "    data, classifier=\"UserDefined\", bins=mapclassify.Quantiles(data[:, 0]).bins\n",
+    ")\n",
+    "pinned"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Note that the quintiles for the first period, by definition, contain all the values from that period, they do not bound the larger values in subsequent periods. Following the [mapclassify policy](https://github.com/pysal/mapclassify/blob/a7770fb98bf945dad3c62ccf2c0f8b53abb1774a/mapclassify/classifiers.py#L589), an additional class is added to contain all values in the pooled series."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.13.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

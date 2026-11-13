@@ -6,17 +6,6 @@
 .. autoclass:: KClassifiers
 
    
-   .. automethod:: __init__
-
-   
-   .. rubric:: Methods
-
-   .. autosummary::
-   
-      ~KClassifiers.__init__
-   
    
 
-   
-   
    

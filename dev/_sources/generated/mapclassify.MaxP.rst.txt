@@ -6,14 +6,11 @@
 .. autoclass:: MaxP
 
    
-   .. automethod:: __init__
-
    
    .. rubric:: Methods
 
    .. autosummary::
    
-      ~MaxP.__init__
       ~MaxP.find_bin
       ~MaxP.get_adcm
       ~MaxP.get_fmt
@@ -28,14 +25,11 @@
       ~MaxP.table
       ~MaxP.update
    
-   
 
-   
    
    .. rubric:: Attributes
 
    .. autosummary::
    
       ~MaxP.fmt
-   
    

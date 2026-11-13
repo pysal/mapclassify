@@ -1,0 +1,6 @@
+﻿mapclassify.value\_by\_alpha.vba\_choropleth
+============================================
+
+.. currentmodule:: mapclassify.value_by_alpha
+
+.. autofunction:: vba_choropleth

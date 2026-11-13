@@ -6,14 +6,11 @@
 .. autoclass:: BoxPlot
 
    
-   .. automethod:: __init__
-
    
    .. rubric:: Methods
 
    .. autosummary::
    
-      ~BoxPlot.__init__
       ~BoxPlot.find_bin
       ~BoxPlot.get_adcm
       ~BoxPlot.get_fmt
@@ -28,14 +25,11 @@
       ~BoxPlot.table
       ~BoxPlot.update
    
-   
 
-   
    
    .. rubric:: Attributes
 
    .. autosummary::
    
       ~BoxPlot.fmt
-   
    

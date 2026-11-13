@@ -1,135 +1,797 @@
-<!DOCTYPE html>
 
-<html lang="en" data-content_root="./">
+
+
+<!doctype html>
+<html lang="en" class="no-js">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; mapclassify v2.11.0 Manual</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css?v=9afac83c" />
-    <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
-    <link rel="stylesheet" type="text/css" href="_static/pysal-styles.css?v=0c2123f2" />
-    <script src="_static/documentation_options.js?v=1647406f"></script>
-    <script src="_static/doctools.js?v=fd6eb6e6"></script>
-    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <link rel="icon" href="_static/pysal_favicon.ico"/>
-    <link rel="index" title="Index" href="#" />
-    <link rel="search" title="Search" href="search.html" />
-<meta charset='utf-8'>
-<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
-<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js"></script>
-<script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="_static/pysal_favicon.ico">
+    
+    
+      
+        <title>Index - mapclassify</title>
+      
+    
+    
+      
+        
+      
+      
 
-  </head><body>
 
-  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-header">
-        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="index.html">
-          mapclassify</a>
-        <span class="navbar-text navbar-version pull-left"><b>2.11.0</b></span>
+    
+    
+      
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.6efbe22605a23fcd6.min.css?v=b2ceb110" />
+        <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+        <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+        <link rel="stylesheet" type="text/css" href="_static/custom.css?v=d127c87d" />
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
       </div>
+    
+    
+      
 
-        <div class="collapse navbar-collapse nav-collapse">
-          <ul class="nav navbar-nav">
-            
-                <li><a href="installation.html">Installation</a></li>
-                <li><a href="tutorial.html">Tutorial</a></li>
-                <li><a href="api.html">API</a></li>
-                <li><a href="references.html">References</a></li>
-            
-            
-              <li class="dropdown globaltoc-container">
-  <a role="button"
-     id="dLabelGlobalToc"
-     data-toggle="dropdown"
-     data-target="#"
-     href="index.html">Site <b class="caret"></b></a>
-  <ul class="dropdown-menu globaltoc"
-      role="menu"
-      aria-labelledby="dLabelGlobalToc"><p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-released-version">Installing released version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-development-version">Installing development version</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/01_maximum_breaks.html">Introduction to mapclassify</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/02_legends.html">Legends in mapclassify</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/03_choropleth.html">Choropleth</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/04_pooled.html">Pooled Classification</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/05_Greedy_coloring.html">Getting started with mapclassify.greedy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/06_api.html">Overview of the mapclassify API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/06_api.html#Original-API-(&lt;-2.4.0)">Original API (&lt; 2.4.0)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/06_api.html#Extended-API-(&gt;=-2.40)">Extended API (&gt;= 2.40)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/09_legendgram.html">Using legendgram as a map legend</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/value_by_alpha.html">Value-by-Alpha Choropleth</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api.html#classifiers">Classifiers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#utilities">Utilities</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
-</ul>
-</ul>
-</li>
-              
-                <li class="dropdown">
-  <a role="button"
-     id="dLabelLocalToc"
-     data-toggle="dropdown"
-     data-target="#"
-     href="#">Page <b class="caret"></b></a>
-  <ul class="dropdown-menu localtoc"
-      role="menu"
-      aria-labelledby="dLabelLocalToc"></ul>
-</li>
-              
-            
-            
-            
-            
-            
-          </ul>
+  
 
-          
-            
-<form class="navbar-form navbar-right" action="search.html" method="get">
- <div class="form-group">
-  <input type="text" name="q" class="form-control" placeholder="Search" />
- </div>
-  <input type="hidden" name="check_keywords" value="yes" />
-  <input type="hidden" name="area" value="default" />
-</form>
-          
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="mapclassify" class="md-header__button md-logo" aria-label="mapclassify" data-md-component="logo">
+      <img src="_static/pysal_logo.svg" alt="logo">
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            mapclassify
+          </span>
         </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Index
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="red"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="red"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
     </div>
   </div>
-
-<div class="container">
-  <div class="row">
-    <div class="body col-md-12 content" role="main">
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/pysal/mapclassify/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pysal/mapclassify
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
       
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="mapclassify" class="md-nav__button md-logo" aria-label="mapclassify" data-md-component="logo">
+      <img src="_static/pysal_logo.svg" alt="logo">
+    </a>
+    mapclassify
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/pysal/mapclassify/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pysal/mapclassify
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Home</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="installation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Installation</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    <span>User Guide</span>
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            <span>User Guide</span>
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="user-guide/01_maximum_breaks.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Introduction to mapclassify</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="user-guide/02_legends.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Legends in mapclassify</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="user-guide/03_choropleth.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Choropleth</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="user-guide/04_pooled.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Pooled Classification</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="user-guide/05_Greedy_coloring.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Topological coloring</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="user-guide/06_api.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Overview of the mapclassify API</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="user-guide/08_manual_coloring.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Manual coloring</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="user-guide/09_legendgram.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Using legendgram as a map legend</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="user-guide/value_by_alpha.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Value-<wbr>by-<wbr>Alpha Choropleth</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="references.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>References</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    <span>API</span>
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            <span>API</span>
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>API reference</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    <span>For contributors</span>
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            <span>For contributors</span>
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/pysal/mapclassify" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Git<wbr>Hub</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/pysal/mapclassify/releases" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Changelog</span>
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                
+                
+                  
+
 
 <h1 id="index">Index</h1>
 
 <div class="genindex-jumpbox">
- <a href="#_"><strong>_</strong></a>
- | <a href="#B"><strong>B</strong></a>
+ <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
@@ -137,60 +799,57 @@
  | <a href="#H"><strong>H</strong></a>
  | <a href="#J"><strong>J</strong></a>
  | <a href="#K"><strong>K</strong></a>
+ | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#Q"><strong>Q</strong></a>
+ | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#Y"><strong>Y</strong></a>
  
 </div>
-<h2 id="_">_</h2>
+<h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.__init__">__init__() (mapclassify.BoxPlot method)</a>
+      <li><a href="generated/mapclassify.KClassifiers.html#mapclassify.KClassifiers.best">best (mapclassify.KClassifiers attribute)</a>
+</li>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.bins">bins (mapclassify.BoxPlot attribute)</a>
 
       <ul>
-        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.__init__">(mapclassify.EqualInterval method)</a>
+        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.bins">(mapclassify.EqualInterval attribute)</a>
 </li>
-        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.__init__">(mapclassify.FisherJenks method)</a>
+        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.bins">(mapclassify.FisherJenks attribute)</a>
 </li>
-        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.__init__">(mapclassify.FisherJenksSampled method)</a>
+        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.bins">(mapclassify.FisherJenksSampled attribute)</a>
 </li>
-        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.__init__">(mapclassify.HeadTailBreaks method)</a>
+        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.bins">(mapclassify.HeadTailBreaks attribute)</a>
 </li>
-        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.__init__">(mapclassify.JenksCaspall method)</a>
+        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.bins">(mapclassify.JenksCaspall attribute)</a>
 </li>
-        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.__init__">(mapclassify.JenksCaspallForced method)</a>
+        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.bins">(mapclassify.JenksCaspallForced attribute)</a>
 </li>
-        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.__init__">(mapclassify.JenksCaspallSampled method)</a>
+        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.bins">(mapclassify.JenksCaspallSampled attribute)</a>
 </li>
-        <li><a href="generated/mapclassify.KClassifiers.html#mapclassify.KClassifiers.__init__">(mapclassify.KClassifiers method)</a>
+        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.bins">(mapclassify.MaximumBreaks attribute)</a>
 </li>
-        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.__init__">(mapclassify.MaximumBreaks method)</a>
+        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.bins">(mapclassify.MaxP attribute)</a>
 </li>
-        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.__init__">(mapclassify.MaxP method)</a>
+        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.bins">(mapclassify.NaturalBreaks attribute)</a>
 </li>
-        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.__init__">(mapclassify.NaturalBreaks method)</a>
+        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.bins">(mapclassify.Percentiles attribute)</a>
 </li>
-        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.__init__">(mapclassify.Percentiles method)</a>
+        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.bins">(mapclassify.Quantiles attribute)</a>
 </li>
-        <li><a href="generated/mapclassify.Pooled.html#mapclassify.Pooled.__init__">(mapclassify.Pooled method)</a>
+        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.bins">(mapclassify.StdMean attribute)</a>
 </li>
-        <li><a href="generated/mapclassify.PrettyBreaks.html#mapclassify.PrettyBreaks.__init__">(mapclassify.PrettyBreaks method)</a>
-</li>
-        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.__init__">(mapclassify.Quantiles method)</a>
-</li>
-        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.__init__">(mapclassify.StdMean method)</a>
-</li>
-        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.__init__">(mapclassify.UserDefined method)</a>
+        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.bins">(mapclassify.UserDefined attribute)</a>
 </li>
       </ul></li>
   </ul></td>
-</tr></table>
-
-<h2 id="B">B</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot">BoxPlot (class in mapclassify)</a>
 </li>
@@ -202,6 +861,40 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/mapclassify.classify.html#mapclassify.classify">classify() (in module mapclassify)</a>
 </li>
+      <li><a href="generated/mapclassify.Pooled.html#mapclassify.Pooled.col_classifier">col_classifier (mapclassify.Pooled attribute)</a>
+</li>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.counts">counts (mapclassify.BoxPlot attribute)</a>
+
+      <ul>
+        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.counts">(mapclassify.EqualInterval attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.counts">(mapclassify.FisherJenks attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.counts">(mapclassify.FisherJenksSampled attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.counts">(mapclassify.HeadTailBreaks attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.counts">(mapclassify.JenksCaspall attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.counts">(mapclassify.JenksCaspallForced attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.counts">(mapclassify.JenksCaspallSampled attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.counts">(mapclassify.MaximumBreaks attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.counts">(mapclassify.MaxP attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.counts">(mapclassify.NaturalBreaks attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.counts">(mapclassify.Percentiles attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.counts">(mapclassify.Quantiles attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.counts">(mapclassify.StdMean attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.counts">(mapclassify.UserDefined attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -216,12 +909,80 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.find_bin">find_bin() (mapclassify.BoxPlot method)</a>
+
+      <ul>
+        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.find_bin">(mapclassify.EqualInterval method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.find_bin">(mapclassify.FisherJenks method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.find_bin">(mapclassify.FisherJenksSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.find_bin">(mapclassify.HeadTailBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.find_bin">(mapclassify.JenksCaspall method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.find_bin">(mapclassify.JenksCaspallForced method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.find_bin">(mapclassify.JenksCaspallSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.find_bin">(mapclassify.MaximumBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.find_bin">(mapclassify.MaxP method)</a>
+</li>
+        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.find_bin">(mapclassify.NaturalBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.find_bin">(mapclassify.Percentiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.PrettyBreaks.html#mapclassify.PrettyBreaks.find_bin">(mapclassify.PrettyBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.find_bin">(mapclassify.Quantiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.find_bin">(mapclassify.StdMean method)</a>
+</li>
+        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.find_bin">(mapclassify.UserDefined method)</a>
+</li>
+      </ul></li>
       <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks">FisherJenks (class in mapclassify)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled">FisherJenksSampled (class in mapclassify)</a>
 </li>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.fmt">fmt (mapclassify.BoxPlot property)</a>
+
+      <ul>
+        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.fmt">(mapclassify.EqualInterval property)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.fmt">(mapclassify.FisherJenks property)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.fmt">(mapclassify.FisherJenksSampled property)</a>
+</li>
+        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.fmt">(mapclassify.HeadTailBreaks property)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.fmt">(mapclassify.JenksCaspall property)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.fmt">(mapclassify.JenksCaspallForced property)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.fmt">(mapclassify.JenksCaspallSampled property)</a>
+</li>
+        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.fmt">(mapclassify.MaximumBreaks property)</a>
+</li>
+        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.fmt">(mapclassify.MaxP property)</a>
+</li>
+        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.fmt">(mapclassify.NaturalBreaks property)</a>
+</li>
+        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.fmt">(mapclassify.Percentiles property)</a>
+</li>
+        <li><a href="generated/mapclassify.PrettyBreaks.html#mapclassify.PrettyBreaks.fmt">(mapclassify.PrettyBreaks property)</a>
+</li>
+        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.fmt">(mapclassify.Quantiles property)</a>
+</li>
+        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.fmt">(mapclassify.StdMean property)</a>
+</li>
+        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.fmt">(mapclassify.UserDefined property)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -230,9 +991,181 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/mapclassify.gadf.html#mapclassify.gadf">gadf() (in module mapclassify)</a>
 </li>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.get_adcm">get_adcm() (mapclassify.BoxPlot method)</a>
+
+      <ul>
+        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.get_adcm">(mapclassify.EqualInterval method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.get_adcm">(mapclassify.FisherJenks method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.get_adcm">(mapclassify.FisherJenksSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.get_adcm">(mapclassify.HeadTailBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.get_adcm">(mapclassify.JenksCaspall method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.get_adcm">(mapclassify.JenksCaspallForced method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.get_adcm">(mapclassify.JenksCaspallSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.get_adcm">(mapclassify.MaximumBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.get_adcm">(mapclassify.MaxP method)</a>
+</li>
+        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.get_adcm">(mapclassify.NaturalBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.get_adcm">(mapclassify.Percentiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.PrettyBreaks.html#mapclassify.PrettyBreaks.get_adcm">(mapclassify.PrettyBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.get_adcm">(mapclassify.Quantiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.get_adcm">(mapclassify.StdMean method)</a>
+</li>
+        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.get_adcm">(mapclassify.UserDefined method)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/mapclassify.util.get_color_array.html#mapclassify.util.get_color_array">get_color_array() (in module mapclassify.util)</a>
+</li>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.get_fmt">get_fmt() (mapclassify.BoxPlot method)</a>
+
+      <ul>
+        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.get_fmt">(mapclassify.EqualInterval method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.get_fmt">(mapclassify.FisherJenks method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.get_fmt">(mapclassify.FisherJenksSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.get_fmt">(mapclassify.HeadTailBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.get_fmt">(mapclassify.JenksCaspall method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.get_fmt">(mapclassify.JenksCaspallForced method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.get_fmt">(mapclassify.JenksCaspallSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.get_fmt">(mapclassify.MaximumBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.get_fmt">(mapclassify.MaxP method)</a>
+</li>
+        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.get_fmt">(mapclassify.NaturalBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.get_fmt">(mapclassify.Percentiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.PrettyBreaks.html#mapclassify.PrettyBreaks.get_fmt">(mapclassify.PrettyBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.get_fmt">(mapclassify.Quantiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.get_fmt">(mapclassify.StdMean method)</a>
+</li>
+        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.get_fmt">(mapclassify.UserDefined method)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.get_gadf">get_gadf() (mapclassify.BoxPlot method)</a>
+
+      <ul>
+        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.get_gadf">(mapclassify.EqualInterval method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.get_gadf">(mapclassify.FisherJenks method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.get_gadf">(mapclassify.FisherJenksSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.get_gadf">(mapclassify.HeadTailBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.get_gadf">(mapclassify.JenksCaspall method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.get_gadf">(mapclassify.JenksCaspallForced method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.get_gadf">(mapclassify.JenksCaspallSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.get_gadf">(mapclassify.MaximumBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.get_gadf">(mapclassify.MaxP method)</a>
+</li>
+        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.get_gadf">(mapclassify.NaturalBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.get_gadf">(mapclassify.Percentiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.PrettyBreaks.html#mapclassify.PrettyBreaks.get_gadf">(mapclassify.PrettyBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.get_gadf">(mapclassify.Quantiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.get_gadf">(mapclassify.StdMean method)</a>
+</li>
+        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.get_gadf">(mapclassify.UserDefined method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="generated/mapclassify.util.get_color_array.html#mapclassify.util.get_color_array">get_color_array() (in module mapclassify.util)</a>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.get_legend_classes">get_legend_classes() (mapclassify.BoxPlot method)</a>
+
+      <ul>
+        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.get_legend_classes">(mapclassify.EqualInterval method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.get_legend_classes">(mapclassify.FisherJenks method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.get_legend_classes">(mapclassify.FisherJenksSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.get_legend_classes">(mapclassify.HeadTailBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.get_legend_classes">(mapclassify.JenksCaspall method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.get_legend_classes">(mapclassify.JenksCaspallForced method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.get_legend_classes">(mapclassify.JenksCaspallSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.get_legend_classes">(mapclassify.MaximumBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.get_legend_classes">(mapclassify.MaxP method)</a>
+</li>
+        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.get_legend_classes">(mapclassify.NaturalBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.get_legend_classes">(mapclassify.Percentiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.PrettyBreaks.html#mapclassify.PrettyBreaks.get_legend_classes">(mapclassify.PrettyBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.get_legend_classes">(mapclassify.Quantiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.get_legend_classes">(mapclassify.StdMean method)</a>
+</li>
+        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.get_legend_classes">(mapclassify.UserDefined method)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.get_tss">get_tss() (mapclassify.BoxPlot method)</a>
+
+      <ul>
+        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.get_tss">(mapclassify.EqualInterval method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.get_tss">(mapclassify.FisherJenks method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.get_tss">(mapclassify.FisherJenksSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.get_tss">(mapclassify.HeadTailBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.get_tss">(mapclassify.JenksCaspall method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.get_tss">(mapclassify.JenksCaspallForced method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.get_tss">(mapclassify.JenksCaspallSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.get_tss">(mapclassify.MaximumBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.get_tss">(mapclassify.MaxP method)</a>
+</li>
+        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.get_tss">(mapclassify.NaturalBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.get_tss">(mapclassify.Percentiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.PrettyBreaks.html#mapclassify.PrettyBreaks.get_tss">(mapclassify.PrettyBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.get_tss">(mapclassify.Quantiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.get_tss">(mapclassify.StdMean method)</a>
+</li>
+        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.get_tss">(mapclassify.UserDefined method)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/mapclassify.Pooled.html#mapclassify.Pooled.global_classifier">global_classifier (mapclassify.Pooled attribute)</a>
 </li>
       <li><a href="generated/mapclassify.greedy.html#mapclassify.greedy">greedy() (in module mapclassify)</a>
 </li>
@@ -243,6 +1176,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks">HeadTailBreaks (class in mapclassify)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.high_outlier_ids">high_outlier_ids (mapclassify.BoxPlot attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -264,7 +1201,49 @@
 <h2 id="K">K</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.k">k (mapclassify.BoxPlot attribute)</a>
+
+      <ul>
+        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.k">(mapclassify.EqualInterval attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.k">(mapclassify.FisherJenks attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.k">(mapclassify.FisherJenksSampled attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.k">(mapclassify.HeadTailBreaks attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.k">(mapclassify.JenksCaspall attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.k">(mapclassify.JenksCaspallForced attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.k">(mapclassify.JenksCaspallSampled attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.k">(mapclassify.MaximumBreaks attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.k">(mapclassify.MaxP attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.k">(mapclassify.NaturalBreaks attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.k">(mapclassify.Percentiles attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.k">(mapclassify.Quantiles attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.k">(mapclassify.StdMean attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.k">(mapclassify.UserDefined attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/mapclassify.KClassifiers.html#mapclassify.KClassifiers">KClassifiers (class in mapclassify)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.low_outlier_ids">low_outlier_ids (mapclassify.BoxPlot attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -272,10 +1251,44 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks">MaximumBreaks (class in mapclassify)</a>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.make">make() (mapclassify.BoxPlot class method)</a>
+
+      <ul>
+        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.make">(mapclassify.EqualInterval class method)</a>
 </li>
+        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.make">(mapclassify.FisherJenks class method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.make">(mapclassify.FisherJenksSampled class method)</a>
+</li>
+        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.make">(mapclassify.HeadTailBreaks class method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.make">(mapclassify.JenksCaspall class method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.make">(mapclassify.JenksCaspallForced class method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.make">(mapclassify.JenksCaspallSampled class method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.make">(mapclassify.MaximumBreaks class method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.make">(mapclassify.MaxP class method)</a>
+</li>
+        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.make">(mapclassify.NaturalBreaks class method)</a>
+</li>
+        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.make">(mapclassify.Percentiles class method)</a>
+</li>
+        <li><a href="generated/mapclassify.PrettyBreaks.html#mapclassify.PrettyBreaks.make">(mapclassify.PrettyBreaks class method)</a>
+</li>
+        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.make">(mapclassify.Quantiles class method)</a>
+</li>
+        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.make">(mapclassify.StdMean class method)</a>
+</li>
+        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.make">(mapclassify.UserDefined class method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks">MaximumBreaks (class in mapclassify)</a>
+</li>
       <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP">MaxP (class in mapclassify)</a>
 </li>
   </ul></td>
@@ -294,10 +1307,110 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles">Percentiles (class in mapclassify)</a>
 </li>
-      <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.plot">plot() (mapclassify.UserDefined method)</a>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.plot">plot() (mapclassify.BoxPlot method)</a>
+
+      <ul>
+        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.plot">(mapclassify.EqualInterval method)</a>
 </li>
+        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.plot">(mapclassify.FisherJenks method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.plot">(mapclassify.FisherJenksSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.plot">(mapclassify.HeadTailBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.plot">(mapclassify.JenksCaspall method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.plot">(mapclassify.JenksCaspallForced method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.plot">(mapclassify.JenksCaspallSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.plot">(mapclassify.MaximumBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.plot">(mapclassify.MaxP method)</a>
+</li>
+        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.plot">(mapclassify.NaturalBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.plot">(mapclassify.Percentiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.PrettyBreaks.html#mapclassify.PrettyBreaks.plot">(mapclassify.PrettyBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.plot">(mapclassify.Quantiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.plot">(mapclassify.StdMean method)</a>
+</li>
+        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.plot">(mapclassify.UserDefined method)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.plot_histogram">plot_histogram() (mapclassify.BoxPlot method)</a>
+
+      <ul>
+        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.plot_histogram">(mapclassify.EqualInterval method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.plot_histogram">(mapclassify.FisherJenks method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.plot_histogram">(mapclassify.FisherJenksSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.plot_histogram">(mapclassify.HeadTailBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.plot_histogram">(mapclassify.JenksCaspall method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.plot_histogram">(mapclassify.JenksCaspallForced method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.plot_histogram">(mapclassify.JenksCaspallSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.plot_histogram">(mapclassify.MaximumBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.plot_histogram">(mapclassify.MaxP method)</a>
+</li>
+        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.plot_histogram">(mapclassify.NaturalBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.plot_histogram">(mapclassify.Percentiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.PrettyBreaks.html#mapclassify.PrettyBreaks.plot_histogram">(mapclassify.PrettyBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.plot_histogram">(mapclassify.Quantiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.plot_histogram">(mapclassify.StdMean method)</a>
+</li>
+        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.plot_histogram">(mapclassify.UserDefined method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.plot_legendgram">plot_legendgram() (mapclassify.BoxPlot method)</a>
+
+      <ul>
+        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.plot_legendgram">(mapclassify.EqualInterval method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.plot_legendgram">(mapclassify.FisherJenks method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.plot_legendgram">(mapclassify.FisherJenksSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.plot_legendgram">(mapclassify.HeadTailBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.plot_legendgram">(mapclassify.JenksCaspall method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.plot_legendgram">(mapclassify.JenksCaspallForced method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.plot_legendgram">(mapclassify.JenksCaspallSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.plot_legendgram">(mapclassify.MaximumBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.plot_legendgram">(mapclassify.MaxP method)</a>
+</li>
+        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.plot_legendgram">(mapclassify.NaturalBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.plot_legendgram">(mapclassify.Percentiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.PrettyBreaks.html#mapclassify.PrettyBreaks.plot_legendgram">(mapclassify.PrettyBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.plot_legendgram">(mapclassify.Quantiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.plot_legendgram">(mapclassify.StdMean method)</a>
+</li>
+        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.plot_legendgram">(mapclassify.UserDefined method)</a>
+</li>
+      </ul></li>
       <li><a href="generated/mapclassify.Pooled.html#mapclassify.Pooled">Pooled (class in mapclassify)</a>
 </li>
       <li><a href="generated/mapclassify.PrettyBreaks.html#mapclassify.PrettyBreaks">PrettyBreaks (class in mapclassify)</a>
@@ -313,11 +1426,95 @@
   </ul></td>
 </tr></table>
 
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.KClassifiers.html#mapclassify.KClassifiers.results">results (mapclassify.KClassifiers attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.set_fmt">set_fmt() (mapclassify.BoxPlot method)</a>
+
+      <ul>
+        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.set_fmt">(mapclassify.EqualInterval method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.set_fmt">(mapclassify.FisherJenks method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.set_fmt">(mapclassify.FisherJenksSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.set_fmt">(mapclassify.HeadTailBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.set_fmt">(mapclassify.JenksCaspall method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.set_fmt">(mapclassify.JenksCaspallForced method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.set_fmt">(mapclassify.JenksCaspallSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.set_fmt">(mapclassify.MaximumBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.set_fmt">(mapclassify.MaxP method)</a>
+</li>
+        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.set_fmt">(mapclassify.NaturalBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.set_fmt">(mapclassify.Percentiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.PrettyBreaks.html#mapclassify.PrettyBreaks.set_fmt">(mapclassify.PrettyBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.set_fmt">(mapclassify.Quantiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.set_fmt">(mapclassify.StdMean method)</a>
+</li>
+        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.set_fmt">(mapclassify.UserDefined method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean">StdMean (class in mapclassify)</a>
 </li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.table">table() (mapclassify.BoxPlot method)</a>
+
+      <ul>
+        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.table">(mapclassify.EqualInterval method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.table">(mapclassify.FisherJenks method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.table">(mapclassify.FisherJenksSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.table">(mapclassify.HeadTailBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.table">(mapclassify.JenksCaspall method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.table">(mapclassify.JenksCaspallForced method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.table">(mapclassify.JenksCaspallSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.table">(mapclassify.MaximumBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.table">(mapclassify.MaxP method)</a>
+</li>
+        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.table">(mapclassify.NaturalBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.table">(mapclassify.Percentiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.PrettyBreaks.html#mapclassify.PrettyBreaks.table">(mapclassify.PrettyBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.table">(mapclassify.Quantiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.table">(mapclassify.StdMean method)</a>
+</li>
+        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.table">(mapclassify.UserDefined method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -327,15 +1524,31 @@
       <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.update">update() (mapclassify.BoxPlot method)</a>
 
       <ul>
+        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.update">(mapclassify.EqualInterval method)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.update">(mapclassify.FisherJenks method)</a>
+</li>
         <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.update">(mapclassify.FisherJenksSampled method)</a>
+</li>
+        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.update">(mapclassify.HeadTailBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.update">(mapclassify.JenksCaspall method)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.update">(mapclassify.JenksCaspallForced method)</a>
 </li>
         <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.update">(mapclassify.JenksCaspallSampled method)</a>
 </li>
         <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.update">(mapclassify.MaximumBreaks method)</a>
 </li>
+        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.update">(mapclassify.MaxP method)</a>
+</li>
         <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.update">(mapclassify.NaturalBreaks method)</a>
 </li>
         <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.update">(mapclassify.Percentiles method)</a>
+</li>
+        <li><a href="generated/mapclassify.PrettyBreaks.html#mapclassify.PrettyBreaks.update">(mapclassify.PrettyBreaks method)</a>
+</li>
+        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.update">(mapclassify.Quantiles method)</a>
 </li>
         <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.update">(mapclassify.StdMean method)</a>
 </li>
@@ -349,26 +1562,120 @@
   </ul></td>
 </tr></table>
 
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.value_by_alpha.vba_choropleth.html#mapclassify.value_by_alpha.vba_choropleth">vba_choropleth() (in module mapclassify.value_by_alpha)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Y">Y</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/mapclassify.BoxPlot.html#mapclassify.BoxPlot.yb">yb (mapclassify.BoxPlot attribute)</a>
+
+      <ul>
+        <li><a href="generated/mapclassify.EqualInterval.html#mapclassify.EqualInterval.yb">(mapclassify.EqualInterval attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenks.html#mapclassify.FisherJenks.yb">(mapclassify.FisherJenks attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.FisherJenksSampled.html#mapclassify.FisherJenksSampled.yb">(mapclassify.FisherJenksSampled attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.HeadTailBreaks.html#mapclassify.HeadTailBreaks.yb">(mapclassify.HeadTailBreaks attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspall.html#mapclassify.JenksCaspall.yb">(mapclassify.JenksCaspall attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallForced.html#mapclassify.JenksCaspallForced.yb">(mapclassify.JenksCaspallForced attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.JenksCaspallSampled.html#mapclassify.JenksCaspallSampled.yb">(mapclassify.JenksCaspallSampled attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.MaximumBreaks.html#mapclassify.MaximumBreaks.yb">(mapclassify.MaximumBreaks attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.MaxP.html#mapclassify.MaxP.yb">(mapclassify.MaxP attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.NaturalBreaks.html#mapclassify.NaturalBreaks.yb">(mapclassify.NaturalBreaks attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.Percentiles.html#mapclassify.Percentiles.yb">(mapclassify.Percentiles attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.Quantiles.html#mapclassify.Quantiles.yb">(mapclassify.Quantiles attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.StdMean.html#mapclassify.StdMean.yb">(mapclassify.StdMean attribute)</a>
+</li>
+        <li><a href="generated/mapclassify.UserDefined.html#mapclassify.UserDefined.yb">(mapclassify.UserDefined attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
 
 
-    </div>
-      
-  </div>
-</div>
-<footer class="footer">
-  <div class="container">
-    <p class="pull-right">
-      <a href="#">Back to top</a>
-      
-        <br/>
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
         
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
       
-    </p>
-    <p>
-        &copy; Copyright 2018-, pysal developers.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 9.1.0.<br/>
-    </p>
+        <footer class="md-footer">
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2018-, pysal developers.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    9.2.0.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
   </div>
 </footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections", "navigation.top", "search.share", "search.suggest", "toc.follow", "toc.sticky", "content.code.copy", "content.action.edit"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "https://pysal.org/mapclassify/versions.json"}}</script>
+    
+      
+        <script src="_static/sphinx_immaterial_theme.32136f45f91ae6956.min.js?v=a7a9472a"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
+    
   </body>
 </html>
