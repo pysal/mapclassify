@@ -177,7 +177,7 @@ MaxP
 (  66.26, 4111.45] |    10
 ```
 
-### [MaximumBreaks](notebooks/maximum_breaks.ipynb)
+### MaximumBreaks
 
 ```python
 >>> mapclassify.MaximumBreaks(y, k=5)
