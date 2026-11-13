@@ -20,6 +20,7 @@ dependencies:
   - ipywidgets
   - geodatasets
   - seaborn
+  - watermark
   - myst-nb
   - sphinx
   - sphinxcontrib-bibtex
