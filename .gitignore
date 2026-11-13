@@ -13,3 +13,12 @@ mapclassify/tests/.ropeproject/
 __pycache__
 /notebooks/.ipynb_checkpoints/
 result_images/
+
+# Sphinx generated files
+_build/
+build/
+doctrees/
+generated/
+*.doctree
+*.pickle
+.sphinx/
