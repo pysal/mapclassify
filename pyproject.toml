@@ -57,12 +57,22 @@ dev = [
     "watermark",
 ]
 docs = [
-    "nbsphinx",
-    "numpydoc",
-    "sphinx>=1.4.3",
-    "sphinx-gallery",
+    "myst-nb",
+    "pandoc",
+    "sphinx",
+    "sphinx-autosummary-accessors",
     "sphinxcontrib-bibtex",
-    "sphinx_bootstrap_theme",
+    "sphinx-copybutton",
+    "sphinx-immaterial",
+    "watermark",
+    "lonboard",
+    "geopandas",
+    "geodatasets",
+    "matplotlib",
+    "libpysal",
+    "ipywidgets",
+    "palettable",
+    "seaborn",
 ]
 spatial = [
     "geopandas",

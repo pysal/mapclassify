@@ -17,6 +17,9 @@ dependencies:
   - ipykernel
   - palettable
   - lonboard
+  - ipywidgets
+  - geodatasets
+  - seaborn
   - myst-nb
   - sphinx
   - sphinxcontrib-bibtex
