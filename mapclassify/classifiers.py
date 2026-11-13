@@ -880,14 +880,13 @@ class MapClassifier:
 
         Parameters
         ----------
-         y : numpy.array (default None)
-            Data to classify, by default None.
-        inplace : bool (default False)
-            Whether to conduct the update in place or to return a
-            copy estimated from the additional specifications.
+        y : array_like or None, optional
+             Data to classify, by default None.
+        inplace : bool, optional
+             Whether to update this instance in place. If false, return a copy.
+             By default False.
         **kwargs : dict
-            Additional parameters that are passed to the class initialization.
-            For documentation, check the class constructor.
+             Additional keyword arguments passed to the class constructor.
         """
         kwargs.update({"k": kwargs.pop("k", self.k)})
         if inplace:
@@ -1413,15 +1412,7 @@ class EqualInterval(MapClassifier):
     """
 
     def __init__(self, y, k=K):
-        """Initialize an equal interval classifier.
-
-        Parameters
-        ----------
-        y : array_like
-            Values to classify.
-        k : int, optional
-            Number of classes, by default 5.
-        """
+        """Initialize an equal interval classifier."""
         if min(y) == max(y):
             raise ValueError(
                 f"Not enough unique values in array to form {k} classes. "
@@ -1632,15 +1623,7 @@ class BoxPlot(MapClassifier):
     """
 
     def __init__(self, y, hinge=1.5):
-        """Initialize a box plot classifier.
-
-        Parameters
-        ----------
-        y : array_like
-            Values to classify.
-        hinge : float, optional
-            Multiplier for the interquartile range, by default 1.5.
-        """
+        """Initialize a box plot classifier."""
 
         self.hinge = hinge
         MapClassifier.__init__(self, y)
@@ -1674,15 +1657,13 @@ class BoxPlot(MapClassifier):
 
         Parameters
         ----------
-
-        y : numpy.array (default None)
-            :math:`(n,1)`, array of data to classify.
-        inplace : bool (default False)
-            Whether to conduct the update in place or to return a
-            copy estimated from the additional specifications.
+        y : array_like or None, optional
+            Data to classify, by default None.
+        inplace : bool, optional
+            Whether to update this instance in place. If false, return a copy.
+            By default False.
         **kwargs : dict
-            Additional parameters that are passed to the ``__init__`` function
-            of the class. For documentation, check the class constructor.
+            Additional keyword arguments passed to the class constructor.
         """
         kwargs.update({"hinge": kwargs.pop("hinge", self.hinge)})
         if inplace:
@@ -1940,15 +1921,13 @@ class MaximumBreaks(MapClassifier):
 
         Parameters
         ----------
-
-         y : numpy.array (default None)
-            :math:`(n,1)`, array of data to classify.
-        inplace : bool (default False)
-            Whether to conduct the update in place or to return a
-            copy estimated from the additional specifications.
+        y : array_like or None, optional
+            Data to classify, by default None.
+        inplace : bool, optional
+            Whether to update this instance in place. If False, return a copy.
+            By default False.
         **kwargs : dict
-            Additional parameters that are passed to the ``__init__`` function
-            of the class. For documentation, check the class constructor.
+            Additional keyword arguments passed to the class constructor.
         """
         kwargs.update({"k": kwargs.pop("k", self.k)})
         kwargs.update({"mindiff": kwargs.pop("mindiff", self.mindiff)})
@@ -2041,15 +2020,13 @@ class NaturalBreaks(MapClassifier):
 
         Parameters
         ----------
-
-        y : numpy.array (default None)
-            :math:`(n,1)`, array of data to classify.
-        inplace : bool (default False)
-            Whether to conduct the update in place or to return a
-            copy estimated from the additional specifications.
+        y : array_like or None, optional
+           Data to classify, by default None.
+        inplace : bool, optional
+           Whether to update this instance in place. If False, return a copy.
+           By default False.
         **kwargs : dict
-            Additional parameters that are passed to the ``__init__`` function
-            of the class. For documentation, check the class constructor.
+           Additional keyword arguments passed to the class constructor.
         """
         kwargs.update({"k": kwargs.pop("k", self.k)})
         if inplace:
@@ -2190,15 +2167,13 @@ class FisherJenksSampled(MapClassifier):
 
         Parameters
         ----------
-
-         y : numpy.array (default None)
-            :math:`(n,1)`, array of data to classify.
-        inplace : bool (default False)
-            Whether to conduct the update in place or to return a
-            copy estimated from the additional specifications.
+        y : array_like or None, optional
+            Data to classify, by default None.
+        inplace : bool, optional
+            Whether to update this instance in place. If false, return a copy.
+            By default False.
         **kwargs : dict
-            Additional parameters that are passed to the ``__init__`` function
-            of the class. For documentation, check the class constructor.
+            Additional keyword arguments passed to the class constructor.
         """
         kwargs.update({"k": kwargs.pop("k", self.k)})
         kwargs.update({"pct": kwargs.pop("pct", self.pct)})
@@ -2381,15 +2356,13 @@ class JenksCaspallSampled(MapClassifier):
 
         Parameters
         ----------
-
-         y : numpy.array (default None)
-            :math:`(n,1)`, array of data to classify.
-        inplace : bool (default False)
-            Whether to conduct the update in place or to return a
-            copy estimated from the additional specifications.
+        y : array_like or None, optional
+            Data to classify, by default None.
+        inplace : bool, optional
+            Whether to update this instance in place. If false, return a copy.
+            By default False.
         **kwargs : dict
-            Additional parameters that are passed to the ``__init__`` function
-            of the class. For documentation, check the class constructor.
+            Additional keyword arguments passed to the class constructor.
         """
         kwargs.update({"k": kwargs.pop("k", self.k)})
         kwargs.update({"pct": kwargs.pop("pct", self.pct)})
@@ -2638,15 +2611,13 @@ class UserDefined(MapClassifier):
 
         Parameters
         ----------
-
-         y : numpy.array (default None)
-            :math:`(n,1)`, array of data to classify.
-        inplace : bool (default False)
-            Whether to conduct the update in place or to return a
-            copy estimated from the additional specifications.
+        y : array_like or None, optional
+            Data to classify, by default None.
+        inplace : bool, optional
+            Whether to update this instance in place. If false, return a copy.
+            By default False.
         **kwargs : dict
-            Additional parameters that are passed to the ``__init__`` function
-            of the class. For documentation, check the class constructor.
+            Additional keyword arguments passed to the class constructor.
         """
         bins = kwargs.pop("bins", self.bins)
         if inplace:

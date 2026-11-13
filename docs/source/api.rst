@@ -13,23 +13,23 @@ Classifiers
 .. autosummary::
    :toctree: generated/
 
-    mapclassify.BoxPlot
-    mapclassify.EqualInterval
-    mapclassify.FisherJenks
-    mapclassify.FisherJenksSampled
-    mapclassify.greedy
-    mapclassify.HeadTailBreaks
-    mapclassify.JenksCaspall
-    mapclassify.JenksCaspallForced
-    mapclassify.JenksCaspallSampled
-    mapclassify.MaxP
-    mapclassify.MaximumBreaks
-    mapclassify.NaturalBreaks
-    mapclassify.Percentiles
-    mapclassify.PrettyBreaks
-    mapclassify.Quantiles
-    mapclassify.StdMean
-    mapclassify.UserDefined
+    BoxPlot
+    EqualInterval
+    FisherJenks
+    FisherJenksSampled
+    greedy
+    HeadTailBreaks
+    JenksCaspall
+    JenksCaspallForced
+    JenksCaspallSampled
+    MaxP
+    MaximumBreaks
+    NaturalBreaks
+    Percentiles
+    PrettyBreaks
+    Quantiles
+    StdMean
+    UserDefined
 
 Utilities
 ---------
@@ -37,8 +37,8 @@ Utilities
 .. autosummary::
    :toctree: generated/
 
-    mapclassify.KClassifiers
-    mapclassify.Pooled
-    mapclassify.classify
-    mapclassify.gadf
-    mapclassify.util.get_color_array
+    KClassifiers
+    Pooled
+    classify
+    gadf
+    util.get_color_array

@@ -3,8 +3,8 @@
 Installation
 ============
 
-mapclassify supports python `3.12`_+. Please make sure that you are
-operating in a python 3 environment.
+mapclassify supports Python 3.12 and later. Please make sure that you are
+operating in a Python 3 environment.
 
 Installing released version
 ---------------------------
