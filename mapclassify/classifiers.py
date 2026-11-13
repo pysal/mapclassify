@@ -732,7 +732,8 @@ class MapClassifier:
 
     @classmethod
     def make(cls, *args, **kwargs):
-        """
+        """Create a callable classifier configured with the supplied options.
+
         Configure and create a classifier that will consume data and produce
         classifications, given the configuration options specified by this
         function.
@@ -740,7 +741,6 @@ class MapClassifier:
         Note that this implements a *partial application* of the relevant class
         constructor. ``make`` creates a function that returns classifications; it
         does not actually do the classification.
-
         If you want to classify data directly, use the appropriate class
         constructor, like ``Quantiles``, ``Max_Breaks``, etc.
 
@@ -749,32 +749,22 @@ class MapClassifier:
 
         Parameters
         ----------
-
-        *args : required positional arguments
-            All positional arguments required by the classifier,
-            **excluding** the input data.
-        rolling : bool
-            A boolean configuring the outputted classifier to use
-            a rolling classifier rather than a new classifier for
-            each input. If ``rolling``, this adds the current data to
-            all of the previous data in the classifier, and
-            rebalances the bins, like a running median computation.
-        return_object : bool
-            Return the classifier object (or not).
-        return_bins : bool
-            Return the bins/breaks (or not).
-        return_counts : bool
-            Return the histogram of objects falling into each bin (or not).
+        *args : tuple
+            Positional constructor arguments, excluding the input data.
+        **kwargs : dict
+            Constructor options and output options. Output options are
+            ``rolling``, ``return_object``, ``return_bins``, and
+            ``return_counts``. When ``rolling`` is true, each input is added
+            to the prior data and the classifier is re-estimated.
 
         Returns
         -------
-
-        A function that consumes data and returns their bins (and object,
-        bins/breaks, or counts, if requested).
+        callable
+            Function that consumes data and returns class IDs, optionally
+            together with the classifier, bin breaks, or class counts.
 
         Notes
         -----
-
         This is most useful when you want to run a classifier many times
         with a given configuration, such as when classifying many columns of an
         array or dataframe using the same configuration.
@@ -840,7 +830,6 @@ class MapClassifier:
 
         >>> cl[0][:10]
         array([4, 5, 5, 5, 4, 4, 5, 4, 4, 5])
-
         """
 
         # only flag overrides return flag
@@ -887,21 +876,17 @@ class MapClassifier:
         return classifier
 
     def update(self, y=None, inplace=False, **kwargs):
-        """
-        Add data or change classification parameters.
+        """Add data or change classification parameters.
 
         Parameters
         ----------
-
-         y : numpy.array (default None)
-            :math:`(n,1)`, array of data to classify.
-        inplace : bool (default False)
-            Whether to conduct the update in place or to return a
-            copy estimated from the additional specifications.
+        y : array_like or None, optional
+             Data to classify, by default None.
+        inplace : bool, optional
+             Whether to update this instance in place. If false, return a copy.
+             By default False.
         **kwargs : dict
-            Additional parameters that are passed to the ``__init__`` function
-            of the class. For documentation, check the class constructor.
-
+             Additional keyword arguments passed to the class constructor.
         """
         kwargs.update({"k": kwargs.pop("k", self.k)})
         if inplace:
@@ -935,7 +920,13 @@ class MapClassifier:
         return self.find_bin(*args)
 
     def get_tss(self):
-        """Returns sum of squares over all class means."""
+        """Calculate the sum of squares within all classes.
+
+        Returns
+        -------
+        float
+            Sum of squared deviations from each class mean.
+        """
         tss = 0
         for class_def in self.classes:
             if len(class_def) > 0:
@@ -949,13 +940,15 @@ class MapClassifier:
         pass
 
     def get_adcm(self):
-        """
-        Absolute deviation around class median (*ADCM*).
+        """Calculate the absolute deviation around class medians (ADCM).
 
         Calculates the absolute deviations of each observation about its class
         median as a measure of fit for the classification method.
 
-        Returns sum of *ADCM* over all classes.
+        Returns
+        -------
+        float
+            Sum of absolute deviations from each class median.
         """
         adcm = 0
         for class_def in self.classes:
@@ -967,32 +960,33 @@ class MapClassifier:
         return adcm
 
     def get_gadf(self):
-        """Goodness of absolute deviation of fit."""
+        """Calculate the goodness of absolute deviation of fit.
+
+        Returns
+        -------
+        float
+            Goodness of absolute deviation of fit.
+        """
         adam = (np.abs(self.y - np.median(self.y))).sum()
         # return 1 if array is invariant
         gadf = 1 if adam == 0 else 1 - self.adcm / adam
         return gadf
 
     def find_bin(self, x):
-        """
-        Sort input or inputs according to the current bin estimate.
+        """Assign input values to bins using the current break estimates.
 
         Parameters
         ----------
-
-        x : numpy.array, int, float
-            A value or array of values to fit within the estimated bins.
+        x : array_like
+            A value or array of values to assign to bins.
 
         Returns
         -------
-
-        right : numpy.array, int
-            A bin index or array of bin indices that classify the
-            input into one of the classifiers' bins.
+        ndarray
+            Bin IDs for the input values.
 
         Notes
         -----
-
         This differs from similar functionality in
         ``numpy.digitize(x, classi.bins, right=True)``.
 
@@ -1001,7 +995,6 @@ class MapClassifier:
 
         ``numpy.digitize`` returns :math:`k+1` for data greater than the greatest bin,
         but retains 0 for data below the lowest bin.
-
         """
         x = np.asarray(x).flatten()
         right = np.digitize(x, self.bins, right=True)
@@ -1010,22 +1003,17 @@ class MapClassifier:
         return right
 
     def get_legend_classes(self, fmt=FMT):
-        """
-        Format the strings for the classes on the legend.
-
+        """Format class intervals for display in a legend.
 
         Parameters
         ----------
-
-        fmt : str (default '{:.2f}')
-            Formatting specification.
+        fmt : str, optional
+            Formatting specification, by default ``"{:.2f}"``.
 
         Returns
         -------
-
-        classes : list
-            :math:`k` strings with class interval definitions.
-
+        list of str
+            Formatted class interval strings.
         """
         return _get_mpl_labels(self, fmt)
 
@@ -1043,39 +1031,45 @@ class MapClassifier:
         dpi=600,
         ax=None,
     ):
-        """
-        Plot a mapclassifier object.
+        """Plot a map classifier.
 
         Parameters
         ----------
-
         gdf : geopandas.GeoDataFrame
-            Contains the geometry column for the choropleth map.
-        border_color  : str (default 'lightgray')
-            Matplotlib color string to use for polygon border.
-        border_width : float (default 0.10)
+            GeoDataFrame containing the geometry column for the choropleth map.
+        border_color : str, optional
+            Matplotlib color for polygon borders, by default ``"lightgray"``.
+        border_width : float, optional
             Width of polygon border.
-        title : str (default None)
-            Title of map.
-        cmap : str (default 'YlGnBu')
-            Matplotlib color string for color map to fill polygons.
-        axis_on : bool (default True)
-            Show coordinate axes.
-        legend_kwds : dict (default {'loc': 'lower right', 'fmt':FMT})
-            Options for ``ax.legend()``.
-        file_name : str (default None)
-            Name of file to save figure to.
-        dpi : int (default 600)
-            Dots per inch for saved figure.
-        ax : matplotlib.Axis (default None)
-            Axis on which to plot the choropleth.
-            Default is ``None``, which plots on the current figure.
+        title : str or None, optional
+            Map title, by default None.
+        legend : bool, optional
+            Whether to display a legend, by default False.
+        cmap : str, optional
+            Matplotlib colormap for the polygons, by default ``"YlGnBu"``.
+        axis_on : bool, optional
+            Whether to show coordinate axes, by default True.
+        legend_kwds : dict, optional
+            Options passed to the legend, by default
+            ``{"loc": "lower right", "fmt": FMT}``.
+        file_name : str or None, optional
+            Path to save the figure to, by default None.
+        dpi : int, optional
+            Resolution of the saved figure, by default 600.
+        ax : matplotlib.axes.Axes or None, optional
+            Axes on which to draw the choropleth. If None, use the current
+            figure, by default None.
 
         Returns
         -------
+        fig : matplotlib.figure.Figure
+            Figure containing the map.
+        ax : matplotlib.axes.Axes
+            Axes containing the map.
 
-        f, ax : tuple
-            Matplotlib figure and axis on which the plot is made.
+        Notes
+        -----
+        Requires ``matplotlib`` and a ``geopandas.GeoDataFrame`` input.
 
         Examples
         --------
@@ -1086,13 +1080,6 @@ class MapClassifier:
         >>> gdf = geopandas.read_file(libpysal.examples.get_path("columbus.shp"))
         >>> q5 = mapclassify.Quantiles(gdf.CRIME)
         >>> q5.plot(gdf)  # doctest: +SKIP
-
-        Notes
-        -----
-
-        Requires ``matplotlib``, and implicitly requires a
-        ``geopandas.GeoDataFrame`` as input.
-
         """
         try:
             import matplotlib.pyplot as plt
@@ -1135,34 +1122,33 @@ class MapClassifier:
         despine=True,
         **kwargs,
     ):
-        """Plot histogram of `y` with bin values superimposed
+        """Plot a histogram of ``y`` with the class breaks superimposed.
 
         Parameters
         ----------
         color : str, optional
-            hue to color bars of the histogram, by default "dodgerblue".
+            Color for the histogram bars, by default ``"dodgerblue"``.
         linecolor : str, optional
-            color of the lines demarcating each class bin, by default "black"
+            Color for the lines demarcating the class breaks, by default ``"black"``.
         linewidth : int, optional
-            change the linewidth demarcating each class bin
+            Width of the lines demarcating the class breaks.
         ax : matplotlib.Axes, optional
-            axes object to plot onto, by default None
+            Axes on which to draw the histogram, by default None.
         despine : bool, optional
-            If True, to use seaborn's despine function to remove top and right axes,
-            default is True
-        kwargs : dict, optional
-            additional keyword arguments passed to matplotlib.axes.Axes.hist, by default
-            None
+            Whether to remove the top and right axes spines, by default True.
+        **kwargs : dict
+            Additional keyword arguments passed to
+            :meth:`matplotlib.axes.Axes.hist`.
 
         Returns
         -------
         matplotlib.Axes
-            an Axes object with histogram and class bins
+            Axes containing the histogram and class breaks.
 
         Raises
         ------
         ImportError
-            depends matplotlib and rasies if not installed
+            If Matplotlib is not installed.
         """
         try:
             import matplotlib.pyplot as plt
@@ -1212,52 +1198,53 @@ class MapClassifier:
         Parameters
         ----------
         ax : matplotlib.Axes, optional
-            Matplotlib axes on which to draw the plot, by default None
+            Matplotlib axes on which to draw the plot, by default None.
         cmap : str | matplotlib.colors.Colormap, optional
             Matplotlib colormap for the histogram, by default ``None``.
             If ``None``, defaults to the most recent colormap associated with
             the input ``ax``. If there is no colormap associated with ``ax`` then
             ``'viridis'`` is used.
         bins : int, optional
-            Number of bins for histogram, by default 50
+            Number of bins for the histogram, by default 50.
         inset : bool, optional
             Whether to plot the legendgram as an inset axis (True) or directly on
-            provided ax (False), by default True
+            the provided axes (False), by default True.
         clip : tuple, optional
-            Min and max values to clip the histogram x axis, by default None
+            Minimum and maximum values for the histogram x-axis, by default None.
         vlines : bool, optional
-            Whether to draw vertical lines for class breaks, by default False
+            Whether to draw vertical lines for class breaks, by default False.
         vlinecolor : str, optional
-            Color for vertical lines showing breaks, by default "black"
+            Color for vertical lines showing breaks, by default ``"black"``.
         vlinewidth : int, optional
-            Width of vertical lines showing breaks, by default 1
+            Width of vertical lines showing breaks, by default 1.
         loc : str, optional
-            Location for the inset axes if inset=True, by default "lower left"
+            Location for the inset axes if ``inset=True``, by default
+            ``"lower left"``.
         legend_size : tuple, optional
-            tuple of floats or strings describing the (width, height) of the legend. If
+            Tuple of floats or strings describing the width and height of the legend. If
             a float is provided, it is the size in inches, e.g. ``(1.3, 1)``. If a
             string is provided, it is the size in relative units, e.g.
             ``('40%', '20%')``. By default, i.e. if ``bbox_to_anchor`` is not specified,
             those are relative to the `ax`. Otherwise, they are to be understood
             relative to the bounding box provided via ``bbox_to_anchor``. By default
-            ("27%", "20%")
+            (``"27%"``, ``"20%"``).
         frameon : bool, optional
-            Whether to draw a frame around the inset legend, by default False
+            Whether to draw a frame around the inset legend, by default False.
         tick_params : dict, optional
-            Dictionary of parameters to customize tick appearance, by default None
-        bbox_to_anchor : tuple or ``matplotlib.trasforms.BboxBase``
+            Dictionary of parameters to customize tick appearance, by default None.
+        bbox_to_anchor : tuple or ``matplotlib.transforms.BboxBase``
             Bbox that the inset axes will be anchored to. If None, a tuple of
             ``(0, 0, 1, 1)`` is used. If a tuple, can be either
             ``[left, bottom, width, height]``, or ``[left, bottom]``. If the
             ``legend_size`` is in relative units (%), the 2-tuple ``[left, bottom]``
-            cannot be used. By default None
-        **kwargs
+            cannot be used. By default None.
+        **kwargs : dict
             Additional keyword arguments passed to ``Axes.hist``.
 
         Returns
         -------
         matplotlib.Axes
-            The axes object containing the legendgram plot
+            The axes object containing the legendgram plot.
 
         Examples
         --------
@@ -1321,6 +1308,16 @@ class HeadTailBreaks(MapClassifier):
     counts : numpy.array
         :math:`(k,1)`, the number of observations falling in each class.
 
+    Notes
+    -----
+    Head/tail Breaks is a relatively new classification method developed
+    for data with a heavy-tailed distribution.
+
+    Implementation based on contributions by
+    Alessandra Sozzi <alessandra.sozzi@gmail.com>.
+
+    For theoretical details see :cite:`Jiang_2013`.
+
     Examples
     --------
 
@@ -1347,18 +1344,6 @@ class HeadTailBreaks(MapClassifier):
 
     >>> htb.counts.tolist()
     [695, 209, 62, 22, 10, 1, 1]
-
-    Notes
-    -----
-
-    Head/tail Breaks is a relatively new classification method developed
-    for data with a heavy-tailed distribution.
-
-    Implementation based on contributions by
-    Alessandra Sozzi <alessandra.sozzi@gmail.com>.
-
-    For theoretical details see :cite:`Jiang_2013`.
-
     """
 
     def __init__(self, y):
@@ -1400,6 +1385,16 @@ class EqualInterval(MapClassifier):
     counts : numpy.array
         :math:`(k,1)`, the number of observations falling in each class.
 
+    Notes
+    -----
+    Intervals are defined to have equal width:
+
+    .. math::
+
+        bins_j = min(y)+w*(j+1)
+
+    with :math:`w=\\frac{max(y)-min(j)}{k}`.
+
     Examples
     --------
 
@@ -1414,25 +1409,10 @@ class EqualInterval(MapClassifier):
 
     >>> ei.bins
     array([ 822.394, 1644.658, 2466.922, 3289.186, 4111.45 ])
-
-    Notes
-    -----
-
-    Intervals defined to have equal width:
-
-    .. math::
-
-        bins_j = min(y)+w*(j+1)
-
-    with :math:`w=\\frac{max(y)-min(j)}{k}`
-
     """
 
     def __init__(self, y, k=K):
-        """
-        see class docstring
-
-        """
+        """Initialize an equal interval classifier."""
         if min(y) == max(y):
             raise ValueError(
                 f"Not enough unique values in array to form {k} classes. "
@@ -1459,7 +1439,7 @@ class EqualInterval(MapClassifier):
 
 class Percentiles(MapClassifier):
     """
-    Percentiles Map Classification
+    Percentile map classification.
 
     Parameters
     ----------
@@ -1502,7 +1482,6 @@ class Percentiles(MapClassifier):
     [29, 29]
     >>> p2.k
     2
-
     """
 
     def __init__(self, y, pct=[1, 10, 50, 90, 99, 100]):
@@ -1517,21 +1496,17 @@ class Percentiles(MapClassifier):
         self.k = len(self.bins)
 
     def update(self, y=None, inplace=False, **kwargs):
-        """
-        Add data or change classification parameters.
+        """Add data or change classification parameters.
 
         Parameters
         ----------
-
-         y : numpy.array (default None)
-            :math:`(n,1)`, array of data to classify.
-        inplace : bool (default False)
-            Whether to conduct the update in place or to return a
-            copy estimated from the additional specifications.
+        y : array_like or None, optional
+            Data to classify, by default None.
+        inplace : bool, optional
+            Whether to update this instance in place. If false, return a copy.
+            By default False.
         **kwargs : dict
-            Additional parameters that are passed to the ``__init__`` function
-            of the class. For documentation, check the class constructor.
-
+            Additional parameters passed to the class constructor.
         """
         kwargs.update({"pct": kwargs.pop("pct", self.pct)})
         if inplace:
@@ -1544,26 +1519,23 @@ class Percentiles(MapClassifier):
 
 class PrettyBreaks(MapClassifier):
     def __init__(self, y, k=5):
-        """
-        Pretty breakpoints
+        """Initialize a classifier with pretty breakpoints.
 
-        Computes breaks that are equally spaced round values which
+        Compute breaks that are equally spaced rounded values which
         cover the range of values in `y`. The breaks are chosen so that
         they are 1, 2, or 5 times a power of 10.
 
-
         Parameters
         ----------
-        y : array (n,1)
-            attribute to classify
-        k : int
-            The number of desired classes
-
+        y : array_like
+            Values to classify.
+        k : int, optional
+            Desired number of classes, by default 5.
 
         Notes
         -----
         The number of classes may be different from the specified `k`,
-        as the rounding of the upper bounds takes precedent.
+        as the rounding of the upper bounds takes precedence.
 
         The lower bound of the first interval will be equal to the
         minimum of the data.
@@ -1585,7 +1557,7 @@ class BoxPlot(MapClassifier):
     ----------
 
     y : numpy.array
-        Attribute to classify
+        Attribute to classify.
     hinge : float (default 1.5)
         Multiplier for *IQR*.
 
@@ -1648,21 +1620,10 @@ class BoxPlot(MapClassifier):
     >>> bx = mapclassify.BoxPlot(numpy.arange(100))
     >>> bx.bins
     array([-49.5 ,  24.75,  49.5 ,  74.25, 148.5 ])
-
     """
 
     def __init__(self, y, hinge=1.5):
-        """
-
-        Parameters
-        ----------
-
-        y : numpy.array
-            :math:`(n,1)`, attribute to classify
-        hinge : float (default 1.5)
-            Multiple of inter-quartile range.
-
-        """
+        """Initialize a box plot classifier."""
 
         self.hinge = hinge
         MapClassifier.__init__(self, y)
@@ -1696,16 +1657,13 @@ class BoxPlot(MapClassifier):
 
         Parameters
         ----------
-
-        y : numpy.array (default None)
-            :math:`(n,1)`, array of data to classify.
-        inplace : bool (default False)
-            Whether to conduct the update in place or to return a
-            copy estimated from the additional specifications.
+        y : array_like or None, optional
+            Data to classify, by default None.
+        inplace : bool, optional
+            Whether to update this instance in place. If false, return a copy.
+            By default False.
         **kwargs : dict
-            Additional parameters that are passed to the ``__init__`` function
-            of the class. For documentation, check the class constructor.
-
+            Additional keyword arguments passed to the class constructor.
         """
         kwargs.update({"hinge": kwargs.pop("hinge", self.hinge)})
         if inplace:
@@ -1754,7 +1712,6 @@ class Quantiles(MapClassifier):
 
     >>> q.counts.tolist()
     [12, 11, 12, 11, 12]
-
     """
 
     def __init__(self, y, k=K):
@@ -1770,18 +1727,17 @@ class Quantiles(MapClassifier):
 
 class StdMean(MapClassifier):
     """
-    Standard Deviation and Mean Map Classification.
+    Standard deviation and mean map classification.
 
     Parameters
     ----------
     y : numpy.array
-        :math:`(n,1)`, values to classify
+        :math:`(n,1)`, values to classify.
     multiples : numpy.array (default [-2, -1, 1, 2])
         The multiples of the standard deviation to add/subtract from
         the sample mean to define the bins.
     anchor : bool (default False)
-        Anchor upper bound of one class to the sample mean.
-
+        Anchor the upper bound of one class to the sample mean.
 
     Attributes
     ----------
@@ -1797,14 +1753,12 @@ class StdMean(MapClassifier):
 
     Notes
     -----
-
     If anchor is True, one of the intervals will have its closed upper bound
     equal to the mean of y. Intermediate intervals will have widths equal to
     the standard deviation of y. The first interval will be closed on the
     minimum value of y, and the last interval will be closed on the maximum of
     y. The first and last intervals may have widths different from the
     intermediate intervals.
-
 
     Examples
     --------
@@ -1862,21 +1816,17 @@ class StdMean(MapClassifier):
         self.k = len(cuts)
 
     def update(self, y=None, inplace=False, **kwargs):
-        """
-        Add data or change classification parameters.
+        """Add data or change classification parameters.
 
         Parameters
         ----------
-
-         y : numpy.array (default None)
-            :math:`(n,1)`, array of data to classify.
-        inplace : bool (default False)
-            Whether to conduct the update in place or to return a
-            copy estimated from the additional specifications.
+        y : array_like or None, optional
+            Data to classify, by default None.
+        inplace : bool, optional
+            Whether to update this instance in place. If false, return a copy.
+            By default False.
         **kwargs : dict
-            Additional parameters that are passed to the ``__init__`` function
-            of the class. For documentation, check the class constructor.
-
+            Additional parameters passed to the class constructor.
         """
         kwargs.update({"multiples": kwargs.pop("multiples", self.multiples)})
         if inplace:
@@ -1928,7 +1878,6 @@ class MaximumBreaks(MapClassifier):
 
     >>> mb.counts.tolist()
     [50, 2, 4, 1, 1]
-
     """
 
     def __init__(self, y, k=5, mindiff=0):
@@ -1972,16 +1921,13 @@ class MaximumBreaks(MapClassifier):
 
         Parameters
         ----------
-
-         y : numpy.array (default None)
-            :math:`(n,1)`, array of data to classify.
-        inplace : bool (default False)
-            Whether to conduct the update in place or to return a
-            copy estimated from the additional specifications.
+        y : array_like or None, optional
+            Data to classify, by default None.
+        inplace : bool, optional
+            Whether to update this instance in place. If False, return a copy.
+            By default False.
         **kwargs : dict
-            Additional parameters that are passed to the ``__init__`` function
-            of the class. For documentation, check the class constructor.
-
+            Additional keyword arguments passed to the class constructor.
         """
         kwargs.update({"k": kwargs.pop("k", self.k)})
         kwargs.update({"mindiff": kwargs.pop("mindiff", self.mindiff)})
@@ -2036,7 +1982,6 @@ class NaturalBreaks(MapClassifier):
 
     >>> nb.bins
     array([  75.29,  192.05,  370.5 ,  722.85, 4111.45])
-
     """
 
     def __init__(self, y, k=K, initial=10):
@@ -2075,16 +2020,13 @@ class NaturalBreaks(MapClassifier):
 
         Parameters
         ----------
-
-        y : numpy.array (default None)
-            :math:`(n,1)`, array of data to classify.
-        inplace : bool (default False)
-            Whether to conduct the update in place or to return a
-            copy estimated from the additional specifications.
+        y : array_like or None, optional
+           Data to classify, by default None.
+        inplace : bool, optional
+           Whether to update this instance in place. If False, return a copy.
+           By default False.
         **kwargs : dict
-            Additional parameters that are passed to the ``__init__`` function
-            of the class. For documentation, check the class constructor.
-
+           Additional keyword arguments passed to the class constructor.
         """
         kwargs.update({"k": kwargs.pop("k", self.k)})
         if inplace:
@@ -2133,7 +2075,6 @@ class FisherJenks(MapClassifier):
 
     >>> fj.counts.tolist()
     [49, 3, 4, 1, 1]
-
     """
 
     def __init__(self, y, k=K):
@@ -2192,7 +2133,6 @@ class FisherJenksSampled(MapClassifier):
     -----
 
     For theoretical details see :cite:`Rey_2016`.
-
     """
 
     def __init__(self, y, k=K, pct=0.10, truncate=True):
@@ -2227,16 +2167,13 @@ class FisherJenksSampled(MapClassifier):
 
         Parameters
         ----------
-
-         y : numpy.array (default None)
-            :math:`(n,1)`, array of data to classify.
-        inplace : bool (default False)
-            Whether to conduct the update in place or to return a
-            copy estimated from the additional specifications.
+        y : array_like or None, optional
+            Data to classify, by default None.
+        inplace : bool, optional
+            Whether to update this instance in place. If false, return a copy.
+            By default False.
         **kwargs : dict
-            Additional parameters that are passed to the ``__init__`` function
-            of the class. For documentation, check the class constructor.
-
+            Additional keyword arguments passed to the class constructor.
         """
         kwargs.update({"k": kwargs.pop("k", self.k)})
         kwargs.update({"pct": kwargs.pop("pct", self.pct)})
@@ -2284,7 +2221,6 @@ class JenksCaspall(MapClassifier):
 
     >>> jc.counts.tolist()
     [14, 13, 14, 10, 7]
-
     """
 
     def __init__(self, y, k=K):
@@ -2352,6 +2288,13 @@ class JenksCaspallSampled(MapClassifier):
     counts : numpy.array
         :math:`(k,1)`, the number of observations falling in each class.
 
+    Notes
+    -----
+    This method is intended for large :math:`n` problems. It applies
+    ``Jenks_Caspall`` to a random subset of :math:`y` and then bins the
+    complete vector using the resulting breaks. This trades some accuracy for
+    increased speed.
+
     Examples
     --------
 
@@ -2381,15 +2324,6 @@ class JenksCaspallSampled(MapClassifier):
     #>>> t2 - t1; t2s - t1s
     #1.8292930126190186
     #0.061631917953491211
-
-    Notes
-    -----
-
-    This is intended for large :math:`n` problems. The logic is to apply
-    ``Jenks_Caspall`` to a random subset of the :math:`y` space and then bin the
-    complete vector :math:`y` on the bins obtained from the subset. This would
-    trade off some "accuracy" for a gain in speed.
-
     """
 
     def __init__(self, y, k=K, pct=0.10):
@@ -2422,16 +2356,13 @@ class JenksCaspallSampled(MapClassifier):
 
         Parameters
         ----------
-
-         y : numpy.array (default None)
-            :math:`(n,1)`, array of data to classify.
-        inplace : bool (default False)
-            Whether to conduct the update in place or to return a
-            copy estimated from the additional specifications.
+        y : array_like or None, optional
+            Data to classify, by default None.
+        inplace : bool, optional
+            Whether to update this instance in place. If false, return a copy.
+            By default False.
         **kwargs : dict
-            Additional parameters that are passed to the ``__init__`` function
-            of the class. For documentation, check the class constructor.
-
+            Additional keyword arguments passed to the class constructor.
         """
         kwargs.update({"k": kwargs.pop("k", self.k)})
         kwargs.update({"pct": kwargs.pop("pct", self.pct)})
@@ -2491,7 +2422,6 @@ class JenksCaspallForced(MapClassifier):
 
     >>> jcf4.counts.tolist()
     [15, 14, 14, 15]
-
     """
 
     def __init__(self, y, k=K):
@@ -2595,7 +2525,7 @@ class JenksCaspallForced(MapClassifier):
 
 class UserDefined(MapClassifier):
     """
-    User Specified Binning.
+    User-specified binning.
 
     Parameters
     ----------
@@ -2621,6 +2551,11 @@ class UserDefined(MapClassifier):
     counts : numpy.array
         :math:`(k,1)`, the number of observations falling in each class.
 
+    Notes
+    -----
+    If the largest user-specified bin is less than ``max(y)``, an additional
+    bin is appended.
+
     Examples
     --------
 
@@ -2644,13 +2579,6 @@ class UserDefined(MapClassifier):
 
     >>> ud.counts.tolist()
     [37, 4, 17]
-
-    Notes
-    -----
-
-    If upper bound of user bins does not exceed
-    ``max(y)`` we append an additional bin.
-
     """
 
     def __init__(self, y, bins, lowest=None):
@@ -2683,16 +2611,13 @@ class UserDefined(MapClassifier):
 
         Parameters
         ----------
-
-         y : numpy.array (default None)
-            :math:`(n,1)`, array of data to classify.
-        inplace : bool (default False)
-            Whether to conduct the update in place or to return a
-            copy estimated from the additional specifications.
+        y : array_like or None, optional
+            Data to classify, by default None.
+        inplace : bool, optional
+            Whether to update this instance in place. If false, return a copy.
+            By default False.
         **kwargs : dict
-            Additional parameters that are passed to the ``__init__`` function
-            of the class. For documentation, check the class constructor.
-
+            Additional keyword arguments passed to the class constructor.
         """
         bins = kwargs.pop("bins", self.bins)
         if inplace:
@@ -2795,7 +2720,6 @@ class MaxP(MapClassifier):
 
     >>> mp.counts.tolist()
     [18, 16, 3, 1, 20]
-
     """
 
     def __init__(self, y, k=K, initial=1000, seed1=0, seed2=1):
@@ -2966,31 +2890,45 @@ kmethods["MaximumBreaks"] = MaximumBreaks
 
 def gadf(y, method="Quantiles", maxk=15, pct=0.8):
     r"""
-    Evaluate the Goodness of Absolute Deviation Fit (*GADF*) of a classifier and
-    find the minimum value of :math:`k` for which ``gadf > pct``.
+    Find the smallest class count meeting a GADF threshold.
 
     Parameters
     ----------
-
-    y : numpy.array
-        :math:`(n, 1)`, values to be classified.
-    method : str (default 'Quantiles')
-        The classification method in:
-        ``{'Quantiles', 'Fisher_Jenks', 'Maximum_Breaks', 'Natrual_Breaks'}``.
-    maxk : int (default 15)
-        Maximum value of :math:`k` to evaluate.
-    pct : float (default 0.8)
-        The percentage of *GADF* to exceed.
+    y : array_like
+        Values to classify.
+    method : str, optional
+        Classification method. One of ``"Quantiles"``, ``"FisherJenks"``,
+        ``"MaximumBreaks"``, or ``"NaturalBreaks"``. By default
+        ``"Quantiles"``.
+    maxk : int, optional
+        Maximum number of classes to evaluate, by default 15.
+    pct : float, optional
+        GADF threshold to exceed, by default 0.8.
 
     Returns
     -------
-
     k : int
-        Number of classes.
-    cl : object
-        Instance of the classifier at :math:`k`.
+        Number of classes in the selected classifier.
+    cl : MapClassifier
+        Classifier instance with ``k`` classes.
     gadf : float
-        Goodness of absolute deviation fit (*GADF*).
+        Goodness of absolute deviation fit.
+
+    See Also
+    --------
+    KClassifiers : Evaluate several classifiers and choose the best one.
+
+    Notes
+    -----
+    The GADF is defined as:
+
+    .. math::
+
+        GADF = 1 - \sum_c \sum_{i \in c}
+               |y_i - y_{c,med}|  / \sum_i |y_i - y_{med}|
+
+    where :math:`y_{med}` is the global median and :math:`y_{c,med}` is
+    the median for class :math:`c`.
 
     Examples
     --------
@@ -3013,25 +2951,6 @@ def gadf(y, method="Quantiles", maxk=15, pct=0.8):
 
     >>> float(qgadf2[-1])
     0.21710231966462412
-
-    Notes
-    -----
-
-    The *GADF* is defined as:
-
-    .. math::
-
-        GADF = 1 - \sum_c \sum_{i \in c}
-               |y_i - y_{c,med}|  / \sum_i |y_i - y_{med}|
-
-    where :math:`y_{med}` is the global median and :math:`y_{c,med}` is
-    the median for class :math:`c`.
-
-    See Also
-    --------
-
-    KClassifiers
-
     """
 
     y = np.array(y)
@@ -3046,15 +2965,14 @@ def gadf(y, method="Quantiles", maxk=15, pct=0.8):
 
 class KClassifiers:
     """
-    Evaluate all :math:`k`-classifers and pick optimal based on :math:`k` and *GADF*.
+    Select a classifier based on class count and goodness of absolute deviation fit.
 
     Parameters
     ----------
-
-    y : numpy.array
-        :math:`(n,1)`, values to be classified.
-    pct : float (default 0.8)
-        The percentage of *GADF* to exceed.
+    y : array_like
+        Values to classify.
+    pct : float, optional
+        GADF threshold to exceed, by default 0.8.
 
     Attributes
     ----------
@@ -3064,6 +2982,14 @@ class KClassifiers:
     results : dict
         Keys are classifier names, values are the ``MapClassifier``
         instances with the best ``pct`` for each classifier.
+
+    See Also
+    --------
+    gadf : Evaluate the GADF for a classifier and class count.
+
+    Notes
+    -----
+    This can be used to suggest a classification scheme.
 
     Examples
     --------
@@ -3079,17 +3005,6 @@ class KClassifiers:
 
     >>> float(ks.best.gadf)
     0.8481032719908105
-
-    Notes
-    -----
-
-    This can be used to suggest a classification scheme.
-
-    See Also
-    --------
-
-    gadf
-
     """
 
     def __init__(self, y, pct=0.8):
