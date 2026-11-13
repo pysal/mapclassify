@@ -73,6 +73,7 @@ docs = [
     "ipywidgets",
     "palettable",
     "seaborn",
+    "pyarrow",
 ]
 spatial = [
     "geopandas",

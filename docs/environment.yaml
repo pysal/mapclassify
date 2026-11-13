@@ -21,6 +21,7 @@ dependencies:
   - geodatasets
   - seaborn
   - watermark
+  - pyarrow  # for lonboard
   - myst-nb
   - sphinx
   - sphinxcontrib-bibtex
