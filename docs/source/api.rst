@@ -30,6 +30,15 @@ Classifiers
     Quantiles
     StdMean
     UserDefined
+   
+Visualization
+-------------
+
+.. autosummary::
+   :toctree: generated/
+
+   value_by_alpha.vba_choropleth
+   util.get_color_array
 
 Utilities
 ---------
@@ -41,4 +50,4 @@ Utilities
     Pooled
     classify
     gadf
-    util.get_color_array
+    
