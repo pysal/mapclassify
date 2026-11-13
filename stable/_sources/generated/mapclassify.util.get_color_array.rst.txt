@@ -1,0 +1,6 @@
+﻿mapclassify.util.get\_color\_array
+==================================
+
+.. currentmodule:: mapclassify.util
+
+.. autofunction:: get_color_array

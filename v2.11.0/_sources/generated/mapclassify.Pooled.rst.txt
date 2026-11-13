@@ -1,0 +1,22 @@
+﻿mapclassify.Pooled
+==================
+
+.. currentmodule:: mapclassify
+
+.. autoclass:: Pooled
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Pooled.__init__
+   
+   
+
+   
+   
+   
