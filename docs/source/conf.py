@@ -90,7 +90,7 @@ html_theme_options = {
     },
     "site_url": "https://pysal.org/mapclassify",
     "repo_url": "https://github.com/pysal/mapclassify/",
-    "edit_uri": "blob/main/docs",
+    "edit_uri": "blob/main/docs/source/",
     "repo_name": "pysal/mapclassify",
     "features": [
         # "navigation.expand",
