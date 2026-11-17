@@ -9,6 +9,7 @@ for vba_choropleth
 """
 
 import collections.abc
+from importlib.metadata import PackageNotFoundError, version
 
 import numpy as np
 
@@ -25,6 +26,14 @@ except (ImportError, ModuleNotFoundError):
     MPL_AVAILABLE = False
 
 MPL_NOT_AVAILABLE = ImportError("you must have matplotlib")
+
+try:
+    # ``add_labels`` keyword in ``GeoDataFrame.plot()`` -- see gh#305
+    from packaging.version import Version
+
+    GPD_GE_120 = Version(version("geopandas")) >= Version("1.2.0")
+except (ImportError, PackageNotFoundError):  # pragma: no cover
+    GPD_GE_120 = False
 
 
 __author__ = "Stefanie Lumnitz <stefanie.lumitz@gmail.com>"
@@ -51,6 +60,7 @@ def vba_choropleth(
     legend=False,
     legend_kwargs=None,
     min_alpha=0.2,
+    axis_labels=False,
 ):
     """Generate Value by Alpha Choropleth plots.
 
@@ -91,13 +101,17 @@ def vba_choropleth(
         Keyword arguments for the legend.
     min_alpha : float = 0.2
         Minimum alpha threshold to prevent fully transparent masking.
+    axis_labels : bool = False
+        Add CRS unit axis labels to the returned ``ax``. The default (``False``)
+        retains the unlabeled behavior of ``mapclassify``. Only has an effect when
+        ``geopandas>=1.2.0`` is installed.
 
     Returns
     -------
     fig : matplotlip Figure instance
-        Figure of Value by Alpha choropleth
+        Figure of Value by Alpha choropleth.
     ax : matplotlib Axes instance
-        Axes in which the figure is plotted
+        Axes in which the figure is plotted.
 
     Examples
     --------
@@ -204,7 +218,8 @@ def vba_choropleth(
         revert_alpha=revert_alpha,
         min_alpha=min_alpha,
     )
-    gdf.plot(color=rgba, ax=ax)
+    plot_kws = {"add_labels": axis_labels} if GPD_GE_120 else {}
+    gdf.plot(color=rgba, ax=ax, **plot_kws)
 
     if legend:
         left, bottom, width, height = [0, 0.5, 0.2, 0.2]
