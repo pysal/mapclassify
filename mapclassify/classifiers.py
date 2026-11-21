@@ -2440,6 +2440,9 @@ class JenksCaspallForced(MapClassifier):
         q = quantile(x, k)
         solving = True
         xb, cnt = bin1d(x, q)
+        # With many ties, some quantile classes are empty. Number the occupied
+        # classes 0, 1, ... so that a class id can index the class means.
+        xb = np.unique(xb, return_inverse=True)[1].reshape(xb.shape)
         # class means
         if x.ndim == 1:
             x = x.reshape((x.size, 1))
@@ -2517,8 +2520,7 @@ class JenksCaspallForced(MapClassifier):
             if not up_moves and not down_moves:
                 solving = False
             it += 1
-        cuts = [max(x[xb == c]) for c in np.unique(xb)]
-        cuts = np.reshape(np.array(cuts), (k,))
+        cuts = np.array([max(x[xb == c]) for c in np.unique(xb)]).ravel()
         self.bins = cuts
         self.iterations = it
 

@@ -634,6 +634,24 @@ class TestJenksCaspallForced:
         ):
             JenksCaspallForced(numpy.array([1, 1, 1, 1]))
 
+    @pytest.mark.parametrize(
+        "y",
+        [
+            numpy.array([0.0] * 50 + list(range(1, 11))),
+            numpy.array([1.0] * 18 + [2, 3, 4, 5, 6]),
+            numpy.array([1.0, 1, 1, 2, 2, 3, 3, 3, 3, 10]),
+        ],
+        ids=["zero-inflated", "many-ties", "fewer-unique-than-k"],
+    )
+    def test_JenksCaspallForced_ties(self, y):
+        # With many ties, the initial quantiles give fewer than k classes, or
+        # leave some of them empty. This used to fail with an IndexError or a
+        # reshape ValueError.
+        jcf = JenksCaspallForced(y, k=5)
+        assert numpy.all(numpy.diff(jcf.bins) > 0)
+        assert jcf.bins[-1] == y.max()
+        assert jcf.counts.sum() == y.size
+
 
 class TestUserDefined:
     def setup_method(self):
