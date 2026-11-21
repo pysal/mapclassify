@@ -2243,7 +2243,6 @@ class JenksCaspall(MapClassifier):
         xb0 = xb.copy()
         q = xm
         it = 0
-        rk = list(range(self.k))
         while solving:
             xb = np.zeros(xb0.shape, int)
             d = abs(x - q)
@@ -2253,7 +2252,10 @@ class JenksCaspall(MapClassifier):
             else:
                 xb0 = xb
             it += 1
-            q = np.array([np.median(x[xb == i]) for i in rk])
+            # Update only the classes that hold observations. The median of an
+            # empty class is NaN, and argmin would then assign every value to
+            # it, so the loop never converged (e.g. for data with many ties).
+            q = np.array([np.median(x[xb == i]) for i in np.unique(xb)])
         cuts = np.array([max(x[xb == i]) for i in np.unique(xb)])
         cuts = cuts.reshape((len(cuts),))
         self.bins = cuts

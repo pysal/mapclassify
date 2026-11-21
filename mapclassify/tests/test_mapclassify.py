@@ -586,6 +586,24 @@ class TestJenksCaspall:
             ),
         )
 
+    @pytest.mark.parametrize(
+        "y",
+        [
+            numpy.array([0.0] * 50 + list(range(1, 11))),
+            numpy.array([1.0] * 18 + [2, 3, 4, 5, 6]),
+        ],
+        ids=["zero-inflated", "many-ties"],
+    )
+    def test_JenksCaspall_ties_converge(self, y):
+        # With many ties, the initial quantiles give fewer classes than k.
+        # The empty classes used to get a NaN median, which made the loop run
+        # forever.
+        jc = JenksCaspall(y, k=5)
+        assert numpy.all(numpy.diff(jc.bins) > 0)
+        assert jc.bins[-1] == y.max()
+        assert jc.counts.sum() == y.size
+        assert not numpy.isnan(jc.bins).any()
+
 
 class TestJenksCaspallSampled:
     def setup_method(self):
