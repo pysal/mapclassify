@@ -1,0 +1,3 @@
+# Positional schemes default to keeping zero-width classes
+
+Every classifier takes the same `ties={"collapse", "raise", "keep"}` keyword, and most default to `"collapse"` (drop zero-width classes, reduce k, warn). BoxPlot, StdMean and Percentiles instead default to `"keep"`, because they are positional schemes: each class index has a fixed meaning (low outliers, a standard-deviation band, a user percentile), and collapsing a zero-width class would shift every later index and silently change what the classes mean. We accepted a non-uniform default over a uniform one to protect that meaning; users can still pass `ties="collapse"` explicitly.
