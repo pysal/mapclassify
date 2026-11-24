@@ -707,6 +707,9 @@ class MapClassifier:
 
     def _classify(self):
         self._set_bins()
+        # k is the number of classes actually produced, which can be fewer
+        # than requested when ties collapse breaks (see GLOSSARY.md).
+        self.k = len(self.bins)
         self.yb, self.counts = bin1d(self.y, self.bins)
 
     def _update(self, data, *args, **kwargs):
@@ -888,7 +891,7 @@ class MapClassifier:
         **kwargs : dict
              Additional keyword arguments passed to the class constructor.
         """
-        kwargs.update({"k": kwargs.pop("k", self.k)})
+        kwargs.update({"k": kwargs.pop("k", getattr(self, "k_requested", self.k))})
         if inplace:
             self._update(y, **kwargs)
         else:
@@ -1419,6 +1422,7 @@ class EqualInterval(MapClassifier):
                 "All values in `y` are equal."
             )
         self.k = k
+        self.k_requested = k
         MapClassifier.__init__(self, y)
         self.name = "EqualInterval"
 
@@ -1541,10 +1545,15 @@ class PrettyBreaks(MapClassifier):
         minimum of the data.
         """
         self.k = k
+        self.k_requested = k
         MapClassifier.__init__(self, y)
         self.name = "Pretty"
 
     def _set_bins(self):
+        if self.y.min() == self.y.max():
+            # constant data: a single class (no range to make pretty)
+            self.bins = np.array([self.y.max()])
+            return
         bins = _pretty(self.y, self.k)
         self.bins = bins[1:]
 
@@ -1716,6 +1725,7 @@ class Quantiles(MapClassifier):
 
     def __init__(self, y, k=K):
         self.k = k
+        self.k_requested = k
         MapClassifier.__init__(self, y)
         self.name = "Quantiles"
 
@@ -1887,6 +1897,7 @@ class MaximumBreaks(MapClassifier):
                 "All values in `y` are equal."
             )
         self.k = k
+        self.k_requested = k
         self.mindiff = mindiff
         MapClassifier.__init__(self, y)
         self.name = "MaximumBreaks"
@@ -1929,7 +1940,7 @@ class MaximumBreaks(MapClassifier):
         **kwargs : dict
             Additional keyword arguments passed to the class constructor.
         """
-        kwargs.update({"k": kwargs.pop("k", self.k)})
+        kwargs.update({"k": kwargs.pop("k", getattr(self, "k_requested", self.k))})
         kwargs.update({"mindiff": kwargs.pop("mindiff", self.mindiff)})
         if inplace:
             self._update(y, **kwargs)
@@ -1986,6 +1997,7 @@ class NaturalBreaks(MapClassifier):
 
     def __init__(self, y, k=K, initial=10):
         self.k = k
+        self.k_requested = k
         self.init = initial
         MapClassifier.__init__(self, y)
         self.name = "NaturalBreaks"
@@ -2028,7 +2040,7 @@ class NaturalBreaks(MapClassifier):
         **kwargs : dict
            Additional keyword arguments passed to the class constructor.
         """
-        kwargs.update({"k": kwargs.pop("k", self.k)})
+        kwargs.update({"k": kwargs.pop("k", getattr(self, "k_requested", self.k))})
         if inplace:
             self._update(y, **kwargs)
         else:
@@ -2091,6 +2103,7 @@ class FisherJenks(MapClassifier):
                 f"Fewer unique values ({nu}) than specified classes ({k})."
             )
         self.k = k
+        self.k_requested = k
         MapClassifier.__init__(self, y)
         self.name = "FisherJenks"
 
@@ -2137,6 +2150,7 @@ class FisherJenksSampled(MapClassifier):
 
     def __init__(self, y, k=K, pct=0.10, truncate=True):
         self.k = k
+        self.k_requested = k
         n = y.size
 
         if (pct * n > 1000) and truncate:
@@ -2175,7 +2189,7 @@ class FisherJenksSampled(MapClassifier):
         **kwargs : dict
             Additional keyword arguments passed to the class constructor.
         """
-        kwargs.update({"k": kwargs.pop("k", self.k)})
+        kwargs.update({"k": kwargs.pop("k", getattr(self, "k_requested", self.k))})
         kwargs.update({"pct": kwargs.pop("pct", self.pct)})
         kwargs.update({"truncate": kwargs.pop("truncate", self._truncated)})
         if inplace:
@@ -2225,6 +2239,7 @@ class JenksCaspall(MapClassifier):
 
     def __init__(self, y, k=K):
         self.k = k
+        self.k_requested = k
         MapClassifier.__init__(self, y)
         self.name = "JenksCaspall"
 
@@ -2238,14 +2253,11 @@ class JenksCaspall(MapClassifier):
         # class means
         if x.ndim == 1:
             x = x.reshape((x.size, 1))
-        n, k = x.shape
         xm = [np.median(x[xb == i]) for i in np.unique(xb)]
         xb0 = xb.copy()
-        q = xm
+        q = np.array(xm)
         it = 0
-        rk = list(range(self.k))
         while solving:
-            xb = np.zeros(xb0.shape, int)
             d = abs(x - q)
             xb = d.argmin(axis=1)
             if (xb0 == xb).all():
@@ -2253,7 +2265,10 @@ class JenksCaspall(MapClassifier):
             else:
                 xb0 = xb
             it += 1
-            q = np.array([np.median(x[xb == i]) for i in rk])
+            # Recompute centres only for non-empty classes. Ties can leave a
+            # class with no members; its median would be NaN and argmin would
+            # then oscillate forever.
+            q = np.array([np.median(x[xb == i]) for i in np.unique(xb)])
         cuts = np.array([max(x[xb == i]) for i in np.unique(xb)])
         cuts = cuts.reshape((len(cuts),))
         self.bins = cuts
@@ -2328,6 +2343,7 @@ class JenksCaspallSampled(MapClassifier):
 
     def __init__(self, y, k=K, pct=0.10):
         self.k = k
+        self.k_requested = k
         n = y.size
         if pct * n > 1000:
             pct = 1000.0 / n
@@ -2364,7 +2380,7 @@ class JenksCaspallSampled(MapClassifier):
         **kwargs : dict
             Additional keyword arguments passed to the class constructor.
         """
-        kwargs.update({"k": kwargs.pop("k", self.k)})
+        kwargs.update({"k": kwargs.pop("k", getattr(self, "k_requested", self.k))})
         kwargs.update({"pct": kwargs.pop("pct", self.pct)})
         if inplace:
             self._update(y, **kwargs)
@@ -2431,6 +2447,7 @@ class JenksCaspallForced(MapClassifier):
                 "All values in `y` are equal."
             )
         self.k = k
+        self.k_requested = k
         MapClassifier.__init__(self, y)
         self.name = "JenksCaspallForced"
 
@@ -2440,6 +2457,9 @@ class JenksCaspallForced(MapClassifier):
         q = quantile(x, k)
         solving = True
         xb, cnt = bin1d(x, q)
+        # Relabel classes as 0..m-1: ties can leave some quantile classes
+        # empty, and the class means below are indexed by label.
+        xb = np.unique(xb, return_inverse=True)[1]
         # class means
         if x.ndim == 1:
             x = x.reshape((x.size, 1))
@@ -2518,7 +2538,7 @@ class JenksCaspallForced(MapClassifier):
                 solving = False
             it += 1
         cuts = [max(x[xb == c]) for c in np.unique(xb)]
-        cuts = np.reshape(np.array(cuts), (k,))
+        cuts = np.reshape(np.array(cuts), (len(cuts),))
         self.bins = cuts
         self.iterations = it
 
@@ -2729,6 +2749,7 @@ class MaxP(MapClassifier):
                 "All values in `y` are equal."
             )
         self.k = k
+        self.k_requested = k
         self.initial = initial
         self.seed1 = seed1
         self.seed2 = seed2
@@ -2743,15 +2764,23 @@ class MaxP(MapClassifier):
             x = x.reshape((x.size, 1))
         n, tmp = x.shape
         x.sort(axis=0)
+        # One seed per distinct quantile position. Ties can collapse the
+        # quantiles to fewer than k, or map two of them to the same
+        # observation, so the number of seeds (and classes) may be below k.
+        seeds = sorted(
+            {
+                int(np.nonzero(di == min(di))[0][0])
+                for di in [np.abs(x - qi) for qi in q]
+            }
+        )
+        k = len(seeds)
         # find best of initial solutions
         solution = 0
+        best_solution = None
         best_tss = x.var() * x.shape[0]
         tss_all = np.zeros((self.initial, 1))
         while solution < self.initial:
             remaining = list(range(n))
-            seeds = [
-                np.nonzero(di == min(di))[0][0] for di in [np.abs(x - qi) for qi in q]
-            ]
             np.random.seed(self.seed1)
             rseeds = np.random.permutation(list(range(k))).tolist()
             [remaining.remove(seed) for seed in seeds]
@@ -2782,7 +2811,7 @@ class MaxP(MapClassifier):
                         growing = False
             tss = _fit(self.y, classes)
             tss_all[solution] = tss
-            if tss < best_tss:
+            if best_solution is None or tss < best_tss:
                 best_solution = classes
                 best_it = solution
                 best_tss = tss
